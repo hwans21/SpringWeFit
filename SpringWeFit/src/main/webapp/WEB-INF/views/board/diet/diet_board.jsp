@@ -145,170 +145,63 @@
                         <h2>오늘먹은 식단</h2>
                     </div>
                 </div>
-                <div id="btn-list" class="row" align="right">
-
-                    <!--검색 조건-->
-                    <select class="search-condition">
-                        <option>제목</option>
-                        <option>작성자</option>
-                    </select>
-
-                    <input type="text" placeholder="Search">
-
-                    <button type="button" class="btn" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-                </div>
+              	
+              	<form action="<c:url value='/dietBoard/dietList' />">
+					<div id="btn-list" class="row" align="right">
+	
+						<!--검색 조건-->
+						
+						<select class="search-condition" name="condition">
+							<option value="title">제목</option>
+							<option value="writer">작성자</option>
+							<option value="content">내용</option>
+						</select> <input type="text" placeholder="Search" name="keyword">
+	
+						<button type="submit" class="btn" aria-label="Left Align">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</button>
+					</div>
+				</form>
+              	
             </div>
 
 
             <div class="row margin-top-5">
-                <!-- <table class="table table-hover table-responsive"> -->
+               
                 <table class="table">
-                    <!-- <thead class="bg-info">
-                        <tr>       
-                            <th scope="col" class="text-center">제목</th>
-                            <th scope="col" class="text-center">글쓴이</th>
-                            <th scope="col" class="text-center">날짜</th>                      
-                        </tr>
-                    </thead> -->
-                    <tbody>
-                    	<c:forEach var="diet" items="${dietList}" begin="0" end="6">
-		                	<tr class="course">
-		                            <th scope="col" class="text-center"  onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${diet.dbNum}' />'">
-		                                <div class=vid>
-		                                    <a href="#"><img src="${pageContext.request.contextPath}/resources/img/food/계란 치즈 오픈샌드위치.jpg" width="280px" height="160px"
-		                                            alt="vid01"></a>
-		                                    <p class="subject"><a href="#">${diet.dbTitle}</a></p>
-		                                    <p class="auth">
-		                                        <span class="writeday">${diet.dbRegDate}</span>
-		                                        <span class="nickname">관리자</span>
-		                                        
-		                                        
-		                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-		                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-		                                    </p>
-		
-		                                </div>
-		                            </th>
-		                            <th scope="col" class="text-center"  onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${diet.dbNum}' />'">
-		                                <div class=vid>
-		                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/계란말이+고구마.jpg" width="280px" height="160px"
-		                                            alt="vid02"></a>
-		                                    <p class="subject"><a href="#">${diet.dbTitle}</a></p>
-		                                    <p class="auth">
-		                                        
-		                                        <span class="writeday">${diet.dbRegDate}</span>
-		                                        <span class="nickname">관리자</span>
-		                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-		                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-		                                    </p>
-		                                </div>
-		                            </th>
-		                            <th scope="col" class="text-center"  onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${diet.dbNum}' />'">
-		                                <div class=vid>
-		                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/닭가슴살 두부유부초밥.jpg" width="280px" height="160px"
-		                                            alt="vid03"></a>
-		                                    <p class="subject"><a href="#">${diet.dbTitle}</a></p>
-		                                    <p class="auth">
-		                                        <span class="writeday">${diet.dbRegDate}</span>
-		                                        <span class="nickname">관리자</span>
-		                                        
-		                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-		                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-		                                    </p>
-		                                </div>
-		                            </th>
-	                        </tr>
-						</c:forEach>
-						<!-- 
-                        <tr>
-                            <th scope="col" class="text-center">
-                                <div class=vid>
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/두부유부초밥.jpg" width="280px" height="160px"
-                                            alt="vid04"></a>
-                                    <p class="subject"><a href="#">두부유부초밥</a></p>
-                                    <p class="auth">
-                                        <span class="writeday">18.08.12</span>
-                                        <span class="nickname">관리자</span>
-                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <div class=vid>
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/딸기사과 오픈 샌드위치.jpg" width="280px" height="160px"
-                                            alt="vid05"></a>
-                                    <p class="subject"><a href="#">딸기사과 오픈 샌드위치</a></p>
-                                    <p class="auth">
-                                        <span class="writeday">18.08.12</span>
-                                        <span class="nickname">관리자</span>
-                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <div class=vid>
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/계란 치즈 오픈샌드위치.jpg" width="280px" height="160px"
-                                            alt="vid06"></a>
-                                    <p class="subject"><a href="#">계란 치즈 오픈샌드위치</a></p>
-                                    <p class="auth">
-                                        <span class="writeday">18.08.12</span>
-                                        <span class="nickname">관리자</span>
-                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </th>
-                        </tr>
+                 
+                   <tbody>
 
-                        <tr>
-                            <th scope="col" class="text-center">
-                                <div class=vid>
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/소고기 야채볶음.jpg" width="280px" height="160px"
-                                            alt="vid07"></a>
-                                    <p class="subject"><a href="#">소고기 야채볶음</a></p>
-                                    <p class="auth">
-                                        <span class="writeday">18.08.12</span>
-                                        <span class="nickname">관리자</span>
-                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <div class=vid>
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/수제요거트,바나나.jpg" width="280px" height="160px"
-                                            alt="vid08"></a>
-                                    <p class="subject"><a href="#">수제요거트,바나나</a></p>
-                                    <p class="auth">
-                                        <span class="writeday">18.08.12</span>
-                                        <span class="nickname">관리자</span>
-                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </th>
-                            <th scope="col" class="text-center">
-                                <div class=vid>
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/food/아보카도 치즈 오픈 토스트.jpg" width="280px" height="160px"
-                                            alt="vid09"></a>
-                                    <p class="subject"><a href="#">아보카도 치즈 오픈 토스트</a></p>
-                                    <p class="auth">
-                                        <span class="writeday">18.08.12</span>
-                                        <span class="nickname">관리자</span>
-                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </th>
-                            
-                        </tr>
-                        
-                    </tbody>
-                    -->
+						<c:forEach var="vo" varStatus="i" items="${dietList}">
+							<c:if test="${i.count % 3 == 1}">
+								<tr class="course">
+							</c:if>
+							<th scope="col" class="text-center"
+								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
+								<div class=vid>
+									<a href="#"><img
+										src="${pageContext.request.contextPath}/resources/img/food/계란 치즈 오픈샌드위치.jpg"
+										width="280px" height="160px" alt="vid01"></a>
+
+									<p class="subject">
+										<a href="#">${vo.dbTitle}</a>
+									</p>
+									<p class="auth">
+										<span class="writeday">${vo.dbRegDate}</span> <span
+											class="nickname">${vo.nickName}</span> <span
+											class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>${vo.dbImageCount}</b></span>
+										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${vo.dbLookCount}</b></span>
+									</p>
+
+								</div>
+							</th>
+							<c:if test="${i.count % 3 == 0}">
+								</tr>
+							</c:if>
+						</c:forEach>
+						
+					</tbody>
+
                 </table>
             </div>
 
@@ -318,19 +211,37 @@
             </div> <!-- 관리자만 보이게 하기 -->
 
 
-            <div class="row text-center">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
+			<form action="<c:url value='/dietBoard/dietList' />" name="pageForm">
+				<div class="row text-center">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination" id="pagination">
+						
+							<c:if test="${dpc.prev}">
+								<li>
+									<a href="#" data-pageNum="${dpc.beginPage-1}">Prev</a>
+								</li>
+							</c:if>
+	
+							<c:forEach var="diet" begin="${dpc.beginPage}" end="${dpc.endPage}">
+								<li class="${dpc.paging.pageNum == diet ? 'active' : ''}">
+									<a href="#" data-pageNum="${diet}">${diet}</a>
+								</li>
+							</c:forEach>
+	
+							<c:if test="${dpc.next}">
+								<li>
+									<a href="#" data-pageNum="${dpc.endPage+1}">Next</a>
+								</li>
+							</c:if>
+							
+						</ul>
+					</nav>
+				</div>
+				    <input type="hidden" name="pageNum" value="${dpc.paging.pageNum}">
+                    <input type="hidden" name="countPerPage" value="${dpc.paging.countPerPage}">
+                    <input type="hidden" name="keyword" value="${dpc.paging.keyword}">
+                    <input type="hidden" name="condition" value="${dpc.paging.condition}">
+			</form>
 
             
         </div>
@@ -341,5 +252,17 @@
 
     
 </body>
+<script>
+	const pagination = document.getElementById('pagination');	
+	pagination.onclick = function(e) {
+	e.preventDefault();
+	
+	const value = e.target.dataset.pagenum;
+	
+	
+	document.pageForm.pageNum.value = value;
+	document.pageForm.submit();
+}
+</script>
 
 </html>

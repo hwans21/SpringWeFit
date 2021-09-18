@@ -14,7 +14,7 @@ public interface IDietBoardService {
 	void regist(DietBoardVO vo);
 	
 	//식단 글 목록
-	List<DietBoardVO> getList();
+	List<DietBoardVO> getList(PageVO vo);
 	
 	//식단 총 게시물 수 (페이징 할 때)
 	int getTotal(PageVO vo);

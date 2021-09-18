@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.wefit.command.DietBoardVO;
+import com.spring.wefit.commons.PageCreator;
+import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.dietboard.service.IDietBoardService;
 
 @Controller
@@ -22,9 +24,16 @@ public class DietController {
 	
 	//글 목록전체보기
 	@GetMapping("/dietList") 
-	public String dietList(Model model) {
+	public String dietList(Model model, PageVO vo) {
 		System.out.println("/board/dietList: GET 글 목록 전체보기!!");
-		model.addAttribute("dietList", service.getList());
+		
+		PageCreator dpc = new PageCreator();
+		dpc.setPaging(vo);
+		dpc.setArticleTotalCount(service.getTotal(vo));
+		vo.setCountPerPage(9);
+		
+		model.addAttribute("dietList", service.getList(vo));
+		model.addAttribute("dpc", dpc);
 		return "/board/diet/diet_board";
 	}
 
@@ -88,15 +97,9 @@ public class DietController {
 	}
 	
 	//다중 사진 업로드
-	@PostMapping("/upload")
-	public void temp() {
-		
-	}
+	//@PostMapping("/upload")
+	
 	
 	
 	
 }
-
-
-
-

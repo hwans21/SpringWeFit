@@ -3,6 +3,7 @@ package com.spring.wefit.dietboard.mapper;
 import java.util.List;
 
 import com.spring.wefit.command.DietBoardVO;
+import com.spring.wefit.commons.PageVO;
 
 public interface IDietBoardMapper {
 	
@@ -10,7 +11,7 @@ public interface IDietBoardMapper {
 	void regist(DietBoardVO vo);
 	
 	//식단 글 목록
-	List<DietBoardVO> getList();
+	List<DietBoardVO> getList(PageVO vo);
 	
 	//식단 글 상세보기
 	DietBoardVO getContent(int dbNum);
@@ -22,7 +23,7 @@ public interface IDietBoardMapper {
 	void delete (int dbNum);
 	
 	//식단 총 게시물 수 (페이징 할 때)
-	int getTotal();
+	int getTotal(PageVO vo);
 	
 	
 	
