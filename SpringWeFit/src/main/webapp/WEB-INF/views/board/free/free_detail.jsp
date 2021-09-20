@@ -111,7 +111,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>기~~~~~~~~~~~~~~~~~~~~~~~~~다란 제목입니다?? 조금더 긴 제목을 써야하는데 뭐라써야할지 모르겠어요</h2>
+                            <h2>${content.fbTitle }</h2>
                         </div>
                     </div>
                 </div>
@@ -133,23 +133,23 @@
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner" role="listbox">
                                 <div class="item active">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site01.jpg" width="100%" alt="...">
+                                    <img src="/upload/board/free/${content.memberNick }/${content.fbRealImage1 }" width="100%" alt="...">
 
                                 </div>
                                 <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site02.jpg" width="100%" alt="...">
+                                    <img src="/upload/board/free/${content.memberNick }/${content.fbRealImage2 }" width="100%" alt="...">
 
                                 </div>
                                 <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site03.jpg" width="100%" alt="...">
+                                    <img src="/upload/board/free/${content.memberNick }/${content.fbRealImage3 }" width="100%" alt="...">
 
                                 </div>
                                 <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site04.jpg" width="100%" alt="...">
+                                    <img src="/upload/board/free/${content.memberNick }/${content.fbRealImage4 }" width="100%" alt="...">
 
                                 </div>
                                 <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site05.jpg" width="100%" alt="...">
+                                    <img src="/upload/board/free/${content.memberNick }/${content.fbRealImage5 }" width="100%" alt="...">
 
                                 </div>
 

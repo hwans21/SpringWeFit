@@ -12,5 +12,5 @@ public class CourseLikelyController {
 	
 	@Autowired
 	private ICourseLikelyService service;
-
+	
 }

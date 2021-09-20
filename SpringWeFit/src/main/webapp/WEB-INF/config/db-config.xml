@@ -52,12 +52,12 @@
 	<!-- 위의 구현체 xml을 빈으로 등록하기 위해서는 타입이 필요하니까 인터페이스를 자동으로 스캔해서 빈으로 등록하기 위한 설정 -->
 	<!-- 스캔 명령은 빈 바깥에! -->
 	<mybatis-spring:scan base-package="com.spring.wefit.course.mapper"/>
-	<mybatis-spring:scan base-package="com.spring.wefit.user.mapper"/>
-	<mybatis-spring:scan base-package="com.spring.wefit.placeboard.mapper"/>
-  	<mybatis-spring:scan base-package="com.spring.wefit.market.mapper"/>
   	<mybatis-spring:scan base-package="com.spring.wefit.dietboard.mapper"/>
-	<mybatis-spring:scan base-package="com.spring.wefit.test"/>
 	<mybatis-spring:scan base-package="com.spring.wefit.free.mapper"/>
+  	<mybatis-spring:scan base-package="com.spring.wefit.market.mapper"/>
+	<mybatis-spring:scan base-package="com.spring.wefit.placeboard.mapper"/>
+	<mybatis-spring:scan base-package="com.spring.wefit.user.mapper"/>
+	<mybatis-spring:scan base-package="com.spring.wefit.test"/>
   	
   	
 

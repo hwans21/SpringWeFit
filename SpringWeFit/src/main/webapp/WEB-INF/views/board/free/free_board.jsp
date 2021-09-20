@@ -97,9 +97,9 @@
         </div>
         <div class="row">
           <ul id="sub_menu3" class="sub_menu">
-            <li class="sub2"><a href="/FRONT/views/board/notice/notice_board.html">공지사항</a></li>
-            <li class="sub2"><a href="<c:url value="/freeBoard/List" />">자유게시판</a></li>
-            <li class="sub2"><a href="/FRONT/views/board/qna/qna_board.html">질문게시판</a></li>
+           <li class="sub2"><a href="<c:url value="/noticeBoard/" />">공지사항</a></li>
+           <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
+           <li class="sub2"><a href="/FRONT/views/board/qna/qna_board.jsp">질문게시판</a></li>
           </ul>
         </div>
    
@@ -140,16 +140,20 @@
                         <th scope="col" class="text-center">날짜</th>
                         <th scope="col" class="text-center">조회</th>
                       </tr>
-                    </thead>
+                    </thead>	
                     <tbody>
-                      <tr onclick="location.href='/FRONT/views/board/free/free_detail.html'">
-                        <th scope="col" class="text-center">23</th>
-                        <th scope="col">[자유글] 운동 많이 하고 계시나요?</th>
-                        <th scope="col" class="text-center">야옹이</th>
-                        <th scope="col" class="text-center">2021-09-02</th>
-                        <th scope="col" class="text-center">153</th>
-                    </tr>
                     
+                    <c:forEach var="arr" items="${freeList }">
+                    
+                      <tr onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }" />'">
+                        <th scope="col" class="text-center">${arr.fbNum }</th>
+                        <th scope="col">${arr.fbTitle }</th>
+                        <th scope="col" class="text-center">${arr.memberNick }</th>
+                        <th scope="col" class="text-center">${arr.fbRegDate }</th>
+                        <th scope="col" class="text-center">${arr.fbLookCount }</th>
+                      </tr>
+                    </c:forEach>
+                    <!-- 
                         <tr>
                           <th scope="col" class="text-center">23</th>
                           <th scope="col">[자유글] 운동 많이 하고 계시나요?</th>
@@ -205,13 +209,13 @@
                             <th scope="col" class="text-center">2021-09-02</th>
                             <th scope="col" class="text-center">153</th>
                         </tr>
-                        
+                        -->
                     </tbody>
                   </table>
             </div>
 
             <div class="row" align="right">
-                <button type="button" id="write" class="btn btn-outline-primary" onclick="location.href='<c:url value="/freeBoard/writePage"/>'"><b>글쓰기</b></button>
+                <button type="button" id="write" class="btn btn-outline-primary" onclick="location.href='<c:url value="/freeBoard/freeWrite" />'"><b>글쓰기</b></button>
              </div>
 
 

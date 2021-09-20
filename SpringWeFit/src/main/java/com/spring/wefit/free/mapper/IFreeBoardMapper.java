@@ -6,21 +6,21 @@ import com.spring.wefit.command.FreeBoardVO;
 import com.spring.wefit.commons.PageVO;
 
 public interface IFreeBoardMapper {
-	// 글 등록
+	//자유게시판  글 등록
 	void regist(FreeBoardVO vo);
 	
-	// 글 목록
+	//자유게시판 글 목록
 	List<FreeBoardVO> getList(PageVO vo);
 	
-	// 총 게시물 수
-	int getTotal(PageVO vo);
+	//자유게시판 글 상세보기
+	FreeBoardVO getContent(int fbNum);
 	
-	// 상세보기
-	FreeBoardVO getContent(int bno);
-	
-	// 수정
+	//자유게시판 글 수정
 	void update(FreeBoardVO vo);
 	
-	// 삭제
-	void delete(int bno);
+	//자유게시판 글 삭제
+	void delete (int fbNum);
+	
+	//자유게시판 총 게시물 수
+	int getTotal(PageVO vo);
 }

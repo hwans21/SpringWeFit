@@ -157,8 +157,8 @@
             <ul id="sub_menu3" class="sub_menu">
 
 
-                <li class="sub2"><a href="/FRONT/views/board/notice/notice_board.jsp">공지사항</a></li>
-                <li class="sub2"><a href="<c:url value="/freeBoard/List" />">자유게시판</a></li>
+                <li class="sub2"><a href="<c:url value="/noticeBoard/" />">공지사항</a></li>
+                <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
                 <li class="sub2"><a href="/FRONT/views/board/qna/qna_board.jsp">질문게시판</a></li>
 
             </ul>

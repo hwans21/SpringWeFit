@@ -56,7 +56,7 @@
 
             <!--main left-->
             <form action="#" id="boardWrite" method="POST" enctype="multipart/form-data">
-            	<input type="hidden" name="memberNum">
+            	<input type="hidden" name="memberNum" value="${loginuser.memberNum}">
                 <table>
                     <tr>
                         <td>게시판</td>
@@ -73,32 +73,32 @@
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type="text" name="memberName" size=20> </td>
+                        <td><input type="text" name="memberNick" size="20" value="${loginuser.memberNick }" readonly> </td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name=title size="60"></td>
+                        <td><input type=text name="fbTitle" size="60"></td>
                     </tr>
 
                     <tr>
                         <td>내용</td>
-                        <td><textarea name="content" cols="75" rows="15"></textarea></td>
+                        <td><textarea name="fbContent" cols="75" rows="15"></textarea></td>
                     </tr>
 
-                    
+             
 
                     
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple type="file" name="fileName" size="10" maxlength="10" ></td>
                     </tr>
                     
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
                             <button class="btn btn-primary" type="submit">등록하기</button>
-                            <button class="btn btn-default" type="button" onclick="location.href='<c:url value="/freeBoard/list" />'">취소하기</button>
+                            <button class="btn btn-default" type="button" onclick="location.href='<c:url value="/freeBoard/" />'">취소하기</button>
                             <br><br><br>
                         </td>
 

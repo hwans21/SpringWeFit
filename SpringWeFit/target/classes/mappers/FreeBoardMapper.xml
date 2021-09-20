@@ -5,37 +5,65 @@
   
   <mapper namespace="com.spring.wefit.free.mapper.IFreeBoardMapper">
   
-  	<insert id="regist">
-  		INSERT INTO FreeBoard
-	  	(
-	  		fbNum, memberNum, fbTitle, fbContent,
-	  		fbImage1, fbImage2,fbImage3,fbImage4,fbImage5,
-	  		fbRealImage1,fbRealImage2,fbRealImage3,fbRealImage4,fbRealImage5
-	  		
-	  	)
-	 	VALUES
-	  	(
-		  	FreeBoard_seq.NEXTVAL, #{memberNum}, #{fbTitle}, #{fbContent},
-		  	#{fbImage1}, #{fbImage2}, #{fbImage3}, #{fbImage4}, #{fbImage5},
-		  	#{fbRealImage1}, #{fbRealImage2}, #{fbRealImage3}, #{fbRealImage4}, #{fbRealImage5}
-		  	
-	  	)
-  	</insert>
-  	
-  	
-  	<select id="getList">
-  		
-  	</select>
-  	
-  	<select id="getTotal" resultType="int">
-  	
-  	</select>
-  	
-  	<select id="getContent">
-  	
-  	</select>
-  	
-  	<update id="update"></update>
-  	
-  	<delete id="delete"></delete>
+  	<!--  //자유게시판  글 등록
+	void regist(FreeBoardVO vo);
+	
+	//자유게시판 글 목록
+	List<FreeBoardVO> getList(PageVO vo);
+	
+	//자유게시판 글 상세보기
+	FreeBoardVO getContent(int fbNum);
+	
+	//자유게시판 글 수정
+	void update(FreeBoardVO vo);
+	
+	//자유게시판 글 삭제
+	void delete (int fbNum);
+	
+	//자유게시판 총 게시물 수
+	int getTotal(PageVO vo); -->
+	
+	<insert id="regist"><!-- 글 등록  -->
+		INSERT INTO FreeBoard
+		(fbNum, memberNum, fbTitle, fbContent,
+		fbImage1, fbImage2, fbImage3, fbImage4, fbImage5,
+		fbRealImage1, fbRealImage2, fbRealImage3, fbRealImage4, fbRealImage5,
+		fbLookCount, fbImageCount)
+		VALUES(FreeBoard_seq.NEXTVAL,(SELECT memberNum From Member WHERE memberNick = #{memberNick}),
+		#{fbTitle},#{fbContent},
+		#{fbImage1},#{fbImage2},#{fbImage3},#{fbImage4},#{fbImage5},
+		#{fbRealImage1},#{fbRealImage2},#{fbRealImage3},#{fbRealImage4},#{fbRealImage5},
+		0,#{fbImageCount}
+		)
+	</insert>
+	
+	<select id="getList" resultType="com.spring.wefit.command.FreeBoardVO"><!-- 글 목록  -->
+		SELECT * FROM
+		(
+			SELECT ROWNUM as rn, free.* FROM
+			(
+				SELECT f.*, m.memberNick FROM FreeBoard f, Member m
+				WHERE f.memberNum = m.memberNum
+				ORDER BY fbRegDate DESC
+			) free
+		)
+		<![CDATA[
+		WHERE rn > (#{pageNum}-1)*#{countPerPage}
+		AND rn <= #{pageNum} * #{countPerPage}
+		]]>
+	
+	</select>
+	
+	
+	<select id="getContent" resultType="com.spring.wefit.command.FreeBoardVO"> <!-- 글 상세  -->
+		SELECT f.*, m.memberNick FROM FreeBoard f, Member m
+		WHERE f.fbNum = #{fbNum}
+		AND f.memberNum = m.memberNum
+	</select>
+	<update id="update"><!-- 글 수정  -->
+	
+	</update>
+	<delete id="getTotal">
+	
+	</delete>
   </mapper>

@@ -59,4 +59,6 @@ public class FreeBoardVO {
 	private int fbImageCount;
 	private Timestamp fbRegDate;
 	
+	private String memberNick;
+	
 }
