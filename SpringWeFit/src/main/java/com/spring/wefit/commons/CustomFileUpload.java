@@ -25,7 +25,9 @@ public class CustomFileUpload {
 			}catch(Exception e) {}
 			
 		}
+		System.out.println("업로드 안한경우 첫 파일 이름:"+fileName[0].getOriginalFilename());
 		for(MultipartFile f : fileName) {
+			if(f.isEmpty()) break;
 			String originFileName = f.getOriginalFilename(); // 원본 파일 명 + 확장자
 			String randomFileName = UUID.randomUUID()
 									.toString().split("-")[0] 
@@ -53,6 +55,7 @@ public class CustomFileUpload {
 				e.printStackTrace();
 			}
 		}
+		
 		if(list.size() < MaxFileCount*2) {
 			int fillCount = (MaxFileCount*2)-list.size(); // 리스트 요소 늘리기 위한 null값 넣기
 			for(int i = 0;i<fillCount;i++) {

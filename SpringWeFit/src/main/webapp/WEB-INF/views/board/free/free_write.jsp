@@ -78,7 +78,7 @@
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name="fbTitle" size="60"></td>
+                        <td><input type=text name="fbTitle" size="60" id="titleInput"></td>
                     </tr>
 
                     <tr>
@@ -97,7 +97,7 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button class="btn btn-primary" type="submit">등록하기</button>
+                            <button class="btn btn-primary" type="button" id="regBtn">등록하기</button>
                             <button class="btn btn-default" type="button" onclick="location.href='<c:url value="/freeBoard/" />'">취소하기</button>
                             <br><br><br>
                         </td>
@@ -114,8 +114,17 @@
     <div class="row">
         <%@ include file="../../include/footer.jsp" %>
     </div>
-
-    </div>
+	<script>
+		
+		$('#regBtn').click(function(){
+			if($('#titleInput').val().indexOf($('#category').val()) === -1){ // 해당 태그 있는지 확인
+				
+				$('#titleInput').val($('#category').val()+$('#titleInput').val()); // 제목에 태그 넣기
+			}
+			
+			$('#boardWrite').submit();
+		});
+	</script>
 
    
 </body>

@@ -303,7 +303,7 @@
                     <h4 class="modal-title" id="myModalLabel">비밀번호찾기</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post" id="form-join" class="form-horizontal">
+                    <form action="" method="post" id="form-search" class="form-horizontal">
                        
                         <div class="form-group">
                             <label for="input-email" class="col-sm-3 control-label">이메일</label>
