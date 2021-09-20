@@ -40,7 +40,7 @@ public class FreeBoardVO {
     NOCYCLE 
     NOCACHE; 
 	*/
-
+	
 	private int fbNum;
 	private int memberNum;
 	private String fbTitle;

@@ -105,8 +105,8 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='/FRONT/views/board/free/free_modify.html'">수정하기</button>
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='/FRONT/views/board/free/free_board.html'">목록으로</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/freeModify?fbNum=${content.fbNum }" />'">수정하기</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">

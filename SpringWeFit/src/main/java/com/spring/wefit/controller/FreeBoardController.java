@@ -34,7 +34,7 @@ public class FreeBoardController {
 		List<FreeBoardVO> list = service.getList(vo);
 		
 		model.addAttribute("freeList", list);
-		
+		model.addAttribute("page",vo);
 		return "board/free/free_board";
 	}
 	
@@ -45,6 +45,7 @@ public class FreeBoardController {
 		return "board/free/free_write";
 	}
 	
+	// 글 쓰기 요청
 	@PostMapping("/freeWrite")
 	public String regist(MultipartFile[] fileName,HttpServletRequest request, FreeBoardVO vo, RedirectAttributes ra) {
 	
@@ -88,19 +89,22 @@ public class FreeBoardController {
 	
 	// 상세 페이지 이동
 	@GetMapping("/freeDetail") 
-	public String freeBoardDetail(@RequestParam int fbNum, Model model) {
+	public String freeBoardDetail(@RequestParam int fbNum,PageVO page, Model model) {
 		System.out.println("/freeBoard/freeDetail?fbNum="+fbNum+":GET");
 		System.out.println(fbNum);
 		System.out.println(service.getContent(fbNum).toString()); // 상세데이터 확인
 		model.addAttribute("content",service.getContent(fbNum));
-		
+		model.addAttribute("pc", page);
 		return "board/free/free_detail";
 	}
 	
 	// 수정 페이지 이동
 	@GetMapping("/freeModify")
-	public String freeBoardModify() {
+	public String freeBoardModify(@RequestParam int fbNum,PageVO page, Model model) {
 		System.out.println("/freeBoard/freeModify:GET");
+		model.addAttribute("content", service.getContent(fbNum));
+		model.addAttribute("pc", page);
+		
 		return "board/free/free_modify";
 	}
 	// 글쓰기 화면 이동 처리

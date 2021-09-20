@@ -59,38 +59,29 @@
                     <tr>
                         <td>게시판</td>
                         <td>
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    게시판 선택
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="#">자유게시판</a></li>
-                                    <li><a href="#">자유게시판(소식정보)</a></li>
-                                    <li><a href="#">자유게시판(홍보)</a></li>
-                                    <li><a href="#">자유게시판(꿀팁)</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">질문게시판</a></li>
-
-                                </ul>
-                            </div>
+                            <select id="category" class="form-control">
+								  <option value="[자유글]" selected>자유글</option>
+								  <option value="[소식/정보]">소식/정보</option>
+								  <option value="[홍보]">홍보</option>
+								  <option value="[꿀팁]">꿀팁</option>
+								  <option value="[기타]">기타</option>
+							</select>
                         </td>
                     </tr>
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=name size=20> </td>
+                        <td><input type=text name=name size=20 value="${content.memberNick }"> </td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name=title size="60"></td>
+                        <td><input type=text name=title size="60" value="${content.fbTitle }"></td>
                     </tr>
 
                     <tr>
                         <td>내용</td>
-                        <td><textarea name="content" cols="75" rows="15"></textarea></td>
+                        <td><textarea name="content" cols="75" rows="15">${content.fbContent }</textarea></td>
                     </tr>
 
                     
@@ -123,7 +114,9 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
 
-    </div>
+    <script>
+    	
+    </script>
 
     
 </body>
