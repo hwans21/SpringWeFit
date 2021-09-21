@@ -67,5 +67,8 @@ public class CustomFileUpload {
 		return list;
 	}
 
-	
+	public void delete(String fileName, String filePath) {
+		File file = new File(filePath+fileName);
+		file.delete();
+	}
 }

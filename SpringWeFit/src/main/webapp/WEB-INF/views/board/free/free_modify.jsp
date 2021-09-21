@@ -1,7 +1,10 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,28 +63,28 @@
                         <td>게시판</td>
                         <td>
                             <select id="category" class="form-control">
-								  <option value="[자유글]" selected>자유글</option>
-								  <option value="[소식/정보]">소식/정보</option>
-								  <option value="[홍보]">홍보</option>
-								  <option value="[꿀팁]">꿀팁</option>
-								  <option value="[기타]">기타</option>
+								  <option value="[자유글]" ${fn:contains(content.fbTitle,'[자유글]')? 'selected':'' }>자유글</option>
+								  <option value="[소식/정보]" ${fn:contains(content.fbTitle,'[소식/정보]')? 'selected':'' }>소식/정보</option>
+								  <option value="[홍보]" ${fn:contains(content.fbTitle,'[홍보]')? 'selected':'' }>홍보</option>
+								  <option value="[꿀팁]" ${fn:contains(content.fbTitle,'[꿀팁]')? 'selected':'' }>꿀팁</option>
+								  <option value="[기타]" ${fn:contains(content.fbTitle,'[기타]')? 'selected':'' }>기타</option>
 							</select>
                         </td>
                     </tr>
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=name size=20 value="${content.memberNick }"> </td>
+                        <td><input type="text" name="memberNick" size="20" value="${content.memberNick }"> </td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name=title size="60" value="${content.fbTitle }"></td>
+                        <td><input id="input-title" type="text" name="fbTitle" size="60" value="${content.fbTitle }"></td>
                     </tr>
 
                     <tr>
                         <td>내용</td>
-                        <td><textarea name="content" cols="75" rows="15">${content.fbContent }</textarea></td>
+                        <td><textarea name="fbContent" cols="75" rows="15">${content.fbContent }</textarea></td>
                     </tr>
 
                     
@@ -115,6 +118,13 @@
     </div>
 
     <script>
+    	let title = $('#input-title').val();
+    	$('#category').change(function(){
+    		let category = title.substring(title.indexOf("["),title.indexOf("]")+1);
+    		if(category !== $('#category').val()){
+    			$('#input-title').val(title.replace(category,$('#category').val()));
+    		}
+    	});
     	
     </script>
 

@@ -54,16 +54,18 @@
 	
 	</select>
 	
-	
 	<select id="getContent" resultType="com.spring.wefit.command.FreeBoardVO"> <!-- 글 상세  -->
 		SELECT f.*, m.memberNick FROM FreeBoard f, Member m
 		WHERE f.fbNum = #{fbNum}
 		AND f.memberNum = m.memberNum
 	</select>
+	
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*) FROM FreeBoard
+	</select>
+	
 	<update id="update"><!-- 글 수정  -->
 	
+		
 	</update>
-	<delete id="getTotal">
-	
-	</delete>
   </mapper>

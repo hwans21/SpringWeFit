@@ -1,7 +1,9 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,7 +151,7 @@
                         <th scope="col" class="text-center">${arr.fbNum }</th>
                         <th scope="col">${arr.fbTitle }</th>
                         <th scope="col" class="text-center">${arr.memberNick }</th>
-                        <th scope="col" class="text-center">${arr.fbRegDate }</th>
+                        <th scope="col" class="text-center"><fmt:formatDate value="${arr.fbRegDate }" pattern="yyyy-MM-dd"/></th>
                         <th scope="col" class="text-center">${arr.fbLookCount }</th>
                       </tr>
                     </c:forEach>
@@ -218,20 +220,26 @@
                 <button type="button" id="write" class="btn btn-outline-primary" onclick="location.href='<c:url value="/freeBoard/freeWrite" />'"><b>글쓰기</b></button>
              </div>
 
-
+			<!-- 
             <div class="row text-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                      <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item"><a class="page-link" href="#">4</a></li>
-                      <li class="page-item"><a class="page-link" href="#">5</a></li>
-                      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                      <c:if test="${pc.prev }">
+	                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+                      </c:if>
+                      
+                      <c:forEach var="page" begin="${pc.beginPage }" end="endPage">
+                      	<li class="page-item"><a class="page-link" href="#">${page }</a></li>
+                      </c:forEach>
+               
+                      
+                      <c:if test="${pc.next }">
+	                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                      </c:if>
                     </ul>
                   </nav>
             </div> 
+             -->
 
         <div class="row">
             <%@ include file="../../include/footer.jsp" %>
