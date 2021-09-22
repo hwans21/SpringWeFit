@@ -103,7 +103,6 @@
         <div class="row">
             <%@ include file="../../include/header.jsp" %>
         </div>
-
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
@@ -238,16 +237,16 @@
             <div class="col-md-4 col-sm-12 test">
                 
                 <div class="row">
-                    <span class="reply reply-count">댓글 : ???개</span>
+                    <span id="replyCountSpan"class="reply reply-count">댓글 : ???개</span>
                 </div>
                 <div class="row">
                     <form id="reply-form">
                         <div class="input-group input-group-lg">
 
-                            <input type="text" class="form-control" placeholder="댓글을 작성해주세요"
+                            <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
-                                <button id="reply-btn" type="button" class="btn btn-default"><span
+                                <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
                             </span>
                         </div>
@@ -290,10 +289,35 @@
                 `);
             }
         }
+        function replyCount(){
+        	$.ajax({
+                type: "GET",
+                url: "<c:url value='/freeBoard/freeReplyCount?fbNum=${content.fbNum}' />",
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		$('#replyCountSpan').html('댓글 : '+data+'개');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+            
+            
+        }
+        
+        $('#replyBtn').click(function(){
+        	replyRegist();
+        	$('#replyInput').val('');
+        });
+        
+        
         $(document).ready(function () {
            
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
             replyAppendTest();
+            replyCount();
 
         });
         $(window).resize(function () {
@@ -337,64 +361,91 @@
         //         console.log('스크롤 하단 감지');
         //     }
         // });
-
-    	$('#lovelyBtn').click(function(){
-    		const arr = {
-    			"fbNum" : ${content.fbNum },
-    			"memberNum" : ${loginuser.memberNum }
-    		};
-    		$.ajax({
-                type: "POST",
-                url: "<c:url value='/freeBoard/freeLikely' />",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
-                data: JSON.stringify(arr),
-                success: function (data) {
-                    console.log('통신성공!' + data);
-                  	if(data==="success"){
-                  		alert('좋아요 등록완료');
-                  	} else{
-                  		alert('이미 좋아요를 누르셨습니다.')
-                  	}
-                },
-                error: function () {
-                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-                }
-            }); //좋아요  비동기 처리 끝
-            
-            
-    	});
+		<c:if test="${loginuser != null }">
+		
+			function replyRegist(){
+	        	$.ajax({
+	                type: "POST",
+	                url: "<c:url value='/freeBoard/freeReplyRegist' />",
+	                headers:{
+	                    "Content-Type":"application/json"
+	                },
+	                data: JSON.stringify({
+	                    "memberNum":${loginuser.memberNum},
+	                    "frContent":$('#replyInput').val(),
+	                    "fbNum":${content.fbNum}
+	                }),
+	                dataType: "text",
+	                success: function (data) {
+	                    console.log('통신성공!' + data);	
+	            		replyCount();
+	            		alert('댓글 등록 완료!!');
+	                },
+	                error: function (request, status, error) {
+	                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+	                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	                }
+	            }); //비동기 처리 끝
+	        }
+			$('#lovelyBtn').click(function(){
+	    		const arr = {
+	    			"fbNum" : ${content.fbNum },
+	    			"memberNum" : ${loginuser.memberNum }
+	    		};
+	    		$.ajax({
+	                type: "POST",
+	                url: "<c:url value='/freeBoard/freeLikely' />",
+	                headers: {
+	                    "Content-Type": "application/json"
+	                },
+	                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+	                data: JSON.stringify(arr),
+	                success: function (data) {
+	                    console.log('통신성공!' + data);
+	                  	if(data==="success"){
+	                  		alert('좋아요 등록완료');
+	                  	} else{
+	                  		alert('이미 좋아요를 누르셨습니다.')
+	                  	}
+	                },
+	                error: function () {
+	                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+	                }
+	            }); //좋아요  비동기 처리 끝
+	            
+	            
+	    	});
+	    	
+	    	$('#reportBtn').click(function(){
+	    		const arr = {
+	    			"fbNum" : ${content.fbNum },
+	    			"memberNum" : ${loginuser.memberNum }
+	    		};
+	    		$.ajax({
+	                type: "POST",
+	                url: "<c:url value='/freeBoard/freeReport' />",
+	                headers: {
+	                    "Content-Type": "application/json"
+	                },
+	                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+	                data: JSON.stringify(arr),
+	                success: function (data) {
+	                    console.log('통신성공!' + data);
+	                  	if(data==="success"){
+	                  		alert('신고 완료했습니다.');
+	                  	} else{
+	                  		alert('이미 신고를 하셨습니다.')
+	                  	}
+	                },
+	                error: function () {
+	                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+	                }
+	            }); //좋아요  비동기 처리 끝
+	            
+	            
+	    	});
+		</c:if>
     	
-    	$('#reportBtn').click(function(){
-    		const arr = {
-    			"fbNum" : ${content.fbNum },
-    			"memberNum" : ${loginuser.memberNum }
-    		};
-    		$.ajax({
-                type: "POST",
-                url: "<c:url value='/freeBoard/freeReport' />",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
-                data: JSON.stringify(arr),
-                success: function (data) {
-                    console.log('통신성공!' + data);
-                  	if(data==="success"){
-                  		alert('신고 완료했습니다.');
-                  	} else{
-                  		alert('이미 신고를 하셨습니다.')
-                  	}
-                },
-                error: function () {
-                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-                }
-            }); //좋아요  비동기 처리 끝
-            
-            
-    	});
 
     </script>
 </body>

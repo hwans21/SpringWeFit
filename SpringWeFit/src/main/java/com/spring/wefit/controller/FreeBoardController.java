@@ -17,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.wefit.command.FreeBoardVO;
+import com.spring.wefit.command.FreeReplyVO;
 import com.spring.wefit.commons.CustomFileUpload;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.free.service.IFreeBoardService;
+import com.spring.wefit.free.service.IFreeReplyService;
 
 @Controller
 @RequestMapping("/freeBoard")
@@ -28,6 +30,10 @@ public class FreeBoardController {
 	
 	@Autowired
 	private IFreeBoardService service;
+	
+	@Autowired
+	private IFreeReplyService replyService;
+	
 	
 	//목록 페이지 이동
 	@GetMapping("/") 
@@ -233,5 +239,26 @@ public class FreeBoardController {
 			service.insertReport(vo);
 			return "success";
 		}
+	}
+
+
+	//자유게시판  댓글 등록
+	@PostMapping("/freeReplyRegist")
+	@ResponseBody
+	public String freeReplyRegist(@RequestBody FreeReplyVO vo) {
+		System.out.println(vo.toString());
+		replyService.regist(vo);
+		return "success";
+	}
+	//자유게시판 댓글 목록
+	//자유게시판 댓글 수정
+	//자유게시판 댓글 삭제
+	//자유게시판 댓글 수
+	@GetMapping("/freeReplyCount")
+	@ResponseBody
+	public String freeReplyCount(HttpServletRequest request) {
+		int fbNum = Integer.parseInt(request.getParameter("fbNum"));
+		System.out.println(fbNum);
+		return Integer.toString(replyService.getTotal(fbNum));
 	}
 }
