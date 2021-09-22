@@ -42,7 +42,8 @@
 		(
 			SELECT ROWNUM as rn, free.* FROM
 			(
-				SELECT f.*, m.memberNick,(SELECT COUNT(*) FROM FreeLikely WHERE fbNum=f.fbNum ) as fbLikelyCount
+				SELECT f.*, m.memberNick,(SELECT COUNT(*) FROM FreeLikely WHERE fbNum=f.fbNum ) as fbLikelyCount,
+				(SELECT COUNT(*) FROM FreeReport WHERE fbNum=f.fbNum) as fbReportCount
 				FROM FreeBoard f, Member m
 				WHERE f.memberNum = m.memberNum
 				AND f.fbTitle LIKE '%'||#{condition}||'%'
@@ -59,7 +60,8 @@
 	
 	<select id="getContent" resultType="com.spring.wefit.command.FreeBoardVO"> <!-- 글 상세  -->
 		SELECT f.*, m.memberNick,
-		(SELECT COUNT(*) FROM FreeLikely WHERE fbNum=#{fbNum }) as fbLikelyCount 
+		(SELECT COUNT(*) FROM FreeLikely WHERE fbNum=#{fbNum }) as fbLikelyCount,
+		(SELECT COUNT(*) FROM FreeReport WHERE fbNum=#{fbNum }) as fbReportCount
 		FROM FreeBoard f, Member m
 		WHERE f.fbNum = #{fbNum}
 		AND f.memberNum = m.memberNum
@@ -110,6 +112,17 @@
 	
 	<insert id="insertLovely">
 		INSERT INTO FreeLikely
+		VALUES(#{fbNum}, #{memberNum})
+	</insert>
+	
+	<select id="checkReport" resultType="int">
+		SELECT COUNT(*) FROM FreeReport
+		WHERE fbNum = #{fbNum }
+		AND memberNum = #{memberNum }
+	</select>
+	
+	<insert id="insertReport">
+		INSERT INTO FreeReport
 		VALUES(#{fbNum}, #{memberNum})
 	</insert>
 	

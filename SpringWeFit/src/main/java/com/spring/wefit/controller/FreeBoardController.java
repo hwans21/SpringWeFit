@@ -220,4 +220,18 @@ public class FreeBoardController {
 			return "success";
 		}
 	}
+	
+	// 글 신고 처리하기
+	@PostMapping("/freeReport")
+	@ResponseBody
+	public String freeBoardReport(@RequestBody FreeBoardVO vo) {
+		System.out.println("글 번호:"+vo.getFbNum());
+		System.out.println("유저 번호"+vo.getMemberNum());
+		if(service.checkReport(vo) == 1) {
+			return "duplicate";
+		} else {
+			service.insertReport(vo);
+			return "success";
+		}
+	}
 }

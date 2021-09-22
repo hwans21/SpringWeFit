@@ -70,6 +70,18 @@ public class FreeBoardService implements IFreeBoardService {
 		mapper.insertLovely(vo);
 	}
 
+	@Override
+	public int checkReport(FreeBoardVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.checkReport(vo);
+	}
+
+	@Override
+	public void insertReport(FreeBoardVO vo) {
+		// TODO Auto-generated method stub
+		mapper.insertReport(vo);
+	}
+
 
 
 	

@@ -222,7 +222,7 @@
                                 <td></td>
                                 <td>
 									<c:if test="${loginuser != null }">
-	                                    <button class="btn btn-info pull-right"><span
+	                                    <button id="reportBtn" class="btn btn-info pull-right"><span
 	                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
 									
 									</c:if>
@@ -362,7 +362,38 @@
                 error: function () {
                     alert('통신에 실패했습니다. 관리자에게 문의하세요');
                 }
-            }); //이메일 체크 비동기 통신 끝
+            }); //좋아요  비동기 처리 끝
+            
+            
+    	});
+    	
+    	$('#reportBtn').click(function(){
+    		const arr = {
+    			"fbNum" : ${content.fbNum },
+    			"memberNum" : ${loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/freeBoard/freeReport' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('신고 완료했습니다.');
+                  	} else{
+                  		alert('이미 신고를 하셨습니다.')
+                  	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //좋아요  비동기 처리 끝
+            
+            
     	});
 
     </script>
