@@ -201,9 +201,11 @@
                                 <td>작성일: <fmt:formatDate value="${content.fbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>${content.fbLookCount }</td>
                                 <td>
-
-                                    <button class="btn btn-info pull-right"><span
-                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
+									<c:if test="${loginuser != null }">
+										
+	                                    <button id="lovelyBtn" class="btn btn-info pull-right"><span
+	                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
+									</c:if>
 
                                 </td>
                             </tr>
@@ -219,9 +221,11 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-
-                                    <button class="btn btn-info pull-right"><span
-                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
+									<c:if test="${loginuser != null }">
+	                                    <button class="btn btn-info pull-right"><span
+	                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
+									
+									</c:if>
 
                                 </td>
                             </tr>
@@ -269,6 +273,7 @@
     </div>
 
     <script defer>
+    
         function sleep(ms) {
             const wakeUpTime = Date.now() + ms;
             while (Date.now() < wakeUpTime) { }
@@ -333,6 +338,32 @@
         //     }
         // });
 
+    	$('#lovelyBtn').click(function(){
+    		const arr = {
+    			"fbNum" : ${content.fbNum },
+    			"memberNum" : ${loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/freeBoard/freeLikely' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('좋아요 등록완료');
+                  	} else{
+                  		alert('이미 좋아요를 누르셨습니다.')
+                  	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //이메일 체크 비동기 통신 끝
+    	});
 
     </script>
 </body>

@@ -52,6 +52,26 @@ public class FreeBoardService implements IFreeBoardService {
 		return mapper.getTotal(vo);
 	}
 
+	@Override
+	public void updateViewCount(int fbNum) {
+		// TODO Auto-generated method stub
+		mapper.updateViewCount(fbNum);
+	}
+
+	@Override
+	public int checkLovely(FreeBoardVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.checkLovely(vo);
+	}
+
+	@Override
+	public void insertLovely(FreeBoardVO vo) {
+		// TODO Auto-generated method stub
+		mapper.insertLovely(vo);
+	}
+
+
+
 	
 	
 }

@@ -248,25 +248,30 @@
     </div>
     <script>
     	$('#allBtn').click(function(){
-    		location.href=`<c:url value="/freeBoard/ " />`
+    		location.href=`<c:url value="/freeBoard/?condition=&keyword=${pc.paging.keyword} " />`
     	});
     	$('#freeBtn').click(function(){
-    		location.href=`<c:url value="/freeBoard/?condition=[자유글] " />`
+    		location.href=`<c:url value="/freeBoard/?condition=[자유글]&keyword=${pc.paging.keyword} " />`
     	});
     	$('#infoBtn').click(function(){
-    		location.href=`<c:url value="/freeBoard/?condition=[소식/정보] " />`
+    		location.href=`<c:url value="/freeBoard/?condition=[소식/정보]&keyword=${pc.paging.keyword} " />`
     	});
     	$('#advertBtn').click(function(){
-    		location.href=`<c:url value="/freeBoard/?condition=[홍보] " />`
+    		location.href=`<c:url value="/freeBoard/?condition=[홍보]&keyword=${pc.paging.keyword} " />`
     	});
     	$('#tipBtn').click(function(){
-    		location.href=`<c:url value="/freeBoard/?condition=[꿀팁] " />`
+    		location.href=`<c:url value="/freeBoard/?condition=[꿀팁]&keyword=${pc.paging.keyword} " />`
     	});
     	$('#etcBtn').click(function(){
-    		location.href=`<c:url value="/freeBoard/?condition=[기타] " />`
+    		location.href=`<c:url value="/freeBoard/?condition=[기타]&keyword=${pc.paging.keyword} " />`
     	});
     	$('#searchBtn').click(function(){
     		location.href=`<c:url value="/freeBoard/?condition=${pc.paging.condition}&keyword="/>`+$('#search-input').val()
+    	});
+    	$('#search-input').keyup(function(e){
+    		if(e.keyCode == 13) {
+	    		location.href=`<c:url value="/freeBoard/?condition=${pc.paging.condition}&keyword="/>`+$('#search-input').val()
+    		}
     	});
     	
     </script>

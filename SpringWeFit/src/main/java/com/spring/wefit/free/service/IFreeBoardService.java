@@ -26,5 +26,13 @@ public interface IFreeBoardService {
 	//자유게시판 총 게시물 수
 	int getTotal(PageVO vo);
 	
+	//자유게시판 조회수 수정
+	void updateViewCount(int fbNum);
+	
+	//자유게시판 좋아요 했는지 확인
+	int checkLovely(FreeBoardVO vo);
+	
+	//자유게시판 좋아요 처리
+	void insertLovely(FreeBoardVO vo);
 	
 }

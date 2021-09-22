@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -109,6 +111,7 @@ public class FreeBoardController {
 	public String freeBoardDetailPage(@RequestParam int fbNum,PageVO page, Model model) {
 		System.out.println("/freeBoard/freeDetail?fbNum="+fbNum+":GET");
 		System.out.println(fbNum);
+		service.updateViewCount(service.getContent(fbNum).getFbNum());
 		System.out.println(service.getContent(fbNum).toString()); // 상세데이터 확인
 		model.addAttribute("content",service.getContent(fbNum));
 		model.addAttribute("pc", page);
@@ -196,5 +199,25 @@ public class FreeBoardController {
 	
 	
 	// 글 삭제하기
+	@PostMapping("/freeDelete")
+	public String freeBoardDelete(FreeBoardVO vo, RedirectAttributes ra) {
+		service.delete(vo.getFbNum());
+		ra.addFlashAttribute("msg","삭제 완료되었습니다.");
+		return "redirect:/freeBoard/";
+		
+	}
 	
+	// 글 좋아요 처리하기
+	@PostMapping("/freeLikely")
+	@ResponseBody
+	public String freeBoardLikely(@RequestBody FreeBoardVO vo) {
+		System.out.println("글 번호:"+vo.getFbNum());
+		System.out.println("유저 번호"+vo.getMemberNum());
+		if(service.checkLovely(vo) == 1) {
+			return "duplicate";
+		} else {
+			service.insertLovely(vo);
+			return "success";
+		}
+	}
 }

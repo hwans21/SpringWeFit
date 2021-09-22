@@ -60,5 +60,6 @@ public class FreeBoardVO {
 	private Timestamp fbRegDate;
 	
 	private String memberNick;
+	private int fbLikelyCount;
 	
 }

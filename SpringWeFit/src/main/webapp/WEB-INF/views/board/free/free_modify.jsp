@@ -100,7 +100,7 @@
                         <td colspan="2">
                             <br>
                             <button id="modifyBtn" class="btn btn-primary" type="button" >수정하기</button>
-                            <button class="btn btn-primary" type="button" >삭제하기</button>
+                            <button id="deleteBtn" class="btn btn-primary" type="button" >삭제하기</button>
                             <button class="btn btn-default" type="button" onclick="location.href='/FRONT/views/board/free/free_detail.html'">취소하기</button>
                             <br><br><br>
                         </td>
@@ -128,6 +128,12 @@
     	});
     	$('#modifyBtn').click(function(){
     		$('#freeModify-form').submit();
+    	});
+    	$('#deleteBtn').click(function(){
+    		if(confirm("정말로 삭제하시겠습니까?")){
+	    		$('#freeModify-form').attr("action","<c:url value='/freeBoard/freeDelete'/>")
+	    		$('#freeModify-form').submit();
+    		}
     	});
     	
     	
