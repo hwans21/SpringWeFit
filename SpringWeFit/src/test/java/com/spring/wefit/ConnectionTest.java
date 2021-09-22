@@ -1,5 +1,6 @@
 package com.spring.wefit;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -12,10 +13,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.spring.wefit.command.DietBoardVO;
 import com.spring.wefit.command.FreeBoardVO;
+import com.spring.wefit.command.FreeReplyVO;
 import com.spring.wefit.dietboard.mapper.IDietBoardMapper;
 import com.spring.wefit.free.mapper.IFreeBoardMapper;
+import com.spring.wefit.free.mapper.IFreeReplyMapper;
 import com.spring.wefit.test.ITestMapper;
 import com.spring.wefit.command.UserVO;
+import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.user.mapper.IUserMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -32,6 +36,9 @@ public class ConnectionTest {
 	private ITestMapper mapper;
 	@Autowired
 	private IFreeBoardMapper freemapper;
+	@Autowired
+	private IFreeReplyMapper freereplymapper;
+	
 	
 	@Autowired
 	private IDietBoardMapper dietMapper;
@@ -137,6 +144,46 @@ public class ConnectionTest {
 			vo.setFbImageCount(0);
 			System.out.println(vo.toString());
 			freemapper.regist(vo);
+		}
+	}
+	
+	@Test
+	public void replyInsertTest() {
+		FreeReplyVO vo = new FreeReplyVO();
+		vo.setFbNum(377);
+		vo.setMemberNum(364);
+		for(int i=1; i<30;i++) {
+			vo.setFrContent("테스트 댓글입니다. "+i);
+			freereplymapper.regist(vo);
+		}
+	}
+	
+	@Test
+	public void replyTotal() {
+		System.out.println("댓글 개수"+freereplymapper.getTotal(377));
+	}
+	
+	@Test
+	public void replyModify() {
+		FreeReplyVO vo = new FreeReplyVO();
+		vo.setFrNum(3);
+		vo.setFrContent("수정 테스트입니다.");
+		freereplymapper.update(vo);
+	}
+	
+	@Test
+	public void replyDelete() {
+		freereplymapper.delete(28);
+	}
+	
+	@Test
+	public void replyList() {
+		PageVO vo = new PageVO();
+		vo.setPageNum(1);
+		vo.setCountPerPage(20);
+		List<FreeReplyVO> list = freereplymapper.getList(vo);
+		for(FreeReplyVO reply : list) {
+			System.out.println(reply.toString());
 		}
 	}
 }

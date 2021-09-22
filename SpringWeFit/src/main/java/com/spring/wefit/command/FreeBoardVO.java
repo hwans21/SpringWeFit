@@ -14,7 +14,7 @@ public class FreeBoardVO {
 	CREATE TABLE FreeBoard
 	(
 	    fbNum            NUMBER(10, 0)     NOT NULL, 
-	    mNum            NUMBER(20, 0)     NOT NULL, 
+	    memberNum        NUMBER(20, 0)     NOT NULL, 
 	    fbTitle          VARCHAR2(200)     NOT NULL, 
 	    fbContent        VARCHAR2(2000),
 	    fbImage1         VARCHAR2(50)  , 
