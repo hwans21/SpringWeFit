@@ -44,6 +44,8 @@
 			(
 				SELECT f.*, m.memberNick FROM FreeBoard f, Member m
 				WHERE f.memberNum = m.memberNum
+				AND f.fbTitle LIKE '%'||#{condition}||'%'
+				AND f.fbTitle LIKE '%'||#{keyword}||'%'
 				ORDER BY fbRegDate DESC
 			) free
 		)
@@ -63,6 +65,8 @@
 	<select id="getTotal" resultType="int">
 		SELECT COUNT(*) FROM FreeBoard f, Member m
 		WHERE f.memberNum = m.memberNum
+		AND f.fbTitle LIKE '%'||#{condition}||'%'
+		AND f.fbTitle LIKE '%'||#{keyword}||'%'
 	</select>
 	
 	<update id="update"><!-- 글 수정  -->

@@ -93,9 +93,45 @@ public class ConnectionTest {
 	@Test
 	public void boardInsertTest() {
 		FreeBoardVO vo = new FreeBoardVO();
-		for(int i=1;i<200;i++) {
+		for(int i=1;i<30;i++) {
 			vo.setMemberNick("test");
-			vo.setFbTitle("테스트 제목입니다."+i);
+			vo.setFbTitle("[자유글]테스트 제목입니다."+i);
+			vo.setFbContent("테스트 내용입니다."+i);
+			vo.setFbLookCount(0);
+			vo.setFbImageCount(0);
+			System.out.println(vo.toString());
+			freemapper.regist(vo);
+		}
+		for(int i=1;i<30;i++) {
+			vo.setMemberNick("test");
+			vo.setFbTitle("[소식/정보]테스트 제목입니다."+i);
+			vo.setFbContent("테스트 내용입니다."+i);
+			vo.setFbLookCount(0);
+			vo.setFbImageCount(0);
+			System.out.println(vo.toString());
+			freemapper.regist(vo);
+		}
+		for(int i=1;i<30;i++) {
+			vo.setMemberNick("test");
+			vo.setFbTitle("[홍보]테스트 제목입니다."+i);
+			vo.setFbContent("테스트 내용입니다."+i);
+			vo.setFbLookCount(0);
+			vo.setFbImageCount(0);
+			System.out.println(vo.toString());
+			freemapper.regist(vo);
+		}
+		for(int i=1;i<30;i++) {
+			vo.setMemberNick("test");
+			vo.setFbTitle("[꿀팁]테스트 제목입니다."+i);
+			vo.setFbContent("테스트 내용입니다."+i);
+			vo.setFbLookCount(0);
+			vo.setFbImageCount(0);
+			System.out.println(vo.toString());
+			freemapper.regist(vo);
+		}
+		for(int i=1;i<30;i++) {
+			vo.setMemberNick("test");
+			vo.setFbTitle("[기타]테스트 제목입니다."+i);
 			vo.setFbContent("테스트 내용입니다."+i);
 			vo.setFbLookCount(0);
 			vo.setFbImageCount(0);

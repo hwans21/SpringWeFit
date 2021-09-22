@@ -4,6 +4,7 @@
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,17 +115,17 @@
               <div class="col-sm-7">
                   <div id="btn-list" class="row" align="right">
                     <div class="btn-group text-center" role="group" aria-label="Basic outlined example">
-                      <button type="button" class="btn btn-info btn-active" id="all">전체</button>
-                      <button type="button" class="btn btn-info">자유글</button>
-                      <button type="button" class="btn btn-info">소식/정보</button>
-                      <button type="button" class="btn btn-info">홍보</button>
-                      <button type="button" class="btn btn-info">꿀팁</button>
-                      <button type="button" class="btn btn-info">기타</button>&nbsp;&nbsp;&nbsp;
+                      <button type="button" class="btn btn-info btn-active" id="allBtn">전체</button>
+                      <button type="button" class="btn btn-info" id="freeBtn">자유글</button>
+                      <button type="button" class="btn btn-info" id="infoBtn">소식/정보</button>
+                      <button type="button" class="btn btn-info" id="advertBtn">홍보</button>
+                      <button type="button" class="btn btn-info" id="tipBtn">꿀팁</button>
+                      <button type="button" class="btn btn-info" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
                     </div>
                 
-                    <input type="text" placeholder="Search">
+                    <input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
                   
-                    <button type="button" class="btn" aria-label="Left Align">
+                    <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
                       <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
 
@@ -224,16 +225,16 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <c:if test="${pc.prev }">
-	                    <li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${pc.beginPage-1 }' />">Prev</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">Prev</a></li>
                       </c:if>
                       
                       <c:forEach var="page" begin="${pc.beginPage }" end="${pc.endPage }">
-                      	<li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${page }' />">${page }</a></li>
+                      	<li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
                       </c:forEach>
                
                       
                       <c:if test="${pc.next }">
-	                    <li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${pc.endPage+1 }' />">Next</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">Next</a></li>
                       </c:if>
                     </ul>
                   </nav>
@@ -242,10 +243,33 @@
         <div class="row">
             <%@ include file="../../include/footer.jsp" %>
         </div>
-
+		
         
     </div>
-    
+    <script>
+    	$('#allBtn').click(function(){
+    		location.href=`<c:url value="/freeBoard/ " />`
+    	});
+    	$('#freeBtn').click(function(){
+    		location.href=`<c:url value="/freeBoard/?condition=[자유글] " />`
+    	});
+    	$('#infoBtn').click(function(){
+    		location.href=`<c:url value="/freeBoard/?condition=[소식/정보] " />`
+    	});
+    	$('#advertBtn').click(function(){
+    		location.href=`<c:url value="/freeBoard/?condition=[홍보] " />`
+    	});
+    	$('#tipBtn').click(function(){
+    		location.href=`<c:url value="/freeBoard/?condition=[꿀팁] " />`
+    	});
+    	$('#etcBtn').click(function(){
+    		location.href=`<c:url value="/freeBoard/?condition=[기타] " />`
+    	});
+    	$('#searchBtn').click(function(){
+    		location.href=`<c:url value="/freeBoard/?condition=${pc.paging.condition}&keyword="/>`+$('#search-input').val()
+    	});
+    	
+    </script>
     
 </body>
 </html>
