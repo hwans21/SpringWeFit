@@ -29,27 +29,29 @@ public class FreeBoardController {
 	
 	//목록 페이지 이동
 	@GetMapping("/") 
-	public String freeBoardListPage(Model model,PageVO vo) {
+	public String freeBoardListPage(Model model, PageVO vo) {
 		System.out.println("/freeBoard/:GET");
+		
+		// 페이지 버튼 계산하기
+		PageCreator pc = new PageCreator();
+		pc.setPaging(vo);
+		pc.setArticleTotalCount(service.getTotal(vo));
+		vo.setCountPerPage(20);
+		
 		
 		// 총 게시물 개수
 		int contentTotal = service.getTotal(vo);
 		System.out.println("총 게시글 수 : "+contentTotal );
 		
-		
-		
 		// 게시글 리스트 뽑기
 		List<FreeBoardVO> list = service.getList(vo);
 		
-		// 페이지 버튼 계산하기
-//		PageCreator pc = new PageCreator();
-//		pc.setArticleTotalCount(service.getTotal(vo));
 		
 		
 		//jsp에 전달할 값들
 		model.addAttribute("freeList", list);
-		model.addAttribute("page",vo);
-//		model.addAttribute("pc",pc);
+		model.addAttribute("page",pc.getPaging());
+		model.addAttribute("pc",pc);	
 		
 		
 		return "board/free/free_board";
@@ -101,7 +103,7 @@ public class FreeBoardController {
 		service.regist(vo);
 		
 		ra.addFlashAttribute("msg","정상 등록 되었습니다.");
-		return "redirect:/freeBoard/?pageNum=1&countPerPage=10";
+		return "redirect:/freeBoard/?pageNum=1";
 	}
 	
 	// 상세 페이지 이동
@@ -130,24 +132,32 @@ public class FreeBoardController {
 	public String freeBoardModify(MultipartFile[] fileName,HttpServletRequest request, FreeBoardVO vo, RedirectAttributes ra) {
 		System.out.println("/freeBoard/freeModify: POST");
 		
+		
 		CustomFileUpload fileUp = new CustomFileUpload();
 		String rootPath = request.getServletContext().getRealPath(""); // C:\Users\hwans\apache-tomcat-9.0.52\wtpwebapps\SpringWeFit\
 		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\free\\"+vo.getMemberNick()+"\\"; 
 		
-		if(vo.getFbRealImage1()!=null) {
-			fileUp.delete(vo.getFbRealImage1(), rootPath);
+		FreeBoardVO origin = service.getContent(vo.getFbNum());
+		
+		if(origin.getFbRealImage1() != null) {
+			fileUp.delete(origin.getFbRealImage1(), rootPath);
+			System.out.println(origin.getFbRealImage1()+"삭제 완료");
 		}
-		if(vo.getFbRealImage2()!=null) {
-			fileUp.delete(vo.getFbRealImage2(), rootPath);
+		if(origin.getFbRealImage2() != null) {
+			fileUp.delete(origin.getFbRealImage2(), rootPath);
+			System.out.println(origin.getFbRealImage2()+"삭제 완료");
 		}
-		if(vo.getFbRealImage3()!=null) {
-			fileUp.delete(vo.getFbRealImage3(), rootPath);
+		if(origin.getFbRealImage3()!=null) {
+			fileUp.delete(origin.getFbRealImage3(), rootPath);
+			System.out.println(origin.getFbRealImage3()+"삭제 완료");
 		}
-		if(vo.getFbRealImage4()!=null) {
-			fileUp.delete(vo.getFbRealImage4(), rootPath);
+		if(origin.getFbRealImage4()!=null) {
+			fileUp.delete(origin.getFbRealImage4(), rootPath);
+			System.out.println(origin.getFbRealImage4()+"삭제 완료");
 		}
-		if(vo.getFbRealImage5()!=null) {
-			fileUp.delete(vo.getFbRealImage5(), rootPath);
+		if(origin.getFbRealImage5()!=null) {
+			fileUp.delete(origin.getFbRealImage5(), rootPath);
+			System.out.println(origin.getFbRealImage5()+"삭제 완료");
 		}
 		
 		
@@ -178,6 +188,7 @@ public class FreeBoardController {
 			System.out.println(str);
 		}
 		vo.setFbImageCount(imgCount);
+		
 		
 		service.update(vo);
 		

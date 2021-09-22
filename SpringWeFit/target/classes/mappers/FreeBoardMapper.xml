@@ -61,11 +61,26 @@
 	</select>
 	
 	<select id="getTotal" resultType="int">
-		SELECT COUNT(*) FROM FreeBoard
+		SELECT COUNT(*) FROM FreeBoard f, Member m
+		WHERE f.memberNum = m.memberNum
 	</select>
 	
 	<update id="update"><!-- 글 수정  -->
-	
+		UPDATE FreeBoard SET
+			fbTitle = #{fbTitle},
+			fbContent = #{fbContent},
+			fbImage1 = #{fbImage1},
+			fbImage2 = #{fbImage2},
+			fbImage3 = #{fbImage3},
+			fbImage4 = #{fbImage4},
+			fbImage5 = #{fbImage5},
+			fbRealImage1 = #{fbRealImage1},
+			fbRealImage2 = #{fbRealImage2},
+			fbRealImage3 = #{fbRealImage3},
+			fbRealImage4 = #{fbRealImage4},
+			fbRealImage5 = #{fbRealImage5},
+			fbImageCount = #{fbImageCount}
+		WHERE fbNum = #{fbNum}
 		
 	</update>
   </mapper>

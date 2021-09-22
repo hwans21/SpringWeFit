@@ -57,7 +57,8 @@
             </div>
 
             <!--main left-->
-            <form action="#" id="boardWrite" method="POST" enctype="multipart/form-data">
+            <form action="<c:url value='/freeBoard/freeModify'/>" id="freeModify-form" method="POST" enctype="multipart/form-data">
+            	<input type="hidden" name="fbNum" value="${content.fbNum }">
                 <table>
                     <tr>
                         <td>게시판</td>
@@ -92,13 +93,13 @@
                     
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple type="file" name="fileName" size="10" maxlength="10" ></td>
                     </tr>
                     
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button class="btn btn-primary" type="button" >수정하기</button>
+                            <button id="modifyBtn" class="btn btn-primary" type="button" >수정하기</button>
                             <button class="btn btn-primary" type="button" >삭제하기</button>
                             <button class="btn btn-default" type="button" onclick="location.href='/FRONT/views/board/free/free_detail.html'">취소하기</button>
                             <br><br><br>
@@ -125,6 +126,10 @@
     			$('#input-title').val(title.replace(category,$('#category').val()));
     		}
     	});
+    	$('#modifyBtn').click(function(){
+    		$('#freeModify-form').submit();
+    	});
+    	
     	
     </script>
 

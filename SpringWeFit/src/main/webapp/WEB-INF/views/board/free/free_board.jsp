@@ -220,26 +220,24 @@
                 <button type="button" id="write" class="btn btn-outline-primary" onclick="location.href='<c:url value="/freeBoard/freeWrite" />'"><b>글쓰기</b></button>
              </div>
 
-			<!-- 
             <div class="row text-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <c:if test="${pc.prev }">
-	                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${pc.beginPage-1 }' />">Prev</a></li>
                       </c:if>
                       
-                      <c:forEach var="page" begin="${pc.beginPage }" end="endPage">
-                      	<li class="page-item"><a class="page-link" href="#">${page }</a></li>
+                      <c:forEach var="page" begin="${pc.beginPage }" end="${pc.endPage }">
+                      	<li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${page }' />">${page }</a></li>
                       </c:forEach>
                
                       
                       <c:if test="${pc.next }">
-	                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${pc.endPage+1 }' />">Next</a></li>
                       </c:if>
                     </ul>
                   </nav>
             </div> 
-             -->
 
         <div class="row">
             <%@ include file="../../include/footer.jsp" %>

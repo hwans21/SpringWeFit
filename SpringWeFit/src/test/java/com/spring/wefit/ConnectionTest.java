@@ -11,7 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.spring.wefit.command.DietBoardVO;
+import com.spring.wefit.command.FreeBoardVO;
 import com.spring.wefit.dietboard.mapper.IDietBoardMapper;
+import com.spring.wefit.free.mapper.IFreeBoardMapper;
 import com.spring.wefit.test.ITestMapper;
 import com.spring.wefit.command.UserVO;
 import com.spring.wefit.user.mapper.IUserMapper;
@@ -25,12 +27,11 @@ import lombok.extern.log4j.Log4j;
 public class ConnectionTest {
 	
 	@Autowired
-	
 	private IUserMapper usermapper;
-	
+	@Autowired
 	private ITestMapper mapper;
-	
-	
+	@Autowired
+	private IFreeBoardMapper freemapper;
 	
 	@Autowired
 	private IDietBoardMapper dietMapper;
@@ -86,6 +87,20 @@ public class ConnectionTest {
 			vo.setMemberCode(UUID.randomUUID().toString().split("-")[0]);
 			System.out.println(vo.toString());
 			usermapper.join(vo);
+		}
+	}
+	
+	@Test
+	public void boardInsertTest() {
+		FreeBoardVO vo = new FreeBoardVO();
+		for(int i=1;i<200;i++) {
+			vo.setMemberNick("test");
+			vo.setFbTitle("테스트 제목입니다."+i);
+			vo.setFbContent("테스트 내용입니다."+i);
+			vo.setFbLookCount(0);
+			vo.setFbImageCount(0);
+			System.out.println(vo.toString());
+			freemapper.regist(vo);
 		}
 	}
 }
