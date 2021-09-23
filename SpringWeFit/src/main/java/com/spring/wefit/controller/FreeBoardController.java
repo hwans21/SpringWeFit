@@ -24,6 +24,7 @@ import com.spring.wefit.command.FreeReplyVO;
 import com.spring.wefit.commons.CustomFileUpload;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
+import com.spring.wefit.free.service.FreeReplyService;
 import com.spring.wefit.free.service.IFreeBoardService;
 import com.spring.wefit.free.service.IFreeReplyService;
 
@@ -274,13 +275,40 @@ public class FreeBoardController {
 	}
 	
 	//자유게시판 댓글 수정
-	//자유게시판 댓글 삭제
-	//자유게시판 댓글 수
-	@GetMapping("/freeReplyCount")
+	@PostMapping("/freeReplyModify")
 	@ResponseBody
-	public String freeReplyCount(HttpServletRequest request) {
-		int fbNum = Integer.parseInt(request.getParameter("fbNum"));
-		System.out.println(fbNum);
-		return Integer.toString(replyService.getTotal(fbNum));
+	public String freeReplyModify(@RequestBody Map<String, Object> map) {
+		System.out.println(map.get("memberNum").getClass().getName());
+		System.out.println(map.get("frContent").getClass().getName());
+		System.out.println(map.get("frNum").getClass().getName());
+		int memberNum = (int) map.get("memberNum");
+		String frContent = (String) map.get("frContent");
+		int frNum = Integer.parseInt(((String) map.get("frNum")).substring(11));
+		
+		if(replyService.getContent(frNum).getMemberNum() == memberNum) {
+			FreeReplyVO vo = new FreeReplyVO();
+			vo.setFrContent(frContent);
+			vo.setFrNum(frNum);
+			replyService.update(vo);
+			return "success";
+		}
+		
+		return "noAuth";
+	}
+	
+	//자유게시판 댓글 삭제
+	@PostMapping("/freeReplyDelete")
+	@ResponseBody
+	public String freeReplyDelete(@RequestBody Map<String, Object> map) {
+		
+		int memberNum = (int) map.get("memberNum");
+		int frNum = Integer.parseInt(((String) map.get("frNum")).substring(11));
+		
+		if(replyService.getContent(frNum).getMemberNum() == memberNum) {
+			replyService.delete(frNum);
+			return "success";
+		}
+		
+		return "noAuth";
 	}
 }

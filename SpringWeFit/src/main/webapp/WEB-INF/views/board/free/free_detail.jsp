@@ -93,6 +93,10 @@
             padding-bottom: 20px;
             border-bottom: 1px solid #ccc;
         }
+        
+        span.mod-del{
+        	text-align: right
+        }
     </style>
 </head>
 
@@ -272,6 +276,8 @@
     <script defer>
         let strAdd = '';
     	let pageNum = 2;
+    	let boolRegist = true;
+    	let frClassName = '';
         function sleep(ms) {
             const wakeUpTime = Date.now() + ms;
             while (Date.now() < wakeUpTime) { }
@@ -287,11 +293,16 @@
                     if(reset === true){
                         strAdd='';
                     }
+                    let loginuserName = "${loginuser.memberNick!=null? loginuser.memberNick:''}";
         			for (let i = 0; i < data.list.length; i++) {
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
-                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small><br><br>'
-                        strAdd += '<span class="reply-content">'+data.list[i].frContent+'</span>'
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small>'
+                        if(data.list[i].memberNick === loginuserName){
+	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].frNum+'">수정</small> <small class="replyDelBtn'+data.list[i].frNum+'">삭제</small></span>'
+                        	
+                        }
+                        strAdd += '<br><span class="reply-content">'+data.list[i].frContent+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }
@@ -330,13 +341,23 @@
         }
         
         $('#replyBtn').click(function(){
-        	replyRegist();
-        	$('#replyInput').val('');
+        	if(boolRegist){
+	        	replyRegist();
+	        	$('#replyInput').val('');
+        	} else {
+        		replyModify(frClassName);
+        		$('#replyInput').val('');
+        	}
         });
         $('#replyInput').keydown(function(e){
         	if(e.keyCode === 13){
-	        	replyRegist();
-	        	$('#replyInput').val('');
+        		if(boolRegist){
+    	        	replyRegist();
+    	        	$('#replyInput').val('');
+            	} else {
+            		replyModify(frClassName);
+            		$('#replyInput').val('');
+            	}
         	}
         })
         
@@ -345,6 +366,7 @@
            
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
             replyLoad(1,true);
+            pageNum=2;
 
         });
         $(window).resize(function () {
@@ -390,92 +412,178 @@
         //         console.log('스크롤 하단 감지');
         //     }
         // });
-		<c:if test="${loginuser != null }">
 		
-			function replyRegist(){
-	        	$.ajax({
-	                type: "POST",
-	                url: "<c:url value='/freeBoard/freeReplyRegist' />",
-	                headers:{
-	                    "Content-Type":"application/json"
-	                },
-	                data: JSON.stringify({
-	                    "memberNum":${loginuser.memberNum},
-	                    "frContent":$('#replyInput').val(),
-	                    "fbNum":${content.fbNum}
-	                }),
-	                dataType: "text",
-	                success: function (data) {
-	                    console.log('통신성공!' + data);	
-	            		       		
-	            		replyLoad(1,true);
-	            		pageNum=2;
-	            		alert('댓글 등록 완료!!');
-	                },
-	                error: function (request, status, error) {
-	                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-	                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	                }
-	            }); //비동기 처리 끝
-	        }
-			$('#lovelyBtn').click(function(){
-	    		const arr = {
-	    			"fbNum" : ${content.fbNum },
-	    			"memberNum" : ${loginuser.memberNum }
-	    		};
-	    		$.ajax({
-	                type: "POST",
-	                url: "<c:url value='/freeBoard/freeLikely' />",
-	                headers: {
-	                    "Content-Type": "application/json"
-	                },
-	                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
-	                data: JSON.stringify(arr),
-	                success: function (data) {
-	                    console.log('통신성공!' + data);
-	                  	if(data==="success"){
-	                  		alert('좋아요 등록완료');
-	                  	} else{
-	                  		alert('이미 좋아요를 누르셨습니다.')
-	                  	}
-	                },
-	                error: function () {
-	                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-	                }
-	            }); //좋아요  비동기 처리 끝
-	            
-	            
-	    	});
-	    	
-	    	$('#reportBtn').click(function(){
-	    		const arr = {
-	    			"fbNum" : ${content.fbNum },
-	    			"memberNum" : ${loginuser.memberNum }
-	    		};
-	    		$.ajax({
-	                type: "POST",
-	                url: "<c:url value='/freeBoard/freeReport' />",
-	                headers: {
-	                    "Content-Type": "application/json"
-	                },
-	                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
-	                data: JSON.stringify(arr),
-	                success: function (data) {
-	                    console.log('통신성공!' + data);
-	                  	if(data==="success"){
-	                  		alert('신고 완료했습니다.');
-	                  	} else{
-	                  		alert('이미 신고를 하셨습니다.')
-	                  	}
-	                },
-	                error: function () {
-	                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-	                }
-	            }); //좋아요  비동기 처리 끝
-	            
-	            
-	    	});
-		</c:if>
+		function replyRegist(){
+			if(${loginuser==null? true:false }){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+			
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/freeBoard/freeReplyRegist' />",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                data: JSON.stringify({
+                    "memberNum":${loginuser.memberNum==null? -1:loginuser.memberNum },
+                    "frContent":$('#replyInput').val(),
+                    "fbNum":${content.fbNum}
+                }),
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		       		
+            		replyLoad(1,true);
+            		pageNum=2;
+            		alert('댓글 등록 완료!!');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+        }
+		function replyModify(frClassName){
+			if(${loginuser==null? true:false }){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+			
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/freeBoard/freeReplyModify' />",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                data: JSON.stringify({
+                    "memberNum":${loginuser.memberNum==null? -1:loginuser.memberNum },
+                    "frContent":$('#replyInput').val(),
+                    "frNum":frClassName
+                }),
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		       		
+            		replyLoad(1,true);
+            		pageNum=2;
+            		alert('댓글 수정 완료');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+        	boolRegist = true;
+            frClassName = '';
+            replyLoad(1,true);
+            pageNum=2;
+		}
+		
+		$('#lovelyBtn').click(function(){
+			if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+    		const arr = {
+    			"fbNum" : ${content.fbNum },
+    			"memberNum" : ${loginuser.memberNum==null? 0900:loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/freeBoard/freeLikely' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('좋아요 등록완료');
+                  	} else{
+                  		alert('이미 좋아요를 누르셨습니다.')
+                  	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //좋아요  비동기 처리 끝
+            
+            
+    	});
+    	
+    	$('#reportBtn').click(function(){
+    		if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+    		const arr = {
+    			"fbNum" : ${content.fbNum },
+    			"memberNum" : ${loginuser.memberNum==null? -1:loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/freeBoard/freeReport' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('신고 완료했습니다.');
+                  	} else{
+                  		alert('이미 신고를 하셨습니다.')
+                   	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //좋아요  비동기 처리 끝
+            
+            
+    	});
+    	
+    	$('#replyList').click(function(e){
+    		if(e.target.className.indexOf('replyModBtn') != -1){
+    			$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
+    			boolRegist = false;
+    			frClassName = $(e.target).attr('class');
+    		}
+    		if(e.target.className.indexOf('replyDelBtn') != -1){
+    			if(${loginuser==null? true:false}){
+    				return;
+    			}
+    			const arr = {
+   					"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum },
+                   	"frNum": e.target.className	
+    			}
+    			$.ajax({
+                    type: "POST",
+                    url: "<c:url value='/freeBoard/freeReplyDelete' />",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                    data: JSON.stringify(arr),
+                    success: function (data) {
+                        console.log('통신성공!' + data);
+                      	if(data==="success"){
+                      		alert('삭제 완료했습니다.');
+			    			replyLoad(1,true);
+			    			pageNum=2;
+                      	} 
+                    },
+                    error: function () {
+                        alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    }
+                });
+    		}
+    	});
+    	
+    	
     	
 
     </script>

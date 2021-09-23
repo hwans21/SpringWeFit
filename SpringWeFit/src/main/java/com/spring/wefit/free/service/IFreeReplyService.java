@@ -20,4 +20,7 @@ public interface IFreeReplyService {
 	
 	//자유게시판 댓글 수
 	int getTotal(int fbNum);
+	
+	//자유게시판 댓글 상세정보
+	FreeReplyVO getContent(int frNum);
 }

@@ -32,7 +32,7 @@
 	
 	</select>
 	
-	<update id="update"><!-- 글 수정  -->
+	<update id="update"><!-- 댓글 수정  -->
 		UPDATE FreeReply SET
 			frContent = #{frContent}
 		WHERE frNum = #{frNum}
@@ -48,5 +48,10 @@
 		SELECT COUNT(*) FROM FreeBoard fb, FreeReply fr
 		WHERE fb.fbNum = fr.fbNum
 		AND fr.fbNum = #{fbNum }
+	</select>
+	
+	<select id="getContent" resultType="com.spring.wefit.command.FreeReplyVO">
+		SELECT * FROM FreeReply
+		WHERE frNum = #{frNum}
 	</select>
   </mapper>

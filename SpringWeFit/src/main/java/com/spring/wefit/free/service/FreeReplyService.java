@@ -49,6 +49,12 @@ public class FreeReplyService implements IFreeReplyService {
 		// TODO Auto-generated method stub
 		return mapper.getTotal(fbNum);
 	}
+
+	@Override
+	public FreeReplyVO getContent(int frNum) {
+		// TODO Auto-generated method stub
+		return mapper.getContent(frNum);
+	}
 	
 	
 
