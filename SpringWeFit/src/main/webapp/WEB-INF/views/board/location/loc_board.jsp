@@ -1,5 +1,4 @@
 
-<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -330,10 +329,27 @@
      // 종목별 클릭 시 
      const sportsBtn = document.getElementById('sportsBtn';)
      writeBtn.onclick = function() {
-    	 
-    	 
-    	 
      }
+     
+     // 게시글 클릭
+     $(document).on('click', '#btnWriteForm', function(e){
+
+		e.preventDefault();
+		location.href = "${pageContext.request.contextPath}/board/boardForm";
+
+	});
+
+	
+
+	function fn_contentView(bid){
+
+		var url = "${pageContext.request.contextPath}/board/getBoardContent";
+		url = url + "?bid="+bid;
+		location.href = url;
+
+	}
+
+
     </script>
     
 

@@ -144,7 +144,7 @@
 
 
                             <button class="btn" id="writeBtn" type="button">등록하기</button>
-                            <button class="btn" id="listBtn" type="button"  onclick="location.href='<c:url value='/placeBoard/placeList' />' ">취소하기</button>
+                            <button class="btn" id="listBtn" type="button">취소하기</button>
 
                             <br><br><br>
                         </td>
@@ -162,7 +162,7 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
 
-    </div>
+ 
 
 
 

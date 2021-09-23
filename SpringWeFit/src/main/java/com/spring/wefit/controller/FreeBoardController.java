@@ -261,7 +261,7 @@ public class FreeBoardController {
 		vo.setPageNum(pageNum);
 		vo.setCountPerPage(10);
 		
-		List<FreeReplyVO> list = replyService.getList(vo); 
+		List<FreeReplyVO> list = replyService.getList(vo, fbNum); 
 		int total = replyService.getTotal(fbNum); // 댓글 개수
 		Map<String, Object> map = new HashMap<>();
 		map.put("list",list);

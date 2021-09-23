@@ -1,6 +1,6 @@
-<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 
 <!DOCTYPE html>
 
@@ -16,23 +16,18 @@
             border-bottom: 1px solid rgb(0, 173, 181);
             margin: 20px 0px;
             padding-bottom: 20px;
-            font-size: 40px;
+            font-size: 20px;
             font-weight: bold;
             color: rgb(0, 173, 181);
         }
-
-
-
         table tr td {
             padding: 15px;
             border-bottom: 1px solid #ccc;
         }
-
         .titlefoot {
             float: right;
             margin: 20px;
         }
-
         .video-wrap {
             position: relative;
             padding-bottom: 56.25%;
@@ -40,9 +35,6 @@
             height: 0;
             overflow: hidden;
         }
-
-
-
         .video-wrap iframe,
         .video-wrap object,
         .video-wrap embed {
@@ -52,43 +44,33 @@
             width: 100%;
             height: 100%;
         }
-
-
         .carousel-inner>.item>img {
             top: 0;
             left: 0;
             min-width: 100%;
             min-height: 400px;
         }
-
         #carousel-example-generic {
             /* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
-            height: 1000px;
+            height: 800px;
             background-color: rgba(0, 0, 0, 0.8);
         }
-
-
-
         .test {
             height: 1000px;
             overflow: auto;
         }
-
         .test:last-child .row {
             margin-top: 20px;
             margin-left: 20px.;
         }
-
         .reply {
             font-size: 20px;
             font-weight: 600;
         }
-
         .reply small {
             font-size: 15px;
             font-weight: 400;
         }
-
         .reply-box {
             padding-bottom: 20px;
             border-bottom: 1px solid #ccc;
@@ -107,19 +89,15 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
-
-
-
-                    <button class="btn btn-primary pull-right" onclick="location.href='<c:url value='/location/placeModify' />' ">수정하기</button>
-                    <button class="btn btn-primary pull-right" onclick="location.href='<c:url value='/location/placeList' />' ">목록으로</button>
-
-
-
+                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/placeBoard/placeModify?pbNum=${placeList.pbNum}" />'">수정하기</button>
+                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/placeBoard/placeList" />'">목록으로</button>
                 </div>
+                
+              
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>기~~~~~~~~~~~~~~~~~~~~~~~~~다란 제목입니다?? 조금더 긴 제목을 써야하는데 뭐라써야할지 모르겠어요</h2>
+                            <h2>${placeList.pbTitle}</h2>
                         </div>
                     </div>
                 </div>
@@ -186,16 +164,12 @@
                         <div class="col-sm-12">
                             <img width="100%" height="auto" src="${pageContext.request.contextPath }/resources/img/location/mapexam.png" alt="">
                         </div>
-                        <!-- <div class="col-sm-10">주소 : 제주특별자치도 제주시 첨단로 242</div>
-                        <div class="col-sm-2">
-                            <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
-                                <button class="btn btn-info pull-right">길찾기</button>
-                            </a>
-                        </div> -->
+
                         <table>
                             <tr>
-                                <td>주소 : </td>
-                                <td>제주특별자치도 제주시 첨단로 242 </td>
+                                <td>주소 :${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
+
+                                
                                 <td>
                                     <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
                                         <button class="btn btn-info pull-right">길찾기</button>
@@ -204,7 +178,7 @@
                             </tr>
 
                             <tr>
-                                <td>작성일:21.09.08 </td>
+                                <td>작성일:${placeList.pbRegDate}</td>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>100</td>
                                 <td>
 
@@ -218,16 +192,8 @@
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
 
-                                        보이는 눈에 주며, 커다란 속잎나고, 동산에는 그들의 그들은 실로 부패뿐이다. 얼마나 따뜻한 얼음 것은 이것이야말로 것이다. 위하여, 싹이 수
-                                        이성은 어디 길지 보라. 청춘의 모래뿐일 황금시대의 인간은 우리의 말이다. 뜨고, 이상, 끓는 구하기 미묘한 원대하고, 우리는 위하여서. 그것은
-                                        같으며, 이것을 그들을 철환하였는가? 소담스러운 있는 찾아 봄바람이다. 거선의 품었기 그들의 충분히 것이다. 것은 할지라도 예가 같지 인간의
-                                        것이다. 청춘의 가슴이 것은 유소년에게서 돋고, 소담스러운 가지에 무한한 뿐이다. 눈이 아니더면, 있는 실현에 속잎나고, 위하여서 있다.
-
-                                        고동을 반짝이는 실로 것은 것은 인생에 철환하였는가? 피가 것은 인도하겠다는 굳세게 생의 미인을 인생에 기관과 약동하다. 인간에 풍부하게
-                                        속잎나고, 싶이 산야에 유소년에게서 것이다. 수 보는 인간의 얼마나 착목한는 것은 피에 얼음이 힘있다. 굳세게 능히 그들에게 것은 이상은
-                                        현저하게 속에서 없는 것이다. 풀이 두손을 인간이 안고, 원질이 피다. 있는 주는 오아이스도 생생하며, 인생에 풀밭에 놀이 같이 듣는다. 주며,
-                                        얼음에 가치를 살 없는 꾸며 그림자는 이것은 말이다. 원대하고, 우리는 노래하며 때까지 꾸며 희망의 것이다. 심장은 그들을 청춘 우리는 산야에
-                                        것이다.
+						                ${placeList.pbContent}  
+						                          
                                     </p>
                                 </td>
                             </tr>
@@ -247,6 +213,8 @@
                 </div>
 
             </div>
+            
+            <!-- 댓글창 -->
             <div class="col-md-4 col-sm-12 test">
                 
                 <div class="row">
@@ -257,7 +225,7 @@
                         <div class="input-group input-group-lg">
 
                             <input type="text" class="form-control" placeholder="댓글을 작성해주세요"
-                                aria-describedby="basic-input">
+                                aria-describedby="basic-input" name="prContent">
                             <span class="input-group-btn" id="basic-input">
                                 <button id="reply-btn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
@@ -284,73 +252,70 @@
 
     </div>
 
-    <script defer>
-        function sleep(ms) {
-            const wakeUpTime = Date.now() + ms;
-            while (Date.now() < wakeUpTime) { }
-        }
-        function replyAppendTest() {
-            for (let i = 0; i <= 10; i++) {
-                $('.test:last-child').append(`
-                    <div class="row">
-                        <div class="reply reply-box">
-                            <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-                            <span class="reply-content">댓글 내용입니다.</span>
-                        </div>
-                    </div>
-                `);
-            }
-        }
-        $(document).ready(function () {
-            
-            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-            replyAppendTest();
+	<script>
+		const msg = '${msg}';
+		if(msg === 'updateSuccess') {
+			alert('게시글 수정이 정상 처리되었습니다.');
+		}
+	
+	
 
-        });
-        $(window).resize(function () {
-            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-        });
-        $('.test:last-child').scroll(function () {
-            /*
-                document height -> 모든 row들의 높이 합
-                문서 전체의 높이를 의미합니다.
-                window height -> div.test의 높이
-                화면의 높이를 의미합니다.
-                scroll top
-                스크롤의 top이 위치하고 있는 높이를 의미합니다
-                
-            */
-            let replyTotalHeight = 0;
-            let count=0;
-            $('.test:last-child >.row').each(function () {
-                replyTotalHeight = replyTotalHeight + $(this).height()
-                count++;
-            });
-            if ($('.test:last-child').scrollTop() + $('.test:last-child').height() >= replyTotalHeight) {
-                // 로딩이미지 보여주기
-                // $('.test:last-child').append(`
-                //     <div id="loadingImg" class="row">
-                //         <img src="${pageContext.request.contextPath }/resources/img/load.gif" alt="">
-                //     </div>
-                // `);
-                // $('#loadingImg').remove();
-                replyAppendTest();
-            }
-            console.log(count);
-            
+	$(document).ready(function() {
+		
+		$('#replyRegist').click(function() {
+			
+			/*
+			댓글을 등록하려면 게시글 번호도 보내 주셔야 합니다.
+			댓글 내용, 작성자, 댓글 비밀번호, 게시글 번호를 
+			json 표기 방법으로 하나로 모아서 전달해 주시면 됩니다.
+			비동기 통신으로 댓글 삽입을 처리해 주시고,
+			console.log를 통해 '댓글 등록 완료!'를 확인하시고
+			실제 DB에 댓글이 추가되는지도 확인해 주세요.
+			*/
+			const pbNum = '${article.pbNum}'; //컨트롤러에서 넘어온 게시글번호
+			const reply = $('#reply').val(); //댓글 내용
+			const replyId = $('#replyId').val(); //작성자
+			const replyPw = $('#replyPw').val(); //비밀번호
+			
+			if(reply === '' || replyId === '' || replyPw === '') {
+				alert('이름, 비밀번호, 내용을 입력하세요!');
+				return;
+			}
+			
+			$.ajax({
+				type: "post",
+				url: "<c:url value='/reply/replyRegist' />",
+				data: JSON.stringify(
+					{
+						"pbNum": pbNum,
+						"reply": reply,
+						"replyId": replyId,
+						"replyPw": replyPw
+					}		
+				),
+				dataType: "text", //서버로부터 어떤 형식으로 받을지 (생략 가능)
+				headers: {
+					"Content-Type" : "application/json"
+				},
+				success: function(data) {
+					console.log('통신 성공! ' + data);
+					$('#reply').val('');
+					$('#replyId').val('');
+					$('#replyPw').val('');
+					getList(1, true); //등록 성공 후 댓글 목록 함수를 호출해서 비동기식으로 목록 표현.
+				},
+				error: function() {
+					alert('등록에 실패했습니다. 관리자에게 문의하세요.');
+				}
+			}); //댓글 등록 비동기 통신 끝.
 
-
-
-            // console.log($('.test:last-child').scrollTop()+","+$('.test:last-child').height()+","+)
-        });
-        // $(window).scroll(function(){
-        //     if($(window).scrollTop()+$(window).height()+1 >= $(document).height()){
-        //         console.log('스크롤 하단 감지');
-        //     }
-        // });
-
-
-    </script>
+		}); //댓글 등록 이벤트 끝
+		
+		
+		
+	</script>
+	
+	
 </body>
 
 </html>

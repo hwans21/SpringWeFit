@@ -59,7 +59,7 @@
                     <tr>
                         <td>종목</td>
                         <td>
-                            <select id="sports" name="sports">
+                            <select id="sports" name="pbCatecory">
                                 <option value="">종목선택</option>
                                 <option value="">수영</option>
                                 <option value="">자전거</option>
@@ -90,7 +90,7 @@
 
                     <tr>
                         <!--
-                            다음 주소 api : 주소를 선택하면 지도도 함께 보여주기
+                            	다음 주소 api : 주소를 선택하면 지도도 함께 보여주기
                             https://postcode.map.daum.net/guide#sample
                         -->
                         <td>주소api</td>
@@ -130,7 +130,7 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
 
-    </div>
+   
 
    
 </body>
