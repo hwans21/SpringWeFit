@@ -240,7 +240,7 @@
                     <span id="replyCountSpan"class="reply reply-count">댓글 : ???개</span>
                 </div>
                 <div class="row">
-                    <form id="reply-form">
+                    
                         <div class="input-group input-group-lg">
 
                             <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
@@ -250,14 +250,12 @@
                                         class="glyphicon glyphicon-send"></span></button>
                             </span>
                         </div>
-                    </form>
+                   	
                 </div>
-                <div class="row">
-                    <div class="reply reply-box">
-                        <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-                        <span class="reply-content">댓글 내용입니다.</span>
-                    </div>
+                <div id="replyList" class="row container-fluid">
+                	
                 </div>
+                
 
             </div>
         </div>
@@ -272,63 +270,81 @@
     </div>
 
     <script defer>
-    
+        let strAdd = '';
+    	let pageNum = 2;
         function sleep(ms) {
             const wakeUpTime = Date.now() + ms;
             while (Date.now() < wakeUpTime) { }
         }
-        function replyAppendTest() {
-            for (let i = 0; i <= 10; i++) {
-                $('.test:last-child').append(`
-                    <div class="row">
-                        <div class="reply reply-box">
-                            <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-                            <span class="reply-content">댓글 내용입니다.</span>
-                        </div>
-                    </div>
-                `);
-            }
-        }
-        function replyCount(){
-        	$.ajax({
-                type: "GET",
-                url: "<c:url value='/freeBoard/freeReplyCount?fbNum=${content.fbNum}' />",
-                dataType: "text",
-                success: function (data) {
-                    console.log('통신성공!' + data);	
-            		$('#replyCountSpan').html('댓글 : '+data+'개');
-                },
-                error: function (request, status, error) {
-                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                }
-            }); //비동기 처리 끝
-            
-            
-        }
-        function replyLoad(pageNum){
+        
+        
+        function replyLoad(pageNum, reset){
         	$.getJSON(
         		"<c:url value='/freeBoard/freeReplyList/${content.fbNum }/' />" + pageNum,
         		function(data){
         			console.log(data);
+        			$('#replyCountSpan').html('댓글 :'+data.total+'개');
+                    if(reset === true){
+                        strAdd='';
+                    }
+        			for (let i = 0; i < data.list.length; i++) {
+                        strAdd += '<div class="row reply-item" style="display:none;">';
+                        strAdd += '<div class="reply reply-box">';
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small><br><br>'
+                        strAdd += '<span class="reply-content">'+data.list[i].frContent+'</span>'
+                        strAdd += '</div>';
+                        strAdd += '</div>';
+                    }
+                    $('#replyList').html(strAdd);
+                    $('.reply-item').fadeIn(500);
         		}	
         		
         			
         	); // end getJson
         }
         
+        // 날짜 처리 함수
+        function timeStamp(millis) {
+            const date = new Date(); //현재 날짜
+            // 현재 날짜를 밀리초로 변환 - 등록일 밀리초 -> 시간차
+            const gap = date.getTime() - millis;
+            // 댓글1시간전 담 -> 방금전, 댓글 하루전 -> 몇시간전, 하루이상 2021-08-13
+            let time; // 리턴할 시간
+            if (gap < 60 * 60 * 24 * 1000) { // 1일 미만인 경우
+                if (gap < 60 * 60 * 1000) { //1시간 미만일 경우
+                    time = '방금 전';
+                } else {
+                    time = parseInt(gap / (60 * 60 * 1000)) + "시간 전";
+                }
+            } else { //1일 이상일경우
+                const today = new Date(millis);
+                const year = today.getFullYear(); //년
+                const month = today.getMonth() + 1; //월
+                const day = today.getDate(); //일
+                const hour = today.getHours(); // 시
+                const minute = today.getMinutes(); // 분
+                time = year + "년" + month + "월" + day + "일" + hour + "시" + minute + "분";
+
+            }
+            return time;
+        }
+        
         $('#replyBtn').click(function(){
         	replyRegist();
         	$('#replyInput').val('');
         });
+        $('#replyInput').keydown(function(e){
+        	if(e.keyCode === 13){
+	        	replyRegist();
+	        	$('#replyInput').val('');
+        	}
+        })
         
         
         $(document).ready(function () {
            
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-            replyAppendTest();
-            replyCount();
-            replyLoad(1);
+            replyLoad(1,true);
 
         });
         $(window).resize(function () {
@@ -346,6 +362,7 @@
             */
             let replyTotalHeight = 0;
             let count=0;
+            
             $('.test:last-child >.row').each(function () {
                 replyTotalHeight = replyTotalHeight + $(this).height()
                 count++;
@@ -358,7 +375,8 @@
                 //     </div>
                 // `);
                 // $('#loadingImg').remove();
-                replyAppendTest();
+                replyLoad(pageNum,false);
+                pageNum = pageNum+1;
             }
             console.log(count);
             
@@ -389,7 +407,9 @@
 	                dataType: "text",
 	                success: function (data) {
 	                    console.log('통신성공!' + data);	
-	            		replyCount();
+	            		       		
+	            		replyLoad(1,true);
+	            		pageNum=2;
 	            		alert('댓글 등록 완료!!');
 	                },
 	                error: function (request, status, error) {

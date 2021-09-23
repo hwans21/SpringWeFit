@@ -26,8 +26,8 @@
 			) freereply
 		)
 		<![CDATA[
-		WHERE rn > (#{pageNum}-1)*#{countPerPage}
-		AND rn <= #{pageNum} * #{countPerPage}
+		WHERE rn > (#{paging.pageNum}-1)*#{paging.countPerPage}
+		AND rn <= #{paging.pageNum} * #{paging.countPerPage}
 		]]>
 	
 	</select>
