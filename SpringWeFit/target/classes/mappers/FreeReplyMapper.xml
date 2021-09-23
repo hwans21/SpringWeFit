@@ -47,5 +47,6 @@
 	<select id="getTotal" resultType="int">
 		SELECT COUNT(*) FROM FreeBoard fb, FreeReply fr
 		WHERE fb.fbNum = fr.fbNum
+		AND fr.fbNum = #{fbNum }
 	</select>
   </mapper>
