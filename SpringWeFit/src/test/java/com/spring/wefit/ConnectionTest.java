@@ -1,6 +1,8 @@
 package com.spring.wefit;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -181,7 +183,12 @@ public class ConnectionTest {
 		PageVO vo = new PageVO();
 		vo.setPageNum(1);
 		vo.setCountPerPage(20);
-		List<FreeReplyVO> list = freereplymapper.getList(vo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("paging", vo);
+		map.put("fbNum", 377);
+		System.out.println(map.toString());
+		List<FreeReplyVO> list = freereplymapper.getList(map);
+		System.out.println(list.size());
 		for(FreeReplyVO reply : list) {
 			System.out.println(reply.toString());
 		}

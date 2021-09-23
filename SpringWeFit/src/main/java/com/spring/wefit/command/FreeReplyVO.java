@@ -33,4 +33,6 @@ public class FreeReplyVO {
 	private String frContent;
 	private int memberNum;
 	private Timestamp frRegDate;
+	
+	private String memberNick;
 }

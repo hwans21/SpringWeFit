@@ -10,7 +10,7 @@ public interface IFreeReplyService {
 	void regist(FreeReplyVO vo);
 	
 	//자유게시판 댓글 목록
-	List<FreeReplyVO> getList(PageVO vo);
+	List<FreeReplyVO> getList(PageVO vo, int bno);
 	
 	//자유게시판 댓글 수정
 	void update(FreeReplyVO vo);

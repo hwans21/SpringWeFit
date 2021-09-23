@@ -1,6 +1,8 @@
 package com.spring.wefit.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -251,6 +254,25 @@ public class FreeBoardController {
 		return "success";
 	}
 	//자유게시판 댓글 목록
+	@GetMapping("/freeReplyList/{fbNum}/{pageNum}")
+	@ResponseBody
+	public Map<String, Object> freeReplyList(@PathVariable int fbNum, @PathVariable int pageNum){
+		PageVO vo = new PageVO();
+		vo.setPageNum(pageNum);
+		vo.setCountPerPage(10);
+		
+		List<FreeReplyVO> list = replyService.getList(vo); 
+		int total = replyService.getTotal(fbNum); // 댓글 개수
+		Map<String, Object> map = new HashMap<>();
+		map.put("list",list);
+		map.put("total",total);
+		
+		
+		
+		
+		return map;
+	}
+	
 	//자유게시판 댓글 수정
 	//자유게시판 댓글 삭제
 	//자유게시판 댓글 수

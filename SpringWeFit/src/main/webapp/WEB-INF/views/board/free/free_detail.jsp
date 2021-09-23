@@ -306,6 +306,16 @@
             
             
         }
+        function replyLoad(pageNum){
+        	$.getJSON(
+        		"<c:url value='/freeBoard/freeReplyList/${content.fbNum }/' />" + pageNum,
+        		function(data){
+        			console.log(data);
+        		}	
+        		
+        			
+        	); // end getJson
+        }
         
         $('#replyBtn').click(function(){
         	replyRegist();
@@ -318,6 +328,7 @@
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
             replyAppendTest();
             replyCount();
+            replyLoad(1);
 
         });
         $(window).resize(function () {

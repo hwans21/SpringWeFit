@@ -1,6 +1,8 @@
 package com.spring.wefit.free.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,12 @@ public class FreeReplyService implements IFreeReplyService {
 	}
 
 	@Override
-	public List<FreeReplyVO> getList(PageVO vo) {
+	public List<FreeReplyVO> getList(PageVO vo, int fbNum) {
 		// TODO Auto-generated method stub
-		return mapper.getList(vo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("paging", vo);
+		map.put("fbNum",fbNum);
+		return mapper.getList(map);
 	}
 
 	@Override

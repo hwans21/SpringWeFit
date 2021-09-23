@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.spring.wefit.free.mapper.IFreeReplyMapper">
-  
+  	
   
   	<insert id="regist"><!-- 댓글 등록  -->
 		INSERT INTO FreeReply
@@ -18,9 +18,10 @@
 		(
 			SELECT ROWNUM as rn, freereply.* FROM
 			(
-				SELECT fr.*
-				FROM FreeBoard fb, FreeReply fr
-				WHERE fb.fbNum = fr.fbNum
+				SELECT fr.*, m.memberNick
+				FROM FreeReply fr, Member m
+				WHERE fr.fbNum = #{fbNum }
+				AND fr.memberNum = m.memberNum
 				ORDER BY fr.frRegDate DESC
 			) freereply
 		)
