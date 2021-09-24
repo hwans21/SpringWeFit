@@ -18,10 +18,28 @@
 	  </insert>
 	  
 	  
-	  <select id="getList">
-		SELECT * FROM DietReply
-		WHERE dbNum = #{dbNum}
-		ORDER BY drNum DESC
+	  <select id="getList" resultType="com.spring.wefit.command.DietBoardReplyVO">
+				
+				SELECT * FROM	
+				(
+					SELECT ROWNUM as rn, tbl.* FROM
+					(
+						SELECT 
+							dr.*, m.memberNick
+						FROM 
+							dietReply dr, 
+							Member m
+						WHERE 
+							dr.dbNum = #{dbNum }
+							AND dr.memberNum = m.memberNum
+							ORDER BY dr.drRegDate DESC
+					) tbl
+				)
+				<![CDATA[
+				WHERE rn > (#{paging.pageNum}-1)*#{paging.countPerPage}
+				AND rn <= #{paging.pageNum} * #{paging.countPerPage}
+				]]>
+				
 	  </select>
 
 

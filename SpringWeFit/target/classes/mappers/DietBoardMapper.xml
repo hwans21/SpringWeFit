@@ -92,7 +92,33 @@
 		WHERE dbNum = #{dbNum}
 	</delete>
 
-
+		<update id="updateViewCount">
+		UPDATE DietBoard SET
+			dbLookCount=dbLookCount+1
+		WHERE dbNum = #{dbNum}
+	</update>
+	
+	<select id="checkLovely" resultType="int">
+		SELECT COUNT(*) FROM dietLikely
+		WHERE dbNum = #{dbNum }
+		AND memberNum = #{memberNum }
+	</select>
+	
+	<insert id="insertLovely">
+		INSERT INTO dietLikely
+		VALUES(#{dbNum}, #{memberNum})
+	</insert>
+	
+	<select id="checkReport" resultType="int">
+		SELECT COUNT(*) FROM dietReport
+		WHERE dbNum = #{dbNum }
+		AND memberNum = #{memberNum }
+	</select>
+	
+	<insert id="insertReport">
+		INSERT INTO dietReport
+		VALUES(#{dbNum}, #{memberNum})
+	</insert>
 
 
 

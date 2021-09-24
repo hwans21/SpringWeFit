@@ -206,7 +206,7 @@
             </div>
 
             <div class="row" align="right">
-                 <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/dietBoard/dietWrite' />'"><b>글쓰기</b></button>
+                <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/dietBoard/dietWrite' />'"><b>글쓰기</b></button>
 
             </div> <!-- 관리자만 보이게 하기 -->
 

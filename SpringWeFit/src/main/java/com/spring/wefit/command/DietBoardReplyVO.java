@@ -37,9 +37,8 @@ public class DietBoardReplyVO {
 	private int memberNum;
 	private int starScore;
 	private Timestamp drRegDate;
-	private String nickName;
 	
-	
+	private String memberNick;
 }
 
 

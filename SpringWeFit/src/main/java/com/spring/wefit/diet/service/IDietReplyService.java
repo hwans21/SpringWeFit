@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.spring.wefit.command.DietBoardReplyVO;
-import com.spring.wefit.command.DietBoardVO;
-import com.spring.wefit.command.FreeBoardVO;
 import com.spring.wefit.commons.PageVO;
 
 @Service
@@ -16,7 +14,7 @@ public interface IDietReplyService {
 	void replyRegist(DietBoardReplyVO vo); 
 	
 	//페이징 추가할때
-	List<DietBoardReplyVO> getList(PageVO vo, int dbNum); 
+	List<DietBoardReplyVO> getList(PageVO vo, int dbNum);
 	
 	//댓글 개수
 	int getTotal(int bno); 

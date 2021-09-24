@@ -239,17 +239,10 @@
                     </form>
                 </div>
                 
-               		<!-- 댓글내용 영역 -->
-               		<div id="replyList">
-               		<!-- 
-	                <div class="row">
-	                    <div class="reply reply-box">
-	                        <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-	                        <span class="reply-content">댓글 내용입니다.</span>
-	                    </div>
-	                </div>
-	                 -->
-	                 </div>
+                <div id="replyList" class="row container-fluid">
+                	
+                </div>
+                <!-- <button class="form-control" id="moreList">더보기</button> -->
             </div>
         </div>
 
@@ -263,362 +256,289 @@
     </div>
 
     <script defer>
-        function sleep(ms) {
-            const wakeUpTime = Date.now() + ms;
-            while (Date.now() < wakeUpTime) { }
-        }
+			        function sleep(ms) {
+			            const wakeUpTime = Date.now() + ms;
+			            while (Date.now() < wakeUpTime) { }
+			        }
 
-        $(document).ready(function () {
-           
-            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-            //replyAppendTest();
-
-        });
-        $(window).resize(function () {
-            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-        });
-        $('.test:last-child').scroll(function () {
-            /*
-                document height -> 모든 row들의 높이 합
-                문서 전체의 높이를 의미합니다.
-                window height -> div.test의 높이
-                화면의 높이를 의미합니다.
-                scroll top
-                스크롤의 top이 위치하고 있는 높이를 의미합니다
-                
-            */
-            let replyTotalHeight = 0;
-            let count=0;
-            $('.test:last-child >.row').each(function () {
-                replyTotalHeight = replyTotalHeight + $(this).height()
-                count++;
-            });
-            if ($('.test:last-child').scrollTop() + $('.test:last-child').height() >= replyTotalHeight) {
-                // 로딩이미지 보여주기
-                // $('.test:last-child').append(`
-                //     <div id="loadingImg" class="row">
-                //         <img src="${pageContext.request.contextPath }/resources/img/load.gif" alt="">
-                //     </div>
-                // `);
-                // $('#loadingImg').remove();
-                replyAppendTest();
-            }
-            console.log(count);
-            // console.log($('.test:last-child').scrollTop()+","+$('.test:last-child').height()+","+)
-        });
-        // $(window).scroll(function(){
-        //     if($(window).scrollTop()+$(window).height()+1 >= $(document).height()){
-        //         console.log('스크롤 하단 감지');
-        //     }
-        // });
+  
+					replyLoad(1, true);
+	     
+	        		// 댓글입력
+	        		function replyRegist() {
 	
-       		
-       		
-	
-        /*
-        //댓글 등록하기
-        $(document).ready(function() {
-        	
-        	$('#replyBtn').click(function() {
-				
-        		const dbNum = '${dietList.dbNum}';
-				const drContent = $('#reply').val();
-				const nickName = '${loginuser.memberNick}';
-				
-				if(nickName === '') {
-					alert('댓글을 달려면 로그인을 먼저 하세요!');
-				}else if(drContent === '') {
-					alert('댓글 내용은 필수입니다!');
-				}
-				
-				$.ajax({
-					type: 'post',
-					url: "<c:url value='/dietReply/replyRegist/' />",
-					data : JSON.stringify (
-							{
-							"dbNum": dbNum,
-							"drContent": drContent,
-							"nickname": nickName
+						$.ajax({
+							type: "post",
+							url: "<c:url value='/dietReply/replyRegist' />",
+							headers: {
+								"Content-Type" : "application/json"
+							}, 
+							data: JSON.stringify({
+								"memberNum" : '${loginuser.memberNum}',
+								"drContent" : $('#replyInput').val(),
+								"dbNum" : '${dietList.dbNum}'
+							}),   
+							success: function (data) { 
+								console.log('데이터 통신 성공' + data);
+								//댓글 목록 불러오기
+								replyLoad(1, true);
+								alert('댓글등록완료!');
+							},
+							error : function (request, status, error) {
+								alert('등록 통신 실패! 관리자에게 문의하세요.');
+								console.log("code" + request.status + "\n" + "message:" + request.responseText + "\n" + "error" + error);
 							}
-					),
-					headers: {
-						"Content-Type" : "application/json"
-					},
-					success: function(regSucess) {
-						console.log('통신 성공! ' + regSucess);
-						$('#dbNum').val('');
-						$('#reply').val('');
-						$('#nickname').val('');
-						getList();
-					},
-					error: function() {
-						console.log(regSucess);
-						alert('등록에 실패했습니다.');
-					}
+						});  //비동기통신 종료 
 						
+					} // 댓글입력 종료 
 					
-				}); //비동기 통신 끝
-			}); //댓글등록이벤트 끝
-        	*/
-     
-		        
-        	$(document).ready(function() {
-		            
-        		// 댓글입력
-        		function replyRegist() {
-        			if('${loginuser == null ? true : false}') {
-        				alert('로그인을 하세요!');
-        				return;
-        			}
-        		
-					$.ajax({
-						type: "post",
-						url: "<c:url value='/dietReply/replyRegist' />",
-						headers: {
-							"Content-Type" : "application/json"
-						}, 
-						data: JSON.stringify({
-							"memberNum" : '${loginuser.memberNum}',
-							"drContent" : $('#replyInput').val(),
-							"dbNum" : '${dietList.dbNum}'
-						}),   
-						success: function (data) { 
-							console.log('데이터 통신 성공' + data);
-							replyCount();
-							alert('댓글등록완료!');
-						},
-						error : function (request, status, error) {
-							alert('통신 실패! 관리자에게 문의하세요.');
-							console.log("code" + request.status + "\n" + "message:" + request.responseText + "\n" + "error" + error);
-						}
-					});  //비동기통신 종료 
+					/*
+					//더보기 버튼 이벤트 처리
+					$('#moreList').click(function() {
+						replyLoad(page++ , false); //페이지 수만 늘리고 false값을 줘서 (더보기니까) 댓글을 누적한다.
+						
+					});//더보기버튼 함수 종료
+					*/
 					
-				} // 댓글입력 종료 
-				
-				
-				//댓글 목록 불러오기 (페이징)
-				function replyLoad(pageNum, reset) {
-					const dbNum = '${dietList.dbNum}';
+					let page = 1;
+					let strAdd = "";
+					
+	        		
+					
+					//무한 스크롤
+			        $(document).ready(function () {
+           
+			            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
+			            replyLoad(1,true);
+			            pageNum=2;
+			
+			        });
+				        $(window).resize(function () {
+				            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
+				        });
+					
+			        $('.test:last-child').scroll(function () {
+			
+			            let replyTotalHeight = 0;
+			            let count=0;
+			            
+			            $('.test:last-child >.row').each(function () {
+			                replyTotalHeight = replyTotalHeight + $(this).height()
+			                count++;
+			            });
+			            if ($('.test:last-child').scrollTop() + $('.test:last-child').height() >= replyTotalHeight) {
+			                replyLoad(pageNum,false);
+			                pageNum = pageNum+1;
+			            }
+			            console.log(count);
+							
+			        });//무한 스크롤 종료
 						
-					$.getJSON(
-						"<c:url value='/dietReply/replyList/${dietList.dbNum}/' />",
-						
-						function(data) {
-							$('replyCountSpan').html('댓글:' + data + '개');
-							console.log(data);
-			                  if(reset === true){
-			                        strAdd='';
-			                  }
-			                  let loginuserName = "${loginuser.memberNick != null ? loginuser.memberNick:''}";
-			                  for (let i = 0; i < data.list.length; i++) {
+					//댓글 목록 불러오기 요청 (페이징)
+					function replyLoad(pageNum, reset) {
+					
+						const dbNum = '${dietList.dbNum}';
+							
+						$.getJSON(
+							"<c:url value='/dietReply/replyList/' />" + dbNum + '/' + pageNum ,
+							
+							function(data) {
+								
+								
+								let total = data.total; //총 댓글 수
+								console.log('총 댓글 갯수' + total);
+								$('#replyCountSpan').html('댓글 :'+ data.total+'개');
+								let Data = data.list; //댓글 리스트
+								
+								if(total <= page * 10) {
+									$('#moreList').css('display' , 'none');
+								}else {
+									$('#moreList').css('display' , 'block');
+								}
+								
+								
+				               if(reset === true) {
+				            	   strAdd = '';
+				               }
+				               
+				               //응답 데이터의 길이가 0이하면 함수 종료
+				               if(Data.length <= 0) {
+				            	   return;
+				               }
+								
+								let loginuserName = "${loginuser.memberNick!=null? loginuser.memberNick:''}";
+			        			for (let i = 0; i < Data.length; i++) {
 			                        strAdd += '<div class="row reply-item" style="display:none;">';
 			                        strAdd += '<div class="reply reply-box">';
-			                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].drRegDate)+'</small>'
-			                        if(data.list[i].memberNick === loginuserName){
-				                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].drNum+'">수정</small> <small class="replyDelBtn'+data.list[i].drNum+'">삭제</small></span>'
+			                        strAdd += '<span class="reply-writer">'+Data[i].memberNick+'</span> <small>'+timeStamp(Data[i].drRegDate)+'</small>'
+			                        if(Data[i].memberNick === loginuserName){
+				                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><button class="replyModBtn'+Data[i].drNum+'">수정</button> <button class="replyDelBtn'+Data[i].drNum+'">삭제</button></span>'
 			                        	
 			                        }
-			                        strAdd += '<br><span class="reply-content">'+data.list[i].drContent+'</span>'
+			                        strAdd += '<br><span class="reply-content">'+Data[i].drContent+'</span>'
 			                        strAdd += '</div>';
 			                        strAdd += '</div>';
 			                    }
-						
-						}
-						
-					); // end getJSON
-				
-				
-				} // 댓글불러오기 함수 종료
-				
-				
-				
-				
-				
-				
-				// 댓글 수정
-				function replyModify(frClassName) {
-					if('${loginuser == null ? true : false}') {
-						alert('로그인을 하세요!');
-					}
+			                    $('#replyList').html(strAdd);
+			                    $('.reply-item').fadeIn(500);
+				            }
+				                 
+						); // end getJSON
 					
-					$.ajax({
-						type: "post",
-						url: "<c:url value='/dietReply/dietReplyModify' />",
-						headers: {
-							"Content-Type" : "application/json"
-						},
-						data: JSON.stringify (
-							"memberNum" : '${loginuser.memberNum}',
-							"drContent" : $('#replyInput').val(),
-							"drNum" : frClassName   
-						), 
-						success : function (data) {
-							console.log('통신 성공' + data);
-							alert('댓글 수정 완료');
-						},
-						error : function (request, status, error) {
-		                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-		                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					
+					} // 댓글불러오기 함수 종료
+					
+					
+					
+					
+					// 댓글 수정
+					function replyModify(frClassName) {
+						if('${loginuser == null ? true : false}') {
+							alert('로그인을 하세요!');
 						}
 						
-						
-						}); // 비동기통신 종료
-				} // 댓글 수정 종료
-				
-				
-	        	function replyCount() {
-	        		$.ajax({
-	        			type: "GET",
-	        			url: "<c:url value='/dietBoard/replyCount?dbNum=${dietList.dbNum}' />",
-	        			success : function (data) {
-							console.log('통신성공!' + data);
-							$('replyCountSpan').html('댓글:' + data + '개');
-						},
-						error : function (request, status, error) {
-		                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-		                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-						}
-	        		});  //비동기 통신 끝
-	        	}  //replyCount() 끝
-        	
-	        	
-	        	//좋아요 함수
-				$('#lovelyBtn').click(function () {
-					if('${loginuser == null ? true : false}') {
-						alert('로그인을 하세요!');
-					}
-				
-						const arr = {
-								"dbNum" : '${dietList.dbNum}',
-								"memberNum" : '${loginuser.memberNum}'
-						};
-						$.ajax({ 
+						$.ajax({
 							type: "post",
-							url: "<c:url value='/dietBoard/dietLikely' />",
+							url: "<c:url value='/dietReply/dietReplyModify' />",
 							headers: {
 								"Content-Type" : "application/json"
-								},
-							data: JSON.stringify(arr),
-							success: function (data) {
-								console.log('데이터 통신 성공!' + data);
-								if(data === 'success') {
-									alert('좋아요 등록완료');
-								}else{
-			                  		alert('이미 좋아요를 누르셨습니다.');
-								}
 							},
-								error: function () {
-								alert('통신에 실패했습니다. 관리자에게 문의하세요');
-								}
-						}); //좋아요 비동기 종료
-				}); //좋아요 함수 종료
+							data: JSON.stringify ({
+								"memberNum" : '${loginuser.memberNum}',
+								"drContent" : $('#replyInput').val(),
+								"drNum" : frClassName   
+							}), 
+							success : function (data) {
+								console.log('통신 성공' + data);
+								alert('댓글 수정 완료');
+							},
+							error : function (request, status, error) {
+			                    alert('수정 통신에 실패했습니다. 관리자에게 문의하세요');
+			                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+							}
+							
+							
+							}); // 비동기통신 종료
+					} // 댓글 수정 종료
+					
+					
+					// 댓글 삭제
+					
+					
+					
+					
+		        	function replyCount() {
+		        		$.ajax({
+		        			type: "GET",
+		        			url: "<c:url value='/dietBoard/replyCount?dbNum=${dietList.dbNum}' />",
+		        			success : function (data) {
+								console.log('통신성공!' + data);
+								$('replyCountSpan').html('댓글:' + data + '개');
+							},
+							error : function (request, status, error) {
+			                    alert('조회수 통신에 실패했습니다. 관리자에게 문의하세요');
+			                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+							}
+		        		});  //비동기 통신 끝
+		        	}  //replyCount() 끝
+	        	
+		        	
+		        	//좋아요 함수
+					$('#lovelyBtn').click(function () {
+	
+					
+							const arr = {
+									"dbNum" : '${dietList.dbNum}',
+									"memberNum" : '${loginuser.memberNum}'
+							};
+							$.ajax({ 
+								type: "post",
+								url: "<c:url value='/dietBoard/dietLikely' />",
+								headers: {
+									"Content-Type" : "application/json"
+									},
+								data: JSON.stringify(arr),
+								success: function (data) {
+									console.log('데이터 통신 성공!' + data);
+									if(data === 'success') {
+										alert('좋아요 등록완료');
+									}else{
+				                  		alert('이미 좋아요를 누르셨습니다.');
+									}
+								},
+									error: function () {
+									alert('좋아요 통신에 실패했습니다. 관리자에게 문의하세요');
+									}
+							}); //좋아요 비동기 종료
+					}); //좋아요 함수 종료
+		        	
+					
+		        	
+					$('#reportBtn').click(function(){
+	
+			    		const arr = {
+			    			"dbNum" : '${dietList.dbNum }',
+			    			"memberNum" : '${loginuser.memberNum }'
+			    		}; 
+			    		$.ajax({
+			                type: "POST", 
+			                url: "<c:url value='/dietBoard/dietReport' />",
+			                headers: {
+			                    "Content-Type": "application/json"
+			                },
+			                data: JSON.stringify(arr),
+			                success: function (data) {
+			                    console.log('통신성공!' + data);
+			                    if(data === 'success'){
+			                    	alert('신고 완료했습니다.');
+			                    }else {
+			                    	alert('이미 신고를 하셨습니다.');
+			                    }
+			                },
+			                error: function () {
+			                    alert('신고하기 통신에 실패했습니다. 관리자에게 문의하세요');
+			                }
+			            }); //신고 비동기 처리 끝
+					}); // 신고 함수 끝
+	        	
+	        	
+			 
+				
+	        	  $('#replyBtn').click(function(){
+	              	replyRegist();
+	              	$('#replyInput').val('');
+	              });
 	        	
 				
-	        	
-				$('#reportBtn').click(function(){
-					if('${loginuser == null ? true : false}') {
-						alert('로그인을 하세요!');
-					}
-				
-		    		const arr = {
-		    			"dbNum" : '${dietList.dbNum }',
-		    			"memberNum" : '${loginuser.memberNum }'
-		    		}; 
-		    		$.ajax({
-		                type: "POST", 
-		                url: "<c:url value='/dietBoard/dietReport' />",
-		                headers: {
-		                    "Content-Type": "application/json"
-		                },
-		                data: JSON.stringify(arr),
-		                success: function (data) {
-		                    console.log('통신성공!' + data);
-		                    if(data === 'success'){
-		                    	alert('신고 완료했습니다.');
-		                    }else {
-		                    	alert('이미 신고를 하셨습니다.');
-		                    }
-		                },
-		                error: function () {
-		                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-		                }
-		            }); //신고 비동기 처리 끝
-				}); // 신고 함수 끝
+					
+					
+	              // 날짜 처리 함수
+	              function timeStamp(millis) {
+	                  const date = new Date(); //현재 날짜
+	                  // 현재 날짜를 밀리초로 변환 - 등록일 밀리초 -> 시간차
+	                  const gap = date.getTime() - millis;
+	                  // 댓글1시간전 담 -> 방금전, 댓글 하루전 -> 몇시간전, 하루이상 2021-08-13
+	                  let time; // 리턴할 시간
+	                  if (gap < 60 * 60 * 24 * 1000) { // 1일 미만인 경우
+	                      if (gap < 60 * 60 * 1000) { //1시간 미만일 경우
+	                          time = '방금 전';
+	                      } else {
+	                          time = parseInt(gap / (60 * 60 * 1000)) + "시간 전";
+	                      }
+	                  } else { //1일 이상일경우
+	                      const today = new Date(millis);
+	                      const year = today.getFullYear(); //년
+	                      const month = today.getMonth() + 1; //월
+	                      const day = today.getDate(); //일
+	                      const hour = today.getHours(); // 시
+	                      const minute = today.getMinutes(); // 분
+	                      time = year + "년" + month + "월" + day + "일" + hour + "시" + minute + "분";
+	
+	                  }
+	                  return time;
+	              }
+	        
         	
-        	
-		 
-			
-        	  $('#replyBtn').click(function(){
-              	replyRegist();
-              	$('#replyInput').val('');
-              });
-        	
-			
-				
-			
-        	
-			
-			
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-              // 날짜 처리 함수
-              function timeStamp(millis) {
-                  const date = new Date(); //현재 날짜
-                  // 현재 날짜를 밀리초로 변환 - 등록일 밀리초 -> 시간차
-                  const gap = date.getTime() - millis;
-                  // 댓글1시간전 담 -> 방금전, 댓글 하루전 -> 몇시간전, 하루이상 2021-08-13
-                  let time; // 리턴할 시간
-                  if (gap < 60 * 60 * 24 * 1000) { // 1일 미만인 경우
-                      if (gap < 60 * 60 * 1000) { //1시간 미만일 경우
-                          time = '방금 전';
-                      } else {
-                          time = parseInt(gap / (60 * 60 * 1000)) + "시간 전";
-                      }
-                  } else { //1일 이상일경우
-                      const today = new Date(millis);
-                      const year = today.getFullYear(); //년
-                      const month = today.getMonth() + 1; //월
-                      const day = today.getDate(); //일
-                      const hour = today.getHours(); // 시
-                      const minute = today.getMinutes(); // 분
-                      time = year + "년" + month + "월" + day + "일" + hour + "시" + minute + "분";
-
-                  }
-                  return time;
-              }
-        
-        	});
-        
         
         
     </script>

@@ -32,7 +32,17 @@ public class DietReplyController {
 		return "regSucess";
 	}
 	
-	//댓글 목록불러오기
+	
+//	//댓글 목록불러오기 
+//	@GetMapping("/replyList/{dbNum}")
+//	public List<DietBoardReplyVO> getList(@PathVariable int dbNum) {
+//		List<DietBoardReplyVO> list = service.getList(dbNum);
+//		
+//		return list;
+//	}
+	
+	
+	//댓글 목록불러오기 페이징
 	@GetMapping("/replyList/{dbNum}/{pageNum}")
 	public Map<String, Object> getList(@PathVariable int dbNum, @PathVariable int pageNum) {
 		PageVO vo = new PageVO();
@@ -41,12 +51,15 @@ public class DietReplyController {
 		
 		List<DietBoardReplyVO> list = service.getList(vo, dbNum);
 		int total = service.getTotal(dbNum);
-		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("총 댓글 갯수(컨트롤러)" + total);
+		
+		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		map.put("total", total);
+		
 		return map;
 	}
-	
+		
 	//댓글 수정하기
 	@PostMapping("/dietReplyModify")
 	public String dietReplyModify(@RequestBody Map<String, Object> map) {
@@ -57,19 +70,23 @@ public class DietReplyController {
 		String drContent = (String) map.get("drContent");
 		int drNum = Integer.parseInt(((String) map.get("drNum")).substring(11));
 		
+		if(service.getContent(drNum).getMemberNum() == memberNum) {
+			DietBoardReplyVO vo = new DietBoardReplyVO();
+			vo.setDrContent(drContent);
+			vo.setDrNum(drNum);
+			service.replyUpdate(vo);
+			return "success";
+		}
 		
-		
-		return "";
+		return "noAuth";
 	}
 	
 	
 	//댓글 삭제하기
-	
+	//@PostMapping("/dietReplyDelete")
 		
 	
 	
-	
-	//댓글 등록하기
 	
 	
 	//댓글 개수 카운트

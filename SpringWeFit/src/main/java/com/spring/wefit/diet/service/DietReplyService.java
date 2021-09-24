@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.wefit.command.DietBoardReplyVO;
-import com.spring.wefit.command.DietBoardVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.diet.mapper.IDietReplyMapper;
 
@@ -27,11 +26,11 @@ public class DietReplyService implements IDietReplyService {
 
 	@Override
 	public List<DietBoardReplyVO> getList(PageVO vo, int dbNum) {
+		Map<String, Object> datas = new HashMap<>();
+		datas.put("paging" , vo);
+		datas.put("dbNum" , dbNum);
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("paging", vo);
-		map.put("dbNum",dbNum);
-		return mapper.getList(map);
+		return mapper.getList(datas);
 	}
 
 	@Override
