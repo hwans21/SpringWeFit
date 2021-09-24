@@ -1,5 +1,9 @@
 package com.spring.wefit.command;
 
+
+
+import java.sql.Timestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +22,11 @@ import lombok.ToString;
 public class CourseReportVO {
 	
 	private int cbNum;
-	private int mNum;
+	private int memberNum;
+	
+	private String cbReportCheckbox;
+	private String cbReportInput;
+	
+	private Timestamp cbReportRegDate;
 
 }

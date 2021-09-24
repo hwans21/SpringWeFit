@@ -18,6 +18,6 @@ import lombok.ToString;
 public class CourseLikelyVO {
 	
 	private int cbNum;
-	private int mNum;
+	private int memberNum;
 
 }

@@ -58,26 +58,26 @@
 
             <!--main left-->
             <form action='<c:url value="/courseBoard/regist" />' id="registForm" method="POST">
-			<%-- <form action='<c:url value="/courseBoard/regist" />' id="registForm" method="POST" enctype="multipart/form-data"> --%>
+         <%-- <form action='<c:url value="/courseBoard/regist" />' id="registForm" method="POST" enctype="multipart/form-data"> --%>
                 <table>
                     <tr>
                         <td>종목</td>
                         <td>
                             <select id="sports" name="cbCategory">
                                 <option value="category">종목선택</option>
-                                <option>수영</option>
-                                <option>배드민턴</option>
-                                <option>스쿼시</option>
-                                <option>자전거</option>
-                                <option>달리기</option>
-                                <option>등산</option>
-                                <option>홈트짐트</option>
-                                <option>필라테스</option>
-                                <option>골프</option>
-                                <option>스케이트</option>
-                                <option>기타</option>
-								<!--  
-								<option value="category">종목선택</option>                               
+                                <option ${param.category == 'swimming' ? 'selected' : '' }>수영</option>
+                                <option ${param.category == 'badminton' ? 'selected' : '' }>배드민턴</option>
+                                <option ${param.category == 'squash' ? 'selected' : '' }>스쿼시</option>
+                                <option ${param.category == 'bicycle' ? 'selected' : '' }>자전거</option>
+                                <option ${param.category == 'running' ? 'selected' : '' }>달리기</option>
+                                <option ${param.category == 'hiking' ? 'selected' : '' }>등산</option>
+                                <option ${param.category == 'training' ? 'selected' : '' }>홈트짐트</option>
+                                <option ${param.category == 'pilates' ? 'selected' : '' }>필라테스</option>
+                                <option ${param.category == 'golf' ? 'selected' : '' }>골프</option>
+                                <option ${param.category == 'skate' ? 'selected' : '' }>스케이트</option>
+                                <option ${param.category == 'etc' ? 'selected' : '' }>기타</option>
+                        <!--  
+                        <option value="category">종목선택</option>                               
                                 <option value="swimming">수영</option>
                                 <option value="badminton">배드민턴</option>
                                 <option value="squash">스쿼시</option>
@@ -96,7 +96,7 @@
                     <tr>
                         <td>작성자</td>
                         <td><input type="text" size="20" value="관리자" readonly></td>
-                        <!-- <td><input type="hidden" name="mNum" size="20" value="1"></td> --> <!-- 관리자번호 넣어줌 -->
+                        <!-- <td><input type="hidden" name="memberNum" size="20" value="1"></td> --> <!-- 관리자번호 넣어줌 -->
                     </tr>
 
                     <tr>
@@ -126,7 +126,7 @@
                         
                     </tr>
                 </table>
-			</form> 
+         </form> 
             
         </div>
 
@@ -139,28 +139,47 @@
     
     
 
-	<script>
-		$(function() { // start jQuery
-			
-			$('#registBtn').click(function() {
-				if($('#sports').val() === 'category') {
-					alert('종목을 선택해주세요.');
-					return;				
-				} else if($('#cbTitle').val().trim() === '') {
-					alert('제목을 입력해주세요');	
-					return;
-				} else if($('#cbYouCode').val().trim() === '') {
-					alert('youtube 주소를 입력해주세요');	
-					return;
-				} else {
-					$('#registForm').submit();				
-				}			
-			}); // 글 등록 검증 끝
-		
-		
-		}); // end jQuery
-		
-	</script>
+   <script>
+     
+      
+      $(function() { // start jQuery
+    	  
+/*           const str = $('#cbTitle').val();
+          
+          function getByteB(str) {
+    	 	  var b_yte = 0;
+    	 	  for(var i=0; i<str.length; ++i) {
+    	 		  (str.charCodeAt(i) > 127) ? b_yte += 3 : b_yte++;
+    	 	  }
+     	  	  return b_yte;
+          }
+          
+          const bstr = getByteB(str); */
+          
+         
+         $('#registBtn').click(function() {
+            if($('#sports').val() === 'category') {
+               alert('종목을 선택해주세요.');
+               return;            
+            } else if($('#cbTitle').val().trim() === '') {
+               alert('제목을 입력해주세요.');   
+               return;
+            } /* else if(bstr > 200) {
+               alert('제목은 짧게.');   
+               return;
+            }  */else if($('#cbYouCode').val().trim() === '') {
+               alert('youtube 주소를 입력해주세요.');   
+               return;
+            } else {
+               $('#registForm').submit();            
+            }         
+         }); // 글 등록 검증 끝
+        
+         
+      }); // end jQuery
+      
+      
+   </script>
    
 </body>
 

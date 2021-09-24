@@ -1,6 +1,7 @@
 package com.spring.wefit.command;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,9 @@ public class CourseReplyVO {
 	private int crNum;
 	private int cbNum;
 	private String crContent;
-	private int mNum;
+	private String memberNick;
+	private int memberNum;
 	private Timestamp crRegDate;
+
 
 }

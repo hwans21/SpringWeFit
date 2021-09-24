@@ -2,10 +2,13 @@ package com.spring.wefit.course.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.wefit.command.CourseBoardVO;
+import com.spring.wefit.command.CourseReportVO;
+import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.course.mapper.ICourseBoardMapper;
 
 @Service
@@ -20,15 +23,14 @@ public class CourseBoardService implements ICourseBoardService {
    }
 
    @Override
-   public List<CourseBoardVO> getList() {
-      List<CourseBoardVO> list = mapper.getList();
+   public List<CourseBoardVO> getList(PageVO vo) {
+      List<CourseBoardVO> list = mapper.getList(vo);
       return list;
    }
 
    @Override
-   public int getTotal() {
-      // TODO Auto-generated method stub
-      return 0;
+   public int getTotal(PageVO vo) {      
+      return mapper.getTotal(vo);
    }
 
    @Override
@@ -50,11 +52,46 @@ public class CourseBoardService implements ICourseBoardService {
    public void upHit(int cbNum) {
       mapper.upHit(cbNum);
    }
+   
+   @Override
+   public void updateCrCount(@Param("cbNum") int cbNum, @Param("crCount") int crCount) {  	
+   	  mapper.updateCrCount(cbNum, crCount);
+   }
+   
+   
+
+   
+   @Override
+   public void insertLike(CourseBoardVO vo) {
+	   mapper.insertLike(vo);		
+   }
 
    @Override
-   public void upLike(int cbNum) {
-//      mapper.upLike(cbNum);
+   public int checkLike(CourseBoardVO vo) {
+	   return mapper.checkLike(vo);
    }
+
+   @Override
+   public void deleteLike(CourseBoardVO vo) {
+	   mapper.deleteLike(vo);		
+   }
+   
+   @Override
+   public int countLike(int cbNum) {
+   	   return mapper.countLike(cbNum);
+   }
+   
+	
+   @Override
+   public void insertReport(CourseReportVO vo) {
+	   mapper.insertReport(vo);	
+   }
+	
+   @Override
+   public int checkReport(CourseReportVO vo) {
+	   return mapper.checkReport(vo);
+   }
+
    
    
 }

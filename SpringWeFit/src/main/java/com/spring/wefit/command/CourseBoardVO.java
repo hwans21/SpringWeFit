@@ -43,5 +43,7 @@ public class CourseBoardVO {
 	private String cbCategory;
 	private int cbLookCount;
 	private Timestamp cbRegDate;
+	
+	private int crCount;
 
 }

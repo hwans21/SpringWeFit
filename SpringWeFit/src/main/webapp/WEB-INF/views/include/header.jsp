@@ -86,7 +86,7 @@
                         <a href="<c:url value='/placeBoard/placeList' />">함께 운동해요 <span class="sr-only">(current)</span></a>
                     </li>
                     <!-- Link 메뉴 -->
-                    <li><a href='<c:url value='/courseBoard/' />'>운동강의</a></li>
+                    <li><a href='<c:url value='/courseBoard/?category=' />'>운동강의</a></li>
                     <li><a href="<c:url value='/dietBoard/dietList' />">오늘먹은식단</a></li>
                     <li><a href="<c:url value='/noticeBoard/' />">게시판</a></li>
                     <li><a href="<c:url value='/marketBoard/market_board' />">장터</a></li>

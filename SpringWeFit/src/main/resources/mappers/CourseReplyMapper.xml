@@ -5,6 +5,48 @@
   
 <mapper namespace="com.spring.wefit.course.mapper.ICourseReplyMapper">
 
+<!-- <resultMap type="com.spring.wefit.command.CourseReplyVO" id="CourseReplyMap"></resultMap>
+<resultMap type="com.spring.wefit.command.UserVO" id="UserMap"></resultMap> -->
+
+
+<insert id="regist">
+	INSERT INTO CourseReply
+	(crNum, cbNum, crContent, memberNum) <!-- memberNum은 로그인 세션쪽에서 가져와야함. -->
+	VALUES (courseReply_seq.NEXTVAL, #{cbNum}, #{crContent}, #{memberNum})
+</insert>
+
+
+<select id="getList" resultType="com.spring.wefit.command.CourseReplyVO">
+    SELECT * FROM CourseReply
+	WHERE cbNum = #{cbNum}
+	ORDER BY crNum DESC
+	
+<!--   	SELECT cr.*, m.memberNick FROM CourseReply cr, Member m
+	WHERE cbNum = #{cbNum}
+	AND cr.memberNum = m.memberNum
+	ORDER BY crNum DESC -->
+	
+<!-- 	SELECT cr.*, m.memberNick  
+	FROM CourseReply cr INNER JOIN Member m
+	ON cr.memberNum = m.memberNum
+	WHERE cr.cbNum = #{cbNum}
+	ORDER BY cr.crNum DESC --> <!-- inner join -->
+</select>
+
+<select id="getTotal" resultType="int">
+	SELECT COUNT(*) FROM CourseReply
+	WHERE cbNum = #{cbNum}
+</select>
+
+<update id="update">
+	UPDATE CourseReply SET crContent = #{crContent}, crRegDate = SYSDATE
+	WHERE crNum = #{crNum}
+</update>
+
+<delete id="delete">
+	DELETE FROM CourseReply
+	WHERE crNum = #{crNum}
+</delete>
 
 
 

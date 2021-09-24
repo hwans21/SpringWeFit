@@ -3,6 +3,8 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,10 +35,13 @@
           font-family: "NanumGothic";
         }
 
-        #title {
+        #course {
           color: rgb(0, 173, 181);
           font-size: 45px;
           font-weight: bold;
+          cursor: pointer;
+          
+          margin-left: 20px;
         }
 
         #all {
@@ -53,9 +58,11 @@
         .page-link {
           color:rgb(0, 173, 181);
         }
+        
         #btn-list {
-          margin-top: 15px;
-          margin-bottom: 25px;
+          
+          margin: 10px 20px 30px;
+        
         }
 
 
@@ -67,7 +74,7 @@
             padding: 5px;
             border: 1px solid #ccc;
             /* background: rgb(0, 173, 181); */
-            
+ 
         }
 
 
@@ -76,12 +83,13 @@
             /* border: 1px solid #fff; */
             background: #fff;
             padding: 10px;
+            cursor: pointer;
         }
 
 
         .subject {
             height: 70px;
-            margin: 20px 30px;
+            margin: 20px 30px 50px 30px;
         }
 
         .category {
@@ -107,6 +115,9 @@
             float: right;
             font-size: 14px;
             padding-left: 22px;
+            
+            position: relative;
+            top: 4px;
         }
 
         .glyphicon-comment {
@@ -122,9 +133,26 @@
             padding-left: 8px;
         }
 
-
+		.active {
+			background-color: #643691; 
+		}
+				
+ 		.search-area {
+			margin-top: 15px;
+			margin-right: 10px;
+		} 
+		
+		.search-none {
+			margin: 40px;
+			font-size: 20px;
+			text-align: center;
+		}
+		
+/* 		td .text-center {
+  			width: 80px;
+  		} */
+		
       
-
     </style>
 </head>
 
@@ -135,8 +163,7 @@
         <div class="row">
             <%@ include file="../../include/header.jsp" %>
         </div>
-        
-   
+  
         <!-- <div class="row">
                 
             <div class="col-sm-5">
@@ -167,201 +194,157 @@
         <div class="row">
             <div class="col-sm-10">
                 <div>
-                    <span id="title">운동 강의</span>
+                    <span id="course">운동 강의</span>
                 </div>
             </div>
-        </div>           
+        </div>  
+        
+		
+		
+		        
         <div id="btn-list" class="row" align="right">
-            <div class="btn-group text-center " role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-info btn-active id="all">전체</button>
-                <button type="button" class="btn btn-info">수영</button>
-                <button type="button" class="btn btn-info">배드민턴</button>
-                <button type="button" class="btn btn-info">스쿼시</button>
-                <button type="button" class="btn btn-info">자전거</button>
-                <button type="button" class="btn btn-info">달리기</button>
-                <button type="button" class="btn btn-info">등산</button>
-                <button type="button" class="btn btn-info">홈트짐트</button>
-                <button type="button" class="btn btn-info">필라테스</button>
-                <button type="button" class="btn btn-info">골프</button>
-                <button type="button" class="btn btn-info">스케이트</button>
-                <button type="button" class="btn btn-info">기타</button>&nbsp;&nbsp;&nbsp;
+            <div id="category-btn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-info ${param.category == '' ? 'active' : ''}" value="">전체</button>
+                <button type="button" class="btn btn-info ${param.category == 'swimming' ? 'active' : ''}" value="swimming">수영</button>
+                <button type="button" class="btn btn-info ${param.category == 'badminton' ? 'active' : ''}" value="badminton">배드민턴</button>
+                <button type="button" class="btn btn-info ${param.category == 'squash' ? 'active' : ''}" value="squash">스쿼시</button>
+                <button type="button" class="btn btn-info ${param.category == 'bicycle' ? 'active' : ''}" value="bicycle">자전거</button>
+                <button type="button" class="btn btn-info ${param.category == 'running' ? 'active' : ''}" value="running">달리기</button>
+                <button type="button" class="btn btn-info ${param.category == 'hiking' ? 'active' : ''}" value="hiking">등산</button>
+                <button type="button" class="btn btn-info ${param.category == 'training' ? 'active' : ''}" value="training">홈트짐트</button>
+                <button type="button" class="btn btn-info ${param.category == 'pilates' ? 'active' : ''}" value="pilates">필라테스</button>
+                <button type="button" class="btn btn-info ${param.category == 'golf' ? 'active' : ''}" value="golf">골프</button>
+                <button type="button" class="btn btn-info ${param.category == 'skate' ? 'active' : ''}" value="skate">스케이트</button>
+                <button type="button" class="btn btn-info ${param.category == 'etc' ? 'active' : ''}" value="etc">기타</button>&nbsp;&nbsp;&nbsp;
             </div>
             
-            <input type="text" placeholder="Search">
-              
-            <button type="button" class="btn" aria-label="Left Align">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            </button>
+            <div class="search-area">
+	             <select id="search-category">
+	                <option value="">강의 전체</option>
+		            <option value="swimming" ${param.category == 'swimming' ? 'selected' : '' }>수영</option>
+		            <option value="badminton" ${param.category == 'badminton' ? 'selected' : '' }>배드민턴</option>
+		            <option value="squash" ${param.category == 'squash' ? 'selected' : '' }>스쿼시</option>
+		            <option value="bicycle" ${param.category == 'bicycle' ? 'selected' : '' }>자전거</option>
+		            <option value="running" ${param.category == 'running' ? 'selected' : '' }>달리기</option>
+		            <option value="hiking" ${param.category == 'hiking' ? 'selected' : '' }>등산</option>
+		            <option value="training" ${param.category == 'training' ? 'selected' : '' }>홈트짐트</option>
+		            <option value="pilates" ${param.category == 'pilates' ? 'selected' : '' }>필라테스</option>
+		            <option value="golf" ${param.category == 'golf' ? 'selected' : '' }>골프</option>
+		            <option value="skate" ${param.category == 'skate' ? 'selected' : '' }>스케이트</option>
+		            <option value="etc" ${param.category == 'etc' ? 'selected' : '' }>기타</option>
+	             </select>
+	            
+	            <select id="search-condition">
+		            <option value="title" ${param.condition == 'title' ? 'selected' : '' }>제목</option>
+		            <option value="content" ${param.condition == 'content' ? 'selected' : '' }>내용</option>
+		            <option value="titleContent" ${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
+	             </select>
+	            
+	            <input type="text" id="search-keyword" placeholder="Search" value="${param.keyword}">
+	              
+	            <button type="button" id="search-btn" class="btn" aria-label="Left Align">
+	                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+	            </button>
+        	</div>    
+        
         </div>
-
+  
+  
+  
+	<div class="container text-center"> 
 
         <div class="row margin-top-5">
-            <!-- <table class="table table-hover table-responsive"> -->
-            <table class="table">
-                <!-- <thead class="bg-info">
-                    <tr>       
-                        <th scope="col" class="text-center">제목</th>
-                        <th scope="col" class="text-center">글쓴이</th>
-                        <th scope="col" class="text-center">날짜</th>                      
-                    </tr>
-                </thead> -->
-                <tbody>
-                    <tr class="course">  
-                    	<c:forEach var="vo" begin="1" end="3" items="${courseList}">                                   
-<%-- 		                	<c:forEach begin="1" end="3"> --%>
-		                        <td scope="col" class="text-center">
-		                            <div class="vid">                               
-		                                <div class="video" onclick="location.href='#'">
-		                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid01.jpg" width="280px" alt="vid01"></a>                                 
-		                                    <p class="subject"><span class="category">${vo.cbCategory}</span><a href="#">${vo.cbTitle}</a></p>
-		                                    <p class="auth">관리자
-		                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-		                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-		                                    </p>
-		                                </div>
-		                            </div>
-		                        </td>
-<%-- 	                       </c:forEach> --%>
-                        </c:forEach> 
-                        
-                        <%-- <td scope="col" class="text-center">
-                            <div class="vid">                               
-                                <div class="video" onclick="location.href='/FRONT/views/board/course/course_detail.html'">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid01.jpg" width="280px" alt="vid01"></a>                                 
-                                    <p class="subject"><span class="category">홈트짐트</span><a href="#">층간 소음 걱정 없이 체중 감량 보장! 딱 5분 운동!</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid02.jpg" width="280px" alt="vid02"></a>
-                                    <p class="subject"><span class="category">홈트짐트</span><a href="#">강한 어깨와 삼두를 위한 맨몸운동 루틴 (feat. 90도 물구나무)</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>   
-                        </td>
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid03.jpg" width="280px" alt="vid03"></a>
-                                    <p class="subject"><span class="category">홈트짐트</span><a href="#">※50분 올인원 운동※ 체중감량에 최적화된 루틴 (No 층간소음)</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>   
-                        </td>                                         
-                    </tr> 
 
-                    <tr>    
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid04.jpg" width="280px" alt="vid04"></a>
-                                    <p class="subject"><span class="category">테니스</span><a href="#">[포핸드] 스윙스피드가 조금만 빨라져도 상대가 당황하기 시작합니다</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid05.jpg" width="280px" alt="vid05"></a>
-                                    <p class="subject"><span class="category">탁구</span><a href="#">[탁구레슨]백핸드 드라이브 쉽게 배워 보세요!!</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid06.jpg" width="280px" alt="vid06"></a>
-                                    <p class="subject"><span class="category">배드민턴</span><a href="#">[달인콕tv 배드민턴 레슨] 상대를 속이는 기술4탄 (훼이크 드롭 3가지방법)</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>    
-                    </tr>
-                    
-                    <tr>    
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid07.jpg" width="280px" alt="vid07"></a>
-                                    <p class="subject"><span class="category">스쿼시</span><a href="#">스쿼시 그립잡기</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid08.jpg" width="280px" alt="vid08"></a>
-                                    <p class="subject"><span class="category">수영</span><a href="#">하쌤수영/하은주수영/ 부드러운 자유형 꿀팁</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td scope="col" class="text-center">
-                            <div class="vid">
-                                <div class="video">
-                                    <a href="#"><img src="${pageContext.request.contextPath }/resources/img/course/vid09.jpg" width="280px" alt="vid09"></a>
-                                    <p class="subject"><span class="category">탁구</span><a href="#">[[ 김정훈 탁구레슨 ]] no.23 펜홀더 쇼트. 1부</a></p>
-                                    <p class="auth">관리자
-                                        <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>2</b></span>
-                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>100</b></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>   --%>    
-                   </tr>                                 
+            <table class="table">
+
+                <tbody>
+                
+					<c:choose>
+					    
+					    <c:when test="${fn:length(courseList) == 0}">
+					        <p class="search-none">검색 결과가 없습니다.</p>
+					    </c:when>
+					    
+					    <c:otherwise>
+							<c:forEach var="vo" varStatus="i" items="${courseList}">		                   	   
+		                       <c:if test="${i.count % 3 == 1}">
+		                          <tr class="course"> 
+		                       </c:if>    
+		                              <td scope="col" class="text-center" style="width: 33%">
+		                                  <div class="vid">                               
+		                                      <div class="video" onclick="location.href='<c:url value="/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}" />'">
+		                                          <a href="<c:url value='/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />">
+		                                          <img src=
+		                                          <c:set var="youcode" value="${vo.cbYouCode}" />
+		                                          <c:set var="url" value="${fn:split(youcode, '/')}" />					                              
+					                                    <c:forEach var="you" begin="3" end="4" items="${url}" >
+					                                    "https://img.youtube.com/vi/<c:out value="${you}" />/mqdefault.jpg"
+					                                    </c:forEach>                                                                            
+		                                          width="280px" alt="${you}" /></a>                                 
+		                                          
+		                                          <p class="subject"><span class="category">${vo.cbCategory}</span><a href="<c:url value='/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />">${vo.cbTitle}</a></p>
+		                                          <p class="auth">관리자 &nbsp;&nbsp;
+		                                          	  <small class="writeday"><fmt:formatDate value="${vo.cbRegDate}" pattern="yy.MM.dd" /></small>  
+		                                              <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>${vo.crCount}</b></span>
+		                                              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${vo.cbLookCount}</b></span>
+		                                          	  
+		                                          </p>
+		                                      </div>
+		                                  </div>
+		                              </td> 
+		                       
+				                      <c:if test="${i.count % 9 == 1 && i.count == fn:length(courseList)}">
+				                         <td></td>
+				                         <td></td>
+				                      </c:if>
+				                       
+				                      <c:if test="${i.count % 9 == 2 && i.count == fn:length(courseList)}">
+				                         <td></td>
+				                      </c:if>                      
+		                       
+		                       <c:if test="${i.count % 3 == 0}">
+		                          </tr>
+		                       </c:if>
+		                    </c:forEach> 					   
+					    </c:otherwise> 
+					
+					</c:choose>
+                                                                  
                 </tbody>
               </table>
         </div>
 
             <div class="row" align="right">
-                <button type="button" class="btn btn-outline-primary" onclick="location.href='<c:url value="/courseBoard/write" />' "><b>글쓰기</b></button>
+                <button type="button" class="btn btn-outline-primary" onclick="location.href='<c:url value="/courseBoard/write?category=${param.category}" />' "><b>글쓰기</b></button>
             </div>
 
 
         <div class="row text-center">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <c:if test="${pc.prev}"> 
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pc.beginPage - 1}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}' />">Prev</a></li>
+	                </c:if>  
+	                <c:forEach var="pageNum" begin="${pc.beginPage}" end="${pc.endPage}"> 
+	                    <li class="page-item ${pc.paging.pageNum == pageNum ? 'active' : ''}">
+	                    	<a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pageNum}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}' />">${pageNum}</a>
+	                    </li>
+					</c:forEach>
+
+
+<!-- 	                <li class="page-item"><a class="page-link" href="#">2</a></li>
+	                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+	                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+	                    <li class="page-item"><a class="page-link" href="#">5</a></li> -->
+	                <c:if test="${pc.next}">   
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pc.endPage + 1}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}' />">Next</a></li>
+                	</c:if> 
                 </ul>
                 </nav>
         </div> 
-
+	
+	</div> <!-- div class="container text-center" -->
+        
         <div class="row">
             <%@ include file="../../include/footer.jsp" %>
         </div>
@@ -370,27 +353,64 @@
     </div>
     
     <script defer>
- 	
-    	const msg = '${msg}';
-    	if(msg === 'registSuccess') {
-    		alert('정상 등록 처리되었습니다.');
-    	}
-    	
-		$(document).ready(function(){
-		      
-		      
-		      $('.vid').hover(function() {   
-		          $(this).css('background-color', 'rgb(0, 173, 181)');
-		          
-		      });
-		
-		      $('.vid').mouseleave(function() {   
-		          $(this).css('background-color', '#fff');
-		          
-		      });
-		
-		
+    
+/*        const msg = '${msg}';
+       if(msg === 'registSuccess') {
+          alert('게시글이 등록되었습니다.');
+       } else if(msg === 'deleteSuccess') {
+          alert('삭제가 완료되었습니다.');
+       } */
+       
+      $(document).ready(function(){
+            
+            
+            $('.vid').hover(function() {   
+                $(this).css('background-color', 'rgb(0, 173, 181)');
+                
+            });
+      
+            $('.vid').mouseleave(function() {   
+                $(this).css('background-color', '#fff');
+                
+            });
+      
+      
+        });
+      
+      
+      $(function() { // start jQuery
+
+    	  // 운동강의 클릭하면..
+    	  $('#course').click(function() {
+    		  location.href='<c:url value="/courseBoard/?category=" />';
+    	  });
+    	  
+    	  // 카테고리별 보여주기
+    	  $('#category-btn > .btn-info').click(function() {
+    		  const category = $(this).val();
+	  		  location.href = '/wefit/courseBoard/?category=' + category;	  		  
+    		  
+    	  });
+      
+      
+      	  // 검색기능 구현
+		  $('#search-btn').click(function() {
+			  const category = $('#search-category').val();
+			  const condition = $('#search-condition').val();
+			  const keyword = $('#search-keyword').val();
+			  	  
+			  location.href = '/wefit/courseBoard/?category=' + category + '&condition=' + condition + '&keyword=' + keyword;
+		  });  
+      	  
+      	  
+		  $('#search-keyword').keydown(function(key){ //keydown은 키 누르면
+				if(key.keyCode === 13) {//13번은 엔터키
+					$('#search-btn').click(); //엔터키 누르면 검색버튼을 클릭한거랑 동일한 이벤트처리를 해주고싶다.
+				}				
 		  });
+      
+      
+      }); // end jQuery
       
   </script>
 </body>
