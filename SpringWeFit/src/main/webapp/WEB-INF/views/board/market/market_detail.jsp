@@ -132,61 +132,61 @@
                             <div class="carousel-inner" role="listbox">
                             	<c:if test="${detail.mbRealImage1 != null }">
 	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage1}" width="100%" alt="...">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage1}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage2 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage2}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage2}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage3 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage3}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage3}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage4 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage4}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage4}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage5 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage5}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage5}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage6 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage6}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage6}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage7 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage7}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage7}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage8 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage8}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage8}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage9 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage9}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage9}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
                             	<c:if test="${detail.mbRealImage10 != null }">
-	                                <div class="item active">
-	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage10}" width="100%" alt="...">
+	                                <div class="item">
+	                                    <img src="/upload/board/market/${detail.memberNum }/${detail.mbRealImage10}" width="100%" alt="...">
 	
 	                                </div>
                                 </c:if>
@@ -231,7 +231,7 @@
                                 <td>${detail.mbAddrBasic }</td>
                                 <td>${detail.mbAddrDetail }</td>
                                 <td>
-                                    <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
+                                    <a href="https://map.kakao.com/link/to/${detail.mbAddrBasic }">
                                         <button class="btn btn-info pull-right">길찾기</button>
                                     </a>
                                 </td>
@@ -285,19 +285,19 @@
                             <input type="text" id="mrContent" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
-                                <button id="reply-btn" type="button" class="btn btn-default"><span
+                                <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
                             </span>
                         </div>
                     </form>
                 </div>
                 
-                <div class="row">
+               <!--  <div class="row">
                     <div class="reply reply-box">
                         <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
                         <span class="reply-content">댓글 내용입니다.</span>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -316,22 +316,89 @@
             const wakeUpTime = Date.now() + ms;
             while (Date.now() < wakeUpTime) { }
         }
-        function replyAppendTest() {
-            for (let i = 0; i <= 10; i++) {
-                $('.test:last-child').append(`
-                    <div class="row">
-                        <div class="reply reply-box">
-                            <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-                            <span class="reply-content">댓글 내용입니다.</span>
-                        </div>
-                    </div>
-                `);
-            }
+        
+        
+        function replyCount(){
+        	$.ajax({
+        		type : "GET",
+        		url : "<c:url value='/marketReply/marketReplyCount?mbNum=${detail.mbNum}' />",
+        		dataType : "text",
+        		success : function(data){
+        			console.log('통신성공' + data);
+        			$('#replyCountSpan').html('댓글: '+data + '개');
+        		},
+        		error : function(request, status, error){
+        			alert('통신에 실패했습니다. 관리자에게 문의하세요');
+        			console.log("code" + request.status+ "\n" + "message:" + request.responseText + "\n" + error);
+        		}
+        	});
+        } //replyCount 끝
+        
+        function replyLoad(pageNum){
+        	$.getJSON(
+        			"<c:url value='/marketReply/marketReplyList/${detail.mbNum}' />" + pageNum,
+        			function(data){
+        				console.log(data);
+        				for (let i = 0; i < data.list.length; i++){
+        					$('.test:last-child').append(`
+        							<div class="row">
+        								<div class="reply reply-box">
+        									<span class="reply-writer">`+data.list[i].memberNick`</span><small>`+timeStamp(data.list[i].mr.RegDate)+`</small><br><br>
+        									<span class="reply-content">`+data.list[i].mrContent+`</span>
+        								</div>
+        							</div>
+        					`);
+        				}
+        			}
+        			); //end getJson
         }
+        
+        
+        // 날짜 처리 함수
+        function timeStamp(millis) {
+            const date = new Date(); //현재 날짜
+            // 현재 날짜를 밀리초로 변환 - 등록일 밀리초 -> 시간차
+            const gap = date.getTime() - millis;
+            // 댓글1시간전 담 -> 방금전, 댓글 하루전 -> 몇시간전, 하루이상 2021-08-13
+            let time; // 리턴할 시간
+            if (gap < 60 * 60 * 24 * 1000) { // 1일 미만인 경우
+                if (gap < 60 * 60 * 1000) { //1시간 미만일 경우
+                    time = '방금 전';
+                } else {
+                    time = parseInt(gap / (60 * 60 * 1000)) + "시간 전";
+                }
+            } else { //1일 이상일경우
+                const today = new Date(millis);
+                const year = today.getFullYear(); //년
+                const month = today.getMonth() + 1; //월
+                const day = today.getDate(); //일
+                const hour = today.getHours(); // 시
+                const minute = today.getMinutes(); // 분
+                time = year + "년" + month + "월" + day + "일" + hour + "시" + minute + "분";
+
+            }
+            return time;
+        }
+        
+        $('#replyBtn').click(function(){
+        	replyRegist();
+        	$('#replyInput').val('');
+        });
+        
+        $('#replyInput').keyup(function(e){
+        	e.preventDefault();
+        	if(e.keyCode==13){
+        		$('#replyBtn').click();
+        	}
+        })
+        
+        
+     
         $(document).ready(function () {
             
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-            replyAppendTest();
+            replyCount();
+            replyLoad(1);
 
         });
         $(window).resize(function () {
@@ -433,47 +500,51 @@
             
     	});
         
-        $(document).ready(function() {
-			
-        	$('#reply-btn').click(function(){
-        		
-        		const mbNum = '${detail.mbNum}';
-        		const mrContent = $('#mrContent').val();
-        		const memberNum = '${loginuser.memberNum}';
-        		
-        		const replyInfo = {
-        				"mrContent" : mrContent,
-        				"mbNum" : mbNum,
-        				"memberNum" : memberNum
-        		};
-        		
-        		$.ajax({
-        			type : "POST",
-        			url : "<c:url value='/marketReply/regist' />",
-        			headers : {
-        				"Content-Type" : "application/json"
-        			},
-        			dataType : "text",
-        			data : JSON.stringify(replyInfo),
-        			success : function(result){
-        				console.log("댓글등록 완료" + result)
-        				if(result === 'regSuccess'){
-        					alert('댓글등록 완료')
-        					$('#mrContent').val('');
-        					getList(1, true);
-        				}else{
-        					alert('댓글 등록 실패')
-        				}
-        			},
-        			error : function(){
-        				console.log('통신실패')
-        			}
-        		});
-        		
-        		
-        	});
-        	
-		});
+        function replyRegist(){
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/marketReply/regist' />",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                data: JSON.stringify({
+                    "memberNum":${loginuser.memberNum},
+                    "mrContent":$('#mrContent').val(),
+                    "mbNum":${detail.mbNum}
+                }),
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		$('.test:last-child').html(`
+        				<div class="row">
+                            <span id="replyCountSpan"class="reply reply-count">댓글 : ???개</span>
+                        </div>
+                        <div class="row">
+                            <form id="reply-form">
+                                <div class="input-group input-group-lg">
+
+                                    <input id="mrContent" type="text" class="form-control" placeholder="댓글을 작성해주세요"
+                                        aria-describedby="basic-input">
+                                    <span class="input-group-btn" id="basic-input">
+                                        <button id="replyBtn" type="button" class="btn btn-default"><span
+                                                class="glyphicon glyphicon-send"></span></button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>		
+            		`);
+            		
+            		replyCount();
+            		replyLoad(1);
+            		pageNum=2;
+            		alert('댓글 등록 완료!!');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+        }
 
 
 

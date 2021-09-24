@@ -105,7 +105,7 @@
                 
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple="multiple" type="file" name="fileName" size="10" maxlength="10"></td>
                     </tr>
                     <tr>
                         <td>가격 </td>

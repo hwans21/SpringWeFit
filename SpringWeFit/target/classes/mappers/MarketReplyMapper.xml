@@ -18,7 +18,7 @@
 				FROM MarketReply mr, Member m
 				WHERE mr.mbNum = #{mbNum }
 				AND fr.memberNum = m.memberNum
-				ORDER BY fr.mrRegDate DESC
+				ORDER BY mr.mrRegDate DESC
 			) marketreply
 		)
 		<![CDATA[

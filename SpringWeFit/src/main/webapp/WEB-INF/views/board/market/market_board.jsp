@@ -166,8 +166,8 @@
 								onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }' />'">
 								<div class=vid>
 									<a href="#"><img
-										src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage2}"
-										width="280px" height="160px" alt="vid01"></a>
+										src="/upload/board/market/${product.memberNum }/${product.mbRealImage1}"
+										width="280px" height="160px" alt="${product.mbImage1 }"></a>
 
 									<p class="subject">
 										<a href="#">${product.mbType}</a><br>
@@ -177,7 +177,7 @@
 									<p class="auth">
 										<span class="writeday">${product.mbRegDate}</span> <span
 											class="nickname">${product.memberNum}</span> <span
-											class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>${product.mbImageCount}</b></span>
+											class="glyphicon glyphicon-picture" aria-hidden="true"><b>${product.mbImageCount}</b></span>
 										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${product.mbLookCount}</b></span>
 									</p>
 
@@ -224,9 +224,9 @@
 								</li>
 							</c:if>
 	
-							<c:forEach var="page" begin="${pc.beginPage}" end="${pc.endPage}">
+							<c:forEach var="i" begin="${pc.beginPage}" end="${pc.endPage}">
 								<li class="page-item">
-									<a href="<c:url value='/marketBoard/market_board/pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />" >${page }</a>
+									<a href="<c:url value='/marketBoard/market_board?pageNum=${i }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />" >${i }</a>
 								</li>
 							</c:forEach>
 								<c:if test="${pc.next }">
