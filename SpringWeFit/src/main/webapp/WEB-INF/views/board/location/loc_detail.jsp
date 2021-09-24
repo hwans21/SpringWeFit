@@ -1,6 +1,9 @@
+<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 
@@ -216,23 +219,25 @@
             
             <!-- 댓글창 -->
             <div class="col-md-4 col-sm-12 test">
-                
+                <!-- 댓글 입력창 -->
                 <div class="row">
-                    <span class="reply reply-count">댓글 : ???개</span>
+                    <span id="replyCountSpan" class="reply reply-count">댓글 : ???개</span>
                 </div>
                 <div class="row">
                     <form id="reply-form">
                         <div class="input-group input-group-lg">
 
-                            <input type="text" class="form-control" placeholder="댓글을 작성해주세요"
-                                aria-describedby="basic-input" name="prContent">
+                            <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
+                                aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
-                                <button id="reply-btn" type="button" class="btn btn-default"><span
+                                <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
                             </span>
                         </div>
                     </form>
                 </div>
+                
+                <!-- 댓글 리스트 -->
                 <div class="row">
                     <div class="reply reply-box">
                         <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
@@ -253,66 +258,80 @@
     </div>
 
 	<script>
-		const msg = '${msg}';
-		if(msg === 'updateSuccess') {
-			alert('게시글 수정이 정상 처리되었습니다.');
-		}
+	
+    $('#replyBtn').click(function(){
+    	replyRegist();
+    	$('#replyInput').val('');
+    });
+    
+    $('#replyInput').keyup(function(e){
+    	e.preventDefault();
+    	if(e.keyCode==13){
+        	$('#replyBtn').click();
+    	}
+    });
 	
 	
-
-	$(document).ready(function() {
-		
-		$('#replyRegist').click(function() {
-			
-			/*
-			댓글을 등록하려면 게시글 번호도 보내 주셔야 합니다.
-			댓글 내용, 작성자, 댓글 비밀번호, 게시글 번호를 
-			json 표기 방법으로 하나로 모아서 전달해 주시면 됩니다.
-			비동기 통신으로 댓글 삽입을 처리해 주시고,
-			console.log를 통해 '댓글 등록 완료!'를 확인하시고
-			실제 DB에 댓글이 추가되는지도 확인해 주세요.
-			*/
-			const pbNum = '${article.pbNum}'; //컨트롤러에서 넘어온 게시글번호
-			const reply = $('#reply').val(); //댓글 내용
-			const replyId = $('#replyId').val(); //작성자
-			const replyPw = $('#replyPw').val(); //비밀번호
-			
-			if(reply === '' || replyId === '' || replyPw === '') {
-				alert('이름, 비밀번호, 내용을 입력하세요!');
-				return;
-			}
-			
+	    
+		$('#lovelyBtn').click(function(){
+			const arr = {
+				"pbNum" : ${content.pbNum},
+				"memberNum" : ${loginuser.memberNum}
+			};
 			$.ajax({
-				type: "post",
-				url: "<c:url value='/reply/replyRegist' />",
-				data: JSON.stringify(
-					{
-						"pbNum": pbNum,
-						"reply": reply,
-						"replyId": replyId,
-						"replyPw": replyPw
-					}		
-				),
-				dataType: "text", //서버로부터 어떤 형식으로 받을지 (생략 가능)
-				headers: {
-					"Content-Type" : "application/json"
-				},
-				success: function(data) {
-					console.log('통신 성공! ' + data);
-					$('#reply').val('');
-					$('#replyId').val('');
-					$('#replyPw').val('');
-					getList(1, true); //등록 성공 후 댓글 목록 함수를 호출해서 비동기식으로 목록 표현.
-				},
-				error: function() {
-					alert('등록에 실패했습니다. 관리자에게 문의하세요.');
-				}
-			}); //댓글 등록 비동기 통신 끝.
-
-		}); //댓글 등록 이벤트 끝
+	            type: "POST",
+	            url: "<c:url value='/placeBoard/placeLikely' />",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+	            data: JSON.stringify(arr),
+	            success: function (data) {
+	                console.log('통신성공!' + data);
+	              	if(data==="success"){
+	              		alert('좋아요 등록완료');
+	              	} else{
+	              		alert('이미 좋아요를 누르셨습니다.')
+	              	}
+	            },
+	            error: function () {
+	                alert('통신에 실패했습니다. 관리자에게 문의하세요');
+	            }
+	        }); //좋아요  비동기 처리 끝
+	        
+	        
+		});
 		
-		
-		
+		$('#reportBtn').click(function(){
+			const arr = {
+				"pbNum" : ${content.pbNum },
+				"memberNum" : ${loginuser.memberNum }
+			};
+			$.ajax({
+	            type: "POST",
+	            url: "<c:url value='/placeBoard/placeReport' />",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+	            data: JSON.stringify(arr),
+	            success: function (data) {
+	                console.log('통신성공!' + data);
+	              	if(data==="success"){
+	              		alert('신고 완료했습니다.');
+	              	} else{
+	              		alert('이미 신고를 하셨습니다.')
+	              	}
+	            },
+	            error: function () {
+	                alert('통신에 실패했습니다. 관리자에게 문의하세요');
+	            }
+	        }); //좋아요  비동기 처리 끝
+	        
+	        
+		});
+	</c:if>
+	
 	</script>
 	
 	

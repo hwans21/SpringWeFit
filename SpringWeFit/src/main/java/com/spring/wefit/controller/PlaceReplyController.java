@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.wefit.command.PlaceReplyVO;
@@ -20,33 +21,35 @@ import com.spring.wefit.commons.PageVO;
 
 
 @RestController
-@RequestMapping("/reply")
+@RequestMapping("/placeReply")
 public class PlaceReplyController {
 	
 	
 	@Autowired
 	private IPlaceReplyService service;
 	
-	//댓글 등록
+	//장소게시판 댓글 등록
 	@PostMapping("/replyRegist")
+	@ResponseBody
 	public String replyRegist(@RequestBody PlaceReplyVO vo) {
 		
 		System.out.println("댓글 등록 요청이 들어옴!");
+		System.out.println(vo.toString());
 		service.replyRegist(vo);
 		return "regSucess";
 		
 	}
 	
-	//일반 댓글 목록 (페이징 x)
-	@GetMapping("/replyGetList/{pbNum}")
-	public List<PlaceReplyVO> getList(@PathVariable int pbNum) {
-		
-		List<PlaceReplyVO> list = service.getList(pbNum);
-		System.out.println("댓글 개수: " + list.size());
-		
-		return list;
-	}
+	//장소게시판 댓글 목록
+	//장소게시판 댓글 수정
+	//장소게시판 댓글 삭제
+	//장소게시판 댓글 수
 	
+
+	
+	
+	
+
 //	//페이징이 추가된 댓글 목록
 //	@GetMapping("/replyGetList/{pbNum}/{pageNum}")
 //	public Map<String, Object> getList(@PathVariable int pbNum, @PathVariable int pageNum) {

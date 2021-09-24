@@ -7,13 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.wefit.command.PlaceBoardVO;
+import com.spring.wefit.command.PlaceReplyVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.placeboard.service.IPlaceBoardService;
 
@@ -24,7 +27,9 @@ public class PlaceBoardController {
 	@Autowired 
 	private IPlaceBoardService service;
 	
-	//장소 목록 화면
+	
+	
+	//장소 목록 페이지 이동
 	@GetMapping("/placeList")
 	public String placeList(PageVO vo, Model model) {
 		System.out.println("/placeBoard/placeList: GET");
@@ -32,10 +37,16 @@ public class PlaceBoardController {
 		System.out.println(list);
 		model.addAttribute("placeList", list);
 		return "board/location/loc_board";
+		
+		
+		// 페이지 버튼 계산하기
+		// 총 게시물 개수
+		// 게시글 리스트 뽑기
+		// jsp에 전달할 값들
 	}
 	
 		
-	//글쓰기 화면 처리
+	//장소 글쓰기 페이지 이동
 	@GetMapping("/placeWrite")
 	public String placeWrite() {
 		System.out.println("/placeBoard/placeWrite: GET");
@@ -43,7 +54,7 @@ public class PlaceBoardController {
 	}
 	
 
-	//글 등록 처리
+	//장소 글 등록 처리 >> 이미지 업로드 수정
 	@PostMapping("/placeWrite")
 	public String placeWrite(MultipartHttpServletRequest request, PlaceBoardVO vo, RedirectAttributes ra) {
 		System.out.println("/placeBoard/placeWrite: POST");
@@ -57,35 +68,51 @@ public class PlaceBoardController {
 	}
 
 
-	//글 상세보기 처리
+	//장소 글 상세 페이지 이동 
 	@GetMapping("/placeDetail")
-	public String placeContent(@RequestParam int pbNum, Model model) {
-		
-		System.out.println("/placeBoard/placeContent: GET");
-		System.out.println("요청된 글 번호: " + pbNum);
-			
-		model.addAttribute("placeList", service.getContent(pbNum));
-		
-		service.upHit(pbNum);
-		
-		return "board/location/loc_detail";
-	}
-		
-			
-	//글 수정 페이지 이동
+	public String placeContent(@RequestParam int pbNum, PageVO page, Model model) {
+	   	System.out.println("/placeBoard/placeContent: GET");
+	    System.out.println("요청된 글 번호: " + pbNum);
+	    service.upHit(service.getContent(pbNum).getPbNum());
+	    model.addAttribute("content",service.getContent(pbNum));
+	    model.addAttribute("replyVO", new PlaceReplyVO());
+//	    model.addAttribute("pc", page);
+	    
+	    return "board/location/loc_detail";
+	    
+	 }
+	
+	
+
+	//장소 수정 페이지 이동
 	@GetMapping("/placeModify")
-	public String placeModify(@RequestParam int pbNum, Model model) {
+	public String placeModify(@RequestParam int pbNum,PageVO page, Model model) {
 		System.out.println("/placeBoard/placeModify: GET");
-		System.out.println("요청된 글 번호: " + pbNum);
-		model.addAttribute("article", service.getContent(pbNum));
+		System.out.println("수정 요청된 글 번호: " + pbNum);
+		model.addAttribute("content", service.getContent(pbNum));
+		model.addAttribute("pc", page);
 		
 		return "board/location/loc_modify";
 	}
 	
+	
+	
+	//장소 글 수정 페이지 이동 >> 작동 X
+//	@GetMapping("/placeModify")
+//	public String placeModify(@RequestParam int pbNum, Model model) {
+//		System.out.println("/placeBoard/placeModify: GET");
+//		System.out.println(service.getContent(pbNum).toString());
+//		
+//		System.out.println("요청된 글 번호: " + pbNum);
+//		model.addAttribute("article", service.getContent(pbNum));
+//		
+//		return "board/location/loc_modify";
+//	}
+	
 
 	
 
-	//글 수정 처리
+	//장소 글 수정 처리 >> 보완
 	@PostMapping("/placeModify")
 	public String placeUpdate(MultipartHttpServletRequest request, PlaceBoardVO vo, RedirectAttributes ra) {
 		System.out.println("/placeBoard/placeUpdate: POST");
@@ -98,16 +125,45 @@ public class PlaceBoardController {
 	
 
 
-	//글 삭제 처리
+	//장소 글 삭제 처리
 	@PostMapping("/placeDelete")
 	public String placeDelete(PlaceBoardVO vo, RedirectAttributes ra) {
-		System.out.println("/placeBoard/placeUpdate: POST");
+		System.out.println("/placeBoard/placeDelete: POST");
 		service.delete(vo.getPbNum());
 		ra.addFlashAttribute("msg", "게시글이 정상 삭제되었습니다.");
 			
 		return "redirect:/board/location/loc_board";
 	}	
 	
+		
+	//장소 글 좋아요 처리
+	@PostMapping("/placeLikely")
+	@ResponseBody
+	public String freeBoardLikely(@RequestBody PlaceBoardVO vo) {
+		System.out.println("글 번호:"+vo.getPbNum());
+		System.out.println("유저 번호"+vo.getMemberNum());
+		if(service.checkLovely(vo) == 1) {
+			return "duplicate";
+		} else {
+			service.insertLovely(vo);
+			return "success";
+		}
+	}
 	
+	//장소 글 신고 처리하기
+	@PostMapping("/placeReport")
+	@ResponseBody
+	public String freeBoardReport(@RequestBody PlaceBoardVO vo) {
+		System.out.println("글 번호:"+vo.getPbNum());
+		System.out.println("유저 번호"+vo.getMemberNum());
+		if(service.checkReport(vo) == 1) {
+			return "duplicate";
+		} else {
+			service.insertReport(vo);
+			return "success";
+		}
+	}
+	
+
 	
 }

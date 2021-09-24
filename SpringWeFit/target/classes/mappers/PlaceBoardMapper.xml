@@ -9,98 +9,65 @@
 		  	SELECT * FROM PlaceBoard
 		  	ORDER BY pbNum DESC 	
 	</select>
+	<!--  
+	<select id="getList" resultType="com.spring.wefit.command.PlaceBoardVO">
+		SELECT * FROM
+		(
+			SELECT ROWNUM as rn, place.* FROM
+			(
+				SELECT p.*, m.memberNick,(SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
+				(SELECT COUNT(*) FROM PlaceReport WHERE pbNum=p.pbNum) as pbReportCount
+				FROM PlaceBoard p, Member m
+				WHERE p.memberNum = m.memberNum
+				AND p.pbTitle LIKE '%'||#{condition}||'%'
+				AND p.pbTitle LIKE '%'||#{keyword}||'%'
+				ORDER BY pbRegDate DESC
+			) place
+		)
+		<![CDATA[
+		WHERE rn > (#{pageNum}-1)*#{countPerPage}
+		AND rn <= #{pageNum} * #{countPerPage}
+		]]>
+	</select>
+	-->
 
+
+	<!--  -->
+	<select id="getContent" resultType="com.spring.wefit.command.PlaceBoardVO">
+		SELECT p.*, m.memberNick,
+		(SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=#{pbNum}) as pbLikelyCount,
+		(SELECT COUNT(*) FROM PlaceReport WHERE pbNum=#{pbNum}) as pbReportCount
+		FROM PlaceBoard p, Member m
+		WHERE p.pbNum = #{pbNum}
+		AND p.memberNum = m.memberNum
+	</select>
+	
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*) FROM PlaceBoard p, Member m
+		WHERE p.memberNum = m.memberNum
+		AND p.pbTitle LIKE '%'||#{condition}||'%'
+		AND p.pbTitle LIKE '%'||#{keyword}||'%'
+	</select>
 
 	<insert id="regist">
-		INSERT INTO PlaceBoard
-		(
+		INSERT INTO PlaceBoard(
 		pbNum, memberNum, pbCategory, pbTitle, pbContent, 
 		pbImage1, pbImage2, pbImage3, pbImage4, pbImage5,
 		pbRealImage1, pbRealImage2, pbRealImage3, pbRealImage4, pbRealImage5,
 		<!-- 
 		pbAddrBasic, pbAddrDetail, pbLatitude, pbLongitude, 
 		-->
-		pbLookCount, pbImageCount
-		)
-		VALUES
-		(
-		placeboard_seq.NEXTVAL, 
-		#{memberNum}, #{pbCategory}, #{pbTitle}, #{pbContent}, 
+		pbLookCount, pbImageCount)
+		VALUES(
+		placeboard_seq.NEXTVAL, (SELECT memberNum From Member WHERE memberNick = #{memberNick}), 
+		#{pbCategory}, #{pbTitle}, #{pbContent}, 
 		#{pbImage1}, #{pbImage2}, #{pbImage3}, #{pbImage4}, #{pbImage5},
 		#{pbRealImage1}, #{pbRealImage2},#{pbRealImage3},#{pbRealImage4},#{pbRealImage5},
 		<!-- 
 		#{pbAddrBasic}, #{pbAddrDetail}, #{pbLatitude}, #{pbLongitude}, 
 		 -->
-		#{pbLookCount}, #{pbImageCount}
-		)		
+		0, #{pbImageCount})		
 	</insert>
-	
-	
-	<select id="getContent"
-		resultType="com.spring.wefit.command.PlaceBoardVO">
-		SELECT * FROM PlaceBoard
-		WHERE pbNum = #{pbNum}
-	</select>
-
-	<update id="upHit">
-   		UPDATE CourseBoard
-   		SET cbLookCount = cbLookCount + 1
-  		WHERE cbNum=#{cbNum}
-	</update>
-	
-	
-  <!--  
-	<sql id="search">
-		<if test="condition == 'pbTitle'">
-			WHERE pbTitle LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'pbContent'">
-			WHERE pbContent LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'memberNum'">
-			WHERE memberNum LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'titleContent'">
-			WHERE pbTitle LIKE '%'||#{keyword}||'%'
-			OR pbContent LIKE '%'||#{keyword}||'%'
-		</if>
-	</sql>
-  -->
-	
-
-
-
-	<!--
-	<select id="getList"
-		resultType="com.spring.wefit.command.PlaceBoardVO">
-		SELECT * FROM
-			(
-			SELECT ROWNUM as rn, tbl.* FROM
-				(
-				SELECT * FROM PlaceBoard
-				<include refid="search" />
-				ORDER BY pbNum DESC
-				) tbl
-			)
-		<![CDATA[
-		WHERE rn > (#{pageNum} - 1) * #{countPerPage}
-		AND rn <= #{pageNum} * #{countPerPage}
-		]]>
-	</select> -->
-	
-		  
-
-
-
-	<select id="getTotal" resultType="int">
-		SELECT COUNT(*)
-		FROM PlaceBoard
-		<!-- <include refid="search" /> -->
-	</select>
-
-
-
-
 
 	<update id="update">
 		UPDATE PlaceBoard
@@ -112,16 +79,43 @@
 		pbImage5 = #{pbImage5},
 		pbRealImage1 = #{pbRealImage1}, pbRealImage2 = #{pbRealImage2}, 
 		pbRealImage3 = #{pbRealImage3}, pbRealImage4 = #{pbRealImage4}, 
-		pbRealImage5 = #{pbRealImage5}
+		pbRealImage5 = #{pbRealImage5},
+		pbImageCount = #{pbImageCount}
 		WHERE pbNum=#{pbNum}
 	</update>
-  	
+
 	<delete id="delete">
 		DELETE FROM PlaceBoard
 		WHERE pbNum=#{pbNum}
 	</delete>
-
-
+	
+	<update id="upHit">
+   		UPDATE PlaceBoard
+   		SET pbLookCount = pbLookCount + 1
+  		WHERE pbNum=#{pbNum}
+	</update>
+	
+	<select id="checkLovely" resultType="int">
+		SELECT COUNT(*) FROM PlaceLikely
+		WHERE pbNum = #{pbNum}
+		AND memberNum = #{memberNum}
+	</select>
+	
+	<insert id="insertLovely">
+		INSERT INTO PlaceLikely
+		VALUES(#{pbNum}, #{memberNum})
+	</insert>
+	
+	<select id="checkReport" resultType="int">
+		SELECT COUNT(*) FROM PlaceReport
+		WHERE pbNum = #{pbNum }
+		AND memberNum = #{memberNum}
+	</select>
+	
+	<insert id="insertReport">
+		INSERT INTO PlaceReport
+		VALUES(#{pbNum}, #{memberNum})
+	</insert>
 
 
 </mapper>

@@ -24,9 +24,7 @@ CREATE SEQUENCE placeReply_seq
     MAXVALUE 10000000
     NOCYCLE 
     NOCACHE;
-    
-1.ON DELETE CASCADE; ?
-2.ON DELETE SET NULL; ?
+
 
  */
 @Getter
@@ -40,5 +38,7 @@ public class PlaceReplyVO {
 	private int memberNum;
 	private int starScore;
 	private Timestamp prRegDate;
+	
+	private String memberNick;
 	
 }

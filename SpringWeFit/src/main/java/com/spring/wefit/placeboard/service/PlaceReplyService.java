@@ -20,13 +20,14 @@ public class PlaceReplyService implements IPlaceReplyService {
 	@Autowired
 	private IPlaceReplyMapper mapper;
 	
-	//댓글 등록
+	
+	//장소게시판 댓글 등록
 	@Override
 	public void replyRegist(PlaceReplyVO vo) {
-		mapper.replyRegist(vo);
+		mapper.placeReplyRegist(vo);
 	}
 	
-	//목록 요청
+	//장소게시판 댓글 목록
 	@Override
 	public List<PlaceReplyVO> replyGetList(PageVO vo, int pbNum) {
 		Map<String, Object> datas = new HashMap<>();
@@ -36,28 +37,26 @@ public class PlaceReplyService implements IPlaceReplyService {
 		return mapper.replyGetList(datas);
 	}
 	
-	//댓글 개수
+	//장소게시판 댓글 개수
 	@Override
 	public int replyGetTotal(int pbNum) {
 		return mapper.replyGetTotal(pbNum);
 	}
 	
-	//댓글 수정
+	//장소게시판 댓글 수정
 	@Override
 	public void replyUpdate(PlaceReplyVO vo) {
 		mapper.replyUpdate(vo);
 	}
 
-	//댓글 삭제
+	//장소게시판 댓글 삭제
 	@Override
 	public void replyDelete(int prNum) {
 		mapper.replyDelete(prNum);
 	}
 
-	@Override
-	public List<PlaceReplyVO> getList(int pbNum) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+
+	
 
 }

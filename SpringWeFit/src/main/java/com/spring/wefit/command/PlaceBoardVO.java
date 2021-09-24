@@ -24,7 +24,8 @@ import lombok.ToString;
     pbRealImage3     VARCHAR2(50)  , 
     pbRealImage4     VARCHAR2(50)  , 
     pbRealImage5     VARCHAR2(50)  , 
-    pbAddrBasic      VARCHAR(300)      NOT NULL, 
+    pbAddrBasic      VARCHAR(300)      NOT NULL,
+    pbAddrDetail 	 VARCHAR(300)      NOT NULL, 
     pbLatitude       NUMBER(9, 6)      NOT NULL, 
     pbLongitude      NUMBER(9, 6)      NOT NULL, 
     pbLookCount      NUMBER(20,0)      DEFAULT 0 NOT NULL, 
@@ -33,8 +34,6 @@ import lombok.ToString;
     CONSTRAINT PK_PlaceBoard PRIMARY KEY (pbNum)
 );
 
-ALTER TABLE PlaceBoard 
-	ADD pbAddrDetail VARCHAR(300) NOT NULL;
 
 CREATE SEQUENCE placeBoard_seq 
     START WITH 1 
@@ -42,31 +41,7 @@ CREATE SEQUENCE placeBoard_seq
     MAXVALUE 10000000 
     NOCYCLE 
     NOCACHE;
-    
-ALTER TABLE PlaceBoard 
-	Rename column mNum To memberNum;
-ALTER TABLE PlaceReply 
-	Rename column mNum To memberNum;
-ALTER TABLE PlaceLikely 
-	Rename column mNum To memberNum;
-ALTER TABLE PlaceReport 
-	Rename column mNum To memberNum;
 
-ALTER TABLE PlaceBoard 
-	modify pbImageCount null;
-ALTER TABLE PlaceBoard 
-	MODIFY pbLookCount NULL;
-ALTER TABLE PlaceBoard 
-	MODIFY pbImageCount NULL;
-ALTER TABLE PlaceBoard 
-	MODIFY pbImageCount DEFAULT 0;
-	
-ALTER TABLE PlaceBoard 
-	modify pbCategory DEFAULT 0;
-	
-ALTER TABLE PlaceBoard 
-	modify pbAddrBasic, pbAddrDetail, 
-	pbLatitude, pbLongitude, pbImageCount  DEFAULT 0;
 	
  */
 
@@ -98,6 +73,8 @@ public class PlaceBoardVO {
 	private int pbLookCount;
 	private int pbImageCount;
 	private Timestamp pbRegDate;
-//	private boolean isNewMark;
 
+	private String memberNick;
+	private int pbLikelyCount;
+	private int pbReportCount;
 }

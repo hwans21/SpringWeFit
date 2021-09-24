@@ -29,7 +29,19 @@ public interface IPlaceBoardService {
 	void upHit(int pbNum);
 	   
 	//좋아요를 올려주는 메서드
-	void upLike(int pbNum);
+	int checkLovely(PlaceBoardVO vo);
+	
+	//자유게시판 좋아요 처리
+	void insertLovely(PlaceBoardVO vo);
+		
+	//자유게시판 신고 했는지 확인
+	int checkReport(PlaceBoardVO vo);
+		
+	//자유게시판 신고 처리
+	void insertReport(PlaceBoardVO vo);
+
+	
+		
 
 	
 	
