@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.wefit.command.CourseReplyVO;
 import com.spring.wefit.command.UserVO;
+import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.course.service.ICourseBoardService;
 import com.spring.wefit.course.service.ICourseReplyService;
 
@@ -36,10 +37,15 @@ public class CourseReplyController {
 	
 	}
 	
-	@GetMapping("/{cbNum}") //pathVariable 뭔지 생각안남..
-	public Map<String, Object> replyList(@PathVariable int cbNum) {
-				
-		List<CourseReplyVO> list = service.getList(cbNum);	
+	@GetMapping("/{cbNum}/{pageNum}") //pathVariable 뭔지 생각안남..
+	public Map<String, Object> replyList(@PathVariable int cbNum, @PathVariable int pageNum) {
+		
+		//페이징 처리
+		PageVO vo = new PageVO();
+		vo.setPageNum(pageNum);
+		vo.setCountPerPage(10);
+		
+		List<CourseReplyVO> list = service.getList(vo, cbNum);	
 		int total = service.getTotal(cbNum); //해당 글의 총 댓글 개수!! (CourseReply 테이블에서 조회함)		
 		service2.updateCrCount(cbNum, total); //CourseBoard테이블 update시키기.(= CourseBoard테이블에 해당 글의 댓글개수(crCount 컬럼) 저장함)
 		

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,12 +31,15 @@ public class CourseBoardController {
    
    @Autowired
    private ICourseBoardService service;
+   
    @Autowired
    private ICourseReplyService service2;
    
    
    @GetMapping("/")
    public String courseList(PageVO vo, Model model) {
+	   
+	  System.out.println("리스트요청~~");
 	   
 	  //여기서 setCounterPerPage를 사용해서 9로 바꿔주기.
 	  vo.setCountPerPage(9);
@@ -46,7 +51,8 @@ public class CourseBoardController {
 	  pc.setArticleTotalCount(service.getTotal(vo));
 	  model.addAttribute("pc", pc);   
 	   
-	  System.out.println(vo);
+	  //System.out.println(vo);
+	  
       model.addAttribute("courseList", service.getList(vo));
 
       return "board/course/course_board";
@@ -63,24 +69,26 @@ public class CourseBoardController {
    @PostMapping("/regist")
    public String courseRegist(CourseBoardVO vo, RedirectAttributes ra) {
       
-      System.out.println(vo);
-          
-      service.regist(vo);
-      ra.addFlashAttribute("msg", "게시글이 등록되었습니다.");
-      
-      return "redirect:/courseBoard/?category=";
+      //System.out.println(vo);
+ 
+	 service.regist(vo);
+	 ra.addFlashAttribute("msg", "게시글이 등록되었습니다.");
+	 return "redirect:/courseBoard/?category=";
+     
    }
    
    
    @GetMapping("/detail")
    public String courseDetail(@RequestParam int cbNum, Model model) {
       
+	  System.out.println("디테일요청~~"); 
+	   
 	  //조회수 올려줌
 	  service.upHit(cbNum);
 	  
 	  
 	  CourseBoardVO vo = service.getContent(cbNum);
-
+	  System.out.println("조회수: " + vo.getCbLookCount());
 	  
 	  //cbContent부분(textarea) 줄개행은 db에 \r\n으로 저장이 된다.
 	  //그걸 <br>로 바꿔야 화면에 줄개행이되어서 출력이된다. (html은 줄개행이 <br>인가봄)
@@ -93,7 +101,7 @@ public class CourseBoardController {
   
       model.addAttribute("article", vo);
       
-      System.out.println(vo);
+      //System.out.println(vo);
       
       
 /*      

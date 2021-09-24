@@ -17,20 +17,25 @@
 
 
 <select id="getList" resultType="com.spring.wefit.command.CourseReplyVO">
-    SELECT * FROM CourseReply
+<!--     SELECT * FROM CourseReply
 	WHERE cbNum = #{cbNum}
-	ORDER BY crNum DESC
+	ORDER BY crRegDate DESC --><!-- 페이징 처리 전 --> <!-- order by를 crNum이 아니라 crRegDate로 해야함!! 그래야지 수정되었을때 수정된 날짜가 젤 최신글로 뿌려줌 -->
 	
-<!--   	SELECT cr.*, m.memberNick FROM CourseReply cr, Member m
-	WHERE cbNum = #{cbNum}
-	AND cr.memberNum = m.memberNum
-	ORDER BY crNum DESC -->
 	
-<!-- 	SELECT cr.*, m.memberNick  
-	FROM CourseReply cr INNER JOIN Member m
-	ON cr.memberNum = m.memberNum
-	WHERE cr.cbNum = #{cbNum}
-	ORDER BY cr.crNum DESC --> <!-- inner join -->
+	SELECT * FROM
+	(
+		SELECT ROWNUM as rn, CourseReply.* FROM
+		(
+			SELECT * FROM CourseReply
+			WHERE cbNum = #{cbNum}
+			ORDER BY crRegDate DESC
+		) CourseReply
+	)
+	<![CDATA[
+	WHERE rn > (#{vo.pageNum}-1)*#{vo.countPerPage}
+	AND rn <= #{vo.pageNum} * #{vo.countPerPage}
+	]]> <!-- 페이징 처리 후 (아직 member테이블과 조인하지 못함 -->
+
 </select>
 
 <select id="getTotal" resultType="int">

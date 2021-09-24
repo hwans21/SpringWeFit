@@ -24,7 +24,11 @@ public class CourseReportVO {
 	private int cbNum;
 	private int memberNum;
 	
-	private String cbReportCheckbox;
+	private String cbReportChk1;
+	private String cbReportChk2;
+	private String cbReportChk3;
+	private String cbReportChk4;
+	private String cbReportChk5;
 	private String cbReportInput;
 	
 	private Timestamp cbReportRegDate;

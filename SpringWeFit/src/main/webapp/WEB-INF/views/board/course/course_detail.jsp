@@ -147,8 +147,14 @@
         	margin-right: 3px;
         }
         
-        #update:hover{
+        #update:hover {
         	text-decoration: underline;
+        }
+        
+        
+        #reason-input {
+        	margin-left: 60px;
+        	/*display: none;*/
         }
         
         
@@ -289,7 +295,7 @@
 			        <div class="modal-body">
 	                    <form id="form-report" action="<c:url value='#' />" method="post" role="form" class="form-horizontal">
 	                        
-	                        <div class="form-group">
+	                        <!-- <div class="form-group">
 	                            <label for="reason-checkbox" class="col-sm-3 control-label">비밀번호</label>
 	                            <div class="col-sm-9">
 	                                <input type="password" class="form-control" id="join-passwd" name="cbReportCheckbox"
@@ -303,12 +309,40 @@
 	                                <input type="password" class="form-control" id="passwordchk"
 	                                    placeholder="비밀번호를 확인해주세요">
 	                            </div>
-	                        </div>
-	
+	                        </div> -->
+	                        <div class="form-check">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox1" name="cbReportChk1">
+  								<label class="form-check-label col-sm-11" for="flexCheckDefault">타인에 대한 욕설 또는 비방</label>
+							</div>
+							
+							<div class="form-check">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox2" name="cbReportChk2">
+  								<label class="form-check-label col-sm-11" for="flexCheckDefault">음란성 내용 및 음란물 링크</label>
+							</div>
+							
+							<div class="form-check">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox3" name="cbReportChk3">
+  								<label class="form-check-label col-sm-11" for="flexCheckDefault">같은 내용의 반복(도배)</label>
+							</div>
+							
+							<div class="form-check">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox4" name="cbReportChk4">
+  								<label class="form-check-label col-sm-11" for="flexCheckDefault">상업적 광고, 사이트 홍보</label>
+							</div>
+							
+							<div class="form-check">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox5" name="cbReportChk5">
+  								<label class="form-check-label col-sm-11" for="flexCheckDefault">폭력 또는 사행심 조장</label>
+							</div>
+
+							<div class="form-check">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox6" name="cbReportChk6">
+  								<label class="form-check-label col-sm-11" for="flexCheckDefault">기타</label>
+							</div>
+															
 	                        <div class="form-group">
-	                            <label for="reason-input" class="col-sm-3 control-label">기타</label>
 	                            <div class="col-sm-9">
-	                                <input type="text" class="form-control" id="reson-input" name="cbReportInput"
+	                                <input type="text" class="form-control" id="reason-input" name="cbReportInput"
 	                                    placeholder="신고사유를 입력해주세요">
 	                            </div>
 	                        </div>
@@ -341,6 +375,8 @@
       if(msg === 'modifySuccess') {
          alert('수정이 완료되었습니다.');
       } */
+      
+      
    
         function sleep(ms) {
             const wakeUpTime = Date.now() + ms;
@@ -412,6 +448,19 @@
         
         $(function() { //start jQuery
         	
+        	/* if($("reason-checkbox6").is(":checked")){
+        		$('#reason-input')
+        	} */
+        
+        	/* $("#reason-checkbox6").on('click', function() { 
+        		if ($(this).prop('checked')) { 
+        			$('#reason-input').attr('hidden', hidden);
+        		} else { 
+        			$('#reason-input').attr('hidden', hidden);
+        		}  		
+        	}); */
+
+        	
         	//댓글 등록
             $('#reply-btn').click(function() {
             	
@@ -458,10 +507,11 @@
             function getList(reset) {
             	
             	const cbNum = "${article.cbNum}";
+            	const pageNum = 1;
             	
             	$.getJSON(
             			
-            		"/wefit/courseReply/" + cbNum,
+            		"/wefit/courseReply/" + cbNum + "/" + pageNum,
             			
             		function(data) {
             			

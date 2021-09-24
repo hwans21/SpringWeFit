@@ -2,11 +2,13 @@ package com.spring.wefit.course.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.wefit.command.CourseBoardVO;
 import com.spring.wefit.command.CourseReplyVO;
+import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.course.mapper.ICourseReplyMapper;
 
 @Service
@@ -21,8 +23,8 @@ public class CourseReplyService implements ICourseReplyService {
 	}
 
 	@Override
-	public List<CourseReplyVO> getList(int cbNum) {
-		return mapper.getList(cbNum);
+	public List<CourseReplyVO> getList(@Param("vo") PageVO vo, @Param("cbNum") int cbNum) {
+		return mapper.getList(vo, cbNum);
 	}
 
 	@Override
