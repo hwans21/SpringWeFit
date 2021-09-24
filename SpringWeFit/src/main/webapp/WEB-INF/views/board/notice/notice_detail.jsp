@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 
 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 
@@ -113,9 +113,9 @@
                 <div class="row">
 
 
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='/FRONT/views/board/notice/notice_modify.jsp'">수정하기</button>
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href="/noticeboard/noticedelete?NBNUM=${noticeview.NBNUM}">삭제하기</button>
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='/FRONT/views/board/notice/notice_board.jsp'">목록으로</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeList.nbNum}" />'">수정하기</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeDelete?nbNum=${noticeList.nbNum}" />'">삭제하기</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeList" />'">목록으로</button>
 
 
                 </div>
@@ -123,7 +123,7 @@
                     <div class="col-sm-12">
                         <div class="titlebox">
 
-                            <h2>${noticeview.NBTITLE}</h2>
+                            <h2>${noticeList.nbTitle}</h2>
 
                         </div>
                     </div>
@@ -131,56 +131,7 @@
 
                 <div class="row">
                     <div class="container-fluid">
-                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"
-                            data-interval="false">
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-
-                            </ol>
-
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site01.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site02.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site03.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site04.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site05.jpg" width="100%" alt="...">
-
-                                </div>
-
-                            </div>
-
-                            <!-- Controls -->
-                            <a class="left carousel-control" href="#carousel-example-generic" role="button"
-                                data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" role="button"
-                                data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-
+                        
 
                     </div>
                 </div>
@@ -192,8 +143,8 @@
                             <tr>
 
 
-                                <td>작성일 : ${noticeview.NBREGDATE}</td>
-                                <td><span class="glyphicon glyphicon-eye-open"></span>${noticeview.NBLOOKCOUNT}</td>
+                                <td>작성일 : ${noticeList.nbRegDate}</td>
+                                <td><span class="glyphicon glyphicon-eye-open"></span>${noticeList.nbLookCount}</td>
 
                                 <td>
 
@@ -209,12 +160,19 @@
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
 
-
-                                        ${noticeview.NBCONTENT}
+                                        ${noticeList.nbContent}
 
                                     </p>
+                                    
+                                  
                                 </td>
                             </tr>
+                            
+                    <div class="row">
+                    	<div class="container-fluid">
+                    	<img src="${pageContext.request.contextPath }/resource/img/${noticeList.nbImage1}" alt="" class="">
+                    	</div>
+                    </div>
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -305,15 +263,7 @@ model.addAttribute("reply", reply);-->
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
         });
         $('.test:last-child').scroll(function () {
-            /*
-                document height -> 모든 row들의 높이 합
-                문서 전체의 높이를 의미합니다.
-                window height -> div.test의 높이
-                화면의 높이를 의미합니다.
-                scroll top
-                스크롤의 top이 위치하고 있는 높이를 의미합니다
-                
-            */
+           
             let replyTotalHeight = 0;
             let count=0;
             $('.test:last-child >.row').each(function () {

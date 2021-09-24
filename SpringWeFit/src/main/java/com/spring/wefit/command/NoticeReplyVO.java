@@ -1,5 +1,6 @@
 package com.spring.wefit.command;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import lombok.Getter;

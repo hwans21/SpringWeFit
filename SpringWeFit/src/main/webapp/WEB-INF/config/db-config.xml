@@ -58,7 +58,7 @@
 	<mybatis-spring:scan base-package="com.spring.wefit.placeboard.mapper"/>
 	<mybatis-spring:scan base-package="com.spring.wefit.user.mapper"/>
 	<mybatis-spring:scan base-package="com.spring.wefit.test"/>
-  	
+  	<mybatis-spring:scan base-package="com.spring.wefit.noticeboard.mapper"/>
   	
 
 	

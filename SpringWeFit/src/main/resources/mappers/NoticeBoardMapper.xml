@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper
+namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
+
+<!-- 게시물 검색 -->
+
+<sql id="search">
+		<if test="condition == 'title'">
+			WHERE nbTitle LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'content'">
+			WHERE nbContent LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'writer'">
+			WHERE nickname LIKE '%'||#{keyword}||'%'
+		</if>
+	</sql>
+
+<!-- 게시물 작성 -->
+<insert id="regist">
+		INSERT INTO NoticeBoard
+		(
+		nbNum, memberNum, nbTitle, nbContent,
+		nbImage1, nbRealImage1
+		)
+		VALUES
+		(
+		noticeBoard_seq.NEXTVAL,
+		#{memberNum}, #{nbTitle}, #{nbContent},
+		#{nbImage1}, #{nbRealImage1}
+		)
+	</insert>
+	
+<!-- 게시물 목록 -->
+<select id="getList"
+		resultType="com.spring.wefit.command.NoticeBoardVO">
+
+				SELECT * FROM
+					(
+						SELECT ROWNUM as rn, notice.* FROM
+							(
+								SELECT * FROM NoticeBoard
+								<include refid="search" />
+								ORDER BY nbNum DESC
+							) notice 
+				)
+		  		<![CDATA[
+		  		WHERE rn > (#{pageNum}-1) * #{countPerPage}
+		  		AND rn <= #{pageNum} * #{countPerPage} 
+		  		]]>
+
+	</select>
+	
+	<select id="getContent"
+		resultType="com.spring.wefit.command.NoticeBoardVO">
+		SELECT * FROM NoticeBoard
+		WHERE nbNum= #{nbNum}
+	</select>
+
+
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*)
+		FROM NoticeBoard
+		<include refid="search" />
+	</select>
+
+
+	<update id="update">
+		UPDATE NoticeBoard
+		SET
+		nbTitle = #{nbTitle},
+		nbContent = #{nbContent},
+		nbImage1 = #{nbImage1},
+		nbRealImage1 = #{nbRealImage1},
+
+		WHERE nbNum = #{nbNum}
+	</update>
+
+
+	<delete id="delete">
+		DELETE FROM NoticeBoard
+		WHERE nbNum = #{nbNum}
+	</delete>
+
+
+
+
+
+
+</mapper>

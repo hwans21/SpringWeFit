@@ -48,51 +48,40 @@
             <div class="row">
                 <div class="col-sm-5">
                     <div class="titlebox">
-                        <h2>공지사항 수정</h2>
+                        <h2>공지사항 등록</h2>
                     </div>
                 </div>
             </div>
 
             <!--main left-->
-            <form action="<c:url value='/dietBoard/dietModify' />" id="modifyForm" method="POST" enctype="multipart/form-data">
+            <form action="<c:url value='/noticeBoard/noticeWrite' />" id="boardWrite" name="writeForm" method="POST" enctype="multipart/form-data">
                 <table>
-                    
-
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=name size=20 readonly> </td>
+                        <td><input type=text name="memberNum" size="20"></td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-
-                        <td><input type=text name=title size="60" value="${noticeList.nbTitle}"></td>
-
+                        <td><input type=text name="nbTitle" size="60"></td>
                     </tr>
-
+					
                     <tr>
                         <td>내용</td>
-
-                        <td><textarea name="content" cols="75" rows="15">${noticeList.nbContent}</textarea></td>
-
+                        <td><textarea name="nbContent" cols="75" rows="15"></textarea></td>
                     </tr>
 
-                   
+                    
                     <tr>
                         <td>사진올리기 </td>
-
-                        <td><input type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple="multiple" type="file" name="fileName" size="10" maxlength="10"></td>
                     </tr>
                     
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-
-
-                            <button class="btn btn-primary" id="modifyBtn">수정하기</button>
-                            <button class="btn btn-primary" id="delBtn">삭제하기</button>
-                            <button class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/noticeList" />'">취소하기</button>
-
+                            <button class="btn btn-primary" id="writeBtn" type="button">등록하기</button>
+                            <button class="btn btn-default" id="listBtn" type="button" onclick="location.href='<c:url value='/noticeBoard/noticeList' />'">취소하기</button>
                             <br><br><br>
                         </td>
                         
@@ -108,37 +97,39 @@
     <div class="row">
         <%@ include file="../../include/footer.jsp" %>
     </div>
-<script>
-	
-	const modifyBtn = document.getElementById('modifyBtn');
-	console.log(modifyBtn);
-	modifyBtn.onclick = function() {
-		if(document.modifyForm.memberNum.value === '') {
+
+    <script>
+    	const writeBtn = document.getElementById('writeBtn');
+    	console.log(writeBtn);
+    	writeBtn.onclick = function() {
+			if(document.writeForm.memberNum.value === '') {
 				alert('작성자는 필수 항목 입니다.');
-				document.modifyForm.memberNum.focus();
-				return; //이벤트 함수 강제 종료
-			} else if(document.modifyForm.nbTitle.value === '') {
-				alert('제목은 필수 항목 입니다.');
-				document.modifyForm.nbTitle.focus();
+				document.writeForm.memberNum.focus();
 				return;
-			} else {
-				document.modifyForm.submit();
+			}else if(document.writeForm.dbTitle.value === '') {
+				alert('제목은 필수 항목 입니다.');
+  				document.writeForm.dbTitle.focus();
+  				return;
+			}else {
+				document.writeForm.submit();
 			}
-	};
-	
-	
-	$('#delBtn').click(function() {
-		if(confirm('정말 삭제하시겠습니까?')) {
-			$('form[name=modifyForm]').attr('action', '<c:url value="/noticeBoard/noticeDelete" />');
-			$('form[name=modifyForm]').submit();
-		} else {
-			return;
 		}
-	});
-	
-	
-	</script>
+    	
+  		$('#listBtn').click(function() {
+			if(confirm('목록으로 돌아가시겠습니까?')) {
+				location.href='<c:url value="/noticeBoard/noticeList" />';
+			} else {
+				return;
+			}
+		});
+    </script>
+    
+    
+    
+    
+    
+
+    
 </body>
 
 </html>
-

@@ -34,9 +34,9 @@ public class MarketBoardController {
 	public String marketList(PageVO vo, Model model) {
 		
 		PageCreator pc = new PageCreator();
+		vo.setCountPerPage(9);
 		pc.setPaging(vo);
 		pc.setArticleTotalCount(service.getTotal(vo));
-		vo.setCountPerPage(9);
 		
 		List<marketBoardVO> list = service.getList(vo);
 		model.addAttribute("product", list);
@@ -57,7 +57,7 @@ public class MarketBoardController {
 		
 		CustomFileUpload fileUp = new CustomFileUpload();
 		String rootPath = request.getServletContext().getRealPath("");
-		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\market\\"+vo.getMemberNick()+"\\";
+		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\market\\"+vo.getMemberNum()+"\\";
 		List<String> fileNameList = fileUp.fileUpload(fileName, 10, rootPath);
 		
 		// 파일이름 받기
@@ -107,9 +107,11 @@ public class MarketBoardController {
 	}
 
 	@GetMapping("/market_detail")
-	public String detail(@RequestParam int mbNum, Model model) {
+	public String detail(@RequestParam int mbNum,PageVO page, Model model) {
 		
+		service.updateViewCount(service.getContent(mbNum).getMbNum());
 		model.addAttribute("detail", service.getContent(mbNum));
+		model.addAttribute("pc", page);
 
 		return "/board/market/market_detail";
 	}
