@@ -54,34 +54,36 @@
             </div>
 
             <!--main left-->
-            <form action="#" id="boardWrite" method="POST" enctype="multipart/form-data">
+            <form action="<c:url value='/marketBoard/update'/>" id="boardModify" method="POST" enctype="multipart/form-data">
                 <table>
                     <tr>
+                    	
                         <td>카테고리</td>
                         <td>
-                            <select id="sports" name="sports">
-                                <option value="">카테고리 선택</option>
-                                <option value="">사요</option>
-                                <option value="">팔아요</option>
-                                <option value="">나눠요</option>
+                            <select id="mbType" name="mbType">
+                                <option value="buy"${detail.mbType == 'buy' ? 'selected' : '' }>사요</option>
+                                <option value="sell"${detail.mbType == 'sell' ? 'selected' : '' }>팔아요</option>
+                                <option value="share"${detail.mbType == 'share' ? 'selected' : '' }>나눠요</option>
                                 
                             </select>
                         </td>
                     </tr>
-
+					<tr>
+                    <td><input type="hidden" name="mbNum" value="${detail.mbNum }"></td>
+                    </tr>
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=name size=20> </td>
+                        <td><input type=text name="memberNum" size=20 value="${detail.memberNum }" readonly> </td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name=title size="60"></td>
+                        <td><input type=text name="mbTitle" size="60" value="${detail.mbTitle }"></td>
                     </tr>
 
                     <tr>
                         <td>내용</td>
-                        <td><textarea name="content" cols="75" rows="15"></textarea></td>
+                        <td><textarea name="mbContent" cols="75" rows="15">${detail.mbContent }</textarea></td>
                     </tr>
 
                     <tr>
@@ -89,8 +91,15 @@
                             다음 주소 api : 주소를 선택하면 지도도 함께 보여주기
                             https://postcode.map.daum.net/guide#sample
                         -->
-                        <td>주소api</td>
-                        <td></td>
+                        <td>동네</td>
+						<td>
+							주소 기본 <input type="text" name="mbAddrBasic" value="${detail.mbAddrBasic }"> <br>
+							주소 상세 <input type="text" name="mbAddrDetail" value="${detail.mbAddrDetail }"> <br>
+							경도 <input type="text" name="mbLongitude" value="${detail.mbLongitude }"> <br>
+							위도 <input type="text" name="mbLatitude" value="${detail.mbLatitude }"><br>
+							이미지 수<input type="text" name="mbImageCount" value="${detail.mbImageCount }"> <br>
+							조회 수<input type="text" name="mbLookCount" value="${detail.mbLookCount }"><br>
+						</td>
                     </tr>
 
                 
@@ -100,14 +109,14 @@
                     </tr>
                     <tr>
                         <td>가격 </td>
-                        <td><input type=text name=title size="60"></td>
+                        <td><input type=text name="mbPrice" size="60" value="${detail.mbPrice }"></td>
                     </tr>
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button type="button" class="btn btn-primary">수정하기</button>
-                            <button type="button" class="btn btn-primary">삭제하기</button>
-                            <button type="button" class="btn btn-default" onclick="location.href='/FRONT/views/board/market/market_detail.html'">취소하기</button>
+                            <input type="submit" class="btn btn-primary" value="수정하기">
+                            <button type="button" class="btn btn-primary" onclick="location.href='<c:url value="/marketBoard/delete?mbNum=${detail.mbNum }" />'">삭제하기</button>
+                            <button type="button" class="btn btn-default" onclick="history.back()">취소하기</button>
                             <br><br><br>
                         </td>
                         
@@ -124,7 +133,6 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
 
-    </div>
 
     
 </body>

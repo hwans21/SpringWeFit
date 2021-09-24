@@ -105,13 +105,13 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
-                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='/FRONT/views/board/market/market_modify.html'">수정하기</button>
-                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='/FRONT/views/board/market/market_board.html'">목록으로</button>
+                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_modify?mbNum=${detail.mbNum }" />'">수정하기</button>
+                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_board" />'">목록으로</button>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>기~~~~~~~~~~~~~~~~~~~~~~~~~다란 제목입니다?? 조금더 긴 제목을 써야하는데 뭐라써야할지 모르겠어요</h2>
+                            <h2>${detail.mbTitle }</h2>
                         </div>
                     </div>
                 </div>
@@ -123,35 +123,74 @@
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
                                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-
+                    				<c:forEach var="index" begin="1" end="${detail.mbImageCount-1 }">
+                    					<li data-target="#carousel-example-generic" data-slide-to="${index }"></li>
+                    				</c:forEach>
                             </ol>
 
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site01.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site02.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site03.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site04.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site05.jpg" width="100%" alt="...">
-
-                                </div>
+                            	<c:if test="${detail.mbRealImage1 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage1}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage2 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage2}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage3 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage3}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage4 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage4}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage5 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage5}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage6 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage6}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage7 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage7}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage8 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage8}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage9 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage9}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                            	<c:if test="${detail.mbRealImage10 != null }">
+	                                <div class="item active">
+	                                    <img src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage10}" width="100%" alt="...">
+	
+	                                </div>
+                                </c:if>
+                               
 
                             </div>
 
@@ -185,9 +224,12 @@
                             </a>
                         </div> -->
                         <table>
+                        	<tr>
+                            	<td>가격: ${detail.mbPrice }</td>
+                            </tr>
                             <tr>
-                                <td>주소 : </td>
-                                <td>제주특별자치도 제주시 첨단로 242 </td>
+                                <td>${detail.mbAddrBasic }</td>
+                                <td>${detail.mbAddrDetail }</td>
                                 <td>
                                     <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
                                         <button class="btn btn-info pull-right">길찾기</button>
@@ -196,12 +238,12 @@
                             </tr>
 
                             <tr>
-                                <td>작성일:21.09.08 </td>
+                                <td>작성일:${detail.mbRegDate }</td>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>100</td>
                                 <td>
 
-                                    <button class="btn btn-info pull-right"><span
-                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
+                                    <button id="lovelyBtn" class="btn btn-info pull-right">
+                                    <span class="glyphicon glyphicon-heart"></span> 좋아요</button>
 
                                 </td>
                             </tr>
@@ -210,16 +252,7 @@
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
 
-                                        보이는 눈에 주며, 커다란 속잎나고, 동산에는 그들의 그들은 실로 부패뿐이다. 얼마나 따뜻한 얼음 것은 이것이야말로 것이다. 위하여, 싹이 수
-                                        이성은 어디 길지 보라. 청춘의 모래뿐일 황금시대의 인간은 우리의 말이다. 뜨고, 이상, 끓는 구하기 미묘한 원대하고, 우리는 위하여서. 그것은
-                                        같으며, 이것을 그들을 철환하였는가? 소담스러운 있는 찾아 봄바람이다. 거선의 품었기 그들의 충분히 것이다. 것은 할지라도 예가 같지 인간의
-                                        것이다. 청춘의 가슴이 것은 유소년에게서 돋고, 소담스러운 가지에 무한한 뿐이다. 눈이 아니더면, 있는 실현에 속잎나고, 위하여서 있다.
-
-                                        고동을 반짝이는 실로 것은 것은 인생에 철환하였는가? 피가 것은 인도하겠다는 굳세게 생의 미인을 인생에 기관과 약동하다. 인간에 풍부하게
-                                        속잎나고, 싶이 산야에 유소년에게서 것이다. 수 보는 인간의 얼마나 착목한는 것은 피에 얼음이 힘있다. 굳세게 능히 그들에게 것은 이상은
-                                        현저하게 속에서 없는 것이다. 풀이 두손을 인간이 안고, 원질이 피다. 있는 주는 오아이스도 생생하며, 인생에 풀밭에 놀이 같이 듣는다. 주며,
-                                        얼음에 가치를 살 없는 꾸며 그림자는 이것은 말이다. 원대하고, 우리는 노래하며 때까지 꾸며 희망의 것이다. 심장은 그들을 청춘 우리는 산야에
-                                        것이다.
+                                        ${detail.mbContent }
                                     </p>
                                 </td>
                             </tr>
@@ -228,7 +261,7 @@
                                 <td></td>
                                 <td>
 
-                                    <button class="btn btn-info pull-right"><span
+                                    <button id="reportBtn" class="btn btn-info pull-right"><span
                                             class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
 
                                 </td>
@@ -244,11 +277,12 @@
                 <div class="row">
                     <span class="reply reply-count">댓글 : ???개</span>
                 </div>
+                
                 <div class="row">
                     <form id="reply-form">
                         <div class="input-group input-group-lg">
 
-                            <input type="text" class="form-control" placeholder="댓글을 작성해주세요"
+                            <input type="text" id="mrContent" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
                                 <button id="reply-btn" type="button" class="btn btn-default"><span
@@ -257,6 +291,7 @@
                         </div>
                     </form>
                 </div>
+                
                 <div class="row">
                     <div class="reply reply-box">
                         <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
@@ -340,6 +375,106 @@
         //         console.log('스크롤 하단 감지');
         //     }
         // });
+        
+        $('#lovelyBtn').click(function(){
+    		const arr = {
+    			"mbNum" : ${detail.mbNum },
+    			"memberNum" : ${loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/marketBoard/marketLikely' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('좋아요 등록완료');
+                  	} else{
+                  		alert('이미 좋아요를 누르셨습니다.')
+                  	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //좋아요  비동기 처리 끝
+            
+        });
+        
+        $('#reportBtn').click(function(){
+    		const arr = {
+    			"mbNum" : ${detail.mbNum },
+    			"memberNum" : ${loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/marketBoard/marketReport' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('신고 완료했습니다.');
+                  	} else{
+                  		alert('이미 신고를 하셨습니다.')
+                  	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //신고  비동기 처리 끝
+            
+            
+    	});
+        
+        $(document).ready(function() {
+			
+        	$('#reply-btn').click(function(){
+        		
+        		const mbNum = '${detail.mbNum}';
+        		const mrContent = $('#mrContent').val();
+        		const memberNum = '${loginuser.memberNum}';
+        		
+        		const replyInfo = {
+        				"mrContent" : mrContent,
+        				"mbNum" : mbNum,
+        				"memberNum" : memberNum
+        		};
+        		
+        		$.ajax({
+        			type : "POST",
+        			url : "<c:url value='/marketReply/regist' />",
+        			headers : {
+        				"Content-Type" : "application/json"
+        			},
+        			dataType : "text",
+        			data : JSON.stringify(replyInfo),
+        			success : function(result){
+        				console.log("댓글등록 완료" + result)
+        				if(result === 'regSuccess'){
+        					alert('댓글등록 완료')
+        					$('#mrContent').val('');
+        					getList(1, true);
+        				}else{
+        					alert('댓글 등록 실패')
+        				}
+        			},
+        			error : function(){
+        				console.log('통신실패')
+        			}
+        		});
+        		
+        		
+        	});
+        	
+		});
+
 
 
     </script>

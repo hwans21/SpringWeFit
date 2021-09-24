@@ -111,7 +111,7 @@
                 
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input multiple="multiple" type="file" name="mbImage1" size="10" maxlength="10"></td>
+                        <td><input multiple="multiple" type="file" name="fileName" size="10"></td>
 
                     </tr>
                     <tr>
@@ -123,7 +123,7 @@
                         <td colspan="2">
                             <br>
                             <button class="btn btn-primary" type="submit">등록하기</button>
-                            <button class="btn btn-default" type="button" onclick="location.href='/FRONT/views/board/market/market_board.html'">취소하기</button>
+                            <button class="btn btn-default" type="button" onclick="history.back()">취소하기</button>
                             <br><br><br>
                         </td>
                         
@@ -140,7 +140,6 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
 
-    </div>
 
    
 </body>

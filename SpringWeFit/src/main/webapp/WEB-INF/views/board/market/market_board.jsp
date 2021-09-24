@@ -129,27 +129,24 @@
                     <thead>
                         <tr>
                             <td colspan="3">
+                            
+                            	<form action="<c:url value='/marketBoard/market_board' />">
                                 <div class="search-sec">
     
                                     <!--검색 조건-->
-                                    <select name="" id="" class="select-sec">
-                                        <option value="">삽니다</option>
-                                        <option value="">팝니다</option>
-                                        <option value="">나눔해요</option>
-                                    </select>
-                                    <select class="search-condition">
-                                        <option>상품이름</option>
-                                        <option>작성자</option>
+                              
+                                    <select class="search-condition" name="condition">
+                                        <option value="title">상품이름</option>
                                     </select>
                     
                                     <!--검색창, 버튼-->
-                                    <input type="text" id="search" placeholder="Search">
-                                    <button type="button" class="btn" aria-label="Left Align">
+                                    <input type="text" name="keyword" placeholder="Search">
+                                    <button type="submit" class="btn" aria-label="Left Align">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                     </button>
                     
                                 </div>
-   
+   								</form>
 
 
                             </td>
@@ -157,22 +154,41 @@
                         </tr>
                     </thead>
                      
-                    <tr>
-
                     
-                    	<c:forEach var="product" items="${product }">
-                        <td>
-                            <img src="${pageContext.request.contextPath }/resource/img/${product.mbImage1 }" alt="" class="">
-                            <h2><a href="<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }'/>">[${product.mbType}]${product.mbTitle }</a></h2>
-                           
-                            <h3>${product.mbPrice }</h3>
-                            <br>
-                            <h3>아이디<br>${product.mbAddrBasic }</h3>
-                        </td>
-                        </c:forEach>
-                        
+                    
+                    <tbody>
 
-                    </tr>
+						<c:forEach var="product" varStatus="i" items="${product}">
+							<c:if test="${i.count % 3 == 1}">
+								<tr class="course">
+							</c:if>
+							<th scope="col" class="text-center"
+								onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }' />'">
+								<div class=vid>
+									<a href="#"><img
+										src="/upload/board/market/${detail.memberNick }/${detail.mbRealImage2}"
+										width="280px" height="160px" alt="vid01"></a>
+
+									<p class="subject">
+										<a href="#">${product.mbType}</a><br>
+										<a href="#">${product.mbTitle}</a><br>
+										<a href="#">가격: ${product.mbPrice }원</a>
+									</p>
+									<p class="auth">
+										<span class="writeday">${product.mbRegDate}</span> <span
+											class="nickname">${product.memberNum}</span> <span
+											class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>${product.mbImageCount}</b></span>
+										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${product.mbLookCount}</b></span>
+									</p>
+
+								</div>
+							</th>
+							<c:if test="${i.count % 3 == 0}">
+								</tr>
+							</c:if>
+						</c:forEach>
+						
+					</tbody>
                      
 
                 </table>
@@ -197,22 +213,35 @@
             </a>
 
             <!-- 페이징 버튼-->
-            <div class="paging">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                      </ul>
-                </nav>
-
-
-
-        </div>
+			<form action="<c:url value='/marketBoard/market_board' />" name="pageForm">
+				<div class="row text-center">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination" id="pagination">
+							
+							<c:if test="${pc.prev }">
+								<li class="page-item">
+									<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">이전</a>
+								</li>
+							</c:if>
+	
+							<c:forEach var="page" begin="${pc.beginPage}" end="${pc.endPage}">
+								<li class="page-item">
+									<a href="<c:url value='/marketBoard/market_board/pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />" >${page }</a>
+								</li>
+							</c:forEach>
+								<c:if test="${pc.next }">
+								<li class="page-item">
+									<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />" >다음</a>
+								</li>
+								</c:if>
+						</ul>
+					</nav>
+				</div>
+				    <input type="hidden" name="pageNum" value="${pc.paging.pageNum}">
+                    <input type="hidden" name="countPerPage" value="${pc.paging.countPerPage}">
+                    <input type="hidden" name="keyword" value="${pc.paging.keyword}">
+                    <input type="hidden" name="condition" value="${pc.paging.condition}">
+			</form>
 
         <div class="footer-sec">
             <%@ include file="../../include/footer.jsp" %>

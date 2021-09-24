@@ -94,6 +94,11 @@ public class marketBoardVO {
 	private int mbImageCount;
 	private Timestamp mbRegDate;
 	
+	private String memberNick;
+	private int mbLikelyCount;
+	private int mbReportCount;
+	
+	
 	
 	
 	
