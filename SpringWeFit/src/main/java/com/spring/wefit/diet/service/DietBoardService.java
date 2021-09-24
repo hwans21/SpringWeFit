@@ -1,4 +1,4 @@
-package com.spring.wefit.dietboard.service;
+package com.spring.wefit.diet.service;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.wefit.command.DietBoardVO;
 import com.spring.wefit.commons.PageVO;
-import com.spring.wefit.dietboard.mapper.IDietBoardMapper;
+import com.spring.wefit.diet.mapper.IDietBoardMapper;
 
 @Service
 public class DietBoardService implements IDietBoardService {
@@ -45,5 +45,49 @@ public class DietBoardService implements IDietBoardService {
 	public int getTotal(PageVO vo) {
 		return mapper.getTotal(vo);
 	}
+	
+	@Override
+	public int checkLovely(DietBoardVO vo) {
+		return mapper.checkLovely(vo);
+	}
+	
+	@Override
+	public int checkReport(DietBoardVO vo) {
+		return mapper.checkReport(vo);
+	}
+	
+	@Override
+	public void insertLovely(DietBoardVO vo) {
+		mapper.insertLovely(vo);
+		
+	}
+	
+	@Override
+	public void insertReport(DietBoardVO vo) {
+		mapper.insertReport(vo);
+		
+	}
+	
+	@Override
+	public void updateViewCount(int dbNum) {
+		mapper.updateViewCount(dbNum);
+		
+	}
+	
+	
+	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

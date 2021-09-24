@@ -29,8 +29,8 @@ public class DietBoardVO {
 	private int dbLookCount;
 	private int dbImageCount;
 	private Timestamp dbRegDate;
-	private String nickName;
-
+	
+	
 	
 /*
 CREATE TABLE DietBoard

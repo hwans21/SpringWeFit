@@ -5,15 +5,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.wefit.command.DietBoardReplyVO;
 import com.spring.wefit.command.DietBoardVO;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
-import com.spring.wefit.dietboard.service.IDietBoardService;
+import com.spring.wefit.diet.service.IDietBoardService;
+import com.spring.wefit.diet.service.IDietReplyService;
 
 @Controller
 @RequestMapping("/dietBoard")
@@ -21,6 +25,7 @@ public class DietController {
 	
 	@Autowired
 	private IDietBoardService service;
+
 	
 	//글 목록전체보기
 	@GetMapping("/dietList") 
@@ -33,6 +38,7 @@ public class DietController {
 		vo.setCountPerPage(9);
 		
 		model.addAttribute("dietList", service.getList(vo));
+		System.out.println();
 		model.addAttribute("dpc", dpc);
 		return "/board/diet/diet_board";
 	}
@@ -96,8 +102,50 @@ public class DietController {
 		return "redirect:/dietBoard/dietList";
 	}
 	
+	//좋아요 처리
+	@PostMapping("/dietLikely")
+	@ResponseBody
+	public String dietBoardLikely(@RequestBody DietBoardVO vo) {
+		System.out.println("글 번호:"+vo.getDbNum());
+		System.out.println("유저 번호"+vo.getMemberNum());
+		if(service.checkLovely(vo) == 1) {
+			return "duplicate";
+		}else {
+			service.insertLovely(vo);
+			return "success";
+		}
+	}
+	
+	//신고 처리하기
+	@PostMapping("/dietReport")
+	@ResponseBody
+	public String dietBoardReport(@RequestBody DietBoardVO vo) {
+		if(service.checkReport(vo) == 1) {
+			return "duplicate";
+		} else {
+			service.insertReport(vo);
+			return "success";
+		}
+	}
+	
+	
+	
 	//다중 사진 업로드
 	//@PostMapping("/upload")
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

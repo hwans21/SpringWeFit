@@ -1,4 +1,4 @@
-package com.spring.wefit.dietboard.service;
+package com.spring.wefit.diet.service;
 
 import java.util.List;
 
@@ -27,6 +27,21 @@ public interface IDietBoardService {
 	
 	//식단 글 삭제
 	void delete (int dbNum);
+	
+	//식단게시판 조회수 수정
+	void updateViewCount(int dbNum);
+	
+	//식단게시판 좋아요 했는지 확인
+	int checkLovely(DietBoardVO vo);
+	
+	//식단게시판 좋아요 처리
+	void insertLovely(DietBoardVO vo);
+	
+	//식단게시판 신고 했는지 확인
+	int checkReport(DietBoardVO vo);
+	
+	//식단게시판 신고 처리
+	void insertReport(DietBoardVO vo);
 	
 	
 	

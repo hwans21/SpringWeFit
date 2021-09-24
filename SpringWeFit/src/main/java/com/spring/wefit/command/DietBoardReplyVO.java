@@ -8,6 +8,7 @@ package com.spring.wefit.command;
     mNum        NUMBER(20, 0)    NOT NULL,
     starScore   NUMBER(2,1),
     drRegDate    DATE             DEFAULT SYSDATE NOT NULL, 
+    DietReply  nickName VARCHAR2(40) NOT NULL;
     CONSTRAINT PK_DietReply PRIMARY KEY (drNum)
 );
 
@@ -36,6 +37,7 @@ public class DietBoardReplyVO {
 	private int memberNum;
 	private int starScore;
 	private Timestamp drRegDate;
+	private String nickName;
 	
 	
 }

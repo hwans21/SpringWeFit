@@ -16,12 +16,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.spring.wefit.command.DietBoardVO;
 import com.spring.wefit.command.FreeBoardVO;
 import com.spring.wefit.command.FreeReplyVO;
-import com.spring.wefit.dietboard.mapper.IDietBoardMapper;
 import com.spring.wefit.free.mapper.IFreeBoardMapper;
 import com.spring.wefit.free.mapper.IFreeReplyMapper;
 import com.spring.wefit.test.ITestMapper;
 import com.spring.wefit.command.UserVO;
 import com.spring.wefit.commons.PageVO;
+import com.spring.wefit.diet.mapper.IDietBoardMapper;
 import com.spring.wefit.user.mapper.IUserMapper;
 
 import lombok.extern.log4j.Log4j;

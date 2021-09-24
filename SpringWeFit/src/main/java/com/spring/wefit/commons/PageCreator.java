@@ -15,7 +15,7 @@ public class PageCreator {
 	private boolean prev;
 	private boolean next;
 	
-	private final int buttonNum = 5;
+	private final int buttonNum = 10;
 	
 	
 	private void calcDataOfPage() {

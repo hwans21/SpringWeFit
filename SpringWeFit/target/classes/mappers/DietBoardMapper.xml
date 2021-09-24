@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-	namespace="com.spring.wefit.dietboard.mapper.IDietBoardMapper">
+	namespace="com.spring.wefit.diet.mapper.IDietBoardMapper">
 
 	<sql id="search">
 		<if test="condition == 'title'">
@@ -25,15 +25,14 @@
 		(
 		dbNum, memberNum, dbTitle, dbContent,
 		dbImage1, dbImage2, dbImage3, dbImage4, dbImage5,
-		dbRealImage1, dbRealImage2, dbRealImage3, dbRealImage4, dbRealImage5, nickName
+		dbRealImage1, dbRealImage2, dbRealImage3, dbRealImage4, dbRealImage5
 		)
 		VALUES
 		(
 		dietBoard_seq.NEXTVAL,
 		#{memberNum}, #{dbTitle}, #{dbContent},
 		#{dbImage1}, #{dbImage2}, #{dbImage3}, #{dbImage4}, #{dbImage5},
-		#{dbRealImage1}, #{dbRealImage2}, #{dbRealImage3}, #{dbRealImage4}, #{dbRealImage5},
-		#{nickName}
+		#{dbRealImage1}, #{dbRealImage2}, #{dbRealImage3}, #{dbRealImage4}, #{dbRealImage5}
 		)
 	</insert>
 
@@ -82,8 +81,7 @@
 		dbImage5 = #{dbImage5},
 		dbRealImage1 = #{dbRealImage1}, dbRealImage2 = #{dbRealImage2},
 		dbRealImage3 = #{dbRealImage3}, dbRealImage4 = #{dbRealImage4},
-		dbRealImage5 = #{dbRealImage5},
-		nickName = #{nickName}
+		dbRealImage5 = #{dbRealImage5}
 
 		WHERE dbNum = #{dbNum}
 	</update>

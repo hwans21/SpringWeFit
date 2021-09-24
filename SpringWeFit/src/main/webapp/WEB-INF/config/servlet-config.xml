@@ -11,6 +11,8 @@
 	<annotation-driven />
 
 	<resources mapping="/resources/**" location="/resources/" />
+	<!-- 이미지 파일을 jsp에서 쉽게 쓰기위해 경로 매핑해놓기 -->
+	<resources mapping="/img/**" location="/resources/img" />
 	<resources mapping="/upload/**" location="file:///../upload/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

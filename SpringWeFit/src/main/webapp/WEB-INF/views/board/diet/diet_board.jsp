@@ -188,7 +188,7 @@
 									</p>
 									<p class="auth">
 										<span class="writeday">${vo.dbRegDate}</span> <span
-											class="nickname">${vo.nickName}</span> <span
+											class="nickname"></span> <span
 											class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>${vo.dbImageCount}</b></span>
 										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${vo.dbLookCount}</b></span>
 									</p>
@@ -206,7 +206,7 @@
             </div>
 
             <div class="row" align="right">
-                <button type="button" id="write" class="btn btn-outline-primary float-right" onclick="location.href='<c:url value='/dietBoard/dietWrite'  />'"><b>글쓰기</b></button>
+                 <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/dietBoard/dietWrite' />'"><b>글쓰기</b></button>
 
             </div> <!-- 관리자만 보이게 하기 -->
 
@@ -263,6 +263,13 @@
 	document.pageForm.pageNum.value = value;
 	document.pageForm.submit();
 }
+
+	
+    
 </script>
 
 </html>
+
+
+
+
