@@ -85,6 +85,34 @@ namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 		DELETE FROM NoticeBoard
 		WHERE nbNum = #{nbNum}
 	</delete>
+	
+	<update id="updateViewCount">
+		UPDATE NoticeBoard SET
+			nbLookCount=nbLookCount+1
+		WHERE nbNum = #{nbNum}
+	</update>
+	
+	<select id="checkLovely" resultType="int">
+		SELECT COUNT(*) FROM NoticeLikely
+		WHERE nbNum = #{nbNum }
+		AND memberNum = #{memberNum }
+	</select>
+	
+	<insert id="insertLovely">
+		INSERT INTO NoticeLikely
+		VALUES(#{nbNum}, #{memberNum})
+	</insert>
+	
+	<select id="checkReport" resultType="int">
+		SELECT COUNT(*) FROM NoticeReport
+		WHERE nbNum = #{nbNum }
+		AND memberNum = #{memberNum }
+	</select>
+	
+	<insert id="insertReport">
+		INSERT INTO NoticeReport
+		VALUES(#{nbNum}, #{memberNum})
+	</insert>
 
 
 

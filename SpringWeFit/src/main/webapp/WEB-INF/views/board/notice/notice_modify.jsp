@@ -55,25 +55,26 @@
 
             <!--main left-->
             <form action="<c:url value='/dietBoard/dietModify' />" id="modifyForm" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="nbNum" value="${content.nbNum }">
                 <table>
                     
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=name size=20 readonly> </td>
+                        <td><input type=text name=name size=20 readonly value="관리자"></td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
 
-                        <td><input type=text name=title size="60" value="${noticeList.nbTitle}"></td>
+                        <td><input id="input-title" type=text name=title size="60" value="${content.nbTitle}"></td>
 
                     </tr>
 
                     <tr>
                         <td>내용</td>
 
-                        <td><textarea name="content" cols="75" rows="15">${noticeList.nbContent}</textarea></td>
+                        <td><textarea name="nbContent" cols="75" rows="15">${content.nbContent}</textarea></td>
 
                     </tr>
 
@@ -90,8 +91,8 @@
 
 
                             <button class="btn btn-primary" id="modifyBtn">수정하기</button>
-                            <button class="btn btn-primary" id="delBtn">삭제하기</button>
-                            <button class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/noticeList" />'">취소하기</button>
+                            <button class="btn btn-primary" id="deleteBtn">삭제하기</button>
+                            <button class="btn btn-default" onclick="location.href='/FRONT/views/board/notice/notice_detail.jsp'">취소하기</button>
 
                             <br><br><br>
                         </td>
@@ -103,42 +104,33 @@
         </div>
 
     </div>
-
-
+    
     <div class="row">
         <%@ include file="../../include/footer.jsp" %>
     </div>
-<script>
-	
-	const modifyBtn = document.getElementById('modifyBtn');
-	console.log(modifyBtn);
-	modifyBtn.onclick = function() {
-		if(document.modifyForm.memberNum.value === '') {
-				alert('작성자는 필수 항목 입니다.');
-				document.modifyForm.memberNum.focus();
-				return; //이벤트 함수 강제 종료
-			} else if(document.modifyForm.nbTitle.value === '') {
-				alert('제목은 필수 항목 입니다.');
-				document.modifyForm.nbTitle.focus();
-				return;
-			} else {
-				document.modifyForm.submit();
-			}
-	};
-	
-	
-	$('#delBtn').click(function() {
-		if(confirm('정말 삭제하시겠습니까?')) {
-			$('form[name=modifyForm]').attr('action', '<c:url value="/noticeBoard/noticeDelete" />');
-			$('form[name=modifyForm]').submit();
-		} else {
-			return;
-		}
-	});
-	
-	
-	</script>
+    
+    <script>
+    	let title = $('#input-title').val();
+    	
+    	$('#modifyBtn').click(function(){
+    		$('#modifyForm').submit();
+    	});
+    	$('#deleteBtn').click(function(){
+    		if(confirm("정말로 삭제하시겠습니까?")){
+	    		$('#modifyForm').attr("action","<c:url value='/noticeBoard/noticeDelete'/>")
+	    		$('#modifyForm').submit();
+    		}
+    	});
+    	
+    	
+    </script>
+
+    
 </body>
 
 </html>
 
+
+    
+
+	

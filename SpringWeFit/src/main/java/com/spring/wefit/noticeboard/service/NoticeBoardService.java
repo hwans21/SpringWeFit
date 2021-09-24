@@ -46,9 +46,45 @@ public class NoticeBoardService implements INoticeBoardService {
 	}
 
 
+//	@Override
+//	public void delete(int nbNum) {
+//		mapper.delete(nbNum);
+//		
+//	}
+
 	@Override
-	public void delete(int nbNum) {
-		mapper.delete(nbNum);
+	public void delete(NoticeBoardVO vo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateViewCount(int nbNum) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int checkLovely(NoticeBoardVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void insertLovely(NoticeBoardVO vo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int checkReport(NoticeBoardVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void insertReport(NoticeBoardVO vo) {
+		// TODO Auto-generated method stub
 		
 	}
 

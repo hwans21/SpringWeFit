@@ -26,6 +26,21 @@ public interface INoticeBoardMapper {
 	//공지 총 게시글 수
 	int getTotal(PageVO vo);
 	
+	//조회수 수정
+	void updateViewCount(int nbNum);
+		
+	//좋아요 여부체크
+	int checkLovely(NoticeBoardVO vo);
+		
+	//좋아요테이블 처리
+	void insertLovely(NoticeBoardVO vo);
+		
+	//신고 했는지 확인
+	int checkReport(NoticeBoardVO vo);
+		
+	//신고 처리
+	void insertReport(NoticeBoardVO vo);
+	
 	
 	
 }

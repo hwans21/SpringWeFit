@@ -55,15 +55,16 @@
 
             <!--main left-->
             <form action="<c:url value='/noticeBoard/noticeWrite' />" id="boardWrite" name="writeForm" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="memberNum" value="${loginuser.memberNum}">
                 <table>
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name="memberNum" size="20"></td>
+                        <td><input type=text name="memberNum" size="20" value="관리자" readonly></td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name="nbTitle" size="60"></td>
+                        <td><input type=text name="nbTitle" size="60" id="titleInput"></td>
                     </tr>
 					
                     <tr>
@@ -80,7 +81,7 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button class="btn btn-primary" id="writeBtn" type="button">등록하기</button>
+                            <button class="btn btn-primary" id="regBtn" type="button">등록하기</button>
                             <button class="btn btn-default" id="listBtn" type="button" onclick="location.href='<c:url value='/noticeBoard/noticeList' />'">취소하기</button>
                             <br><br><br>
                         </td>
@@ -99,37 +100,14 @@
     </div>
 
     <script>
-    	const writeBtn = document.getElementById('writeBtn');
-    	console.log(writeBtn);
-    	writeBtn.onclick = function() {
-			if(document.writeForm.memberNum.value === '') {
-				alert('작성자는 필수 항목 입니다.');
-				document.writeForm.memberNum.focus();
-				return;
-			}else if(document.writeForm.dbTitle.value === '') {
-				alert('제목은 필수 항목 입니다.');
-  				document.writeForm.dbTitle.focus();
-  				return;
-			}else {
-				document.writeForm.submit();
-			}
-		}
-    	
-  		$('#listBtn').click(function() {
-			if(confirm('목록으로 돌아가시겠습니까?')) {
-				location.href='<c:url value="/noticeBoard/noticeList" />';
-			} else {
-				return;
-			}
+		
+		$('#regBtn').click(function(){
+			
+			$('#boardWrite').submit();
 		});
-    </script>
-    
-    
-    
-    
-    
+	</script>
 
-    
+   
 </body>
 
 </html>

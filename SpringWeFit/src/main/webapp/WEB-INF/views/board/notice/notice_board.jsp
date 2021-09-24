@@ -171,8 +171,9 @@
             
             <form action="<c:url value='/noticeBoard/noticeList' />">
             <div id="btn-list" class="row" align="right">
-                <input type="text" placeholder="Search" value="${page.keyword}">
-                <button type="button" class="btn" aria-label="Left Align">
+                <input type="text" placeholder="Search" value="${pc.paging.keyword }">
+                
+                <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
                     <span class="glyphicon glyphicon-search" aria-hidden="true" ></span>
                 </button>
             </div>
@@ -191,16 +192,17 @@
                     </thead>
                     <tbody>
 
-
-                    	<c:forEach var="vo" varStatus="i" items="${noticeList}">
-                        	<tr onclick="location.href='<c:url value='/noticeBoard/noticeDetail?nbNum=${vo.nbNum}' />'">
-                        		<td scope="col" class="text-center">${vo.nbNUM}</td>
-  								<td scope="col"><a href='<c:url value='/noticeBoard/noticeDetail?nbNum=${vo.nbNum}' />'>${vo.nbTitle}</a></td> 
-  								<td scope="col" class="text-center">관리자</td>
-  								<td scope="col" class="text-center">${vo.nbRegDate}</td>
-  								<td scope="col" class="text-center">${vo.nbLookCount}</td>
-  							</tr>
-  						</c:forEach>
+					<c:forEach var="arr" items="${noticeList }">
+                    
+                      <tr onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${arr.nbNum }" />'">
+                        <th scope="col" class="text-center">${arr.nbNum }</th>
+                        <th scope="col">${arr.nbTitle }</th>
+                        <th scope="col" class="text-center">관리자</th>
+                        <th scope="col" class="text-center"><fmt:formatDate value="${arr.nbRegDate }" pattern="yyyy-MM-dd"/></th>
+                        <th scope="col" class="text-center">${arr.nbLookCount }</th>
+                      </tr>
+                    </c:forEach>
+                    	
   						
 
 
@@ -218,63 +220,32 @@
 
             </div>
 
+ <div class="row text-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <c:if test="${pc.prev }">
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">Prev</a></li>
+                      </c:if>
+                      
+                      <c:forEach var="page" begin="${pc.beginPage }" end="${pc.endPage }">
+                      	<li class="page-item"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
+                      </c:forEach>
+               
+                      
+                      <c:if test="${pc.next }">
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">Next</a></li>
+                      </c:if>
+                    </ul>
+                  </nav>
+            </div> 
 
-            <!-- <div class="row" align="right">
-              <button type="button" id="write" class="btn btn-outline-primary float-right"><b>글쓰기</b></button>
-             </div> -->
-
-
-            <form action="<c:url value='/noticeBoard/noticeList' />" name="pageForm">
-				<div class="row text-center">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination" id="pagination">
-						
-							<c:if test="${npc.prev}">
-								<li>
-									<a href="#" data-pageNum="${npc.beginPage-1}">Prev</a>
-								</li>
-							</c:if>
-	
-							<c:forEach var="notice" begin="${npc.beginPage}" end="${npc.endPage}">
-								<li class="${npc.paging.pageNum == notice ? 'active' : ''}">
-									<a href="#" data-pageNum="${notice}">${notice}</a>
-								</li>
-							</c:forEach>
-	
-							<c:if test="${npc.next}">
-								<li>
-									<a href="#" data-pageNum="${npc.endPage+1}">Next</a>
-								</li>
-							</c:if>
-							
-						</ul>
-					</nav>
-				</div>
-				    <input type="hidden" name="pageNum" value="${npc.paging.pageNum}">
-                    <input type="hidden" name="countPerPage" value="${npc.paging.countPerPage}">
-                    <input type="hidden" name="keyword" value="${npc.paging.keyword}">
-                    <input type="hidden" name="condition" value="${npc.paging.condition}">
-			</form>
-
-
-        </div>
         <div class="row">
             <%@ include file="../../include/footer.jsp" %>
         </div>
+		
+        
     </div>
    
+    
 </body>
-<script>
-	const pagination = document.getElementById('pagination');	
-	pagination.onclick = function(e) {
-	e.preventDefault();
-	
-	const value = e.target.dataset.pagenum;
-	
-	
-	document.pageForm.pageNum.value = value;
-	document.pageForm.submit();
-}
-</script>
-
 </html>

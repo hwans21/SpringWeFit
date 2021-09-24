@@ -5,7 +5,7 @@
   
 <mapper namespace="com.spring.wefit.noticeboard.mapper.INoticeReplyMapper">
 	  
-	  <insert id="replyRegist">
+	  <insert id="regist">
 	  INSERT INTO NoticeReply
 	  (
 	  	nrNum, nbNum, nrContent, memberNum
@@ -18,11 +18,24 @@
 	  </insert>
 	  
 	  
-	  <select id="getList">
-		SELECT * FROM NoticeReply
-		WHERE nrNum = #{nrNum}
-		ORDER BY nrNum DESC
-	  </select>
+	 <select id="getList" resultType="com.spring.wefit.command.NoticeReplyVO">
+		SELECT * FROM
+		(
+			SELECT ROWNUM as rn, noticeReply.* FROM
+			(
+				SELECT nr.*, m.memberNick
+				FROM NoticeReply nr, Member m
+				WHERE nr.nbNum = #{nbNum }
+				AND nr.memberNum = m.memberNum
+				ORDER BY nr.nrRegDate DESC
+			) noticereply
+		)
+		<![CDATA[
+		WHERE rn > (#{paging.pageNum}-1)*#{paging.countPerPage}
+		AND rn <= #{paging.pageNum} * #{paging.countPerPage}
+		]]>
+	
+	</select>
 
 	  <update id="update">
 	  	UPDATE NoticeReply
@@ -43,6 +56,10 @@
 		WHERE nbNum = #{nbNum}
 	  </select>
 	  
+	  <select id="getContent" resultType="com.spring.wefit.command.NoticeReplyVO">
+		SELECT * FROM NoticeReply
+		WHERE nrNum = #{nrNum}
+	</select>
 	  
 	  
 	  

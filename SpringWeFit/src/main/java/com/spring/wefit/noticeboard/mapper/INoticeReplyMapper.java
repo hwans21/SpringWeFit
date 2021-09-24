@@ -9,8 +9,8 @@ public interface INoticeReplyMapper {
 		//댓글 등록
 		void replyRegist(NoticeReplyVO vo); 
 		
-		//페이징 추가
-		List<NoticeReplyVO> getList(int nbNum);
+		//댓글 목록
+//		List<NoticeReplyVO> getList(Map<String, Object> datas);
 		
 		//댓글 개수
 		int getTotal(int nbNum); 
@@ -22,7 +22,10 @@ public interface INoticeReplyMapper {
 		void update(NoticeReplyVO vo); 
 		
 		//댓글 삭제
-		void delete(int nrNum); 
+		void delete(int nrNum);
+		
+		//댓글 상세정보
+		NoticeReplyVO getContent(int nrNum);
 	
 
 }

@@ -113,73 +113,46 @@
                 <div class="row">
 
 
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeList.nbNum}" />'">수정하기</button>
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeDelete?nbNum=${noticeList.nbNum}" />'">삭제하기</button>
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeList" />'">목록으로</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${content.nbNum}" />'">수정하기</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeDelete?nbNum=${content.nbNum}" />'">삭제하기</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
 
 
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="titlebox">
-
-                            <h2>${noticeList.nbTitle}</h2>
-
-                        </div>
-                    </div>
-                </div>
-
+            
                 <div class="row">
                     <div class="container-fluid">
-                        
-
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="container-fluid">    
                         <table>
 
                             <tr>
-
-
-                                <td>작성일 : ${noticeList.nbRegDate}</td>
-                                <td><span class="glyphicon glyphicon-eye-open"></span>${noticeList.nbLookCount}</td>
-
+                                <td>작성일: <fmt:formatDate value="${content.nbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
+                                <td><span class="glyphicon glyphicon-eye-open"></span>${content.nbLookCount }</td>
                                 <td>
-
-                                    <button class="btn btn-info pull-right"><span
-                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
-
+									<c:if test="${loginuser != null }">
+										
+	                                    <button id="lovelyBtn" class="btn btn-info pull-right"><span
+	                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
+									</c:if>
 
                                 </td>
-
                             </tr>
 
                             <tr>
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
-
-                                        ${noticeList.nbContent}
-
+										${content.nbContent }
                                     </p>
-                                    
-                                  
                                 </td>
                             </tr>
-                            
-                    <div class="row">
-                    	<div class="container-fluid">
-                    	<img src="${pageContext.request.contextPath }/resource/img/${noticeList.nbImage1}" alt="" class="">
-                    	</div>
-                    </div>
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td>
-
-                                    <button class="btn btn-info pull-right"><span
-                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
+									<c:if test="${loginuser != null }">
+	                                    <button id="reportBtn" class="btn btn-info pull-right"><span
+	                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
+									
+									</c:if>
 
                                 </td>
                             </tr>
@@ -189,42 +162,30 @@
                 </div>
 
             </div>
-
             <div class="col-md-4 col-sm-12 test">
                 
                 <div class="row">
-                    <span class="reply reply-count">댓글 : ???개</span>
+                    <span id="replyCountSpan"class="reply reply-count">댓글 : ???개</span>
                 </div>
                 <div class="row">
-                    <form id="reply-form">
+                    
                         <div class="input-group input-group-lg">
 
-                            <input type="text" class="form-control" placeholder="댓글을 작성해주세요"
+                            <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
-                                <button id="reply-btn" type="button" class="btn btn-default"><span
+                                <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
                             </span>
                         </div>
-                    </form>
+                   	
                 </div>
-                <div class="row">
-                    <div class="reply reply-box">
-                        <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-                        <span class="reply-content">댓글 내용입니다.</span>
-                    </div>
+                <div id="replyList" class="row container-fluid">
+                	
                 </div>
+                
 
             </div>
-
-
-            
-            <!-- 댓글 --
-            // 댓글 조회
-List<ReplyVO> reply = null;
-reply = replyService.list(bno);
-model.addAttribute("reply", reply);-->
-
         </div>
 
 
@@ -237,35 +198,117 @@ model.addAttribute("reply", reply);-->
     </div>
 
     <script defer>
+        let strAdd = '';
+    	let pageNum = 2;
+    	let boolRegist = true;
+    	let nrClassName = '';
         function sleep(ms) {
             const wakeUpTime = Date.now() + ms;
             while (Date.now() < wakeUpTime) { }
         }
-        function replyAppendTest() {
-            for (let i = 0; i <= 10; i++) {
-                $('.test:last-child').append(`
-                    <div class="row">
-                        <div class="reply reply-box">
-                            <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-                            <span class="reply-content">댓글 내용입니다.</span>
-                        </div>
-                    </div>
-                `);
-            }
+        
+        
+        function replyLoad(pageNum, reset){
+        	$.getJSON(
+        		"<c:url value='/noticeBoard/noticeReplyList/${content.nbNum }/' />" + pageNum,
+        		function(data){
+        			console.log(data);
+        			$('#replyCountSpan').html('댓글 :'+data.total+'개');
+                    if(reset === true){
+                        strAdd='';
+                    }
+                    let loginuserName = "${loginuser.memberNick!=null? loginuser.memberNick:''}";
+        			for (let i = 0; i < data.list.length; i++) {
+                        strAdd += '<div class="row reply-item" style="display:none;">';
+                        strAdd += '<div class="reply reply-box">';
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].noticeRegDate)+'</small>'
+                        if(data.list[i].memberNick === loginuserName){
+	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].nrNum+'">수정</small> <small class="replyDelBtn'+data.list[i].nrNum+'">삭제</small></span>'
+                        	
+                        }
+                        strAdd += '<br><span class="reply-content">'+data.list[i].nrContent+'</span>'
+                        strAdd += '</div>';
+                        strAdd += '</div>';
+                    }
+                    $('#replyList').html(strAdd);
+                    $('.reply-item').fadeIn(500);
+        		}	
+        		
+        			
+        	); // end getJson
         }
+        
+        // 날짜 처리 함수
+        function timeStamp(millis) {
+            const date = new Date(); //현재 날짜
+            // 현재 날짜를 밀리초로 변환 - 등록일 밀리초 -> 시간차
+            const gap = date.getTime() - millis;
+            // 댓글1시간전 담 -> 방금전, 댓글 하루전 -> 몇시간전, 하루이상 2021-08-13
+            let time; // 리턴할 시간
+            if (gap < 60 * 60 * 24 * 1000) { // 1일 미만인 경우
+                if (gap < 60 * 60 * 1000) { //1시간 미만일 경우
+                    time = '방금 전';
+                } else {
+                    time = parseInt(gap / (60 * 60 * 1000)) + "시간 전";
+                }
+            } else { //1일 이상일경우
+                const today = new Date(millis);
+                const year = today.getFullYear(); //년
+                const month = today.getMonth() + 1; //월
+                const day = today.getDate(); //일
+                const hour = today.getHours(); // 시
+                const minute = today.getMinutes(); // 분
+                time = year + "년" + month + "월" + day + "일" + hour + "시" + minute + "분";
+
+            }
+            return time;
+        }
+        
+        $('#replyBtn').click(function(){
+        	if(boolRegist){
+	        	replyRegist();
+	        	$('#replyInput').val('');
+        	} else {
+        		replyModify(nrClassName);
+        		$('#replyInput').val('');
+        	}
+        });
+        $('#replyInput').keydown(function(e){
+        	if(e.keyCode === 13){
+        		if(boolRegist){
+    	        	replyRegist();
+    	        	$('#replyInput').val('');
+            	} else {
+            		replyModify(nrClassName);
+            		$('#replyInput').val('');
+            	}
+        	}
+        })
+        
+        
         $(document).ready(function () {
            
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-            replyAppendTest();
+            replyLoad(1,true);
+            pageNum=2;
 
         });
         $(window).resize(function () {
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
         });
         $('.test:last-child').scroll(function () {
-           
+            /*
+                document height -> 모든 row들의 높이 합
+                문서 전체의 높이를 의미합니다.
+                window height -> div.test의 높이
+                화면의 높이를 의미합니다.
+                scroll top
+                스크롤의 top이 위치하고 있는 높이를 의미합니다
+                
+            */
             let replyTotalHeight = 0;
             let count=0;
+            
             $('.test:last-child >.row').each(function () {
                 replyTotalHeight = replyTotalHeight + $(this).height()
                 count++;
@@ -278,7 +321,8 @@ model.addAttribute("reply", reply);-->
                 //     </div>
                 // `);
                 // $('#loadingImg').remove();
-                replyAppendTest();
+                replyLoad(pageNum,false);
+                pageNum = pageNum+1;
             }
             console.log(count);
             
@@ -292,7 +336,179 @@ model.addAttribute("reply", reply);-->
         //         console.log('스크롤 하단 감지');
         //     }
         // });
-
+		
+		function replyRegist(){
+			if(${loginuser==null? true:false }){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+			
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/noticeBoard/noticeReplyRegist' />",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                data: JSON.stringify({
+                    "memberNum":${loginuser.memberNum==null? -1:loginuser.memberNum },
+                    "nrContent":$('#replyInput').val(),
+                    "nbNum":${content.nbNum}
+                }),
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		       		
+            		replyLoad(1,true);
+            		pageNum=2;
+            		alert('댓글 등록 완료!!');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+        }
+		function replyModify(nrClassName){
+			if(${loginuser==null? true:false }){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+			
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/noticeBoard/noticeReplyModify' />",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                data: JSON.stringify({
+                    "memberNum":${loginuser.memberNum==null? -1:loginuser.memberNum },
+                    "nrContent":$('#replyInput').val(),
+                    "nrNum":nrClassName
+                }),
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		       		
+            		replyLoad(1,true);
+            		pageNum=2;
+            		alert('댓글 수정 완료');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+        	boolRegist = true;
+            nrClassName = '';
+            replyLoad(1,true);
+            pageNum=2;
+		}
+		
+		$('#lovelyBtn').click(function(){
+			if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+    		const arr = {
+    			"nbNum" : ${content.nbNum },
+    			"memberNum" : ${loginuser.memberNum==null? 0900:loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/noticeBoard/noticeLikely' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('좋아요 등록완료');
+                  	} else{
+                  		alert('이미 좋아요를 누르셨습니다.')
+                  	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //좋아요  비동기 처리 끝
+            
+            
+    	});
+    	
+    	$('#reportBtn').click(function(){
+    		if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+    		const arr = {
+    			"nbNum" : ${content.nbNum },
+    			"memberNum" : ${loginuser.memberNum==null? -1:loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/noticeBoard/noticeReport' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('신고 완료했습니다.');
+                  	} else{
+                  		alert('이미 신고를 하셨습니다.')
+                   	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //좋아요  비동기 처리 끝
+            
+            
+    	});
+    	
+    	$('#replyList').click(function(e){
+    		if(e.target.className.indexOf('replyModBtn') != -1){
+    			$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
+    			boolRegist = false;
+    			nrClassName = $(e.target).attr('class');
+    		}
+    		if(e.target.className.indexOf('replyDelBtn') != -1){
+    			if(${loginuser==null? true:false}){
+    				return;
+    			}
+    			const arr = {
+   					"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum },
+                   	"nrNum": e.target.className	
+    			}
+    			$.ajax({
+                    type: "POST",
+                    url: "<c:url value='/noticeBoard/noticeReplyDelete' />",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                    data: JSON.stringify(arr),
+                    success: function (data) {
+                        console.log('통신성공!' + data);
+                      	if(data==="success"){
+                      		alert('삭제 완료했습니다.');
+			    			replyLoad(1,true);
+			    			pageNum=2;
+                      	} 
+                    },
+                    error: function () {
+                        alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    }
+                });
+    		}
+    	});
+    	
+    	
+    	
 
     </script>
 </body>
