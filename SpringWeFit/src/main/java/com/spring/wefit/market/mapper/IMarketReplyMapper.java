@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.wefit.command.MarketReplyVO;
-import com.spring.wefit.commons.PageVO;
 
 public interface IMarketReplyMapper {
 	
@@ -22,5 +21,8 @@ public interface IMarketReplyMapper {
 	
 	//댓글 삭제 
 	void replyDelete(int mrNum);
+	
+	//글 불러오기
+	MarketReplyVO getContent(int mrNum);
 
 }

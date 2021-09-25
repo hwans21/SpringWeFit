@@ -123,7 +123,7 @@
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
                                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    				<c:forEach var="index" begin="1" end="${detail.mbImageCount-1 }">
+                    				<c:forEach var="index" begin="1" end="${detail.mbImageCount }">
                     					<li data-target="#carousel-example-generic" data-slide-to="${index }"></li>
                     				</c:forEach>
                             </ol>
@@ -229,7 +229,6 @@
                             </tr>
                             <tr>
                                 <td>${detail.mbAddrBasic }</td>
-                                <td>${detail.mbAddrDetail }</td>
                                 <td>
                                     <a href="https://map.kakao.com/link/to/${detail.mbAddrBasic }">
                                         <button class="btn btn-info pull-right">길찾기</button>
@@ -239,7 +238,7 @@
 
                             <tr>
                                 <td>작성일:${detail.mbRegDate }</td>
-                                <td><span class="glyphicon glyphicon-eye-open"></span>100</td>
+                                <td><span class="glyphicon glyphicon-eye-open"></span>${detail.mbLookCount }</td>
                                 <td>
 
                                     <button id="lovelyBtn" class="btn btn-info pull-right">
@@ -275,14 +274,14 @@
             <div class="col-md-4 col-sm-12 test">
                 
                 <div class="row">
-                    <span class="reply reply-count">댓글 : ???개</span>
+                    <span id="replyCountSpan" class="reply reply-count">댓글 : ???개</span>
                 </div>
                 
                 <div class="row">
                     <form id="reply-form">
                         <div class="input-group input-group-lg">
 
-                            <input type="text" id="mrContent" class="form-control" placeholder="댓글을 작성해주세요"
+                            <input type="text" id="replyInput" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
                                 <button id="replyBtn" type="button" class="btn btn-default"><span
@@ -292,12 +291,9 @@
                     </form>
                 </div>
                 
-               <!--  <div class="row">
-                    <div class="reply reply-box">
-                        <span class="reply-writer">작성자</span> <small>1시간 전</small><br><br>
-                        <span class="reply-content">댓글 내용입니다.</span>
-                    </div>
-                </div> -->
+               <div id="replyList" class="row container-fluid">
+                    
+                </div> 
 
             </div>
         </div>
@@ -312,47 +308,45 @@
     </div>
 
     <script defer>
+        let strAdd = '';
+    	let pageNum = 2;
+    	let boolRegist = true;
+    	let mrClassName = '';
         function sleep(ms) {
             const wakeUpTime = Date.now() + ms;
             while (Date.now() < wakeUpTime) { }
         }
         
         
-        function replyCount(){
-        	$.ajax({
-        		type : "GET",
-        		url : "<c:url value='/marketReply/marketReplyCount?mbNum=${detail.mbNum}' />",
-        		dataType : "text",
-        		success : function(data){
-        			console.log('통신성공' + data);
-        			$('#replyCountSpan').html('댓글: '+data + '개');
-        		},
-        		error : function(request, status, error){
-        			alert('통신에 실패했습니다. 관리자에게 문의하세요');
-        			console.log("code" + request.status+ "\n" + "message:" + request.responseText + "\n" + error);
-        		}
-        	});
-        } //replyCount 끝
-        
-        function replyLoad(pageNum){
+        function replyLoad(pageNum, reset){
         	$.getJSON(
-        			"<c:url value='/marketReply/marketReplyList/${detail.mbNum}' />" + pageNum,
-        			function(data){
-        				console.log(data);
-        				for (let i = 0; i < data.list.length; i++){
-        					$('.test:last-child').append(`
-        							<div class="row">
-        								<div class="reply reply-box">
-        									<span class="reply-writer">`+data.list[i].memberNick`</span><small>`+timeStamp(data.list[i].mr.RegDate)+`</small><br><br>
-        									<span class="reply-content">`+data.list[i].mrContent+`</span>
-        								</div>
-        							</div>
-        					`);
-        				}
-        			}
-        			); //end getJson
+        		"<c:url value='/marketReply/marketReplyList/${detail.mbNum }/' />" + pageNum,
+        		function(data){
+        			console.log(data);
+        			$('#replyCountSpan').html('댓글 :'+data.total+'개');
+                    if(reset === true){
+                        strAdd='';
+                    }
+                    let loginuserName = "${loginuser.memberNick!=null? loginuser.memberNick:''}";
+        			for (let i = 0; i < data.list.length; i++) {
+                        strAdd += '<div class="row reply-item" style="display:none;">';
+                        strAdd += '<div class="reply reply-box">';
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].mrRegDate)+'</small>'
+                        if(data.list[i].memberNick === loginuserName){
+	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].mrNum+'">수정</small> <small class="replyDelBtn'+data.list[i].mrNum+'">삭제</small></span>'
+                        	
+                        }
+                        strAdd += '<br><span class="reply-content">'+data.list[i].mrContent+'</span>'
+                        strAdd += '</div>';
+                        strAdd += '</div>';
+                    }
+                    $('#replyList').html(strAdd);
+                    $('.reply-item').fadeIn(500);
+        		}	
+        		
+        			
+        	); // end getJson
         }
-        
         
         // 날짜 처리 함수
         function timeStamp(millis) {
@@ -381,24 +375,32 @@
         }
         
         $('#replyBtn').click(function(){
-        	replyRegist();
-        	$('#replyInput').val('');
+        	if(boolRegist){
+	        	replyRegist();
+	        	$('#replyInput').val('');
+        	} else {
+        		replyModify(mrClassName);
+        		$('#replyInput').val('');
+        	}
         });
-        
-        $('#replyInput').keyup(function(e){
-        	e.preventDefault();
-        	if(e.keyCode==13){
-        		$('#replyBtn').click();
+        $('#replyInput').keydown(function(e){
+        	if(e.keyCode === 13){
+        		if(boolRegist){
+    	        	replyRegist();
+    	        	$('#replyInput').val('');
+            	} else {
+            		replyModify(mrClassName);
+            		$('#replyInput').val('');
+            	}
         	}
         })
         
         
-     
         $(document).ready(function () {
-            
+           
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-            replyCount();
-            replyLoad(1);
+            replyLoad(1,true);
+            pageNum=2;
 
         });
         $(window).resize(function () {
@@ -416,6 +418,7 @@
             */
             let replyTotalHeight = 0;
             let count=0;
+            
             $('.test:last-child >.row').each(function () {
                 replyTotalHeight = replyTotalHeight + $(this).height()
                 count++;
@@ -428,7 +431,8 @@
                 //     </div>
                 // `);
                 // $('#loadingImg').remove();
-                replyAppendTest();
+                replyLoad(pageNum,false);
+                pageNum = pageNum+1;
             }
             console.log(count);
             
@@ -442,11 +446,82 @@
         //         console.log('스크롤 하단 감지');
         //     }
         // });
-        
-        $('#lovelyBtn').click(function(){
+		
+		function replyRegist(){
+			if(${loginuser==null? true:false }){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+			
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/marketReply/regist' />",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                data: JSON.stringify({
+                    "memberNum":${loginuser.memberNum==null? -1:loginuser.memberNum },
+                    "mrContent":$('#replyInput').val(),
+                    "mbNum":${detail.mbNum}
+                }),
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		       		
+            		replyLoad(1,true);
+            		pageNum=2;
+            		alert('댓글 등록 완료!!');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+        }
+		function replyModify(mrClassName){
+			if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+			
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/marketReply/modify' />",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                data: JSON.stringify({
+                    "memberNum":${loginuser.memberNum==null? -1:loginuser.memberNum },
+                    "mrContent":$('#replyInput').val(),
+                    "mrNum":mrClassName
+                }),
+                dataType: "text",
+                success: function (data) {
+                    console.log('통신성공!' + data);	
+            		       		
+            		replyLoad(1,true);
+            		pageNum=2;
+            		alert('댓글 수정 완료');
+                },
+                error: function (request, status, error) {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            }); //비동기 처리 끝
+        	boolRegist = true;
+            mrClassName = '';
+            replyLoad(1,true);
+            pageNum=2;
+		}
+		
+		$('#lovelyBtn').click(function(){
+			if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
     		const arr = {
     			"mbNum" : ${detail.mbNum },
-    			"memberNum" : ${loginuser.memberNum }
+    			"memberNum" : ${loginuser.memberNum==null? 0900:loginuser.memberNum }
     		};
     		$.ajax({
                 type: "POST",
@@ -469,12 +544,17 @@
                 }
             }); //좋아요  비동기 처리 끝
             
-        });
-        
-        $('#reportBtn').click(function(){
+            
+    	});
+    	
+    	$('#reportBtn').click(function(){
+    		if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
     		const arr = {
     			"mbNum" : ${detail.mbNum },
-    			"memberNum" : ${loginuser.memberNum }
+    			"memberNum" : ${loginuser.memberNum==null? -1:loginuser.memberNum }
     		};
     		$.ajax({
                 type: "POST",
@@ -490,63 +570,55 @@
                   		alert('신고 완료했습니다.');
                   	} else{
                   		alert('이미 신고를 하셨습니다.')
-                  	}
+                   	}
                 },
                 error: function () {
                     alert('통신에 실패했습니다. 관리자에게 문의하세요');
                 }
-            }); //신고  비동기 처리 끝
+            }); //좋아요  비동기 처리 끝
             
             
     	});
-        
-        function replyRegist(){
-        	$.ajax({
-                type: "POST",
-                url: "<c:url value='/marketReply/regist' />",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                data: JSON.stringify({
-                    "memberNum":${loginuser.memberNum},
-                    "mrContent":$('#mrContent').val(),
-                    "mbNum":${detail.mbNum}
-                }),
-                dataType: "text",
-                success: function (data) {
-                    console.log('통신성공!' + data);	
-            		$('.test:last-child').html(`
-        				<div class="row">
-                            <span id="replyCountSpan"class="reply reply-count">댓글 : ???개</span>
-                        </div>
-                        <div class="row">
-                            <form id="reply-form">
-                                <div class="input-group input-group-lg">
-
-                                    <input id="mrContent" type="text" class="form-control" placeholder="댓글을 작성해주세요"
-                                        aria-describedby="basic-input">
-                                    <span class="input-group-btn" id="basic-input">
-                                        <button id="replyBtn" type="button" class="btn btn-default"><span
-                                                class="glyphicon glyphicon-send"></span></button>
-                                    </span>
-                                </div>
-                            </form>
-                        </div>		
-            		`);
-            		
-            		replyCount();
-            		replyLoad(1);
-            		pageNum=2;
-            		alert('댓글 등록 완료!!');
-                },
-                error: function (request, status, error) {
-                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
-                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                }
-            }); //비동기 처리 끝
-        }
-
-
+    	
+    	$('#replyList').click(function(e){
+    		if(e.target.className.indexOf('replyModBtn') != -1){
+    			$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
+    			boolRegist = false;
+    			mrClassName = $(e.target).attr('class');
+    		}
+    		if(e.target.className.indexOf('replyDelBtn') != -1){
+    			if(${loginuser==null? true:false}){
+    				return;
+    			}
+    			const arr = {
+   					"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum },
+                   	"mrNum": e.target.className	
+    			}
+    			$.ajax({
+                    type: "POST",
+                    url: "<c:url value='/marketReply/delete' />",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                    data: JSON.stringify(arr),
+                    success: function (data) {
+                        console.log('통신성공!' + data);
+                      	if(data==="success"){
+                      		alert('삭제 완료했습니다.');
+			    			replyLoad(1,true);
+			    			pageNum=2;
+                      	} 
+                    },
+                    error: function () {
+                        alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    }
+                });
+    		}
+    	});
+    	
+    	
+    	
 
     </script>
 </body>

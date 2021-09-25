@@ -101,6 +101,10 @@ public class MarketBoardController {
 		}
 		vo.setMbImageCount(imgCount);
 		
+		String[] arr = vo.getMbAddrBasic().split(" ");
+		
+		vo.setMbAddrBasic(arr[0] + " " + arr[1] + " " + arr[2]);
+		
 		service.regist(vo);
 		
 		return "redirect:/marketBoard/market_board/?pageNum=1";

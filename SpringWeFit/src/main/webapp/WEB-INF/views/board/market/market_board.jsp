@@ -1,6 +1,7 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -129,14 +130,18 @@
                     <thead>
                         <tr>
                             <td colspan="3">
-                            
+                            		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=buy" />'">삽니다</button>
+                              		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=sell" />'">팝니다</button>
+                              		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=share" />'">나눠요</button>
+                              		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board" />'">전체 보기</button>
                             	<form action="<c:url value='/marketBoard/market_board' />">
                                 <div class="search-sec">
     
                                     <!--검색 조건-->
-                              
+                              		
                                     <select class="search-condition" name="condition">
                                         <option value="title">상품이름</option>
+                                        <option value="addr">지역</option>
                                     </select>
                     
                                     <!--검색창, 버튼-->
@@ -167,10 +172,16 @@
 								<div class=vid>
 									<a href="#"><img
 										src="/upload/board/market/${product.memberNum }/${product.mbRealImage1}"
-										width="280px" height="160px" alt="${product.mbImage1 }"></a>
+										width="280px" height="160px" alt="${product.mbImage1 }"></a><br>
 
 									<p class="subject">
-										<a href="#">${product.mbType}</a><br>
+										<a href="#">
+											<c:if test="${product.mbType == 'sell' }"> 팝니다</c:if> 
+											<c:if test="${product.mbType == 'buy' }"> 삽니다</c:if> 
+											<c:if test="${product.mbType == 'share' }"> 나눠요</c:if> 
+										
+										</a><br>
+										<a href="#">${product.mbAddrBasic}</a><br>
 										<a href="#">${product.mbTitle}</a><br>
 										<a href="#">가격: ${product.mbPrice }원</a>
 									</p>
@@ -204,13 +215,10 @@
         <div class="tools">
 
             <!--글쓰기 버튼-->
-            <a href="<c:url value='/marketBoard/market_write' />">
-                <button type="button" class="btn btn-outline-primary">
-                    	글쓰기
-
-                </button>
-
-            </a>
+	            
+	                <button id="writeBtn" type="button" class="btn btn-outline-primary">글쓰기</button>                    	             
+	            
+           
 
             <!-- 페이징 버튼-->
 			<form action="<c:url value='/marketBoard/market_board' />" name="pageForm">
@@ -249,7 +257,22 @@
     </div>
 
 
-
+<script>
+	$(document).ready(function(){
+		
+		$('#writeBtn').click(function() {
+			if(${loginuser==null}){
+				alert('로그인이 필요합니다.');
+				history.back();
+				return;
+			}else{
+				location.href="<c:url value='/marketBoard/market_write' />"
+			}
+		});
+		
+		
+	})
+</script>
 
 
 

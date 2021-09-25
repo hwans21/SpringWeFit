@@ -11,8 +11,8 @@
  		<if test="condition == 'title'">
  			WHERE mbTitle LIKE '%'||#{keyword}||'%'
  		</if>
- 		<if test="condition == 'content'">
-			WHERE mbContent LIKE '%'||#{keyword}||'%'
+ 		<if test="condition == 'addr'">
+			WHERE mbAddrBasic LIKE '%'||#{keyword}||'%'
 		</if>
 		<if test="condition == 'writer'">
 			WHERE memberNum LIKE '%'||#{keyword}||'%'

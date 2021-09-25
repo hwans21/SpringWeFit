@@ -21,6 +21,8 @@ public interface IMarketReplyService {
 	
 	//댓글 삭제 
 	void replyDelete(int mrNum);
+	
+	MarketReplyVO getContent(int mrNum);
 
 
 }

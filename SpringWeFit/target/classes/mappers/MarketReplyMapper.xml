@@ -14,10 +14,10 @@
 		(
 			SELECT ROWNUM as rn, MarketReply.* FROM
 			(
-				SELECT fr.*, m.memberNick
+				SELECT mr.*, m.memberNick
 				FROM MarketReply mr, Member m
 				WHERE mr.mbNum = #{mbNum }
-				AND fr.memberNum = m.memberNum
+				AND mr.memberNum = m.memberNum
 				ORDER BY mr.mrRegDate DESC
 			) marketreply
 		)
@@ -26,6 +26,29 @@
 		AND rn <= #{paging.pageNum} * #{paging.countPerPage}
 		]]>
 	
+	</select>
+	
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*)
+		FROM MarketBoard mb, MarketReply mr 
+		WHERE mb.mbNum = mr.mbNum
+		AND mr.mbNum = #{mbNum}
+	</select>
+	
+	<update id="replyUpdate">
+		UPDATE MarketReply
+		SET mrContent = #{mrContent}
+		WHERE mrNum = #{mrNum}
+	</update>
+	
+	<delete id="replyDelete">
+		DELETE FROM MarketReply
+		WHERE mrNum = #{mrNum}
+	</delete>
+	
+	<select id="getContent" resultType="com.spring.wefit.command.MarketReplyVO">
+		SELECT * FROM MarketReply
+		WHERE mrNum = #{mrNum}
 	</select>
 
 

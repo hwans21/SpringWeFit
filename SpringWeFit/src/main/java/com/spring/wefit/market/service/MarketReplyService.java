@@ -48,4 +48,9 @@ public class MarketReplyService implements IMarketReplyService {
 
 	}
 
+	@Override
+	public MarketReplyVO getContent(int mrNum) {
+		return mapper.getContent(mrNum);
+	}
+
 }
