@@ -1,6 +1,6 @@
 package com.spring.wefit.user.service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,7 +76,7 @@ public class UserService implements IUserService {
 	@Override
 	public void modify(UserVO vo) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class UserService implements IUserService {
 			mail.setSubject("[본인인증] WeFit 인증메일입니다", "utf-8");
 			mail.setText(htmlStr, "utf-8", "html");
 			mail.addRecipient(RecipientType.TO, new InternetAddress(vo.getMemberEmail()));
-//			mailSender.send(mail); 
+			mailSender.send(mail); 
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -153,6 +153,12 @@ public class UserService implements IUserService {
 		String[] uuids = uuid.toString().split("-");
 		
 		mapper.codeChange(nick, uuids[0]);
+	}
+
+	@Override
+	public void geoRegist(UserVO vo) {
+		// TODO Auto-generated method stub
+		mapper.geoRegist(vo);
 	}
 	
 

@@ -53,6 +53,13 @@
 		memberHumanYN = 'N'
 		WHERE memberEmail = #{email}
 	</update>
-		
+	
+	
+	<update id="geoRegist">
+		UPDATE member
+		SET memberLatitude=#{memberLatitude},
+		memberLongitude=#{memberLongitude}
+		WHERE memberEmail = #{memberEmail}
+	</update>
 	
 </mapper>

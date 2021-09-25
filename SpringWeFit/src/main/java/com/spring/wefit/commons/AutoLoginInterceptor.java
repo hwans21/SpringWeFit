@@ -22,15 +22,15 @@ public class AutoLoginInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
+		System.out.println("자동 로그인 인터셉션 발동");
 		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
-		
 		
 		HttpSession session = request.getSession();
 		if(loginCookie != null) {
-			UserVO login = service.getUserWithSessionId(loginCookie.getValue());
 			
+			UserVO login = service.getUserWithSessionId(loginCookie.getValue());
 			if(login != null) {
-				session.setAttribute("user", login);
+				session.setAttribute("loginuser", login);
 			}
 			
 		}

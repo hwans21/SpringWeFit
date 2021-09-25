@@ -46,4 +46,7 @@ public interface IUserMapper {
 	
 	//인증 처리 후  인증값 변경
 	void codeChange(@Param("nick")String nick, @Param("code")String code);
+	
+	//유저 위치 정보 등록하기
+	void geoRegist(UserVO vo);
 }

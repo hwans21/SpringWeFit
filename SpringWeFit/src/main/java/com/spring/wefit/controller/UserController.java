@@ -1,6 +1,7 @@
 package com.spring.wefit.controller;
 
-import java.sql.Date;
+import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 import com.spring.wefit.command.UserVO;
 import com.spring.wefit.user.service.IUserService;
@@ -31,7 +33,7 @@ public class UserController {
 	@Autowired
 	private IUserService service;
 	
-	
+	// 회원가입 처리
 	@PostMapping("/join")
 	public String join(UserVO vo,RedirectAttributes ra) {
 		System.out.println("회원가입 컨트롤러 요청"+vo.toString());
@@ -41,6 +43,7 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	// 유저 탈퇴했거나 휴면계정인 경우 복구 처리
 	@PostMapping("/recovery")
 	public String recovery(UserVO vo,RedirectAttributes ra) {
 		System.out.println("/user/recovery: POST");
@@ -50,6 +53,7 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	// 인증링크 받아서 인증처리 
 	@GetMapping("/auth/{nick}/{code}")
 	public String auth(@PathVariable String nick, @PathVariable String code) {
 		System.out.println("GET: 인증요청");
@@ -60,7 +64,7 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	
+	//이메일 중복 여부 확인
 	@PostMapping("/emailChk")
 	@ResponseBody
 	public String emailChk(@RequestBody String email) {
@@ -70,7 +74,7 @@ public class UserController {
 		}
 		return "duplicate";
 	}
-	
+	// 닉네임 중복 여부 확인
 	@PostMapping("/nickChk")
 	@ResponseBody
 	public String nickChk(@RequestBody String nick) {
@@ -82,7 +86,7 @@ public class UserController {
 	}
 	
 	
-	
+	// 로그인 요청
 	@PostMapping("/login")
 	public ModelAndView login(UserVO vo,
 			HttpSession session, 
@@ -107,6 +111,7 @@ public class UserController {
 				}
 				session.setAttribute("loginuser", login);
 				long limitTime = 7*24*60*60; //7일동안 자동로그인
+				System.out.println(vo.toString());
 				if(vo.isAutoLoginCheck()) {
 					Cookie logincookie = new Cookie("loginCookie", session.getId());
 					logincookie.setPath("/");
@@ -127,6 +132,44 @@ public class UserController {
 		
 	}
 	
+	// 로그아웃 요청
+	@GetMapping("/logout")
+	public ModelAndView logout(HttpSession session, RedirectAttributes ra,
+			HttpServletRequest request, HttpServletResponse response) throws IOException{
+		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		UserVO vo = (UserVO) session.getAttribute("loginuser");
+		System.out.println("/user/logout: GET");
+		
+		if(session.getAttribute("loginuser") != null) {
+			//session.invalidate();
+			
+			session.removeAttribute("loginuser");
+			if(loginCookie != null) {
+				loginCookie.setValue(null);
+				loginCookie.setPath("/"); //쿠키 생성시 유효 url을 지정한 경우, 삭제할 때도 명시해 줍니다.
+				loginCookie.setMaxAge(0);
+				response.addCookie(loginCookie);
+				System.out.println(vo.getMemberEmail());
+				service.keepLogin("none",new Date(), vo.getMemberEmail());
+			}
+			ra.addFlashAttribute("msg","로그아웃 완료 되었습니다.");
+		}
+		return new ModelAndView("redirect:/");
+	}
 	
-	
+	// 위치정보 등록 이벤트
+	@PostMapping("/geoRegist")
+	@ResponseBody
+	public String geoRegist(@RequestBody UserVO vo) {
+		System.out.println(vo.toString());
+		double latitude = Math.round(vo.getMemberLatitude()*1000000)/1000000.0;
+		double longitude = Math.round(vo.getMemberLongitude()*1000000)/1000000.0;
+		vo.setMemberLatitude(latitude);
+		vo.setMemberLongitude(longitude);
+		System.out.println("위치값 조정 후 ");
+		System.out.println(vo.toString());
+		service.geoRegist(vo);
+		return "success";
+	}
+		
 }

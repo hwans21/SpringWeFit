@@ -41,6 +41,7 @@
 	<context:component-scan base-package="com.spring.wefit" />
 
 	
+	
 	<context:component-scan base-package="com.spring.*" />
 	
 		<!-- 파일 업로드 -->
@@ -57,6 +58,14 @@
 	</beans:bean>
 	
 	
+	<!-- 인터셉터 빈 따로 등록 -->
+	<beans:bean id="autoLogin" class="com.spring.wefit.commons.AutoLoginInterceptor" />
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/"/>
+			<beans:ref bean="autoLogin" />
+		</interceptor>
+	</interceptors>
 	
 </beans:beans>

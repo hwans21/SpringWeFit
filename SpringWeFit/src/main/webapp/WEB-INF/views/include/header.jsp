@@ -13,7 +13,7 @@
     <!--reset.css (css 초기화)-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
     
-    
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	64d6e725e286fedd8e4a806ec1c57025&libraries=services"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -96,40 +96,37 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Link 메뉴 -->
 
-                     <!-- 로그인 했을경우 -->
-                     <c:if test="${loginuser != null }">
                     
-	                    <li class="dropdown">
+                    <li class="dropdown">
+                    	<c:if test="${loginuser == null }">
+	                    	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+	                            aria-expanded="false">로그인하기 <span class="caret"></span></a>
+	                    </c:if>
+                        <c:if test="${loginuser != null }">
 	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 	                            aria-expanded="false">${loginuser.memberNick }님 <span class="caret"></span></a>
-	                        <ul class="dropdown-menu">
-	                            <li><a href="#"><span class="glyphicon glyphicon-map-marker"
-	                                        aria-hidden="true">&nbsp;대흥동</span></a></li>
-	                            <li role="separator" class="divider"></li>
+	                    </c:if>
+                        <ul class="dropdown-menu">
+                            <li><a id="geoLink"><span id="centerAddr" class="glyphicon glyphicon-map-marker"
+                                        aria-hidden="true"></span></a></li>
+                            <li role="separator" class="divider"></li>
+                    		 
+	                     	<c:if test="${loginuser != null }">
 	                            <li><a href="/FRONT/views/board/user/mypage.html"><span class="glyphicon glyphicon-pencil"
 	                                        aria-hidden="true">&nbsp;마이페이지</span></a></li>
-	                            <li><a href="#"><span class="glyphicon glyphicon-log-out"
+	                            <li><a href="<c:url value='/user/logout'/>"><span class="glyphicon glyphicon-log-out"
 	                                        aria-hidden="true">&nbsp;로그아웃</span></a></li>
-	                        </ul>
-	                    </li>
-                    </c:if>
-                    <!-- 로그인을 안했을 경우 -->
-                    <c:if test="${loginuser == null }">
-	                    <li class="dropdown">
-	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-	                            aria-expanded="false">로그인하기 <span class="caret"></span></a>
-	                        <ul class="dropdown-menu">
-	                            <li><a href="#"><span class="glyphicon glyphicon-remove"
-	                                        aria-hidden="true">&nbsp;위치정보없음</span></a></li>
-	                            <li role="separator" class="divider"></li>
+	                    	</c:if>
+		                    <c:if test="${loginuser == null }">
 	                            <li><a href="#" data-toggle="modal" data-target="#modal-login"><span class="glyphicon glyphicon-pencil"
 	                                        aria-hidden="true">&nbsp;로그인</span></a></li>
 	                            <li><a href="#"><span class="glyphicon glyphicon-log-out"
 	                                        aria-hidden="true" data-toggle="modal" data-target="#modal-join">&nbsp;회원가입</span></a></li>
-	                        </ul>
-	                    </li>
+		                    </c:if>
+                        </ul>
+                    </li>
+                  
                     
-                    </c:if>
                 </ul>
             </div>
         </div>
@@ -509,8 +506,59 @@
             }
         }
             
+        function getLocation() {
+        	const loginEmail = '${loginuser!=null? loginuser.memberEmail: "" }'
+        	if(loginEmail == ""){
+        		alert('로그인 후 이용해주세요');
+        		return;
+        	} else if (navigator.geolocation) { // GPS를 지원하면
+                navigator.geolocation.getCurrentPosition(function (position) {
+                	$.ajax({
+                        type: "POST",
+                        url: "<c:url value='/user/geoRegist' />",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                        data: JSON.stringify({
+                        	"memberEmail" : loginEmail,
+                            "memberLatitude" : position.coords.latitude,
+                            "memberLongitude" : position.coords.longitude,
+                        }),
+                        success: function (data) {
+                            console.log('통신성공!' + data);
 
-
+                          	if(data==="success"){
+                          		alert("위치가 등록 되었습니다.")
+                          	} else{
+                          		alert('위치 등록에 실패했습니다.')
+                          	}
+                        },
+                        error: function () {
+                            alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                        }
+                    }); // 회원 위치정보 등록 비동기 처리 끝
+                	
+                }, function (error) {
+                    console.error(error);
+                }, {
+                    enableHighAccuracy: false,
+                    maximumAge: 0,
+                    timeout: Infinity
+                });
+            } else {
+                alert('GPS를 지원하지 않습니다');
+            }
+        }
+		$('#geoLink').click(function(e){
+			e.preventDefault();
+			getLocation();
+		});
+		
+		/// 다음 주소 api사용부분
+		
+		// 주소-좌표 변환 객체를 생성합니다
+		// var geocoder = new kakao.maps.services.Geocoder();
 
     </script>
 </body>

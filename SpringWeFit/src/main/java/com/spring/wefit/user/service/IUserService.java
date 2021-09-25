@@ -1,6 +1,6 @@
 package com.spring.wefit.user.service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 
 
@@ -45,4 +45,7 @@ public interface IUserService {
 		
 		//링크 클릭시 인증하기
 		public void authUser(String nick, String code);
+		
+		//유저 위치 정보 등록하기
+		void geoRegist(UserVO vo);
 }
