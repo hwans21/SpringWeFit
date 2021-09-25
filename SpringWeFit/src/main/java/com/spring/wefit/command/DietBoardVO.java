@@ -1,5 +1,26 @@
 package com.spring.wefit.command;
-
+/*
+ * CREATE TABLE DietBoard ( 
+dbNum NUMBER(10, 0) NOT NULL, 
+memberNum NUMBER(20, 0) NOT NULL, 
+memberNick VARCHAR2(30) NOT NULL, 
+dbTitle VARCHAR2(200) NOT NULL, 
+dbContent VARCHAR2(2000), 
+dbImage1 VARCHAR2(50) , 
+dbImage2 VARCHAR2(50) , 
+dbImage3 VARCHAR2(50) , 
+dbImage4 VARCHAR2(50) , 
+dbImage5 VARCHAR2(50) , 
+dbRealImage1 VARCHAR2(50) , 
+dbRealImage2 VARCHAR2(50) , 
+dbRealImage3 VARCHAR2(50) , 
+dbRealImage4 VARCHAR2(50) , 
+dbRealImage5 VARCHAR2(50) , 
+dbLookCount NUMBER(20,0) DEFAULT 0 , 
+dbImageCount NUMBER(2,0) DEFAULT 0 , 
+dbRegDate DATE DEFAULT SYSDATE NOT NULL, 
+CONSTRAINT PK_DietBoard PRIMARY KEY (dbNum) );
+ * */
 
 import java.sql.Timestamp;
 
@@ -7,8 +28,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
 @ToString
 public class DietBoardVO {
 	
@@ -29,6 +50,7 @@ public class DietBoardVO {
 	private int dbLookCount;
 	private int dbImageCount;
 	private Timestamp dbRegDate;
+	private String memberNick;
 	
 	
 	

@@ -187,9 +187,8 @@
 										<a href="#">${vo.dbTitle}</a>
 									</p>
 									<p class="auth">
-										<span class="writeday">${vo.dbRegDate}</span> <span
-											class="nickname"></span> <span
-											class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>${vo.dbImageCount}</b></span>
+										<span class="writeday">${vo.dbRegDate}</span> <span class="nickname"></span> 
+										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>${vo.dbImageCount}</b></span>
 										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${vo.dbLookCount}</b></span>
 									</p>
 
@@ -237,6 +236,7 @@
 						</ul>
 					</nav>
 				</div>
+				
 				    <input type="hidden" name="pageNum" value="${dpc.paging.pageNum}">
                     <input type="hidden" name="countPerPage" value="${dpc.paging.countPerPage}">
                     <input type="hidden" name="keyword" value="${dpc.paging.keyword}">

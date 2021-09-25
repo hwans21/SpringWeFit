@@ -8,7 +8,7 @@ import lombok.ToString;
  * CREATE TABLE DietLikely
 (
     dbNum    NUMBER(10, 0)    NOT NULL, 
-    mNum    NUMBER(20, 0)    NOT NULL
+    memberNum    NUMBER(20, 0)    NOT NULL
 ); 
 
 */

@@ -62,6 +62,12 @@
 		WHERE dbNum = #{dbNum}
 	  </select>
 	  
+	  
+	  <select id="getContent" resultType="com.spring.wefit.command.DietBoardReplyVO">
+		SELECT * FROM DietReply
+		WHERE drNum = #{drNum}
+	</select>
+	  
 
 	  
 	  

@@ -41,14 +41,12 @@ public class DietReplyService implements IDietReplyService {
 
 	@Override
 	public void replyUpdate(DietBoardReplyVO vo) {
-		// TODO Auto-generated method stub
-
+		mapper.replyUpdate(vo);
 	}
 
 	@Override
 	public void replyDelete(int drNum) {
-		// TODO Auto-generated method stub
-
+		mapper.replyDelete(drNum);
 	}
 	
 	

@@ -1,5 +1,7 @@
 package com.spring.wefit.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.wefit.command.DietBoardReplyVO;
 import com.spring.wefit.command.DietBoardVO;
+import com.spring.wefit.commons.CustomFileUpload;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.diet.service.IDietBoardService;
@@ -36,10 +39,20 @@ public class DietController {
 		vo.setCountPerPage(9);
 		dpc.setPaging(vo);
 		dpc.setArticleTotalCount(service.getTotal(vo));
+		System.out.println("페이지 정보: " + dpc);
 		
-		model.addAttribute("dietList", service.getList(vo));
-		System.out.println();
-		model.addAttribute("dpc", dpc);
+		//총 게시물 개수
+		int contentTotal = service.getTotal(vo);
+		System.out.println("총 게시글 수: " + contentTotal);
+		
+		//게시글 리스트 뽑기
+		List<DietBoardVO> list = service.getList(vo);
+		
+		//jsp에 전달 할 값들
+		model.addAttribute("dietList", list);
+		model.addAttribute("paging", dpc.getPaging());
+		model.addAttribute("dpc" , dpc);
+		
 		return "/board/diet/diet_board";
 	}
 
@@ -53,6 +66,8 @@ public class DietController {
 	//글 등록
 	@PostMapping("/dietWrite")
 	public String dietWrite(MultipartHttpServletRequest request, DietBoardVO vo, RedirectAttributes ra) {
+		
+		
 		System.out.println("/board/dietWrite: POST 등록하기!!");
 		service.regist(vo);
 		

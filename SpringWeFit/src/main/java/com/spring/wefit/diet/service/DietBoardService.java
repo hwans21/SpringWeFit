@@ -26,6 +26,7 @@ public class DietBoardService implements IDietBoardService {
 	}
 
 	@Override
+	
 	public DietBoardVO getContent(int dbNum) {
 		return mapper.getContent(dbNum);
 	}

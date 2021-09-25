@@ -66,10 +66,14 @@ public class DietReplyController {
 		System.out.println(map.get("memberNum").getClass().getName());
 		System.out.println(map.get("drContent").getClass().getName());
 		System.out.println(map.get("drNum").getClass().getName());
+		
 		int memberNum = (int) map.get("memberNum");
 		String drContent = (String) map.get("drContent");
 		int drNum = Integer.parseInt(((String) map.get("drNum")).substring(11));
-		
+		System.out.println("memberNum: " + memberNum);
+		System.out.println("drContent: " + drContent);
+		System.out.println("drNum: " + drNum);
+		System.out.println(service.getContent(drNum).getMemberNum());
 		if(service.getContent(drNum).getMemberNum() == memberNum) {
 			DietBoardReplyVO vo = new DietBoardReplyVO();
 			vo.setDrContent(drContent);
@@ -83,14 +87,25 @@ public class DietReplyController {
 	
 	
 	//댓글 삭제하기
-	//@PostMapping("/dietReplyDelete")
+	@PostMapping("/dietReplyDelete")
+	public String  dietReplyDelete(@RequestBody Map<String, Object> map) {
+		System.out.println(map);
+		System.out.println(map.get("memberNum"));
+		int memberNum = Integer.parseInt((String) map.get("memberNum"));
+		int drNum = Integer.parseInt(((String) (map.get("drNum"))).substring(11));
+		System.out.println("memberNum: " + memberNum);
+		System.out.println("drNum: " + drNum);
+		System.out.println(service.getContent(drNum).getMemberNum());
 		
+		if(service.getContent(drNum).getMemberNum() == memberNum) {
+			service.replyDelete(drNum);
+			return "success";
+		}
+		return "noAuth";
+	}
 	
 	
-	
-	
-	//댓글 개수 카운트
-	//@GetMapping("/replyCount")
+
 	
 	
 
