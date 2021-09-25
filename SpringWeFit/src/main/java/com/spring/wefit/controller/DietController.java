@@ -33,9 +33,9 @@ public class DietController {
 		System.out.println("/board/dietList: GET 글 목록 전체보기!!");
 		
 		PageCreator dpc = new PageCreator();
+		vo.setCountPerPage(9);
 		dpc.setPaging(vo);
 		dpc.setArticleTotalCount(service.getTotal(vo));
-		vo.setCountPerPage(9);
 		
 		model.addAttribute("dietList", service.getList(vo));
 		System.out.println();

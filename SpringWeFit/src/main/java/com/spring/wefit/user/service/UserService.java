@@ -161,5 +161,16 @@ public class UserService implements IUserService {
 		mapper.geoRegist(vo);
 	}
 	
+	//닉네임이랑 코드 확인
+	public int codeCheck(UserVO vo) {
+		return mapper.codeCheck(vo);
+	}
+
+	@Override
+	public int isManager(String email) {
+		// TODO Auto-generated method stub
+		return mapper.isManager(email);
+	}
+	
 
 }

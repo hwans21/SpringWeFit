@@ -62,4 +62,16 @@
 		WHERE memberEmail = #{memberEmail}
 	</update>
 	
+	<select id="isManager" resultType="int">
+		SELECT COUNT(*) FROM MEMBER
+		WHERE memberEmail = #{memberEmail}
+		AND memberManagerYN = 'Y'
+	</select>
+	
+	<select id="codeCheck" resultType="int">
+		SELECT COUNT(*) FROM MEMBER
+		WHERE memberNick = #{memberNick }
+		AND memberCode = #{memberCode } 
+	</select>
+	
 </mapper>

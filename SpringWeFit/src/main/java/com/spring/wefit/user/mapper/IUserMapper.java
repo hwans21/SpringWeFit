@@ -49,4 +49,10 @@ public interface IUserMapper {
 	
 	//유저 위치 정보 등록하기
 	void geoRegist(UserVO vo);
+	
+	//닉네임이랑 코드 확인
+	int codeCheck(UserVO vo);
+	
+	//관리자 여부 체크
+	int isManager(String email);
 }

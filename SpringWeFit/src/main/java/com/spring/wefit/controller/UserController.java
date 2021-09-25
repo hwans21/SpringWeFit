@@ -171,5 +171,20 @@ public class UserController {
 		service.geoRegist(vo);
 		return "success";
 	}
+	
+	@GetMapping("/passwdChange/{memberNick}/{memberCode}")
+	public String passwdChangeView(@PathVariable String memberNick, @PathVariable String memberCode,RedirectAttributes ra, Model model) {
+		UserVO vo = new UserVO();
+		vo.setMemberNick(memberNick);
+		vo.setMemberCode(memberCode);
+		System.out.println("/user/passwdChange:GET");
+		System.out.println(vo);
+		if(service.codeCheck(vo) != 1) {
+			ra.addFlashAttribute("msg", "코드가 맞지 않습니다.");
+			return "redirect:/";
+		}
+		model.addAttribute(\, attributeValue)
+		return "user/pwchange";
+	}
 		
 }

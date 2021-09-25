@@ -112,8 +112,8 @@
                             <li role="separator" class="divider"></li>
                     		 
 	                     	<c:if test="${loginuser != null }">
-	                            <li><a href="/FRONT/views/board/user/mypage.html"><span class="glyphicon glyphicon-pencil"
-	                                        aria-hidden="true">&nbsp;마이페이지</span></a></li>
+	                            <li><a href="<c:url value='/user/passwdChange/${loginuser.memberNick}/${loginuser.memberCode}' />"><span class="glyphicon glyphicon-pencil"
+	                                        aria-hidden="true">&nbsp;비밀번호 변경</span></a></li>
 	                            <li><a href="<c:url value='/user/logout'/>"><span class="glyphicon glyphicon-log-out"
 	                                        aria-hidden="true">&nbsp;로그아웃</span></a></li>
 	                    	</c:if>

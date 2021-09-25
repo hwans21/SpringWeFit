@@ -46,6 +46,7 @@ public class FreeBoardController {
 		
 		// 페이지 버튼 계산하기
 		PageCreator pc = new PageCreator();
+		
 		pc.setPaging(vo);
 		pc.setArticleTotalCount(service.getTotal(vo));
 		vo.setCountPerPage(20);
@@ -262,7 +263,7 @@ public class FreeBoardController {
 		vo.setPageNum(pageNum);
 		vo.setCountPerPage(10);
 		
-			List<FreeReplyVO> list = replyService.getList(vo, fbNum); 
+		List<FreeReplyVO> list = replyService.getList(vo, fbNum); 
 			int total = replyService.getTotal(fbNum); // 댓글 개수
 		Map<String, Object> map = new HashMap<>();
 		map.put("list",list);

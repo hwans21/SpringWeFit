@@ -389,6 +389,7 @@
                 replyTotalHeight = replyTotalHeight + $(this).height()
                 count++;
             });
+            console.log(replyTotalHeight);
             if ($('.test:last-child').scrollTop() + $('.test:last-child').height() >= replyTotalHeight) {
                 // 로딩이미지 보여주기
                 // $('.test:last-child').append(`
