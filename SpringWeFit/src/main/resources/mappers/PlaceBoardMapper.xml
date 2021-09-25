@@ -4,12 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.spring.wefit.placeboard.mapper.IPlaceBoardMapper">
-
+	<!--
 	<select id="getList" resultType="com.spring.wefit.command.PlaceBoardVO">
 		  	SELECT * FROM PlaceBoard
 		  	ORDER BY pbNum DESC 	
 	</select>
-	<!--  
+	-->
+	
 	<select id="getList" resultType="com.spring.wefit.command.PlaceBoardVO">
 		SELECT * FROM
 		(
@@ -19,7 +20,7 @@
 				(SELECT COUNT(*) FROM PlaceReport WHERE pbNum=p.pbNum) as pbReportCount
 				FROM PlaceBoard p, Member m
 				WHERE p.memberNum = m.memberNum
-				AND p.pbTitle LIKE '%'||#{condition}||'%'
+				AND p.pbCategory LIKE '%'||#{condition}||'%'
 				AND p.pbTitle LIKE '%'||#{keyword}||'%'
 				ORDER BY pbRegDate DESC
 			) place
@@ -29,7 +30,7 @@
 		AND rn <= #{pageNum} * #{countPerPage}
 		]]>
 	</select>
-	-->
+
 	
 	<select id="getContent"
 		resultType="com.spring.wefit.command.PlaceBoardVO">
@@ -47,14 +48,14 @@
 	</select>
 	 -->
 	 
-	 <!-- 
+	
 	 <select id="getTotal" resultType="int">
 		SELECT COUNT(*) FROM PlaceBoard p, Member m
 		WHERE p.memberNum = m.memberNum
 		AND p.pbTitle LIKE '%'||#{condition}||'%'
 		AND p.pbTitle LIKE '%'||#{keyword}||'%'
 	</select>
-	 -->
+	 
 	 
 	<insert id="regist">
 		INSERT INTO PlaceBoard
@@ -163,24 +164,6 @@
 	
 	
 	
-	
-  <!--  
-	<sql id="search">
-		<if test="condition == 'pbTitle'">
-			WHERE pbTitle LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'pbContent'">
-			WHERE pbContent LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'memberNum'">
-			WHERE memberNum LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'titleContent'">
-			WHERE pbTitle LIKE '%'||#{keyword}||'%'
-			OR pbContent LIKE '%'||#{keyword}||'%'
-		</if>
-	</sql>
-  -->
 	
 
 

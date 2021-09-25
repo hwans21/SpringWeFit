@@ -213,42 +213,34 @@
                     </form>
                 </div>
 
-                <div id="btn-list" class="row" align="right">
-                                  
-                    <!-- 종목 -->
-
-
-
-                    <div id="sportsBtn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
-
-
-                        <button type="button" class="btn btn-info btn-active id="all">전체</button>
-                        <button type="button" class="btn btn-info">수영</button>
-                        <button type="button" class="btn btn-info">배드민턴</button>
-                        <button type="button" class="btn btn-info">스쿼시</button>
-                        <button type="button" class="btn btn-info">자전거</button>
-                        <button type="button" class="btn btn-info">달리기</button>
-                        <button type="button" class="btn btn-info">등산</button>
-                        <button type="button" class="btn btn-info">홈트짐트</button>
-                        <button type="button" class="btn btn-info">필라테스</button>
-                        <button type="button" class="btn btn-info">골프</button>
-                        <button type="button" class="btn btn-info">스케이트</button>
-                        <button type="button" class="btn btn-info">기타</button>&nbsp;&nbsp;&nbsp;
-                    </div>
-
-                    <input type="text" placeholder="Search">
-                  
-                    <button type="button" class="btn" aria-label="Left Align">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-                </div>
+				<!-- 종목 -->
+	                <div id="btn-list" class="row" align="right">
+	                    <div id="sportsBtn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
+	                        <button type="button" class="btn btn-info btn-active" id="allBtn">전체</button>
+	                        <button type="button" class="btn btn-info" id="swimmingBtn">수영</button>
+	                        <button type="button" class="btn btn-info" id="badmintonBtn">배드민턴</button>
+	                        <button type="button" class="btn btn-info" id="squashBtn">스쿼시</button>
+	                        <button type="button" class="btn btn-info" id="bicycleBtn">자전거</button>
+	                        <button type="button" class="btn btn-info" id="runningBtn">달리기</button>
+	                        <button type="button" class="btn btn-info" id="hikingBtn">등산</button>
+	                        <button type="button" class="btn btn-info" id="trainingBtn">홈트짐트</button>
+	                        <button type="button" class="btn btn-info" id="pilatesBtn">필라테스</button>
+	                        <button type="button" class="btn btn-info" id="golfBtn">골프</button>
+	                        <button type="button" class="btn btn-info" id="skateBtn">스케이트</button>
+	                        <button type="button" class="btn btn-info" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
+	                    </div>
+	
+	                    <input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
+	                  
+	                    <button type="button" class="btn" aria-label="Left Align">
+	                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+	                    </button>
+	                </div>
 
                 <div class="row margin-top-5">
                     <table class="table table-hover table-responsive">
+                    
                         <thead class="bg-info">
-                            <a href="/FRONT/views/board/location/loc_detail.html">
-                            
-                            </a>
                             <tr>
                                 <th scope="col" class="text-center">번호</th>
                                 <th scope="col" class="text-center">장소명</th>
@@ -258,29 +250,21 @@
                                 <th scope="col" class="text-center">조회</th>
                             </tr>
                         </thead>
+                        
                         <tbody>
-
-
                         	<c:forEach var="vo" items="${placeList}">
-                        		<tr>
-                        		
+                        		<tr onclick="location.href='<c:url value="/placeBoard/placeDetail?pbNum=${vo.pbNum}" />'">
 	                                <td>${vo.pbNum}</td>
 	                                <td>
-	                                	<a href="<c:url value='/placeBoard/placeDetail?pbNum=${vo.pbNum}&pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword}&condition=${pc.paging.condition}' />">${vo.pbTitle}</a>
+	                                	<a href="<c:url value='/placeBoard/placeDetail?pbNum=${vo.pbNum}&pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword}&condition=${pc.paging.condition}' />">[${vo.pbCategory}] ${vo.pbTitle}</a>
 	                                	&nbsp;&nbsp;&nbsp;
-	                               
 	                                </td>
 	                                <td>${vo.pbAddrBasic}</td>
 	                                <td>${vo.memberNum}</td>
 	                                <td><fmt:formatDate value="${vo.pbRegDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	                                <td>${vo.pbLookCount}</td> 
-	                             
 	                            </tr>
                         	</c:forEach>
-                        	
-
-
-
                         </tbody>
 
                     </table>
@@ -290,9 +274,6 @@
 
                 <div class="row" align="right">													
                     <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/placeBoard/placeWrite' />' "><b>새 장소 등록</b></button>
-
-
-
                 </div>
 
                 <div class="row text-center">
@@ -326,27 +307,72 @@
 
 
     <script>
-     // 종목별 클릭 시 
-     const sportsBtn = document.getElementById('sportsBtn';)
-     writeBtn.onclick = function() {
-     }
-     
-     // 게시글 클릭
+	    const msg = '${msg}';
+		if(msg === 'registSuccess') {
+			alert('정상 등록 처리되었습니다.');
+		}
+	
+     // 카테고리 클릭 시 
+     $('#allBtn').click(function(){
+ 		location.href=`<c:url value="/placeBoard/placeList?condition=&keyword=${pc.paging.keyword} " />`
+ 		});
+     $('#swimmingBtn').click(function(){
+  		location.href=`<c:url value="/placeBoard/placeList?condition=수영&keyword=${pc.paging.keyword} " />`
+  		});
+     $('#badmintonBtn').click(function(){
+   		location.href=`<c:url value="/placeBoard/placeList?condition=배드민턴&keyword=${pc.paging.keyword} " />`
+   		});
+     $('#squashBtn').click(function(){
+   		location.href=`<c:url value="/placeBoard/placeList?condition=스쿼시&keyword=${pc.paging.keyword} " />`
+   		});
+     $('#bicycleBtn').click(function(){
+   		location.href=`<c:url value="/placeBoard/placeList?condition=자전거&keyword=${pc.paging.keyword} " />`
+   		});
+     $('#runningBtn').click(function(){
+   		location.href=`<c:url value="/placeBoard/placeList?condition=달리기&keyword=${pc.paging.keyword} " />`
+   		}); hikingBtn
+   	 $('#hikingBtn').click(function(){
+   	   	location.href=`<c:url value="/placeBoard/placeList?condition=등산&keyword=${pc.paging.keyword} " />`
+   	   	});
+   	 $('#trainingBtn').click(function(){
+    	location.href=`<c:url value="/placeBoard/placeList?condition=홈트짐트&keyword=${pc.paging.keyword} " />`
+    	});
+   	 $('#pilatesBtn').click(function(){
+     	location.href=`<c:url value="/placeBoard/placeList?condition=필라테스&keyword=${pc.paging.keyword} " />`
+     	});
+   	 $('#golfBtn').click(function(){
+     	location.href=`<c:url value="/placeBoard/placeList?condition=골프&keyword=${pc.paging.keyword} " />`
+     	});
+   	 $('#skateBtn').click(function(){
+     	location.href=`<c:url value="/placeBoard/placeList?condition=스케이트&keyword=${pc.paging.keyword} " />`
+     	});
+   	 $('#etcBtn').click(function(){
+      	location.href=`<c:url value="/placeBoard/placeList?condition=기타&keyword=${pc.paging.keyword} " />`
+      	});
+   	 
+   	// 검색버튼 
+   	 $('#searchBtn').click(function(){
+	   	 location.href=`<c:url value="/placeBoard/placeList?condition=${pc.paging.condition}&keyword="/>`+$('#search-input').val()
+	 });
+	 $('#search-input').keyup(function(e){
+		 if(e.keyCode == 13) {
+    	 	location.href=`<c:url value="/placeBoard/placeList?condition=${pc.paging.condition}&keyword="/>`+$('#search-input').val()
+		 }
+	 });
+	 
+	 
+     //
      $(document).on('click', '#btnWriteForm', function(e){
-
 		e.preventDefault();
 		location.href = "${pageContext.request.contextPath}/board/boardForm";
+	 });
 
-	});
-
-	
-
+     
+    //
 	function fn_contentView(bid){
-
 		var url = "${pageContext.request.contextPath}/board/getBoardContent";
 		url = url + "?bid="+bid;
 		location.href = url;
-
 	}
 
 

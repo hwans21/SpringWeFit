@@ -60,10 +60,10 @@ public class PlaceReplyController {
 	public String placeReplyModify(@RequestBody Map<String, Object> map) {
 		System.out.println(map.get("memberNum").getClass().getName());
 		System.out.println(map.get("prContent").getClass().getName());
-		System.out.println(map.get("pbNum").getClass().getName());
+		System.out.println(map.get("prNum").getClass().getName());
 		int memberNum = (int) map.get("memberNum");
 		String prContent = (String) map.get("prContent");
-		int prNum = Integer.parseInt(((String) map.get("pbNum")).substring(11));
+		int prNum = Integer.parseInt(((String) map.get("prNum")).substring(11));
 			
 		if(replyService.replyGetContent(prNum).getMemberNum() == memberNum) {
 			PlaceReplyVO vo = new PlaceReplyVO();
@@ -82,10 +82,10 @@ public class PlaceReplyController {
 	public String placeReplyDelete(@RequestBody Map<String, Object> map) {
 			
 		int memberNum = (int) map.get("memberNum");
-		int pbNum = Integer.parseInt(((String) map.get("pbNum")).substring(11));
+		int prNum = Integer.parseInt(((String) map.get("prNum")).substring(11));
 			
-		if(replyService.replyGetContent(pbNum).getMemberNum() == memberNum) {
-			replyService.replyDelete(pbNum);
+		if(replyService.replyGetContent(prNum).getMemberNum() == memberNum) {
+			replyService.replyDelete(prNum);
 			return "success";
 		}
 			

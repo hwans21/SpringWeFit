@@ -42,6 +42,10 @@ CREATE SEQUENCE placeBoard_seq
     NOCYCLE 
     NOCACHE;
 
+ALTER TABLE PlaceBoard ADD(memberNick VARCHAR(20));
+ALTER TABLE PlaceBoard add(pbLikelyCount NUMBER(10, 0));
+ALTER TABLE PlaceBoard add(pbReportCount NUMBER(10, 0));
+
 	
  */
 
@@ -74,7 +78,7 @@ public class PlaceBoardVO {
 	private int pbImageCount;
 	private Timestamp pbRegDate;
 
-//	private String memberNick;
-//	private int pbLikelyCount;
-//	private int pbReportCount;
+	private String memberNick;
+	private int pbLikelyCount;
+	private int pbReportCount;
 }

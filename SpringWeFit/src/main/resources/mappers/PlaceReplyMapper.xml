@@ -32,11 +32,28 @@
 	</select>
 	
 	<!-- 댓글 목록 -->
-	<select id="replyGetList">
-		SELECT * FROM PlaceReply
-		WHERE drNum = #{prNum}
-		ORDER BY prNum DESC
+	<select id="replyGetList" resultType="com.spring.wefit.command.PlaceReplyVO">
+		SELECT * FROM
+		(
+			SELECT ROWNUM as rn, placeReply.* FROM
+			(
+				SELECT pr.*, m.memberNick
+				FROM PlaceReply pr, Member m
+				WHERE pr.pbNum = #{pbNum}
+				AND pr.memberNum = m.memberNum
+				ORDER BY pr.prRegDate DESC
+			) placeReply
+		)
+		<![CDATA[
+			WHERE rn > (#{paging.pageNum}-1)*#{paging.countPerPage}
+			AND rn <= #{paging.pageNum} * #{paging.countPerPage}
+		]]>
 	</select>
 	
+	<!-- 댓글 상세 -->
+	<select id="replyGetContent" resultType="com.spring.wefit.command.PlaceReplyVO">
+		SELECT * FROM PlaceReply
+		WHERE prNum = #{prNum}
+	</select>
 
 </mapper>

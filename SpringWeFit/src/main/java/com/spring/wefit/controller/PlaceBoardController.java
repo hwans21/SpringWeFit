@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.wefit.command.FreeBoardVO;
 import com.spring.wefit.command.PlaceBoardVO;
+import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.placeboard.service.IPlaceBoardService;
 
@@ -31,16 +33,28 @@ public class PlaceBoardController {
 		@GetMapping("/placeList")
 		public String placeList(PageVO vo, Model model) {
 			System.out.println("/placeBoard/placeList: GET");
-			List<PlaceBoardVO> list = service.getList(vo);
-			System.out.println(list);
-			model.addAttribute("placeList", list);
-			return "board/location/loc_board";
-			
 			
 			// 페이지 버튼 계산하기
+			vo.setCountPerPage(20);
+			PageCreator pc = new PageCreator();
+			pc.setPaging(vo);
+			pc.setArticleTotalCount(service.getTotal(vo));
+			
+			
 			// 총 게시물 개수
+			int contentTotal = service.getTotal(vo);
+			System.out.println("총 게시글 수 : "+contentTotal );
+			
 			// 게시글 리스트 뽑기
+			List<PlaceBoardVO> list = service.getList(vo);
+			
 			// jsp에 전달할 값들
+			model.addAttribute("placeList", list);
+			model.addAttribute("page",pc.getPaging());
+			model.addAttribute("pc",pc);
+//		
+			return "board/location/loc_board";
+			
 		}
 	
 
@@ -118,7 +132,7 @@ public class PlaceBoardController {
 	//장소 글 좋아요 처리
 	@PostMapping("/placeLikely")
 	@ResponseBody
-	public String freeBoardLikely(@RequestBody PlaceBoardVO vo) {
+	public String placeBoardLikely(@RequestBody PlaceBoardVO vo) {
 		System.out.println("글 번호:"+vo.getPbNum());
 		System.out.println("유저 번호"+vo.getMemberNum());
 		if(service.checkLovely(vo) == 1) {
@@ -133,7 +147,7 @@ public class PlaceBoardController {
 	//장소 글 신고 처리하기
 	@PostMapping("/placeReport")
 	@ResponseBody
-	public String freeBoardReport(@RequestBody PlaceBoardVO vo) {
+	public String placeBoardReport(@RequestBody PlaceBoardVO vo) {
 		System.out.println("글 번호:"+vo.getPbNum());
 		System.out.println("유저 번호"+vo.getMemberNum());
 		if(service.checkReport(vo) == 1) {

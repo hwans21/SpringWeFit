@@ -25,6 +25,7 @@ CREATE SEQUENCE placeReply_seq
     NOCYCLE 
     NOCACHE;
 
+ALTER TABLE PlaceReply ADD(memberNick VARCHAR(20));
 
  */
 @Getter
@@ -39,6 +40,6 @@ public class PlaceReplyVO {
 	private int starScore;
 	private Timestamp prRegDate;
 	
-//	private String memberNick;
+	private String memberNick;
 	
 }
