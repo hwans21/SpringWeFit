@@ -74,7 +74,7 @@ public class PlaceBoardVO {
 	private int pbImageCount;
 	private Timestamp pbRegDate;
 
-	private String memberNick;
-	private int pbLikelyCount;
-	private int pbReportCount;
+//	private String memberNick;
+//	private int pbLikelyCount;
+//	private int pbReportCount;
 }

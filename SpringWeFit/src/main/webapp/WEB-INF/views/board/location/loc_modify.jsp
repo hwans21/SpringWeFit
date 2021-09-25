@@ -1,10 +1,7 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,13 +54,15 @@
             </div>
 
             <!--main left-->
-            <form action="#" id="boardWrite" method="POST" enctype="multipart/form-data">
+            <form action="<c:url value='/placeBoard/placeModify'/>" id="placeModify-form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="pbNum" value="${placeList.pbNum}">
+                
                 <table>
                     <tr>
                         <td>종목</td>
                         <td>
                             <select id="sports" name="pbCatecory">
-                                <option value="">종목선택</option>
+                                <option value="category">종목선택</option>
                                 <option value="">수영</option>
                                 <option value="">자전거</option>
                                 <option value="">달리기</option>
@@ -78,17 +77,17 @@
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=name size=20> </td>
+                        <td><input type=text id="pbNum" name="pbNum" size=20 value="${placeList.pbNum}"> </td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name=title size="60"></td>
+                        <td><input type=text id="pbTitle" name="pbTitle" size="60" value="${placeList.pbTitle}"></td>
                     </tr>
 
                     <tr>
                         <td>내용</td>
-                        <td><textarea name="content" cols="75" rows="15"></textarea></td>
+                        <td><textarea id="pbContent" name="pbContent" cols="75" rows="15">${placeList.pbContent}</textarea></td>
                     </tr>
 
                     <tr>
@@ -111,9 +110,9 @@
                             <br>
 
 
-                            <button type="button" class="btn btn-primary" onclick="location.href='<c:url value='/placeBoard/placeModify' />' ">수정하기</button>
-                            <button type="button" class="btn btn-primary" onclick="location.href='<c:url value='/placeBoard/placeDelete' />' ">삭제하기</button>
-                            <button type="button" class="btn btn-default" onclick="location.href='<c:url value='/placeBoard/placeList' />' ">취소하기</button>
+                            <button id="modifyBtn" type="button" class="btn btn-primary">수정하기</button> 
+                            <button id="deleteBtn" type="button" class="btn btn-primary">삭제하기</button>
+                            <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/placeBoard/placeList" />'">취소하기</button>
 
 
 
@@ -133,7 +132,57 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
 
-   
+   	<script>
+ 
+   	
+
+    	let title = $('#input-title').val();
+    	<!-- 
+    	$('#category').change(function(){
+    		let category = title.substring(title.indexOf("["),title.indexOf("]")+1);
+    		if(category !== $('#category').val()){
+    			$('#input-title').val(title.replace(category,$('#category').val()));
+    		}
+    	});
+    	-->
+    	
+    	// 글 수정 검증
+    	$(function() {   
+    	$('#modifyBtn').click(function(){
+    		if($('#sports').val() === 'category') {
+                alert('종목을 선택해주세요.');
+                return;            
+             } else if($('#pbNum').val().trim() === '') {
+                 alert('작성자를 입력해주세요.');   
+                 return;
+             } else if($('#pbTitle').val().trim() === '') {
+                 alert('제목을 입력해주세요.');   
+                 return;
+             /*
+             } else if($('#addrBasic').val().trim() === '') {
+                 alert('주소를 입력해주세요.');   
+                 return;
+             } else if($('#addrDetail').val().trim() === '') {
+                 alert('상세주소를 입력해주세요.');   
+                 return;
+             */
+             } else {
+    			$('#placeModify-form').submit();
+			}
+    	});
+    	
+    	//글 삭제 확인
+    	$('#deleteBtn').click(function(){
+    		if(confirm("정말로 삭제하시겠습니까?")){
+	    		$('#placeModify-form').attr("action", '<c:url value="/placeBoard/placeDelete" />')
+	    		$('#placeModify-form').submit();
+    		}
+    	});
+    	
+    	}); // end jQuery
+    	
+    	
+    </script>
 
    
 </body>

@@ -22,6 +22,8 @@ public interface IPlaceReplyService {
 	//장소게시판 댓글 삭제
 	void replyDelete(int prNum); 
 	
+	//장소게시판 댓글 상세
+	PlaceReplyVO replyGetContent(int prNum);
 
 
 }

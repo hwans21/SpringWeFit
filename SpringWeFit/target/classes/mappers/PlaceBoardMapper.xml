@@ -30,9 +30,13 @@
 		]]>
 	</select>
 	-->
-
-
-	<!--  -->
+	
+	<select id="getContent"
+		resultType="com.spring.wefit.command.PlaceBoardVO">
+		SELECT * FROM PlaceBoard
+		WHERE pbNum = #{pbNum}
+	</select>
+	<!-- 
 	<select id="getContent" resultType="com.spring.wefit.command.PlaceBoardVO">
 		SELECT p.*, m.memberNick,
 		(SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=#{pbNum}) as pbLikelyCount,
@@ -41,34 +45,73 @@
 		WHERE p.pbNum = #{pbNum}
 		AND p.memberNum = m.memberNum
 	</select>
-	
-	<select id="getTotal" resultType="int">
+	 -->
+	 
+	 <!-- 
+	 <select id="getTotal" resultType="int">
 		SELECT COUNT(*) FROM PlaceBoard p, Member m
 		WHERE p.memberNum = m.memberNum
 		AND p.pbTitle LIKE '%'||#{condition}||'%'
 		AND p.pbTitle LIKE '%'||#{keyword}||'%'
 	</select>
-
+	 -->
+	 
 	<insert id="regist">
-		INSERT INTO PlaceBoard(
+		INSERT INTO PlaceBoard
+		(
 		pbNum, memberNum, pbCategory, pbTitle, pbContent, 
 		pbImage1, pbImage2, pbImage3, pbImage4, pbImage5,
 		pbRealImage1, pbRealImage2, pbRealImage3, pbRealImage4, pbRealImage5,
 		<!-- 
 		pbAddrBasic, pbAddrDetail, pbLatitude, pbLongitude, 
 		-->
+		pbLookCount, pbImageCount
+		)
+		VALUES
+		(
+		placeboard_seq.NEXTVAL, 
+		#{memberNum}, #{pbCategory}, #{pbTitle}, #{pbContent}, 
+		#{pbImage1}, #{pbImage2}, #{pbImage3}, #{pbImage4}, #{pbImage5},
+		#{pbRealImage1}, #{pbRealImage2},#{pbRealImage3},#{pbRealImage4},#{pbRealImage5},
+		<!-- 
+		#{pbAddrBasic}, #{pbAddrDetail}, #{pbLatitude}, #{pbLongitude}, 
+		 -->
+		#{pbLookCount}, #{pbImageCount}
+		)		
+	</insert>
+	
+	<!-- 
+	<insert id="regist">
+		INSERT INTO PlaceBoard(
+		pbNum, memberNum, pbCategory, pbTitle, pbContent, 
+		pbImage1, pbImage2, pbImage3, pbImage4, pbImage5,
+		pbRealImage1, pbRealImage2, pbRealImage3, pbRealImage4, pbRealImage5,
+		pbAddrBasic, pbAddrDetail, pbLatitude, pbLongitude, 
 		pbLookCount, pbImageCount)
 		VALUES(
 		placeboard_seq.NEXTVAL, (SELECT memberNum From Member WHERE memberNick = #{memberNick}), 
 		#{pbCategory}, #{pbTitle}, #{pbContent}, 
 		#{pbImage1}, #{pbImage2}, #{pbImage3}, #{pbImage4}, #{pbImage5},
 		#{pbRealImage1}, #{pbRealImage2},#{pbRealImage3},#{pbRealImage4},#{pbRealImage5},
-		<!-- 
 		#{pbAddrBasic}, #{pbAddrDetail}, #{pbLatitude}, #{pbLongitude}, 
-		 -->
 		0, #{pbImageCount})		
 	</insert>
-
+	 -->
+	
+	<update id="update">
+		UPDATE PlaceBoard
+		SET 
+		pbTitle = #{pbTitle},
+		pbContent = #{pbContent},
+		pbImage1 = #{pbImage1}, pbImage2 = #{pbImage2}, 
+		pbImage3 = #{pbImage3}, pbImage4= #{pbImage4}, 
+		pbImage5 = #{pbImage5},
+		pbRealImage1 = #{pbRealImage1}, pbRealImage2 = #{pbRealImage2}, 
+		pbRealImage3 = #{pbRealImage3}, pbRealImage4 = #{pbRealImage4}, 
+		pbRealImage5 = #{pbRealImage5}
+		WHERE pbNum=#{pbNum}
+	</update>
+	<!-- 
 	<update id="update">
 		UPDATE PlaceBoard
 		SET 
@@ -83,7 +126,8 @@
 		pbImageCount = #{pbImageCount}
 		WHERE pbNum=#{pbNum}
 	</update>
-
+	 -->
+	 
 	<delete id="delete">
 		DELETE FROM PlaceBoard
 		WHERE pbNum=#{pbNum}
@@ -116,6 +160,31 @@
 		INSERT INTO PlaceReport
 		VALUES(#{pbNum}, #{memberNum})
 	</insert>
+	
+	
+	
+	
+  <!--  
+	<sql id="search">
+		<if test="condition == 'pbTitle'">
+			WHERE pbTitle LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'pbContent'">
+			WHERE pbContent LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'memberNum'">
+			WHERE memberNum LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'titleContent'">
+			WHERE pbTitle LIKE '%'||#{keyword}||'%'
+			OR pbContent LIKE '%'||#{keyword}||'%'
+		</if>
+	</sql>
+  -->
+	
+
+
+
 
 
 </mapper>

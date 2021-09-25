@@ -26,91 +26,79 @@ public class PlaceReplyController {
 	
 	
 	@Autowired
-	private IPlaceReplyService service;
+	private IPlaceReplyService replyService;
 	
 	//장소게시판 댓글 등록
 	@PostMapping("/replyRegist")
 	@ResponseBody
 	public String replyRegist(@RequestBody PlaceReplyVO vo) {
-		
-		System.out.println("댓글 등록 요청이 들어옴!");
-		System.out.println(vo.toString());
-		service.replyRegist(vo);
-		return "regSucess";
-		
+		System.out.println("화면으로부터 전달된 데이터: " + vo);
+		replyService.replyRegist(vo);
+		return "success";
 	}
-	
+
 	//장소게시판 댓글 목록
+	@GetMapping("/placeReplyList/{pbNum}/{pageNum}")
+	@ResponseBody
+	public Map<String, Object> placeReplyList(@PathVariable int pbNum, @PathVariable int pageNum){
+		PageVO vo = new PageVO();
+		vo.setPageNum(pageNum);
+		vo.setCountPerPage(10);
+			
+			List<PlaceReplyVO> list = replyService.replyGetList(vo, pbNum); 
+			int total = replyService.replyGetTotal(pbNum); // 댓글 개수
+		Map<String, Object> map = new HashMap<>();
+		map.put("list",list);
+		map.put("total",total);
+			
+		return map;
+	}
+		
 	//장소게시판 댓글 수정
+	@PostMapping("/placeReplyModify")
+	@ResponseBody
+	public String placeReplyModify(@RequestBody Map<String, Object> map) {
+		System.out.println(map.get("memberNum").getClass().getName());
+		System.out.println(map.get("prContent").getClass().getName());
+		System.out.println(map.get("pbNum").getClass().getName());
+		int memberNum = (int) map.get("memberNum");
+		String prContent = (String) map.get("prContent");
+		int prNum = Integer.parseInt(((String) map.get("pbNum")).substring(11));
+			
+		if(replyService.replyGetContent(prNum).getMemberNum() == memberNum) {
+			PlaceReplyVO vo = new PlaceReplyVO();
+			vo.setPrContent(prContent);
+			vo.setPrNum(prNum);
+			replyService.replyUpdate(vo);
+			return "success";
+		}
+			
+		return "noAuth";
+	}
+		
 	//장소게시판 댓글 삭제
-	//장소게시판 댓글 수
-	
-
-	
-	
-	
-
-//	//페이징이 추가된 댓글 목록
-//	@GetMapping("/replyGetList/{pbNum}/{pageNum}")
-//	public Map<String, Object> getList(@PathVariable int pbNum, @PathVariable int pageNum) {
-//			
-//		//1. 화면에 더보기 버튼 배치, 더보기 버튼 클릭 이벤트
-//		//2. getList 메서드가 (글번호, 페이지번호)를 매개값으로 받습니다.
-//		//3. Mapper 인터페이스에 각각 다른 값을 전달하기 위해 Map을 쓰던지 @Param 아노테이션 사용
-//		//4. sql문을 페이징 쿼리로 변경합니다.
-//		//5. 레스트 방식은 화면에 필요한 값을 여러 개 보낼 때, 리턴에 Map이나 VO형식으로 
-//		//필요한 데이터를 한번에 담아 처리.
-//			
-//		PageVO vo = new PageVO();
-//		vo.setPageNum(pageNum); //화면에서 전달되는 페이지 번호
-//		vo.setCountPerPage(10); //댓글은 한 화면에 10개씩
-//			
-//		List<PlaceReplyVO> list = service.replyGetList(vo, pbNum); //댓글 데이터
-//		int total = service.replyGetTotal(pbNum); //전체 댓글 개수.
-//		System.out.println("전체 댓글 개수(con): " + total);
-//			
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("list", list);
-//		map.put("total", total);
-//			
-//		return map;
+	@PostMapping("/placeReplyDelete")
+	@ResponseBody
+	public String placeReplyDelete(@RequestBody Map<String, Object> map) {
 			
-//	}
-	
-	//댓글 수정
-	@PostMapping("/replyUpdate")
-	public String update(@RequestBody PlaceReplyVO vo) {
-		
-		service.replyUpdate(vo);
-		return "modSuccess";
-		
-//		//비밀번호 확인
-//		int result = service.pwCheck(vo);
-//			
-//		if(result == 1) { //비밀번호가 맞는 경우
-//			service.replyUpdate(vo);
-//			return "modSuccess";
-//		} else { //비밀번호가 틀린 경우
-//			return "pwFail";
-//		}
+		int memberNum = (int) map.get("memberNum");
+		int pbNum = Integer.parseInt(((String) map.get("pbNum")).substring(11));
 			
+		if(replyService.replyGetContent(pbNum).getMemberNum() == memberNum) {
+			replyService.replyDelete(pbNum);
+			return "success";
+		}
+			
+		return "noAuth";
 	}
+
 		
-	//댓글 삭제
-	@PostMapping("/replyDelete")
-	public String delete(@RequestBody PlaceReplyVO vo) {
-			
-		service.replyDelete(vo.getPrNum());
-		return "delSuccess";
-		
-//		int result = service.pwCheck(vo);
-//			
-//		if(result == 1) {
-//			service.replyDelete(vo.getPrNum());
-//			return "delSuccess";
-//		} else {
-//			return "pwFail";
-//		}
+
+	
+
+	
+	
+
 			
 	}
 		
@@ -121,4 +109,4 @@ public class PlaceReplyController {
 	
 	
 
-}
+

@@ -39,6 +39,6 @@ public class PlaceReplyVO {
 	private int starScore;
 	private Timestamp prRegDate;
 	
-	private String memberNick;
+//	private String memberNick;
 	
 }

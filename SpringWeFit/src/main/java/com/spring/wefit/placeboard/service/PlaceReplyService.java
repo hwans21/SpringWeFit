@@ -55,7 +55,11 @@ public class PlaceReplyService implements IPlaceReplyService {
 		mapper.replyDelete(prNum);
 	}
 
-	
+	//장소게시판 댓글 상세
+	@Override
+	public PlaceReplyVO replyGetContent(int prNum) {
+		return mapper.replyGetContent(prNum);
+	}
 
 	
 
