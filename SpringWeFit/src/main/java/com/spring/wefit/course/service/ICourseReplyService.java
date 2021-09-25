@@ -18,14 +18,14 @@ public interface ICourseReplyService {
 	
 	//댓글 개수
 	int getTotal(int cbNum);
-	
-	//비밀번호 확인
-	int pwCheck(CourseBoardVO vo);
-	
+
 	//댓글 수정
 	void update(CourseReplyVO vo);
 	
 	//댓글 삭제
 	void delete(int crNum);	
+	
+	//댓글 수정, 삭제 권한 체크
+	int memberCheck(CourseReplyVO vo);
 
 }

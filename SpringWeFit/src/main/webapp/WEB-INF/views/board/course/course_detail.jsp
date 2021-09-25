@@ -152,9 +152,12 @@
         }
         
         
-        #reason-input {
+        #cbReportInput {
         	margin-left: 60px;
-        	/*display: none;*/
+        }
+        
+        .reply-memberNum {
+       		display: none;
         }
         
         
@@ -234,12 +237,14 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td>
-
-                                    <button class="btn btn-info pull-right" data-toggle="modal" data-target="#modal-report"><span
-                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
-
-                                </td>
+	                             <%-- <c:if test="${loginuser}"> --%> <!-- 로그인 안한 사용자는 신고하기 버튼을 안보여줌 -->  
+	                                <td>
+	
+	                                    <button class="btn btn-info pull-right" data-toggle="modal" data-target="#modal-report"><span
+	                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
+	
+	                                </td>
+	                            <%-- </c:if> --%> 
                             </tr>
 						
                         </table>
@@ -311,39 +316,38 @@
 	                            </div>
 	                        </div> -->
 	                        <div class="form-check">
-  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox1" name="cbReportChk1">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="cbReportChk1" name="cbReportChk[]">
   								<label class="form-check-label col-sm-11" for="flexCheckDefault">타인에 대한 욕설 또는 비방</label>
 							</div>
 							
 							<div class="form-check">
-  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox2" name="cbReportChk2">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="cbReportChk2" name="cbReportChk[]">
   								<label class="form-check-label col-sm-11" for="flexCheckDefault">음란성 내용 및 음란물 링크</label>
 							</div>
 							
 							<div class="form-check">
-  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox3" name="cbReportChk3">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="cbReportChk3" name="cbReportChk[]">
   								<label class="form-check-label col-sm-11" for="flexCheckDefault">같은 내용의 반복(도배)</label>
 							</div>
 							
 							<div class="form-check">
-  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox4" name="cbReportChk4">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="cbReportChk4" name="cbReportChk[]">
   								<label class="form-check-label col-sm-11" for="flexCheckDefault">상업적 광고, 사이트 홍보</label>
 							</div>
 							
 							<div class="form-check">
-  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox5" name="cbReportChk5">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="cbReportChk5" name="cbReportChk[]">
   								<label class="form-check-label col-sm-11" for="flexCheckDefault">폭력 또는 사행심 조장</label>
 							</div>
 
 							<div class="form-check">
-  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="reason-checkbox6" name="cbReportChk6">
+  								<input class="form-check-input col-sm-1" type="checkbox" value="" id="cbReportChk6" name="cbReportChk[]">
   								<label class="form-check-label col-sm-11" for="flexCheckDefault">기타</label>
 							</div>
 															
 	                        <div class="form-group">
 	                            <div class="col-sm-9">
-	                                <input type="text" class="form-control" id="reason-input" name="cbReportInput"
-	                                    placeholder="신고사유를 입력해주세요">
+	                                <input type="text" class="form-control" id="cbReportInput" name="cbReportInput" placeholder="신고사유를 입력해주세요" disabled>
 	                            </div>
 	                        </div>
 	 					
@@ -430,6 +434,8 @@
                 // `);
                 // $('#loadingImg').remove();
                 //replyAppendTest(); //여기 주석처리함.
+				getList(pageNum, false);
+                pageNum = pageNum + 1;
             }
             console.log(count);
        
@@ -448,25 +454,21 @@
         
         $(function() { //start jQuery
         	
-        	/* if($("reason-checkbox6").is(":checked")){
-        		$('#reason-input')
-        	} */
-        
-        	/* $("#reason-checkbox6").on('click', function() { 
-        		if ($(this).prop('checked')) { 
-        			$('#reason-input').attr('hidden', hidden);
-        		} else { 
-        			$('#reason-input').attr('hidden', hidden);
-        		}  		
-        	}); */
-
         	
         	//댓글 등록
             $('#reply-btn').click(function() {
             	
+    			if(${loginuser == null ? true : false}){
+    				alert('로그인이 필요합니다.');
+    				$('#crContent').val('');
+    				return;
+    			}
+            	
             	const cbNum = '${article.cbNum}'; //글 번호
                 //const memberNum = 365; // 회원번호는 작성안했는데 로그인 세션으로 가져와야 할듯.
+                const memberNum = ${loginuser.memberNum == null ? -1 :loginuser.memberNum}; //db에 절대 없을만한값을 물어본것임. 멤버 번호는 1번부터 시작이니까...-1이면 절대없을거니까 그렇게물어본것임. 만약에 -1 등이 아니라 null값 주면 자바스크립트 전체가 동작을 안한다고함..(자바스크립트 로직 상의 문제땜에 -1로 값을 주나봄..)
                 const crContent = $('#crContent').val(); //댓글 내용
+                
 
             
   	            if(crContent.trim() === '') {
@@ -479,14 +481,16 @@
 	            	url: "<c:url value='/courseReply/regist' />",
 	            	data: JSON.stringify({
 	            		"cbNum" : cbNum,
-	            		"crContent" : crContent
+	            		"crContent" : crContent,
+	            		"memberNum" : memberNum
 	            	}),
 	            	headers: {
 	            		"Content-Type" : "application/json"
 	            	},
 	            	success: function(data) {
 	            		$('#crContent').val('');
-	            		getList(true);
+	            		getList(1, true);
+	            		pageNum = 2;
 	            	},
 	            	error: function() {
 	            		alert('등록에 실패하였습니다. 관리자에게 문의하세요.');
@@ -498,16 +502,17 @@
             
             //목록 요청
             let strAdd = "";
-            getList(true);
+            getList(1, true);
             countLike();
             
+            let pageNum = 2;
             
             //목록 출력하는 getList 함수
             
-            function getList(reset) {
+            function getList(pageNum, reset) {
             	
             	const cbNum = "${article.cbNum}";
-            	const pageNum = 1;
+            	
             	
             	$.getJSON(
             			
@@ -533,6 +538,7 @@
             				
             				strAdd += '<div class="reply reply-box">';
             				strAdd += '<span class="reply-writer">' + replyList[i].memberNick + '</span>&nbsp;&nbsp;';
+            				strAdd += '<span class="reply-memberNum">' + replyList[i].memberNum + '</span>'; // memberNum 을 display:none으로 받음
             				strAdd += '<small>'+ timeStamp(replyList[i].crRegDate) +'</small>';
             				strAdd += '<span class="mod-del">';
             				strAdd += '<small class="mod"><span id="update" class=' + replyList[i].crNum + '>수정</span></small>&nbsp;&nbsp;<small class="delete-btn"><a class="del" href="'+ replyList[i].crNum + '">삭제</a></small> </span><br><br>';
@@ -559,7 +565,7 @@
             
             // 좋아요 개수 출력
             function countLike() {
-            	
+            	          	
 				const cbNum = "${article.cbNum}";
             	
             	$.getJSON(
@@ -595,16 +601,20 @@
             	$.ajax({
             		type : "post",
             		url : "<c:url value='/courseReply/delete' />",
-            		data : crNum,
+            		data: JSON.stringify({
+	            		"crNum" : crNum,
+	            		"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum}
+	            	}),
             		headers : {
             			"Content-Type" : "application/json"	
             		},
             		success: function(data) {
             			if(data === 'deleteSuccess') {
             				alert('댓글이 삭제되었습니다.');
-            				getList(true);
+    	            		getList(1, true);
+    	            		pageNum = 2;
             			} else {
-            				alert('삭제에 실패하였습니다.');
+            				alert('해당 댓글 삭제 권한이 없습니다.');
             			}
             		},
             		error : function() {
@@ -620,6 +630,16 @@
             // 댓글 수정 버튼 누르면 수정창 뜨게 하기.
             $('#reply-list').on('click', '.mod > span', function() {
             	
+            	//수정 권한
+            	const memberNum = "${loginuser.memberNum}";
+            	const replyWriter = $(this).parents('.reply-box').children('.reply-memberNum').text(); //위에 댓글리스트 출력하는 for문에서 회원번호를 출력해주는데(display:none으로 해서 화면에 보이진 않음) 그 값을 가져옴
+            	
+            	if(memberNum !== replyWriter){
+            		alert('해당 댓글 수정 권한이 없습니다.');
+            		return;
+            	}
+            	
+            	
             	const modify_input = $(this).parents('.reply-box').children('.reply-content-plus-modify').children(".modify-input");
             	modify_input.css('display', 'block');
   	
@@ -631,7 +651,7 @@
             	$('.lnr-cross-circle').click(function() {
             		
             		modify_input.css('display', 'none'); 
-            		getList(true); //이걸 작성안하면 댓글 수정할때 수정하다가 x 누른 후 다시 수정버튼누르면...원래내용을 출력을 못함...(수정하다가 만 내용을 출력함)
+            		getList(1, true); //이걸 작성안하면 댓글 수정할때 수정하다가 x 누른 후 다시 수정버튼누르면...원래내용을 출력을 못함...(수정하다가 만 내용을 출력함)
 
             		reply_content.css('display', 'block');           	
             	}); // 수정창에서 x버튼 누르면 수정창 사라지게 하는 처리 끝 
@@ -660,7 +680,8 @@
             		success: function(data) {
             			if(data === 'modifySuccess') {
             				alert('댓글이 수정되었습니다.');
-            				getList(true);
+            				getList(1, true);
+            				pageNum = 2;
             			} else {
             				alert('수정에 실패하였습니다.');
             			}
@@ -712,8 +733,13 @@
             // 좋아요 처리
             $('#likeBtn').click(function() {
             	
+            	//로그인 안하면 좋아요 못하도록.
+    			if(${loginuser == null ? true : false }){
+    				return;
+    			}
+            	
             	const cbNum = "${article.cbNum}";
-            	const memberNum = 365; //이거 나중에 로그인 구현한 후 고치기
+            	const memberNum = ${loginuser.memberNum == null ? -1 :loginuser.memberNum};
             	
             	$.ajax({
                     type: "POST",
@@ -747,12 +773,97 @@
             
             
             
+            
+            
+            // 신고 모달창: 기타에 체크하면 신고사유 직접 입력하는 input창 작동되게
+            $("#cbReportChk6").change(function(){
+                if($("#cbReportChk6").is(":checked")){
+                   $("#cbReportInput").attr("disabled", false);
+                }else{
+                   $("#cbReportInput").attr("disabled", true);
+                }
+            });
+            
+            
             // 신고 처리
             $('#reportBtn').click(function() {
-            	const arr = {
-            			"cbNum" : ${article.cbNum},
-            			"memberNum" : 363 //이거 나중에 로그인 구현한 후 고치기
-            		};
+            	
+            	//로그인 안하면 신고 못하도록.
+    			if(${loginuser == null ? true : false}){
+    				alert('로그인이 필요합니다.');
+    				$('#modal-report').modal('hide');
+    				return;
+    			}
+            	
+            	//1번 체크박스 체크되면 db에 Y로 저장되게.
+            	if($("input:checkbox[id=cbReportChk1]").is(":checked") == true) {
+                    $('#cbReportChk1').attr('value', 'Y');
+                 } else {
+                    $('#cbReportChk1').attr('value', 'N');
+                 }
+                 
+                 
+                 if($("input:checkbox[id=cbReportChk2]").is(":checked") == true) {
+                    $('#cbReportChk2').attr('value', 'Y');
+                 } else {
+                    $('#cbReportChk2').attr('value', 'N');
+                 }
+                 
+                 
+                 if($("input:checkbox[id=cbReportChk3]").is(":checked") == true) {
+                    $('#cbReportChk3').attr('value', 'Y');
+                 } else {
+                    $('#cbReportChk3').attr('value', 'N');
+                 }
+                 
+
+                 if($("input:checkbox[id=cbReportChk4]").is(":checked") == true) {
+                    $('#cbReportChk4').attr('value', 'Y');
+                 } else {
+                    $('#cbReportChk4').attr('value', 'N');
+                 }
+                 
+                 if($("input:checkbox[id=cbReportChk5]").is(":checked") == true) {
+                    $('#cbReportChk5').attr('value', 'Y');
+                 } else {
+                    $('#cbReportChk5').attr('value', 'N');
+                 }
+                 
+                 
+                 
+                 
+                 //기타에 체크했는데 신고사유를 작성하지 않았다면
+                 if($("input:checkbox[id=cbReportChk6]").is(":checked") && $('#cbReportInput').val().trim() == '') {
+                	  alert('신고사유를 입력해주세요.');
+                	  return;
+                  }
+                 
+                 //어떤 체크박스도 선택하지 않았다면
+                 if(   $("input:checkbox[id=cbReportChk1]").is(":checked") == false 
+                 	&& $("input:checkbox[id=cbReportChk2]").is(":checked") == false 
+                 	&& $("input:checkbox[id=cbReportChk3]").is(":checked") == false 
+                 	&& $("input:checkbox[id=cbReportChk4]").is(":checked") == false 
+                 	&& $("input:checkbox[id=cbReportChk5]").is(":checked") == false 
+                 	&& $("input:checkbox[id=cbReportChk6]").is(":checked") == false) {
+                	  alert('신고사유를 선택해주세요.');
+               	  	  return;
+                  } 
+                 
+                 
+                 
+                 
+                 
+                const arr = {
+                      "cbNum" : ${article.cbNum},
+                      "memberNum" : ${loginuser.memberNum == null ? -1 :loginuser.memberNum},
+                      "cbReportChk1" : $('#cbReportChk1').val(),
+                      "cbReportChk2" : $('#cbReportChk2').val(),
+                      "cbReportChk3" : $('#cbReportChk3').val(),
+                      "cbReportChk4" : $('#cbReportChk4').val(),
+                      "cbReportChk5" : $('#cbReportChk5').val(),
+                      "cbReportInput" : $('#cbReportInput').val()
+                   };
+  
             	
             		$.ajax({
                         type: "POST",

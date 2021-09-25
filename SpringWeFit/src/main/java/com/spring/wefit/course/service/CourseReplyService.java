@@ -32,11 +32,6 @@ public class CourseReplyService implements ICourseReplyService {
 		return mapper.getTotal(cbNum);
 	}
 
-	@Override
-	public int pwCheck(CourseBoardVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public void update(CourseReplyVO vo) {
@@ -46,6 +41,11 @@ public class CourseReplyService implements ICourseReplyService {
 	@Override
 	public void delete(int crNum) {
 		mapper.delete(crNum);		
+	}
+
+	@Override
+	public int memberCheck(CourseReplyVO vo) {	
+		return mapper.memberCheck(vo);
 	}
 
 }

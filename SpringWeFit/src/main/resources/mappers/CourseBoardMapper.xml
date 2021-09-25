@@ -87,8 +87,9 @@
    (
 		SELECT ROWNUM as rn, tbl.*
 		FROM
-		   (
-		   SELECT * FROM CourseBoard
+		   (																	  <!-- 댓글 개수 카운트 한걸 crCount로 명명하면.. 이 이름 똑같이 vo객체에서 변수선언하면 알아서 거기에 값이 들어감 -->
+		   SELECT cb.*, (SELECT COUNT(*) FROM CourseReply WHERE cbNum = cb.cbNum) as crCount
+		   FROM CourseBoard cb
 		   <include refid = "category" /> 
 		   <include refid = "sqlSearch" /> 
 		   ORDER BY cbNum DESC
@@ -169,8 +170,8 @@
 
 <!-- 신고 처리 -->
 <insert id="insertReport">
-	INSERT INTO CourseReport (cbNum, memberNum)
-	VALUES(#{cbNum}, #{memberNum})
+	INSERT INTO CourseReport (cbNum, memberNum, cbReportChk1, cbReportChk2, cbReportChk3, cbReportChk4, cbReportChk5, cbReportInput)
+	VALUES(#{cbNum}, #{memberNum}, #{cbReportChk1}, #{cbReportChk2}, #{cbReportChk3}, #{cbReportChk4}, #{cbReportChk5}, #{cbReportInput})
 </insert>
 
 <select id="checkReport" resultType="int">

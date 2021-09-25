@@ -38,16 +38,23 @@ public class CourseReplyController {
 	}
 	
 	@GetMapping("/{cbNum}/{pageNum}") //pathVariable 뭔지 생각안남..
-	public Map<String, Object> replyList(@PathVariable int cbNum, @PathVariable int pageNum) {
+	public Map<String, Object> replyList(@PathVariable String cbNum, @PathVariable String pageNum) {
+		
+		System.out.println(cbNum);
+		System.out.println(pageNum);
+		
+		int bNum=Integer.parseInt(cbNum);
+		int pNum=Integer.parseInt(pageNum);
+		
 		
 		//페이징 처리
 		PageVO vo = new PageVO();
-		vo.setPageNum(pageNum);
+		vo.setPageNum(pNum);
 		vo.setCountPerPage(10);
 		
-		List<CourseReplyVO> list = service.getList(vo, cbNum);	
-		int total = service.getTotal(cbNum); //해당 글의 총 댓글 개수!! (CourseReply 테이블에서 조회함)		
-		service2.updateCrCount(cbNum, total); //CourseBoard테이블 update시키기.(= CourseBoard테이블에 해당 글의 댓글개수(crCount 컬럼) 저장함)
+		List<CourseReplyVO> list = service.getList(vo, bNum);	
+		int total = service.getTotal(bNum); //해당 글의 총 댓글 개수!! (CourseReply 테이블에서 조회함)		
+		//service2.updateCrCount(cbNum, total); //CourseBoard테이블 update시키기.(= CourseBoard테이블에 해당 글의 댓글개수(crCount 컬럼) 저장함)--> CourseBoard 테이블에 crCount컬럼 지움. 그러고 mapper에서 getList할 때 SELECT COUNT(*) FROM CourseReply...이런식으로 해서 댓글개수 가져옴)
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
@@ -70,11 +77,15 @@ public class CourseReplyController {
 	
 
 	@PostMapping("/delete")
-	public String replyDelete(@RequestBody int crNum) {
+	public String replyDelete(@RequestBody CourseReplyVO vo) {
 		
-		service.delete(crNum);
-		return "deleteSuccess";
-	
+		if(service.memberCheck(vo) == 1) {
+			service.delete(vo.getCrNum());
+			return "deleteSuccess";
+		} else {
+			return "noAuth";
+		}
+		
 	}
 	
 	

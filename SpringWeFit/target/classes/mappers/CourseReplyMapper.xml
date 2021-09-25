@@ -26,15 +26,17 @@
 	(
 		SELECT ROWNUM as rn, CourseReply.* FROM
 		(
-			SELECT * FROM CourseReply
-			WHERE cbNum = #{cbNum}
-			ORDER BY crRegDate DESC
+			SELECT cr.*, m.memberNick
+			FROM CourseReply cr, Member m
+			WHERE cr.cbNum = #{cbNum}
+			AND cr.memberNum = m.memberNum
+			ORDER BY cr.crRegDate DESC
 		) CourseReply
 	)
 	<![CDATA[
 	WHERE rn > (#{vo.pageNum}-1)*#{vo.countPerPage}
 	AND rn <= #{vo.pageNum} * #{vo.countPerPage}
-	]]> <!-- 페이징 처리 후 (아직 member테이블과 조인하지 못함 -->
+	]]> <!-- 페이징 처리 후 + member테이블과 조인 -->
 
 </select>
 
@@ -52,6 +54,12 @@
 	DELETE FROM CourseReply
 	WHERE crNum = #{crNum}
 </delete>
+
+
+<select id="memberCheck" resultType="int">
+	SELECT COUNT(*) FROM CourseReply
+	WHERE crNum = #{crNum} AND memberNum = #{memberNum}
+</select>
 
 
 
