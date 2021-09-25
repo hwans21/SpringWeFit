@@ -183,7 +183,7 @@ public class UserController {
 			ra.addFlashAttribute("msg", "코드가 맞지 않습니다.");
 			return "redirect:/";
 		}
-		model.addAttribute(\, attributeValue)
+		model.addAttribute("loginNick", vo);
 		return "user/pwchange";
 	}
 		
