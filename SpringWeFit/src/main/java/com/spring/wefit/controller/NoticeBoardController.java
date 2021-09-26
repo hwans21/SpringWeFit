@@ -11,22 +11,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.wefit.command.NoticeBoardVO;
-import com.spring.wefit.command.NoticeReplyVO;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.noticeboard.service.INoticeBoardService;
 import com.spring.wefit.noticeboard.service.INoticeReplyService;
-
+import com.spring.wefit.commons.CustomFileUpload;
 @Controller
 @RequestMapping("/noticeBoard")
-public class NoticeBoardController<CustomFileUpload> {
+public class NoticeBoardController{
 	
 	@Autowired
 	private INoticeBoardService service;
@@ -71,25 +68,25 @@ public class NoticeBoardController<CustomFileUpload> {
 		return "/board/notice/notice_write";
 	}
 	////////////////////////////////////////
-	//글 등록
-//	@PostMapping("/freeWrite")
-//	public String freeBoardWrite(MultipartFile[] fileName, HttpServletRequest request, NoticeBoardVO vo, RedirectAttributes ra) {
-//	
-//		CustomFileUpload fileUp = new CustomFileUpload();
-//		String rootPath = request.getServletContext().getRealPath(""); 
-//		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\notice\\"+vo.getMemberNick()+"\\"; 
-//		List<String> fileNameList = ((Object) fileUp).fileUpload(fileName, 1, rootPath);
-//		
-//		// 파일이름 받기
-//		vo.setNbImage1(fileNameList.get(0));
-//		vo.setNbRealImage1(fileNameList.get(1));
-//		
-//		System.out.println(vo.toString());
-//		service.regist(vo);
-//		
-//		ra.addFlashAttribute("msg","정상 등록 되었습니다.");
-//		return "redirect:/noticeBoard/?pageNum=1";
-//	}
+//	글 등록
+	@PostMapping("/noticeWrite")
+	public String freeBoardWrite(MultipartFile[] fileName, HttpServletRequest request, NoticeBoardVO vo, RedirectAttributes ra) {
+	
+		CustomFileUpload fileUp = new CustomFileUpload();
+		String rootPath = request.getServletContext().getRealPath(""); 
+		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\notice\\"+vo.getMemberNick()+"\\"; 
+		List<String> fileNameList = fileUp.fileUpload(fileName, 1, rootPath);
+		
+		// 파일이름 받기
+		vo.setNbImage1(fileNameList.get(0));
+		vo.setNbRealImage1(fileNameList.get(1));
+		
+		System.out.println(vo.toString());
+		service.regist(vo);
+		
+		ra.addFlashAttribute("msg","정상 등록 되었습니다.");
+		return "redirect:/noticeBoard/?pageNum=1";
+	}
 	//////////////////////////////////////////////////////
 	//글 상세
 //	@GetMapping("/noticeDetail")

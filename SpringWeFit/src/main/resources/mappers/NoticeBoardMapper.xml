@@ -24,14 +24,14 @@ namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 <insert id="regist">
 		INSERT INTO NoticeBoard
 		(
-		nbNum, memberNum, nbTitle, nbContent,
-		nbImage1, nbRealImage1
+			nbNum, memberNum, nbTitle, nbContent,
+			nbImage1, nbRealImage1
 		)
 		VALUES
 		(
-		noticeBoard_seq.NEXTVAL,
-		#{memberNum}, #{nbTitle}, #{nbContent},
-		#{nbImage1}, #{nbRealImage1}
+			noticeBoard_seq.NEXTVAL,
+			#{memberNum}, #{nbTitle}, #{nbContent},
+			#{nbImage1}, #{nbRealImage1}
 		)
 	</insert>
 	

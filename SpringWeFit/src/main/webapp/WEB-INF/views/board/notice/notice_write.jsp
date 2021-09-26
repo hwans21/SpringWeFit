@@ -59,7 +59,7 @@
                 <table>
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name="memberNum" size="20" value="관리자" readonly></td>
+                        <td><input type=text name="memberNick" size="20" value="관리자" readonly></td>
                     </tr>
 
                     <tr>
@@ -75,7 +75,7 @@
                     
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input multiple="multiple" type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple type="file" name="fileName" size="1" maxlength="1"></td>
                     </tr>
                     
                     <tr class="text-right">

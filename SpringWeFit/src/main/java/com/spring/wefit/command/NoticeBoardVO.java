@@ -39,12 +39,13 @@ public class NoticeBoardVO {
 	private String nbTitle;
 	private String nbContent;
 	private String nbImage1;
-	private String nbRealimage1;
+	private String nbRealImage1;
 	private int nbLookCount;
 	private int nbImageCount;
 	private Date nbRegDate;
 	
 	
+	private String memberNick;
 	
 	
 	
