@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,7 @@ public class UserController {
 	public String join(UserVO vo,RedirectAttributes ra) {
 		System.out.println("회원가입 컨트롤러 요청"+vo.toString());
 		service.join(vo);
-		service.mailSendWithUserKey(service.getInfo(vo.getMemberEmail()));
+		service.mailSendAuth(service.getInfo(vo.getMemberEmail()));
 		ra.addFlashAttribute("msg","메일함을 확인해주세요");
 		return "redirect:/";
 	}
@@ -170,6 +171,19 @@ public class UserController {
 		System.out.println(vo.toString());
 		service.geoRegist(vo);
 		return "success";
+	}
+	
+	@PostMapping("/passwdEmailSend")
+	@ResponseBody
+	public String passwdEmailSend(@RequestBody String email) {
+		UserVO vo = service.getInfo(email);
+		if(vo == null) {
+			return "none";
+		} else {
+			service.mailSendPasswdChange(vo);
+			return "success";
+		}
+		
 	}
 	
 	@GetMapping("/passwdChange/{memberNick}/{memberCode}")

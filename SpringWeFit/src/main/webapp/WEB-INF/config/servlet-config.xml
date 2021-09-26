@@ -58,7 +58,6 @@
 	</beans:bean>
 	
 	
-	<beans:bean id="mailcommon" class="com.spring.wefit.commons.EmailSend" />
 	
 	<!-- 인터셉터 빈 따로 등록 -->
 	<beans:bean id="autoLogin" class="com.spring.wefit.commons.AutoLoginInterceptor" />

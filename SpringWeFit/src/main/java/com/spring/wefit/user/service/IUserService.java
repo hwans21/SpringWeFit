@@ -40,8 +40,11 @@ public interface IUserService {
 		//세션 아이디를 통한 회원 정보 조회 기능
 		UserVO getUserWithSessionId(String sessionId);
 		
-		// 인증 이메일 전송
-		public void mailSendWithUserKey(UserVO vo);
+		// 가입 인증 이메일 전송
+		void mailSendAuth(UserVO vo);
+		
+		// 비밀번호 변경 링크 이메일 전송
+		void mailSendPasswdChange(UserVO vo);
 		
 		//링크 클릭시 인증하기
 		public void authUser(String nick, String code);

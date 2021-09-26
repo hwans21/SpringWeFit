@@ -300,12 +300,12 @@
                     <h4 class="modal-title" id="myModalLabel">비밀번호찾기</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post" id="form-search" class="form-horizontal">
+                    <form action="" method="post" id="form-passwdSearch" class="form-horizontal">
                        
                         <div class="form-group">
                             <label for="input-email" class="col-sm-3 control-label">이메일</label>
                             <div class="col-sm-9">
-                                <input type="email" class="form-control" id="input-email" placeholder="이메일을 입력해주세요">
+                                <input type="email" class="form-control" id="input-email-search" placeholder="이메일을 입력해주세요">
                             </div>
                            
                         </div>
@@ -316,7 +316,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">인증메일 발송</button>
+                    <button id="mailSendBtn" type="button" class="btn btn-info" data-dismiss="modal">인증메일 발송</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
                 </div>
 
@@ -553,6 +553,30 @@
 		$('#geoLink').click(function(e){
 			e.preventDefault();
 			getLocation();
+		});
+		
+		$('#mailSendBtn').click(function(){
+			$.ajax({
+                type: "POST",
+                url: "<c:url value='/user/passwdEmailSend' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: $('#input-email-search').val(),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+
+                  	if(data==="success"){
+                  		alert("비밀번호 변경 이메일이 발송되었습니다.")
+                  	} else{
+                  		alert('가입되지 않은 이메일입니다.')
+                  	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); // 회원 위치정보 등록 비동기 처리 끝
 		});
 		
 		/// 다음 주소 api사용부분
