@@ -1,15 +1,10 @@
 package com.spring.wefit.user.service;
 
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMessage.RecipientType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.wefit.command.UserVO;
+import com.spring.wefit.commons.EmailSend;
 import com.spring.wefit.user.mapper.IUserMapper;
 
 @Service
@@ -25,8 +21,6 @@ public class UserService implements IUserService {
 	@Autowired
 	private IUserMapper mapper;
 	
-	@Autowired
-	private JavaMailSender mailSender;
 
 
 	
@@ -122,23 +116,15 @@ public class UserService implements IUserService {
 	// 가입인증 이메일 발송
 	@Override
 	public void mailSendWithUserKey(UserVO vo) {
-		
-		
-		MimeMessage mail = mailSender.createMimeMessage();
 		String htmlStr = "<h2>안녕하세요 WeFit입니다!</h2><br><br>" 
 				+ "<h3>" + vo.getMemberNick() + "님</h3>" + "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " 
 				+ "<a href='http://localhost/wefit"
 				+ "/user/auth/"+vo.getMemberNick() +"/"+vo.getMemberCode()+"'>인증하기</a></p>"
 				+ "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
-		try {
-			mail.setSubject("[본인인증] WeFit 인증메일입니다", "utf-8");
-			mail.setText(htmlStr, "utf-8", "html");
-			mail.addRecipient(RecipientType.TO, new InternetAddress(vo.getMemberEmail()));
-			mailSender.send(mail); 
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-		
+		System.out.println("보낼 이메일 주소 : "+vo.getMemberEmail());
+		System.out.println("보내질 내용 ; "+htmlStr);
+		EmailSend sendEmail = new EmailSend();
+		sendEmail.sendEmail(htmlStr, vo.getMemberEmail());
 	}
 	
 	@Override

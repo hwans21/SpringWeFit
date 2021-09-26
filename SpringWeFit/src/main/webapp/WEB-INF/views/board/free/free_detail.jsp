@@ -286,7 +286,7 @@
         
         function replyLoad(pageNum, reset){
         	$.getJSON(
-        		"<c:url value='/freeBoard/freeReplyList/${content.fbNum }/' />" + pageNum,
+        		"<c:url value='/freeReply/freeReplyList/${content.fbNum }/' />" + pageNum,
         		function(data){
         			console.log(data);
         			$('#replyCountSpan').html('댓글 :'+data.total+'개');
@@ -316,6 +316,7 @@
         
         // 날짜 처리 함수
         function timeStamp(millis) {
+        	console.log(millis);
             const date = new Date(); //현재 날짜
             // 현재 날짜를 밀리초로 변환 - 등록일 밀리초 -> 시간차
             const gap = date.getTime() - millis;
@@ -422,7 +423,7 @@
 			
         	$.ajax({
                 type: "POST",
-                url: "<c:url value='/freeBoard/freeReplyRegist' />",
+                url: "<c:url value='/freeReply/freeReplyRegist' />",
                 headers:{
                     "Content-Type":"application/json"
                 },
@@ -453,7 +454,7 @@
 			
         	$.ajax({
                 type: "POST",
-                url: "<c:url value='/freeBoard/freeReplyModify' />",
+                url: "<c:url value='/freeReply/freeReplyModify' />",
                 headers:{
                     "Content-Type":"application/json"
                 },
@@ -563,7 +564,7 @@
     			}
     			$.ajax({
                     type: "POST",
-                    url: "<c:url value='/freeBoard/freeReplyDelete' />",
+                    url: "<c:url value='/freeReply/freeReplyDelete' />",
                     headers: {
                         "Content-Type": "application/json"
                     },

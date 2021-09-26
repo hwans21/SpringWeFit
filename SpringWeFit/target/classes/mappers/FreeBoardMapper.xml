@@ -94,8 +94,9 @@
 	</update>
 	
 	<delete id="delete">
-		DELETE FROM FreeBoard
+		DELETE FROM FreeBoard 
 		WHERE fbNum= #{fbNum}
+	
 	</delete>
 	
 	<update id="updateViewCount">

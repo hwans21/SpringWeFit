@@ -38,7 +38,7 @@ public class UserController {
 	public String join(UserVO vo,RedirectAttributes ra) {
 		System.out.println("회원가입 컨트롤러 요청"+vo.toString());
 		service.join(vo);
-		service.mailSendWithUserKey(vo);
+		service.mailSendWithUserKey(service.getInfo(vo.getMemberEmail()));
 		ra.addFlashAttribute("msg","메일함을 확인해주세요");
 		return "redirect:/";
 	}
