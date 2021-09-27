@@ -104,12 +104,12 @@
                         <td>
                         	<input type="hidden" id="sample6_postcode" placeholder="우편번호">
 							<input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
-							<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50"><br>
-							<input type="hidden" id="sample6_detailAddress" placeholder="상세주소">
+							기본 주소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50"><br>
+							상세 주소:<input type="text" id="sample6_detailAddress" name="mbAddrDetail" placeholder="상세주소">
 							<input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
-
-                        	경도: <input type="text" name="mbLongitude"><br>
-                        	위도: <input type="text" name="mbLatitude"><br>
+			
+                        	<input type="hidden" name="mbLatitude" id="latitude" ><br>
+                        	<input type="hidden" name="mbLongitude" id="longitude"><br>
                         	<input type="hidden" name="mbImageCount" value="0">
                         	<input type="hidden" name="mbLookCount" value="0">
                         </td>
@@ -192,9 +192,23 @@
                 document.getElementById("sample6_address").value = addr;
                 // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("sample6_detailAddress").focus();
+                geocoder.addressSearch($('#sample6_address').val(), coordinate);
             }
         }).open();
-    }
+        
+        
+        
+    } // 다음 주소 끝
+        
+    var coordinate = function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+        	$('#longitude').val(result[0].x);
+        	$('#latitude').val(result[0].y);
+            console.log(result);
+        }
+    };
+    
+    
 </script>
 
    

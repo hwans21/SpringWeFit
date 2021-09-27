@@ -10,32 +10,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <style>
-        .titlebox h2 {
-            border-bottom: 1px solid rgb(0, 173, 181);
-            margin-top: 90px;
-            margin-bottom: 80px;
-            padding-bottom: 20px;
-            font-size: 40px;
-            font-weight: bold;
-            color: rgb(0, 173, 181);
-        }
+.titlebox h2 {
+	border-bottom: 1px solid rgb(0, 173, 181);
+	margin-top: 90px;
+	margin-bottom: 80px;
+	padding-bottom: 20px;
+	font-size: 40px;
+	font-weight: bold;
+	color: rgb(0, 173, 181);
+}
 
+table tr:first-child {
+	border-top: 1px solid rgb(180, 180, 180);
+}
 
+table tr td {
+	padding: 15px;
+	border-bottom: 1px solid #ccc;
+}
 
-        table tr:first-child {
-            border-top: 1px solid rgb(180, 180, 180);
-        }
+.titlefoot {
+	float: right;
+	margin: 20px;
+}
 
-        table tr td {
-            padding: 15px;
-            border-bottom: 1px solid #ccc;
-        }
+.map_wrap {
+	position: relative;
+	width: 100%;
+	height: 350px;
+}
 
-        .titlefoot {
-            float: right;
-            margin: 20px;
-        }
-    </style>
+.title {
+	font-weight: bold;
+	display: block;
+}
+
+.hAddr {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	border-radius: 2px;
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	z-index: 1;
+	padding: 5px;
+}
+
+#centerAddr {
+	display: block;
+	margin-top: 2px;
+	font-weight: normal;
+}
+
+.bAddr {
+	padding: 5px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+</style>
 </head>
 
 <body>
@@ -48,45 +81,51 @@
             <div class="row">
                 <div class="col-sm-5">
                     <div class="titlebox">
-                        <h2>물품 수정</h2>
+                        <h2>물품 등록하기</h2>
                     </div>
                 </div>
             </div>
 
             <!--main left-->
-            <form action="<c:url value='/marketBoard/update'/>" id="boardModify" method="POST" enctype="multipart/form-data">
+
+            <form action="<c:url value='/marketBoard/regist' />" id="boardWrite" method="POST" enctype="multipart/form-data">
+
                 <table>
                     <tr>
-                    	
                         <td>카테고리</td>
                         <td>
+
                             <select id="mbType" name="mbType">
-                                <option value="buy"${detail.mbType == 'buy' ? 'selected' : '' }>사요</option>
-                                <option value="sell"${detail.mbType == 'sell' ? 'selected' : '' }>팔아요</option>
-                                <option value="share"${detail.mbType == 'share' ? 'selected' : '' }>나눠요</option>
+                                <option value="sell">사요</option>
+                                <option value="buy">팔아요</option>
+                                <option value="share">나눠요</option>
+
                                 
                             </select>
                         </td>
                     </tr>
-					<tr>
-                    <td><input type="hidden" name="mbNum" value="${detail.mbNum }"></td>
-                    </tr>
+
                     <tr>
                         <td>작성자</td>
                         <td>
-                        	<input type="text" name="memberNick" size=20 value="${loginuser.memberNick }" readonly> 
-                        	<input type="hidden" name="memberNum" value="${detail.memberNum }">
-                        </td>
+                        	<input type="text" name="memberNick" size=20 value="${loginuser.memberNick }">
+                        	<input type="hidden" name="memberNum" value="${loginuser.memberNum }">
+                         </td>
+
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name="mbTitle" size="60" value="${detail.mbTitle }"></td>
+
+                        <td><input type="text" name="mbTitle" size="60"></td>
+
                     </tr>
 
                     <tr>
                         <td>내용</td>
-                        <td><textarea name="mbContent" cols="75" rows="15">${detail.mbContent }</textarea></td>
+
+                        <td><textarea name="mbContent" cols="75" rows="15"></textarea></td>
+
                     </tr>
 
                     <tr>
@@ -95,34 +134,50 @@
                             https://postcode.map.daum.net/guide#sample
                         -->
                         <td>동네</td>
-						<td>
-							<input type="hidden" id="sample6_postcode" placeholder="우편번호">
+                        <td>
+                        	<input type="hidden" id="sample6_postcode" placeholder="우편번호">
 							<input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
 							<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50"><br>
 							<input type="hidden" id="sample6_detailAddress" placeholder="상세주소">
 							<input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
-							경도: <input type="text" name="mbLongitude" value="${detail.mbLongitude }"> <br>
-							위도: <input type="text" name="mbLatitude" value="${detail.mbLatitude }"><br>
-							이미지 수<input type="hidden" name="mbImageCount" value="${detail.mbImageCount }"> <br>
-							조회 수<input type="hidden" name="mbLookCount" value="${detail.mbLookCount }"><br>
-						</td>
+							
+							
+							
+							
+							<div class="map_wrap">
+							    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+							    <div class="hAddr">
+							        <span class="title">지도중심기준 행정동 주소정보</span>
+							        <span id="centerAddr"></span>
+							    </div>
+							</div>
+							
+							
+							
+
+                        	경도: <input type="text" name="mbLongitude" value="${loginuser.memberLongitude }"><br>
+                        	위도: <input type="text" name="mbLatitude" value="${loginuser.memberLatitude }"><br>
+                        	<input type="hidden" name="mbImageCount" value="0">
+                        	<input type="hidden" name="mbLookCount" value="0">
+                        </td>
                     </tr>
 
                 
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input multiple="multiple" type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple="multiple" type="file" name="fileName" size="10"></td>
+
                     </tr>
                     <tr>
                         <td>가격 </td>
-                        <td><input type=text name="mbPrice" size="60" value="${detail.mbPrice }"></td>
+                        <td><input type=text name=mbPrice size="60"></td>
+
                     </tr>
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <input type="submit" class="btn btn-primary" value="수정하기">
-                            <button type="button" class="btn btn-primary" onclick="location.href='<c:url value="/marketBoard/delete?mbNum=${detail.mbNum }" />'">삭제하기</button>
-                            <button type="button" class="btn btn-default" onclick="history.back()">취소하기</button>
+                            <button class="btn btn-primary" type="submit">등록하기</button>
+                            <button class="btn btn-default" type="button" onclick="history.back()">취소하기</button>
                             <br><br><br>
                         </td>
                         
@@ -138,7 +193,6 @@
     <div class="row">
         <%@ include file="../../include/footer.jsp" %>
     </div>
-
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     function sample6_execDaumPostcode() {
@@ -188,10 +242,92 @@
             }
         }).open();
     }
+    
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 1 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
+    infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+
+// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+            
+            var content = '<div class="bAddr">' +
+                            '<span class="title">법정동 주소정보</span>' + 
+                            detailAddr + 
+                        '</div>';
+
+            // 마커를 클릭한 위치에 표시합니다 
+            marker.setPosition(mouseEvent.latLng);
+            marker.setMap(map);
+
+            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+            infowindow.setContent(content);
+            infowindow.open(map, marker);
+        }   
+    });
+});
+
+// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+kakao.maps.event.addListener(map, 'idle', function() {
+    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+});
+
+function searchAddrFromCoords(coords, callback) {
+    // 좌표로 행정동 주소 정보를 요청합니다
+    geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
+}
+
+function searchDetailAddrFromCoords(coords, callback) {
+    // 좌표로 법정동 상세 주소 정보를 요청합니다
+    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+}
+
+// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+function displayCenterInfo(result, status) {
+    if (status === kakao.maps.services.Status.OK) {
+        var infoDiv = document.getElementById('centerAddr');
+
+        for(var i = 0; i < result.length; i++) {
+            // 행정동의 region_type 값은 'H' 이므로
+            if (result[i].region_type === 'H') {
+                infoDiv.innerHTML = result[i].address_name;
+                break;
+            }
+        }
+    }    
+}
+
+var geocoder = new kakao.maps.services.Geocoder();
+
+var callback = function(result, status) {
+    if (status === kakao.maps.services.Status.OK) {
+        console.log(result);
+    }
+};
+
+geocoder.addressSearch('', callback);
+    
+    
 </script>
 
-
-    
+   
 </body>
 
 </html>

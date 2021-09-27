@@ -171,7 +171,7 @@
 								onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }' />'">
 								<div class=vid>
 									<a href="#"><img
-										src="/upload/board/market/${product.memberNum }/${product.mbRealImage1}"
+										src="/upload/board/market/${product.memberNum}/${product.mbRealImage1}"
 										width="280px" height="160px" alt="${product.mbImage1 }"></a><br>
 
 									<p class="subject">
@@ -184,6 +184,7 @@
 										<a href="#">${product.mbAddrBasic}</a><br>
 										<a href="#">${product.mbTitle}</a><br>
 										<a href="#">가격: ${product.mbPrice }원</a>
+										<a href="#">작성자번호 : ${product.memberNick}</a>
 									</p>
 									<p class="auth">
 										<span class="writeday">${product.mbRegDate}</span> <span

@@ -61,6 +61,8 @@
 	
 	<!-- 인터셉터 빈 따로 등록 -->
 	<beans:bean id="autoLogin" class="com.spring.wefit.commons.AutoLoginInterceptor" />
+	<beans:bean id="ManagerCheck" class="com.spring.wefit.commons.ManagerInteceptor" />
+	
 	
 	<interceptors>
 		<interceptor>
@@ -68,5 +70,22 @@
 			<beans:ref bean="autoLogin" />
 		</interceptor>
 	</interceptors>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/courseBoard/write"/>
+			<mapping path="/courseBoard/regist"/>
+			<mapping path="/courseBoard/modify"/>
+			<mapping path="/courseBoard/delete"/>
+			
+			<mapping path="/noticeBoard/noticeWrite"/>
+			<mapping path="/noticeBoard/noticeModify"/>
+			<mapping path="/noticeBoard/noticeDelete"/>
+			
+			<beans:ref bean="ManagerCheck" />
+		</interceptor>
+	</interceptors>
+	
+	
 	
 </beans:beans>

@@ -101,6 +101,7 @@ public class MarketBoardController {
 		}
 		vo.setMbImageCount(imgCount);
 		
+		
 		String[] arr = vo.getMbAddrBasic().split(" ");
 		
 		vo.setMbAddrBasic(arr[0] + " " + arr[1] + " " + arr[2]);
@@ -133,7 +134,7 @@ public class MarketBoardController {
 		
 		CustomFileUpload fileUp = new CustomFileUpload();
 		String rootPath = request.getServletContext().getRealPath(""); // C:\Users\hwans\apache-tomcat-9.0.52\wtpwebapps\SpringWeFit\
-		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\market\\"+vo.getMemberNick()+"\\"; 
+		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\market\\"+vo.getMemberNum()+"\\"; 
 		
 		marketBoardVO origin = service.getContent(vo.getMbNum());
 		
