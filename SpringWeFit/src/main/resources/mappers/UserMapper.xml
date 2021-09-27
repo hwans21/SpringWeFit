@@ -248,7 +248,7 @@
 		UPDATE member
 		SET MEMBERHUMANYN = 'Y'
 		<![CDATA[
-		WHERE memberConnDate < #{date} - 7
+		WHERE memberConnDate < #{date} - 180
 		]]>
 	</update>
 	

@@ -16,7 +16,6 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	64d6e725e286fedd8e4a806ec1c57025&libraries=services"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
     
     <style>
@@ -108,12 +107,12 @@
 	                    </c:if>
                         <ul class="dropdown-menu">
                             <li><a id="geoLink"><span id="centerAddr" class="glyphicon glyphicon-map-marker"
-                                        aria-hidden="true"></span></a></li>
+                                        aria-hidden="true">${loginuser.memberLatitude==null? '내위치 추가':loginuser.memberLatitude }</span></a></li>
                             <li role="separator" class="divider"></li>
                     		 
 	                     	<c:if test="${loginuser != null }">
-	                            <li><a href="<c:url value='/user/mypage' />"><span class="glyphicon glyphicon-pencil"
-	                                        aria-hidden="true">&nbsp;마이페이지</span></a></li>
+	                            <li><a><span class="glyphicon glyphicon-pencil"
+	                                        aria-hidden="true" data-toggle="modal" data-target="#modal-infochange">&nbsp;회원정보변경</span></a></li>
 	                            <li><a href="<c:url value='/user/logout'/>"><span class="glyphicon glyphicon-log-out"
 	                                        aria-hidden="true">&nbsp;로그아웃</span></a></li>
 	                    	</c:if>
@@ -325,6 +324,70 @@
         </div>
     </div>
 
+	<!-- Modal 회원정보변경 모달창 -->
+    <div id="modal-infochange" class="modal fade">
+        <div class="modal-dialog">
+
+            <!-- Modal Content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">회원정보변경</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" id="form-infoChange" class="form-horizontal">
+                        
+                        <div class="form-group">
+                            <label for="input-email" class="col-sm-3 control-label">이메일</label>
+                            <div class="col-sm-9">
+                                <input name="memberEmail" type="email" class="form-control" id="info-email" readonly value="${loginuser.memberEmail }">
+                            </div>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="input-nick" class="col-sm-3 control-label">닉네임</label>
+                            <div class="col-sm-9">
+                                <input name="memberNick" type="text" class="form-control" id="info-nick" placeholder="닉네임을 입력해주세요" value="${loginuser.memberNick }">
+                            </div>
+                           
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="input-password" class="col-sm-3 control-label">비밀번호</label>
+                            <div class="col-sm-9">
+                                <input name="memberPasswd" type="password" class="form-control" id="info-password" placeholder="비밀번호를 입력해주세요">
+                            </div>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="input-passwordchk" class="col-sm-3 control-label">비밀번호확인</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="info-passwordchk" placeholder="비밀번호를 확인해주세요">
+                            </div>
+                            
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-phone" class="col-sm-3 control-label">핸드폰 번호</label>
+                            <div class="col-sm-9">
+                                <input name="memberPhone" type="text" class="form-control" id="info-phone" placeholder="'-'빼고 입력해주세요" value="${loginuser.memberPhone }">
+                            </div>
+                            
+                        </div>
+
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="infoChangeBtn">정보변경</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="delUserBtn">탈퇴하기</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
     <script defer>
 		
 		// 비밀번호 규칙 정규식
@@ -336,6 +399,7 @@
 		// 핸드폰 정규표현식
 		const regExpPhone = /^[0-9]*$/;
         /*부트스트랩 jquery*/
+        
         $(document).ready(function () {
         	
         	
@@ -584,7 +648,96 @@
 		// 주소-좌표 변환 객체를 생성합니다
 		// var geocoder = new kakao.maps.services.Geocoder();
 
+		let myNickChk = true;
+    	let passwdChk = false;
+        $('#info-password').keyup(function(){
+            if(!regExpPw.test($('#info-password').val())){
+                $('#info-password').css("background-color","pink");
+                passwdChk = false;
+            } else {
+                $('#info-password').css("background-color","skyblue");
+                passwdChk = true;
+            }
+            
+        });
+
+        $('#info-passwordchk').keyup(function(){
+            if($('#info-password').val() !== $('#info-passwordchk').val()){
+                $('#info-passwordchk').css("background-color","pink");
+            } else {
+                $('#info-passwordchk').css("background-color","skyblue");
+            }
+            
+        });
+
+        $('#infoChangeBtn').click(function(){
+            if(passwdChk === false){
+                alert('비밀번호는 숫자 영문 특수 포함 8자 이상으로 작성하셔야 합니다.');
+                return;
+            }
+
+            if(confirm('회원정보를 수정하시겠습니까?') === true){
+                if($('#info-nick').val() !== '${loginuser.memberNick}'){
+                	myNickChk = false;
+                } else{
+                	myNickChk = true;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "<c:url value='/user/modifyUser' />",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                    data: JSON.stringify({
+                        "memberEmail": $('#info-email').val(),
+                        "memberNick": $('#info-nick').val(),
+                        "memberPasswd": $('#info-password').val(),
+                        "memberPhone": $('#info-phone').val(),
+                        "nickChk": myNickChk
+                    }),
+                    success: function (data) {
+                        console.log('통신성공!' + data);
+
+                        if(data==="success"){
+                            alert("회원정보변경을 성공적으로 마쳤습니다.");
+                        } else if(data==="duplicate"){
+                            alert('이미 다른 닉네임이 존재합니다.');
+                        } 
+                    },
+                    error: function () {
+                        alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                    }
+                }); // 회원 위치정보 등록 비동기 처리 끝
+            }
+
+        });
+        
+        $('#delUserBtn').click(function(){
+			if(confirm('정말로 탈퇴하시겠습니까?') === true){
+				$('#form-infoChange').attr('action','<c:url value="/user/delUser" />');
+				$('#form-infoChange').submit();
+			}
+        	
+        });
+        
+        
     </script>
+    <c:if test="${loginuser.memberLatitude != null }">
+    <script>
+    	var geocoder = new kakao.maps.services.Geocoder();
+    	var callback = function(result,status){
+    		console.log("result:"+result);
+    		console.log("status:"+status);
+    		
+    		var location = result[1].address_name;
+    		console.log(location);
+	    	$('#centerAddr').html(location);
+    		
+    	}
+    	geocoder.coord2RegionCode(${loginuser.memberLongitude}, ${loginuser.memberLatitude}, callback);
+    </script>
+    </c:if>
 </body>
 
 </html>

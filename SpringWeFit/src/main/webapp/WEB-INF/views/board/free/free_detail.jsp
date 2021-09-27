@@ -207,7 +207,7 @@
 									<c:if test="${loginuser != null }">
 										
 	                                    <button id="lovelyBtn" class="btn btn-info pull-right"><span
-	                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
+	                                            class="glyphicon glyphicon-heart"></span>&nbsp; ${content.fbLikelyCount } 좋아요</button>
 									</c:if>
 
                                 </td>

@@ -75,7 +75,7 @@
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type="text" name="memberNick" size="20" value="${content.memberNick }"> </td>
+                        <td><input type="text" name="memberNick" size="20" value="${content.memberNick }" readonly> </td>
                     </tr>
 
                     <tr>
