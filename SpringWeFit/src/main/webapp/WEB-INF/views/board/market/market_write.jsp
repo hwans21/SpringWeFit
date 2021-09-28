@@ -1,7 +1,6 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+   
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,8 +74,8 @@
                     <tr>
                         <td>작성자</td>
                         <td>
-                        	<input type="text" name="memberNick" size=20 value="${loginuser.memberNick }">
-                        	<input type="hidden" name="memberNum" value="${loginuser.memberNum }">
+                           <input type="text" name="memberNick" size=20 value="${loginuser.memberNick }">
+                           <input type="hidden" name="memberNum" value="${loginuser.memberNum }">
                          </td>
 
                     </tr>
@@ -102,16 +101,16 @@
                         -->
                         <td>동네</td>
                         <td>
-                        	<input type="hidden" id="sample6_postcode" placeholder="우편번호">
-							<input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
-							기본 주소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50"><br>
-							상세 주소:<input type="text" id="sample6_detailAddress" name="mbAddrDetail" placeholder="상세주소">
-							<input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
-			
-                        	<input type="hidden" name="mbLatitude" id="latitude" ><br>
-                        	<input type="hidden" name="mbLongitude" id="longitude"><br>
-                        	<input type="hidden" name="mbImageCount" value="0">
-                        	<input type="hidden" name="mbLookCount" value="0">
+                           <input type="hidden" id="sample6_postcode" placeholder="우편번호">
+                     <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
+                     거래장소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50"><br>
+                     <input type="hidden" id="sample6_detailAddress" name="mbAddrDetail" placeholder="상세주소">
+                     <input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
+         
+                           <input type="hidden" name="mbLatitude" id="latitude" ><br>
+                           <input type="hidden" name="mbLongitude" id="longitude"><br>
+                           <input type="hidden" name="mbImageCount" value="0">
+                           <input type="hidden" name="mbLookCount" value="0">
                         </td>
                     </tr>
 
@@ -202,8 +201,8 @@
         
     var coordinate = function(result, status) {
         if (status === kakao.maps.services.Status.OK) {
-        	$('#longitude').val(result[0].x);
-        	$('#latitude').val(result[0].y);
+           $('#longitude').val(result[0].x);
+           $('#latitude').val(result[0].y);
             console.log(result);
         }
     };

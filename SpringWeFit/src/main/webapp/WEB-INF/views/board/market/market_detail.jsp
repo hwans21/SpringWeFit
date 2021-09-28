@@ -91,6 +91,35 @@
             padding-bottom: 20px;
             border-bottom: 1px solid #ccc;
         }
+        .map_wrap {position:relative;
+        		   width:100%;
+        		   height:350px;
+        }
+    
+    	.title {font-weight:bold;
+    			display:block;
+    	}
+    
+    	.hAddr {position:absolute;
+    			left:10px;
+    			top:10px;
+    			border-radius: 2px;
+    			background:#fff;
+    			background:rgba(255,255,255,0.8);
+    			z-index:1;
+    			padding:5px;
+    	}
+    	
+    	#centerAddr {display:block;
+				     margin-top:2px;
+				     font-weight: normal;
+    	}
+    	
+    	.bAddr {padding:5px;
+		    	text-overflow: ellipsis;
+		    	overflow: hidden;
+		    	white-space: nowrap;
+    	}
     </style>
 </head>
 
@@ -118,8 +147,9 @@
 
                 <div class="row">
                     <div class="container-fluid">
-                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"
-                            data-interval="false">
+                    
+                    <c:if test="${detail.mbImageCount != 0 }">
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
                                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -205,8 +235,11 @@
                                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                                 <span class="sr-only">Next</span>
                             </a>
-                        </div>
-
+                        </div> <!-- 슬라이드쇼 끝 -->
+						</c:if>
+						<c:if test="${detail.mbImageCount == 0 }">
+							<p>이미지가 등록되지 않았습니다</p>
+						</c:if>
 
                     </div>
                 </div>
@@ -215,14 +248,28 @@
                 <div class="row">
                     <div class="container-fluid">
                         <div class="col-sm-12">
-                            <img width="100%" height="auto" src="${pageContext.request.contextPath }/resources/img/location/mapexam.png" alt="">
+                          <!--   <div class="map_wrap">
+						    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+						    <div class="hAddr">
+						        <span class="title">지도중심기준 행정동 주소정보</span>
+						        <span id="centerAddr"></span>
+						    </div>-->
+						    
+						    <p style="margin-top:-12px">
+							    <em class="link">
+							        <a href="javascript:void(0);" onclick="window.open('http://fiy.daum.net/fiy/map/CsGeneral.daum', '_blank', 'width=981, height=650')">
+							            혹시 주소 결과가 잘못 나오는 경우에는 여기에 제보해주세요.
+							        </a>
+							    </em>
+							</p>
+							<div id="map" style="width:100%;height:350px;"></div>
                         </div>
-                        <!-- <div class="col-sm-10">주소 : 제주특별자치도 제주시 첨단로 242</div>
+                       <!--   <div class="col-sm-10">주소 : 제주특별자치도 제주시 첨단로 242</div>
                         <div class="col-sm-2">
                             <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
                                 <button class="btn btn-info pull-right">길찾기</button>
                             </a>
-                        </div> -->
+                        </div>-->
                         <table>
                         	<tr>
                             	<td>가격: ${detail.mbPrice }</td>
@@ -619,6 +666,48 @@
     	
     	
     	
+
+    	
+    	
+    
+    
+    
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng('${detail.mbLatitude}', '${detail.mbLongitude}'), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+// 주소로 좌표를 검색합니다
+geocoder.addressSearch('${detail.mbAddrBasic}', function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">거래장소</div>'
+        });
+        infowindow.open(map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+    } 
+});    
 
     </script>
 </body>

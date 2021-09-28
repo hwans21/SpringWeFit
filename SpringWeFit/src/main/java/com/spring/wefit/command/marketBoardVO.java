@@ -88,8 +88,8 @@ public class marketBoardVO {
 	private String mbRealImage10;
 	private String mbAddrBasic;
 	private String mbAddrDetail;
-	private int mbLatitude;
-	private int mbLongitude;
+	private double mbLatitude;
+	private double mbLongitude;
 	private int mbLookCount;
 	private int mbImageCount;
 	private Timestamp mbRegDate;
