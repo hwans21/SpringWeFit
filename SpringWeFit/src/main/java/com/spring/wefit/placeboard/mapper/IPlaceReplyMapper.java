@@ -21,7 +21,7 @@ public interface IPlaceReplyMapper {
 	//장소게시판 댓글 삭제
 	void replyDelete(int prNum); 
 	
-	//자유게시판 댓글 상세정보
+	//장소게시판 댓글 상세정보
 	PlaceReplyVO replyGetContent(int prNum);
 	
 

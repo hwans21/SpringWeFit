@@ -79,14 +79,18 @@
                     <span id="title">장소 찾기</span>
                 </div>
                
-    
-
+    			<div class="distance-area">
+    				<select id="dis-select">
+	    				<option value="">거리별</option>
+	    				<option value="2km" ${param.category == '2km' ? 'selected' : '' }>2km 이내</option>
+			            <option value="5km" ${param.category == '5km' ? 'selected' : '' }>5km 이내</option>
+			            <option value="10km" ${param.category == '10km' ? 'selected' : '' }>10km 이내</option>
+    				</select>
+    			</div>
+    			
+				<!-- 지역 select
                 <div id="btn-list" class="row" align="left">
-                    <!--지역 select-->
-                    <!-- 
-                        select에 bootstrap 디자인 입히기
-                        http://paulrose.com/bootstrap-select-sass/
-                    -->
+                    
                     <form name="loc-select">
                         <select class="selectpicker" data-style="btn-info" onChange="cat1_change(this.value,h_area2)" >
                             <option>시/도(select)</option>
@@ -136,7 +140,6 @@
                             <option value='40'>종로구</option>
                             <option value='41'>중구</option>
                             <option value='42'>중랑구</option>
-
                         </select>
                 
                         <script language=javascript>
@@ -212,7 +215,8 @@
                         </script>
                     </form>
                 </div>
-
+				-->
+				
 				<!-- 종목 -->
 	                <div id="btn-list" class="row" align="right">
 	                    <div id="sportsBtn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
@@ -230,9 +234,19 @@
 	                        <button type="button" class="btn btn-info" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
 	                    </div>
 	
+					<div class="search-area">
+					
+					
+						<select id="dis-select">
+		    				<option value="">거리별</option>
+		    				<option value="2km" ${param.category == '2km' ? 'selected' : '' }>2km 이내</option>
+				            <option value="5km" ${param.category == '5km' ? 'selected' : '' }>5km 이내</option>
+				            <option value="10km" ${param.category == '10km' ? 'selected' : '' }>10km 이내</option>
+    					</select>
+
 	                    <input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
 	                  
-	                    <button type="button" class="btn" aria-label="Left Align">
+	                    <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
 	                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 	                    </button>
 	                </div>
@@ -275,20 +289,27 @@
                 <div class="row" align="right">													
                     <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/placeBoard/placeWrite' />' "><b>새 장소 등록</b></button>
                 </div>
-
-                <div class="row text-center">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item"><a class="page-link" href="#">4</a></li>
-                          <li class="page-item"><a class="page-link" href="#">5</a></li>
-                          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                      </nav>
-                </div>     
+                
+				<!-- 페이징 -->
+				<div class="row text-center">
+	                <nav aria-label="Page navigation example">
+	                    <ul class="pagination">
+	                      <c:if test="${pc.prev}">
+		                    <li class="page-item"><a class="page-link" href="<c:url value='/placeBoard/placeList?pageNum=${pc.beginPage-1}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />">Prev</a></li>
+	                      </c:if>
+	                      
+	                      <c:forEach var="page" begin="${pc.beginPage}" end="${pc.endPage}">
+	                      	<li class="page-item"><a class="page-link" href="<c:url value='/placeBoard/placeList?pageNum=${page}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />">${page}</a></li>
+	                      </c:forEach>
+	               
+	                      
+	                      <c:if test="${pc.next}">
+		                    <li class="page-item"><a class="page-link" href="<c:url value='/placeBoard/placeList?pageNum=${pc.endPage+1}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />">Next</a></li>
+	                      </c:if>
+	                    </ul>
+	                </nav>
+            	</div> 
+            	
         </div>
 
 

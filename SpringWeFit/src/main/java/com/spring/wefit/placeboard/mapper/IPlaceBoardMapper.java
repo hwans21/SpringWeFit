@@ -25,20 +25,30 @@ public interface IPlaceBoardMapper {
 	//장소 글 삭제
 	void delete(int pbNum);
 	
-	//조회수를 올려주는 메서드
+	//조회수 올려주는 메서드
 	void upHit(int pbNum);
-		   
-	//좋아요를 올려주는 메서드
-	int checkLovely(PlaceBoardVO vo);
 	
-	//자유게시판 좋아요 처리
-	void insertLovely(PlaceBoardVO vo);
+	
+	//장소 좋아요수 처리
+	void insertLike(PlaceBoardVO vo);
+	
+	//장소 좋아요수 체크
+	int checkLike(PlaceBoardVO vo);
+	   
+	//장소 좋아요수 삭제
+	void deleteLike(PlaceBoardVO vo);
+	   
+	//장소 해당 글 좋아요 수 카운트
+	int countLike(int pbNum);
+
+	
 		
-	//자유게시판 신고 했는지 확인
+	//신고 했는지 확인
 	int checkReport(PlaceBoardVO vo);
 		
-	//자유게시판 신고 처리
+	//신고 처리
 	void insertReport(PlaceBoardVO vo);
+
 		
 	
 	

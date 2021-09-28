@@ -104,76 +104,89 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="container-fluid">
-                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"
-                            data-interval="false">
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-
-                            </ol>
-
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site01.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site02.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site03.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site04.jpg" width="100%" alt="...">
-
-                                </div>
-                                <div class="item">
-                                    <img src="${pageContext.request.contextPath }/resources/img/location/site05.jpg" width="100%" alt="...">
-
-                                </div>
-
-                            </div>
-
-                            <!-- Controls -->
-                            <a class="left carousel-control" href="#carousel-example-generic" role="button"
-                                data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" role="button"
-                                data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-
-
-                    </div>
-                </div>
+  				<c:if test="${placeList.pbImageCount > 0 }">
+	                <div class="row">
+	                    <div class="container-fluid">
+	                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"
+	                            data-interval="false">
+	                            <!-- Indicators -->
+	                            <ol class="carousel-indicators">
+		                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+			                          <c:forEach var="index" begin="1" end="${placeList.pbImageCount-1}">
+				                         <li data-target="#carousel-example-generic" data-slide-to="${index}"></li>
+			                        1</c:forEach>
+		                        </ol>
+								
+	
+	                            <!-- Wrapper for slides -->
+	                            <div class="carousel-inner" role="listbox">
+	                                <c:if test="${placeList.pbRealImage1 != null }">
+			                             <div class="item active">
+			                                  <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage1 }" width="100%" alt="...">
+			                             </div>
+		                            </c:if >
+	                                
+	                                <c:if test="${placeList.pbRealImage2 != null }">
+			                             <div class="item">
+			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage2 }" width="100%" alt="...">
+			                             </div>
+		                           	</c:if>
+		                           	
+		                            <c:if test="${placeList.pbRealImage3 != null }">
+			                             <div class="item">
+			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage3 }" width="100%" alt="...">
+			                             </div>
+		                            </c:if>
+		                            	
+		                            <c:if test="${placeList.pbRealImage4 != null }">
+			                             <div class="item">
+			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage4 }" width="100%" alt="...">
+			                             </div>
+		                            </c:if>
+		                            	
+		                            <c:if test="${placeList.pbRealImage5 != null }">
+			                             <div class="item">
+			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage5 }" width="100%" alt="...">
+			                             </div>
+		                            </c:if>
+	                            </div>
+		
+	                            <!-- Controls -->
+	                            <a class="left carousel-control" href="#carousel-example-generic" role="button"
+	                                data-slide="prev">
+	                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	                                <span class="sr-only">Previous</span>
+	                            </a>
+	                            <a class="right carousel-control" href="#carousel-example-generic" role="button"
+	                                data-slide="next">
+	                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	                                <span class="sr-only">Next</span>
+	                            </a>
+	                        </div>
+		                    </div>
+		                </div>
+					</c:if>
                 <br>
 
                 <div class="row">
                     <div class="container-fluid">
+                    
+                    	<!-- 시설 표시된 지도.. -->
+                    	<div id="map" style="width:100%;height:350px;"></div>
+                    	<!-- 
                         <div class="col-sm-12">
                             <img width="100%" height="auto" src="${pageContext.request.contextPath }/resources/img/location/mapexam.png" alt="">
                         </div>
-
+						-->
+						
                         <table>
                             <tr>
                                 <td>주소 :${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
-
-                                
                                 <td>
-                                    <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
+                                    <!-- 
+                                     <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
+                                     -->
+                                    <a href="https://map.kakao.com/link/to/${placeList.pbTitle},${placeList.pbLatitude},${placeList.pbLongitude}">
                                         <button class="btn btn-info pull-right">길찾기</button>
                                     </a>
                                 </td>
@@ -181,29 +194,17 @@
 
                             <tr>
                                 <td>작성일:${placeList.pbRegDate}</td>
-                                <td><span class="glyphicon glyphicon-eye-open"></span>100</td>
+                                <td><span class="glyphicon glyphicon-eye-open"></span>${placeList.pbLookCount}</td>
                                 <td>
-						
-                                    <button id="lovelyBtn" class="btn btn-info pull-right"><span
-                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
-                                            
-                                    <!-- 
-                                    <c:if test="${loginuser != null }">
-										
-	                                    <button id="lovelyBtn" class="btn btn-info pull-right"><span
-	                                            class="glyphicon glyphicon-heart"></span> 좋아요</button>
-									</c:if>
-                                     -->     
-
+	                                    <button id="likeBtn" class="btn btn-info pull-right">
+	                                    <span class="glyphicon glyphicon-heart"></span><span id="countLike">좋아요</span></button>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
-
 						                ${placeList.pbContent}  
-						                          
                                     </p>
                                 </td>
                             </tr>
@@ -211,10 +212,11 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-
-                                    <button class="btn btn-info pull-right"><span
-                                            class="glyphicon glyphicon-thumbs-down"></span>신고하기</button>
-
+                               		<c:if test="${loginuser != null }">
+	                                    <button id="reportBtn" class="btn btn-info pull-right"><span
+	                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
+									
+									</c:if>
                                 </td>
                             </tr>
 
@@ -242,10 +244,8 @@
                             </span>
                         </div>
                 </div>
-                <div id="replyList" class="row">
+                <div id="replyList" class="row container-fluid">
 	                                
-	                	
-	                    		
                 </div>
 
             </div>
@@ -289,7 +289,6 @@
                         strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].prRegDate)+'</small>'
                         if(data.list[i].memberNick === loginuserName){
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].prNum+'">수정</small> <small class="replyDelBtn'+data.list[i].prNum+'">삭제</small></span>'
-                        	
                         }
                         strAdd += '<br><span class="reply-content">'+data.list[i].prContent+'</span>'
                         strAdd += '</div>';
@@ -298,8 +297,6 @@
                     $('#replyList').html(strAdd);
                     $('.reply-item').fadeIn(500);
         		}	
-        		
-        			
         	); // end getJson
         }
        
@@ -352,13 +349,12 @@
 	    	}
 	    })
 	    
-	    //loc_detail.jsp 로드시 댓글 목록
-	        $(document).ready(function () {
+	    //댓글 목록
+	    $(document).ready(function () {
            
-            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-            replyLoad(1,true);
-            pageNum=2;
-
+        $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
+           replyLoad(1,true);
+           pageNum=2;
         });
 	    
 	    $(window).resize(function () {
@@ -511,11 +507,142 @@
                 });
     		}
     	});
+	    
+	 // 좋아요 처리
+        $('#likeBtn').click(function() {
+        	
+        	//로그인 안하면 좋아요 못하도록.
+			if(${loginuser == null ? true : false }){
+				return;
+			}
+        	
+        	const pbNum = ${placeList.pbNum};
+        	const memberNum = ${loginuser.memberNum == null ? -1 :loginuser.memberNum};
+        	
+        	$.ajax({
+                type: "POST",
+                url: "<c:url value='/placeBoard/placeLike' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify({
+        			"pbNum" : pbNum,
+        			"memberNum" : memberNum
+        		}),
+                success: function (data) {
+                  	if(data === "likeSuccess"){    		
+                  		//alert('좋아요');
+                  		countLike();
+                  	} else {  		
+                  		//alert('좋아요 취소');
+                  		countLike();
+                  	}
+                },
+                error: function() {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); // end ajax
+        	
+        }); // 좋아요 처리 끝
+        
+            
+        
+        
+        
+     // 좋아요 개수 출력
+        function countLike() {
+        	          	
+			const pbNum = "${placeList.pbNum}";
+        	
+        	$.getJSON(
+        			
+        		"/wefit/placeBoard/" + pbNum,
+        			
+        		function(data) {           			
+        			let count = data.count;
+       			
+        			//좋아요 개수 출력
+        			$('#countLike').html(count);
+        		
+        		
+        		} // end function(data)         			
+        	
+        	)//end getJSON
+        
+        } //countLike 함수 끝
 	
-		
-		
-	    
-	    
+		//신고 처리
+        $('#reportBtn').click(function(){
+    		if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
+				return;
+			}
+    		const arr = {
+    			"pbNum" : ${placeList.pbNum},
+    			"memberNum" : ${loginuser.memberNum==null? -1:loginuser.memberNum }
+    		};
+    		$.ajax({
+                type: "POST",
+                url: "<c:url value='/placeBoard/placeReport' />",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                dataType: "text", //서버로부터 어떤 형식으로 받을지(생략가능)
+                data: JSON.stringify(arr),
+                success: function (data) {
+                    console.log('통신성공!' + data);
+                  	if(data==="success"){
+                  		alert('신고 완료했습니다.');
+                  	} else{
+                  		alert('이미 신고를 하셨습니다.')
+                   	}
+                },
+                error: function () {
+                    alert('통신에 실패했습니다. 관리자에게 문의하세요');
+                }
+            }); //신고  비동기 처리 끝
+        });
+        
+        
+        
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+        mapOption = {
+            center: new kakao.maps.LatLng('${placeList.pbLatitude}', '${placeList.pbLongitude}'), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };  
+
+    // 지도를 생성합니다    
+    var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 주소로 좌표를 검색합니다
+    geocoder.addressSearch('${placeList.pbAddrBasic}', function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면 
+         if (status === kakao.maps.services.Status.OK) {
+
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+            });
+
+            // 인포윈도우로 장소에 대한 설명을 표시합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="width:150px;text-align:center;padding:6px 0;">시설위치</div>'
+            });
+            infowindow.open(map, marker);
+
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            map.setCenter(coords);
+        } 
+    });    
+
 	</script>
 	
 	

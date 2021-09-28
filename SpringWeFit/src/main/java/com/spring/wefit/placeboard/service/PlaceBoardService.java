@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.wefit.command.CourseReportVO;
 import com.spring.wefit.command.PlaceBoardVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.placeboard.mapper.IPlaceBoardMapper;
@@ -53,31 +54,47 @@ public class PlaceBoardService implements IPlaceBoardService{
 		mapper.delete(pbNum);
 	}
 
-	//조회수를 올려주는 메서드
+	//장소 조회수 처리
 	@Override
 	   public void upHit(int pbNum) {
 	      mapper.upHit(pbNum);
 	}
 
-	//좋아요를 올려주는 메서드
+	
+	
+	//장소 좋아요수 처리
 	@Override
-	public int checkLovely(PlaceBoardVO vo) {
-		return mapper.checkLovely(vo);
+	public void insertLike(PlaceBoardVO vo) {
+		mapper.insertLike(vo);
 	}
 
-	//자유게시판 좋아요 처리
+	//장소 좋아요수 체크
 	@Override
-	public void insertLovely(PlaceBoardVO vo) {
-		mapper.insertLovely(vo);
+	public int checkLike(PlaceBoardVO vo) {
+		return mapper.checkLike(vo);
 	}
 
-	//자유게시판 신고 했는지 확인
+	//장소 좋아요수 삭제
+	@Override
+	public void deleteLike(PlaceBoardVO vo) {
+		mapper.deleteLike(vo);		
+	}
+	
+	//장소 해당 글 좋아요 수 카운트
+	@Override
+	public int countLike(int pbNum) {
+	   	return mapper.countLike(pbNum);
+	}
+
+	
+	
+	//장소게시판 신고 했는지 확인
 	@Override
 	public int checkReport(PlaceBoardVO vo) {
 		return mapper.checkReport(vo);
 	}
 
-	//자유게시판 신고 처리
+	//장소게시판 신고 처리
 	@Override
 	public void insertReport(PlaceBoardVO vo) {
 		mapper.insertReport(vo);

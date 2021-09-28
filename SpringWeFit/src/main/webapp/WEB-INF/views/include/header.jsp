@@ -646,7 +646,7 @@
 		/// 다음 주소 api사용부분
 		
 		// 주소-좌표 변환 객체를 생성합니다
-		// var geocoder = new kakao.maps.services.Geocoder();
+		var geocoder = new kakao.maps.services.Geocoder();
 
 		let myNickChk = true;
     	let passwdChk = false;
