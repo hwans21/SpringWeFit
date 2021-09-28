@@ -98,8 +98,13 @@ table tr td {
 		<div class="container-fluid">
 			<div class="col-md-8 col-sm-12 test">
 				<div class="row">
-					<button type="button" class="btn btn-primary pull-right"
-						onclick="location.href='<c:url value="/dietBoard/dietModify?dbNum=${dietList.dbNum}" />'">수정하기</button>
+				
+				<c:if test="${loginuser.memberNick == dietList.memberNick}">
+					<button type="button" class="btn btn-primary pull-right" id="modifyBtn"
+						onclick="location.href='<c:url value="/dietBoard/dietModify?dbNum=${dietList.dbNum}" />'">수정하기
+					</button>
+				</c:if>
+				
 					<button type="button" class="btn btn-primary pull-right"
 						onclick="location.href='<c:url value="/dietBoard/dietList" />'">목록으로</button>
 				</div>
@@ -111,56 +116,56 @@ table tr td {
 					</div>
 				</div>
 
-
+			<c:if test="${dietList.dbImageCount > 0 }">
 				<div class="row">
 					<div class="container-fluid">
 						<div id="carousel-example-generic" class="carousel slide"
 							data-ride="carousel" data-interval="false">
 							<!-- Indicators -->
 							<ol class="carousel-indicators">
-								<li data-target="#carousel-example-generic" data-slide-to="0"
-									class="active"></li>
-								<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-								<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-								<li data-target="#carousel-example-generic" data-slide-to="3"></li>
-								<li data-target="#carousel-example-generic" data-slide-to="4"></li>
-
+								<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+								<c:forEach var="pics" begin="1" end="${dietList.dbImageCount -1 }">
+									<li data-target="#carousel-example-generic" data-slide-to="${pics}"></li>
+								</c:forEach>
 							</ol>
 
 							<!-- Wrapper for slides -->
-							<div class="carousel-inner" role="listbox">
-								<div class="item active">
-									<img
-										src="${pageContext.request.contextPath }/resources/img/location/site01.jpg"
-										width="100%" alt="...">
-
-								</div>
-								<div class="item">
-									<img
-										src="${pageContext.request.contextPath }/resources/img/location/site02.jpg"
-										width="100%" alt="...">
-
-								</div>
-								<div class="item">
-									<img
-										src="${pageContext.request.contextPath }/resources/img/location/site03.jpg"
-										width="100%" alt="...">
-
-								</div>
-								<div class="item">
-									<img
-										src="${pageContext.request.contextPath }/resources/img/location/site04.jpg"
-										width="100%" alt="...">
-
-								</div>
-								<div class="item">
-									<img
-										src="${pageContext.request.contextPath }/resources/img/location/site05.jpg"
-										width="100%" alt="...">
-
-								</div>
-
-							</div>
+	                            <div class="carousel-inner" role="listbox">
+	                            	<c:if test="${dietList.dbRealImage1 != null }">
+		                                <div class="item active">
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage1 }" width="100%" alt="...">
+		
+		                                </div>
+	                            	
+	                            	</c:if >
+	                            	<c:if test="${dietList.dbRealImage2 != null }">
+		                                <div class="item">
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage2 }" width="100%" alt="...">
+		
+		                                </div>
+	                            	</c:if>
+	                            	<c:if test="${dietList.dbRealImage3 != null }">
+		                                <div class="item">
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage3 }" width="100%" alt="...">
+		
+		                                </div>
+	                            	</c:if>
+	                            	<c:if test="${dietList.dbRealImage4 != null }">
+		                                <div class="item">
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage4 }" width="100%" alt="...">
+		
+		                                </div>
+	                            	</c:if>
+	                            	<c:if test="${dietList.dbRealImage5 != null }">
+		                                <div class="item">
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage5 }" width="100%" alt="...">
+		
+		                                </div>
+	                            	</c:if>
+	                            	
+	                                
+	
+	                            </div>
 
 							<!-- Controls -->
 							<a class="left carousel-control" href="#carousel-example-generic"
@@ -177,12 +182,13 @@ table tr td {
 
 					</div>
 				</div>
+			</c:if>
 				<br>
 
 				<div class="row">
 					<div class="container-fluid">
 
-						<table>
+						<table style="width: 100%">
 
 
 							<tr>
@@ -197,7 +203,7 @@ table tr td {
 								<td>
 									<c:if test="${loginuser != null }">
 										<button id="lovelyBtn" class="btn btn-info pull-right">
-											<span class="glyphicon glyphicon-heart"></span> 좋아요
+											<span class="glyphicon glyphicon-heart"></span> <span id="countLovely">좋아요</span>
 										</button>
 									</c:if>
 								</td>
@@ -269,6 +275,9 @@ table tr td {
 
 		replyLoad(1, true);
 
+		
+		
+		
 		// 댓글입력
 		function replyRegist() {
 			if (${loginuser == null ? true : false}) {
@@ -313,6 +322,7 @@ table tr td {
 
 		let page = 1;
 		let strAdd = "";
+		countLovely();
 
 		//무한 스크롤
 		$(document).ready(
@@ -533,12 +543,13 @@ table tr td {
 					}); //비동기 통신 끝
 		} //replyCount() 끝
 
-		//좋아요 함수
+		//좋아요 버튼 함수
 		$('#lovelyBtn').click(function() {
+			
 
 			const arr = {
 				"dbNum" : '${dietList.dbNum}',
-				"memberNum" : '${loginuser.memberNum}'
+				"memberNum" : '${loginuser.memberNum == null ? -1 :loginuser.memberNum}'
 			};
 			$.ajax({
 				type : "post",
@@ -550,9 +561,9 @@ table tr td {
 				success : function(data) {
 					console.log('데이터 통신 성공!' + data);
 					if (data === 'success') {
-						alert('좋아요 등록완료');
+						countLovely();
 					} else {
-						alert('이미 좋아요를 누르셨습니다.');
+						countLovely();
 					}
 				},
 				error : function() {
@@ -561,6 +572,22 @@ table tr td {
 			}); //좋아요 비동기 종료
 		}); //좋아요 함수 종료
 
+		
+		//좋아요 숫자카운트
+		function countLovely() {
+			const dbNum = "${dietList.dbNum}";
+			
+			$.getJSON (
+				"<c:url value='/dietBoard/' />" + dbNum,
+				
+				function (data) {
+					let count = data;
+					$('#countLovely').html(count);
+				}
+			)
+		} //좋아요 숫자카운트 끝
+		
+		
 		$('#reportBtn').click(function() {
 
 			const arr = {

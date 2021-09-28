@@ -58,7 +58,7 @@
                 <table>
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=memberNum size=20 value="${dietList.memberNum}"> </td>
+                        <td><input type=text name=memberNick size=20 value="${dietList.memberNick}"> </td>
                     </tr>
 
                     <tr>
@@ -74,7 +74,9 @@
                     
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input multiple="multiple"  type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple="multiple"  type="file" name="fileName" size="10" maxlength="10">
+                        	
+                        </td>
                     </tr>
                     
                     <tr class="text-right">

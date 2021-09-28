@@ -58,7 +58,7 @@
                 <table>
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name="memberNum" size=20> </td>
+                        <td><input type=text name="memberNick" size=20 value="${loginuser.memberNick}" readonly></td>
                     </tr>
 
                     <tr>
@@ -87,7 +87,7 @@
                         
                     </tr>
                 </table>
-
+			<input type="hidden" name="memberNum" value="${loginuser.memberNum}">
             </form>
         </div>
 
@@ -102,16 +102,16 @@
     	const writeBtn = document.getElementById('writeBtn');
     	console.log(writeBtn);
     	writeBtn.onclick = function() {
-			if(document.writeForm.memberNum.value === '') {
+			if(document.writeForm.memberNick.value === '') {
 				alert('작성자는 필수 항목 입니다.');
-				document.writeForm.memberNum.focus();
+				document.writeForm.memberNick.focus();
 				return;
 			}else if(document.writeForm.dbTitle.value === '') {
 				alert('제목은 필수 항목 입니다.');
   				document.writeForm.dbTitle.focus();
   				return;
 			}else {
-				document.writeForm.submit();
+				$('#boardWrite').submit();
 			}
 		}
     	

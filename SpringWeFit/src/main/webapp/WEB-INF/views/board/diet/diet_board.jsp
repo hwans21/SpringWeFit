@@ -3,6 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -176,19 +178,28 @@
 							<c:if test="${i.count % 3 == 1}">
 								<tr class="course">
 							</c:if>
+							
 							<th scope="col" class="text-center" id="dietviewCnt"
 								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
 								<div class="vid">
+								<c:if test="${vo.dbRealImage1 != null }">
 									<a href="#"><img
-										src="${pageContext.request.contextPath}/resources/img/food/계란 치즈 오픈샌드위치.jpg"
+										src="http://localhost/upload/board/diet/${vo.memberNick}/${vo.dbRealImage1}"
 										width="280px" height="160px" alt="vid01"></a>
-
+								</c:if>
+								<c:if test="${vo.dbRealImage1 == null }">
+									<a href="#"><img
+										src="http://localhost/upload/board/diet/white.jpg"
+										width="280px" height="160px" alt="vid01"></a>
+								</c:if>
+								
 									<p class="subject">
 										<a href="#">${vo.dbTitle}</a>
 									</p>
 									<p class="auth">
-										<span class="writeday">${vo.dbRegDate}</span> <span class="nickname"></span> 
-										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><b>${vo.dbImageCount}</b></span>
+										<span class="writeday"><fmt:formatDate value="${vo.dbRegDate}" pattern="yy.MM.dd HH:mm:ss" /></span> 
+										<span class="nickname">${vo.memberNick }</span> 
+										<span class="glyphicon glyphicon-comment" aria-hidden="true"><b>${vo.drCount }</b></span>
 										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${vo.dbLookCount}</b></span>
 									</p>
 
@@ -264,9 +275,8 @@
 	document.pageForm.submit();
 }
 
-	
-	
-		
+
+
 
 	
     

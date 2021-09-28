@@ -75,7 +75,17 @@ public class DietBoardService implements IDietBoardService {
 		
 	}
 	
+	@Override
+	public int countLovely(int dbNum) {
+		
+		return mapper.countLovely(dbNum);
+	}
 	
+	@Override
+	public void deleteLike(DietBoardVO vo) {
+		mapper.deleteLike(vo);
+		
+	}
 	
 
 }

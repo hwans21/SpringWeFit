@@ -42,6 +42,14 @@ public interface IDietBoardService {
 	
 	//식단게시판 신고 처리
 	void insertReport(DietBoardVO vo);
+
+	//좋아요 카운트
+	int countLovely(int dbNum);
+	
+	//좋아요 삭제
+	void deleteLike(DietBoardVO vo);
+
+
 	
 	
 	

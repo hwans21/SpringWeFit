@@ -51,7 +51,7 @@ public class DietBoardVO {
 	private int dbImageCount;
 	private Timestamp dbRegDate;
 	private String memberNick;
-	
+	private int drCount;
 	
 	
 /*
