@@ -107,7 +107,7 @@
 	                    </c:if>
                         <ul class="dropdown-menu">
                             <li><a id="geoLink"><span id="centerAddr" class="glyphicon glyphicon-map-marker"
-                                        aria-hidden="true">${loginuser.memberLatitude==null? '내위치 추가':loginuser.memberLatitude }</span></a></li>
+                                        aria-hidden="true">${loginuser.memberLatitude==null||loginuser.memberLatitude==0.0? '내위치 추가':loginuser.memberLatitude }</span></a></li>
                             <li role="separator" class="divider"></li>
                     		 
 	                     	<c:if test="${loginuser != null }">
@@ -593,9 +593,10 @@
                             console.log('통신성공!' + data);
 
                           	if(data==="success"){
-                          		alert("위치가 등록 되었습니다.")
+                          		alert("위치가 등록 되었습니다.");
+                          		location.reload();
                           	} else{
-                          		alert('위치 등록에 실패했습니다.')
+                          		alert('위치 등록에 실패했습니다.');
                           	}
                         },
                         error: function () {
@@ -725,7 +726,7 @@
     </script>
     <c:if test="${loginuser.memberLatitude != null }">
     <script>
-    	var geocoder = new kakao.maps.services.Geocoder();
+    	
     	var callback = function(result,status){
     		console.log("result:"+result);
     		console.log("status:"+status);

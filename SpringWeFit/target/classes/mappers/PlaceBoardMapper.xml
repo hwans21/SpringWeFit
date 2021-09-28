@@ -4,13 +4,25 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.spring.wefit.placeboard.mapper.IPlaceBoardMapper">
-	<!--
-	<select id="getList" resultType="com.spring.wefit.command.PlaceBoardVO">
-		  	SELECT * FROM PlaceBoard
-		  	ORDER BY pbNum DESC 	
-	</select>
-	-->
 	
+	<sql id="distance">
+		<choose>	
+			<when test = "distance == ''">	  
+			</when>		
+			<otherwise>WHERE 
+				<if test="distance == '2km'">
+				pbCategory = '2km 이내'
+				</if>
+				<if test="distance == '5km'">
+				pbCategory = '5km 이내'
+				</if>
+				<if test="distance == '10km'">
+				pbCategory = '10km 이내'
+				</if>
+			</otherwise>	
+		</choose>
+	</sql>
+
 	<select id="getList" resultType="com.spring.wefit.command.PlaceBoardVO">
 		SELECT * FROM
 		(
@@ -29,15 +41,22 @@
 		WHERE rn > (#{pageNum}-1)*#{countPerPage}
 		AND rn <= #{pageNum} * #{countPerPage}
 		]]>
+		
+		<!--  
+		SELECT * FROM 
+		(
+			SELECT p.*, m.memberNick, (SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
+				(SELECT COUNT(*) FROM PlaceReport WHERE pbNum=p.pbNum) as pbReportCount,
+				DISTANCE_WGS84(#{Latitude}, #{Longitude}, p.pbLatitude, p.pbLongitude) as distance
+			FROM PlaceBoard p, Member m
+			WHERE p.memberNum = m.memberNum
+			ORDER BY pbRegdate DESC, distance ASC
+		) t
+		WHERE t.distance <2;
+		-->
+		
 	</select>
 
-	
-	<select id="getContent"
-		resultType="com.spring.wefit.command.PlaceBoardVO">
-		SELECT * FROM PlaceBoard
-		WHERE pbNum = #{pbNum}
-	</select>
-	<!-- 
 	<select id="getContent" resultType="com.spring.wefit.command.PlaceBoardVO">
 		SELECT p.*, m.memberNick,
 		(SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=#{pbNum}) as pbLikelyCount,
@@ -46,8 +65,6 @@
 		WHERE p.pbNum = #{pbNum}
 		AND p.memberNum = m.memberNum
 	</select>
-	 -->
-	 
 	
 	 <select id="getTotal" resultType="int">
 		SELECT COUNT(*) FROM PlaceBoard p, Member m
@@ -63,9 +80,7 @@
 		pbNum, memberNum, pbCategory, pbTitle, pbContent, 
 		pbImage1, pbImage2, pbImage3, pbImage4, pbImage5,
 		pbRealImage1, pbRealImage2, pbRealImage3, pbRealImage4, pbRealImage5,
-		<!-- 
 		pbAddrBasic, pbAddrDetail, pbLatitude, pbLongitude, 
-		-->
 		pbLookCount, pbImageCount
 		)
 		VALUES
@@ -74,30 +89,10 @@
 		#{memberNum}, #{pbCategory}, #{pbTitle}, #{pbContent}, 
 		#{pbImage1}, #{pbImage2}, #{pbImage3}, #{pbImage4}, #{pbImage5},
 		#{pbRealImage1}, #{pbRealImage2},#{pbRealImage3},#{pbRealImage4},#{pbRealImage5},
-		<!-- 
 		#{pbAddrBasic}, #{pbAddrDetail}, #{pbLatitude}, #{pbLongitude}, 
-		 -->
 		#{pbLookCount}, #{pbImageCount}
 		)		
 	</insert>
-	
-	<!-- 
-	<insert id="regist">
-		INSERT INTO PlaceBoard(
-		pbNum, memberNum, pbCategory, pbTitle, pbContent, 
-		pbImage1, pbImage2, pbImage3, pbImage4, pbImage5,
-		pbRealImage1, pbRealImage2, pbRealImage3, pbRealImage4, pbRealImage5,
-		pbAddrBasic, pbAddrDetail, pbLatitude, pbLongitude, 
-		pbLookCount, pbImageCount)
-		VALUES(
-		placeboard_seq.NEXTVAL, (SELECT memberNum From Member WHERE memberNick = #{memberNick}), 
-		#{pbCategory}, #{pbTitle}, #{pbContent}, 
-		#{pbImage1}, #{pbImage2}, #{pbImage3}, #{pbImage4}, #{pbImage5},
-		#{pbRealImage1}, #{pbRealImage2},#{pbRealImage3},#{pbRealImage4},#{pbRealImage5},
-		#{pbAddrBasic}, #{pbAddrDetail}, #{pbLatitude}, #{pbLongitude}, 
-		0, #{pbImageCount})		
-	</insert>
-	 -->
 	
 	<update id="update">
 		UPDATE PlaceBoard
@@ -112,22 +107,6 @@
 		pbRealImage5 = #{pbRealImage5}
 		WHERE pbNum=#{pbNum}
 	</update>
-	<!-- 
-	<update id="update">
-		UPDATE PlaceBoard
-		SET 
-		pbTitle = #{pbTitle},
-		pbContent = #{pbContent},
-		pbImage1 = #{pbImage1}, pbImage2 = #{pbImage2}, 
-		pbImage3 = #{pbImage3}, pbImage4= #{pbImage4}, 
-		pbImage5 = #{pbImage5},
-		pbRealImage1 = #{pbRealImage1}, pbRealImage2 = #{pbRealImage2}, 
-		pbRealImage3 = #{pbRealImage3}, pbRealImage4 = #{pbRealImage4}, 
-		pbRealImage5 = #{pbRealImage5},
-		pbImageCount = #{pbImageCount}
-		WHERE pbNum=#{pbNum}
-	</update>
-	 -->
 	 
 	<delete id="delete">
 		DELETE FROM PlaceBoard
@@ -140,35 +119,43 @@
   		WHERE pbNum=#{pbNum}
 	</update>
 	
-	<select id="checkLovely" resultType="int">
+
+	
+	<insert id="insertLike">
+		INSERT INTO PlaceLikely (pbNum, memberNum)
+		VALUES(#{pbNum}, #{memberNum})
+	</insert>
+
+	<select id="checkLike" resultType="int">
 		SELECT COUNT(*) FROM PlaceLikely
 		WHERE pbNum = #{pbNum}
 		AND memberNum = #{memberNum}
 	</select>
-	
-	<insert id="insertLovely">
-		INSERT INTO PlaceLikely
-		VALUES(#{pbNum}, #{memberNum})
-	</insert>
-	
-	<select id="checkReport" resultType="int">
-		SELECT COUNT(*) FROM PlaceReport
-		WHERE pbNum = #{pbNum }
-		AND memberNum = #{memberNum}
+
+	<delete id="deleteLike">
+ 	  DELETE FROM PlaceLikely
+ 	  WHERE pbNum = #{pbNum}
+	  AND memberNum = #{memberNum}
+	</delete>
+
+	<select id="countLike" resultType="int">
+		SELECT COUNT(*) FROM PlaceLikely
+		WHERE pbNum = #{pbNum}
 	</select>
+	
 	
 	<insert id="insertReport">
 		INSERT INTO PlaceReport
 		VALUES(#{pbNum}, #{memberNum})
 	</insert>
 	
+	<select id="checkReport" resultType="int">
+		SELECT COUNT(*) FROM PlaceReport
+		WHERE pbNum = #{pbNum}
+		AND memberNum = #{memberNum}
+	</select>
 	
 	
-	
-
-
-
-
 
 </mapper>
 

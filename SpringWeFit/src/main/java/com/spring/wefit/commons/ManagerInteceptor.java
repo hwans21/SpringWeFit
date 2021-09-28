@@ -18,7 +18,7 @@ public class ManagerInteceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("관리자 인터셉션 발동");
+		System.out.println("관리자 인터셉터 발동");
 		HttpSession session = request.getSession();
 		UserVO login = (UserVO) session.getAttribute("loginuser");
 		

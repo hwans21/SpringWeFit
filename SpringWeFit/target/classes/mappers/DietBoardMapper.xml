@@ -8,13 +8,13 @@
 
 	<sql id="search">
 		<if test="condition == 'title'">
-			WHERE dbtitle LIKE '%'||#{keyword}||'%'
+			AND dbtitle LIKE '%'||#{keyword}||'%'
 		</if>
 		<if test="condition == 'content'">
-			WHERE dbcontent LIKE '%'||#{keyword}||'%'
+			AND dbcontent LIKE '%'||#{keyword}||'%'
 		</if>
 		<if test="condition == 'writer'">
-			WHERE nickname LIKE '%'||#{keyword}||'%'
+			AND nickname LIKE '%'||#{keyword}||'%'
 		</if>
 	</sql>
 
@@ -25,14 +25,16 @@
 		(
 		dbNum, memberNum, dbTitle, dbContent,
 		dbImage1, dbImage2, dbImage3, dbImage4, dbImage5,
-		dbRealImage1, dbRealImage2, dbRealImage3, dbRealImage4, dbRealImage5
+		dbRealImage1, dbRealImage2, dbRealImage3, dbRealImage4, dbRealImage5,
+		dbLookCount, dbImageCount
 		)
 		VALUES
 		(
 		dietBoard_seq.NEXTVAL,
 		#{memberNum}, #{dbTitle}, #{dbContent},
 		#{dbImage1}, #{dbImage2}, #{dbImage3}, #{dbImage4}, #{dbImage5},
-		#{dbRealImage1}, #{dbRealImage2}, #{dbRealImage3}, #{dbRealImage4}, #{dbRealImage5}
+		#{dbRealImage1}, #{dbRealImage2}, #{dbRealImage3}, #{dbRealImage4}, #{dbRealImage5},
+		#{dbLookCount}, #{dbImageCount}
 		)
 	</insert>
 
@@ -44,9 +46,22 @@
 					(
 						SELECT ROWNUM as rn, diet.* FROM
 							(
-								SELECT * FROM DietBoard
+								SELECT 
+								d.*, 
+								m.memberNick,
+								(SELECT COUNT(*) FROM dietLikely WHERE dbNum = d.dbNum) as dbLikelyCount,
+								(SELECT COUNT(*) FROM dietReport WHERE dbNum = d.dbNum) as dbReportCount,
+								(SELECT COUNT(*) FROM dietReply WHERE dbNum = d.dbNum) as drCount
+								
+								
+								FROM 
+								dietBoard d, 
+								Member m
+								
+								WHERE 
+								d.memberNum = m.memberNum
 								<include refid="search" />
-								ORDER BY dbNum DESC
+								ORDER BY dbRegDate DESC
 							) diet
 				)
 		  		<![CDATA[
@@ -59,14 +74,18 @@
 
 	<select id="getContent"
 		resultType="com.spring.wefit.command.DietBoardVO">
-		SELECT * FROM DietBoard
-		WHERE dbNum= #{dbNum}
+		SELECT d.*, m.memberNick,
+		(SELECT COUNT(*) FROM DietLikely WHERE dbNum=#{dbNum }) as dbLikelyCount,
+		(SELECT COUNT(*) FROM DietReport WHERE dbNum=#{dbNum }) as dbReportCount
+		FROM DietBoard d, Member m
+		WHERE d.dbNum = #{dbNum}
+		AND d.memberNum = m.memberNum
 	</select>
 
 
 	<select id="getTotal" resultType="int">
-		SELECT COUNT(*)
-		FROM DietBoard
+		SELECT COUNT(*) FROM DietBoard d, Member m
+		WHERE d.memberNum = m.memberNum
 		<include refid="search" />
 	</select>
 
@@ -81,7 +100,8 @@
 		dbImage5 = #{dbImage5},
 		dbRealImage1 = #{dbRealImage1}, dbRealImage2 = #{dbRealImage2},
 		dbRealImage3 = #{dbRealImage3}, dbRealImage4 = #{dbRealImage4},
-		dbRealImage5 = #{dbRealImage5}
+		dbRealImage5 = #{dbRealImage5},
+		dbImageCount, #{dbImageCount}
 
 		WHERE dbNum = #{dbNum}
 	</update>
@@ -97,6 +117,13 @@
 			dbLookCount=dbLookCount+1
 		WHERE dbNum = #{dbNum}
 	</update>
+	
+	<delete id="deleteLike">
+		DELETE FROM dietLikely
+		WHERE dbNum = #{dbNum}
+		AND memberNum = #{memberNum}
+	</delete>
+	
 	
 	<select id="checkLovely" resultType="int">
 		SELECT COUNT(*) FROM dietLikely
@@ -119,7 +146,11 @@
 		INSERT INTO dietReport
 		VALUES(#{dbNum}, #{memberNum})
 	</insert>
-
+	
+	<select id="countLovely" resultType="int">
+		SELECT COUNT(*) FROM dietLikely
+		WHERE dbNum = #{dbNum}
+	</select>
 
 
 

@@ -200,7 +200,7 @@
 
                 <div class="row">
                     <div class="container-fluid">
-                        <table>
+                        <table style="width:100%">
 
                             <tr>
                                 <td>작성일: <fmt:formatDate value="${content.fbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
@@ -300,7 +300,7 @@
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
                         strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small>'
-                        if(data.list[i].memberNick === loginuserName || ${}){
+                        if(data.list[i].memberNick === loginuserName || ${loginuser.memberManagerYN == "YES"}){
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].frNum+'">수정</small> <small class="replyDelBtn'+data.list[i].frNum+'">삭제</small></span>'
                         	
                         }
@@ -556,7 +556,6 @@
     			boolRegist = false;
     			frClassName = $(e.target).attr('class');
     		}
-    		${loginuser.memberLati}
     		if(e.target.className.indexOf('replyDelBtn') != -1){
     			if(${loginuser==null? true:false}){
     				return;
