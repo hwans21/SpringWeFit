@@ -13,6 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.spring.wefit.course.mapper.ICourseBoardMapper;
+import com.spring.wefit.course.service.ICourseBoardService;
+import com.spring.wefit.diet.service.IDietBoardService;
+import com.spring.wefit.free.service.IFreeBoardService;
+import com.spring.wefit.market.service.IMarketBoardService;
+import com.spring.wefit.noticeboard.service.INoticeBoardService;
+import com.spring.wefit.placeboard.service.IPlaceBoardService;
 import com.spring.wefit.user.service.IUserService;
 
 
@@ -28,8 +35,27 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
-	private IUserService service;
+	private IUserService userservice;
 
+	@Autowired
+	private ICourseBoardService courseservice;
+	
+	@Autowired 
+	private IDietBoardService dietservice;
+	
+	@Autowired
+	private IFreeBoardService freeservice;
+	
+	@Autowired 
+	private IMarketBoardService marketservice;
+	
+	@Autowired
+	private INoticeBoardService noticeservice;
+	
+	@Autowired 
+	private IPlaceBoardService placeservice;	
+	
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -43,8 +69,10 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		service.sleepUser(date);
-		service.delete(date);
+		userservice.sleepUser(date);
+		userservice.delete(date);
+		
+		
 		
 		return "home";
 	}

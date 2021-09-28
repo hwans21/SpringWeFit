@@ -110,7 +110,9 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/freeModify?fbNum=${content.fbNum }" />'">수정하기</button>
+                	<c:if test="${content.memberNum == loginuser.memberNum || loginuser.memberManagerYN == 'YES' }">
+	                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/freeModify?fbNum=${content.fbNum }" />'">수정하기</button>
+                	</c:if>
                     <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
                 </div>
                 <div class="row">
@@ -298,7 +300,7 @@
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
                         strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small>'
-                        if(data.list[i].memberNick === loginuserName){
+                        if(data.list[i].memberNick === loginuserName || ${}){
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].frNum+'">수정</small> <small class="replyDelBtn'+data.list[i].frNum+'">삭제</small></span>'
                         	
                         }
@@ -554,6 +556,7 @@
     			boolRegist = false;
     			frClassName = $(e.target).attr('class');
     		}
+    		${loginuser.memberLati}
     		if(e.target.className.indexOf('replyDelBtn') != -1){
     			if(${loginuser==null? true:false}){
     				return;

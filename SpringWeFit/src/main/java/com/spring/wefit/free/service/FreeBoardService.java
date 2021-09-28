@@ -82,6 +82,18 @@ public class FreeBoardService implements IFreeBoardService {
 		mapper.insertReport(vo);
 	}
 
+	@Override
+	public void deleteLovely(FreeBoardVO vo) {
+		// TODO Auto-generated method stub
+		mapper.deleteLovely(vo);
+	}
+
+	@Override
+	public int countLike(int fbNum) {
+		// TODO Auto-generated method stub
+		return mapper.countLike(fbNum);
+	}
+
 
 
 	

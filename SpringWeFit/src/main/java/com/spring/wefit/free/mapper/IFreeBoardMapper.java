@@ -39,5 +39,10 @@ public interface IFreeBoardMapper {
 	//자유게시판 신고 처리
 	void insertReport(FreeBoardVO vo);
 	
+	//자유게시판 좋아요 삭제
+	void deleteLovely(FreeBoardVO vo);
+	
+	//자유게시판 좋아요 개수
+	int countLike(int fbNum);
 	
 }

@@ -92,7 +92,7 @@
 		WHERE dbNum = #{dbNum}
 	</delete>
 
-		<update id="updateViewCount">
+	<update id="updateViewCount">
 		UPDATE DietBoard SET
 			dbLookCount=dbLookCount+1
 		WHERE dbNum = #{dbNum}

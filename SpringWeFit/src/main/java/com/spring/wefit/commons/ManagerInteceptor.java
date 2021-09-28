@@ -1,5 +1,7 @@
 package com.spring.wefit.commons;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,23 +22,41 @@ public class ManagerInteceptor extends HandlerInterceptorAdapter{
 		HttpSession session = request.getSession();
 		UserVO login = (UserVO) session.getAttribute("loginuser");
 		
-		FlashMap flashMap = new FlashMap();
 		
-		
+		if(login == null) {
+			msgreturn(response, request);
+			return false;
+		}
 		if(!login.getMemberManagerYN().equals("YES")) {
 			
-			flashMap.put("msg", "관리자만 접근 가능합니다!");
-			FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(request);
-			flashMapManager.saveOutputFlashMap(flashMap, request, response);
-			System.out.println("관리자 계정이 아닙니다.");
-			String referer = (String)request.getHeader("REFERER"); // 이전페이지 url가져오기
-			if(referer!=null) {
-				response.sendRedirect(referer);
-			} else {
-				response.sendRedirect("/wefit");
-			}
+			msgreturn(response, request);
 			return false;
 		}
 		return true;
+	}
+	
+	private void msgreturn(HttpServletResponse response, HttpServletRequest request) {
+		FlashMap flashMap = new FlashMap();
+		flashMap.put("msg", "관리자만 접근 가능합니다!");
+		FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(request);
+		flashMapManager.saveOutputFlashMap(flashMap, request, response);
+		System.out.println("관리자 계정이 아닙니다.");
+		String referer = (String)request.getHeader("REFERER"); // 이전페이지 url 가져오기
+		System.out.println(referer);
+		if(referer!=null) {
+			try {
+				response.sendRedirect(referer);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				response.sendRedirect("/wefit");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

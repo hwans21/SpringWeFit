@@ -32,8 +32,14 @@ public interface IFreeBoardService {
 	//자유게시판 좋아요 했는지 확인
 	int checkLovely(FreeBoardVO vo);
 	
-	//자유게시판 좋아요 처리
+	//자유게시판 좋아요 추가
 	void insertLovely(FreeBoardVO vo);
+	
+	//자유게시판 좋아요 삭제
+	void deleteLovely(FreeBoardVO vo);
+	
+	//자유게시판 좋아요 개수
+	int countLike(int fbNum);
 	
 	//자유게시판 신고 했는지 확인
 	int checkReport(FreeBoardVO vo);

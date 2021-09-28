@@ -225,12 +225,26 @@ public class FreeBoardController {
 		System.out.println("글 번호:"+vo.getFbNum());
 		System.out.println("유저 번호"+vo.getMemberNum());
 		if(service.checkLovely(vo) == 1) {
+			service.deleteLovely(vo);
 			return "duplicate";
 		} else {
 			service.insertLovely(vo);
 			return "success";
 		}
 	}
+	
+	//좋아요 개수 출력
+   @GetMapping("/{fbNum}")
+   @ResponseBody
+   public Map<String, Object> freeCountLike(@PathVariable int fbNum) {
+	   
+	   int count = service.countLike(fbNum);
+	   
+	   Map<String, Object> map = new HashMap<>();
+	   map.put("count", count);
+	   System.out.println(count);
+	   return map;
+   }
 	
 	// 글 신고 처리하기
 	@PostMapping("/freeReport")

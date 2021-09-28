@@ -22,5 +22,6 @@ public class PageVO {
 		public PageVO() {
 			this.pageNum = 1;
 			this.countPerPage = 20;
+			
 		}
 }
