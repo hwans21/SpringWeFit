@@ -83,4 +83,5 @@ public class NoticeBoardService implements INoticeBoardService {
 		return mapper.checkLovely(vo);
 	}
 
+	
 }

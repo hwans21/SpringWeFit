@@ -42,10 +42,14 @@
             /* border-bottom: 1px solid rgb(0, 173, 181); */
             margin-top: 20px;
             margin-bottom: 20px;
-            font-size: 25px;
+            font-size: 40px;
             font-weight: bold;
             color: rgb(0, 173, 181);
             text-align: left;
+        }
+        
+        #search-parts {
+        margin-top: 40px;
         }
 
         input {
@@ -154,6 +158,7 @@
 
                 <li class="sub2"><a href="<c:url value="/noticeBoard/" />">공지사항</a></li>
                 <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
+                <li class="sub2"><a href="/FRONT/views/board/qna/qna_board.jsp">질문게시판</a></li>
 
             </ul>
         </div>
@@ -161,23 +166,36 @@
 
 
             <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-8">
                     <div class="titlebox">
                         <h2>공지사항</h2>
                     </div>
                 </div>
-            </div>
             
-            <form action="<c:url value='/noticeBoard/noticeList' />">
-            <div id="btn-list" class="row" align="right">
-                <input type="text" placeholder="Search" value="${pc.paging.keyword }">
-                
-                <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true" ></span>
-                </button>
-            </div>
-            </form>
-
+            
+            	<div class="col-sm-4" id="search-parts">
+            		<form action="<c:url value='/noticeBoard/noticeList' />">
+		    			<div class="col-sm-4">
+		    			<select class="form-control search-select" name="condition" id="condition">
+                            <option value="titleContent" ${pc.paging.condition == 'titleContent' ? 'selected' : ''}>전체</option>
+                            <option value="title" ${pc.paging.condition == 'title' ? 'selected' : ''}>제목</option>
+                            <option value="content" ${pc.paging.condition == 'content' ? 'selected' : ''}>내용</option>
+                     	</select>
+                     	</div>
+                     
+                     	<div class="col-sm-7">
+                     		<input type="text" class="form-control search-input" name="keyword" id="keyword" value="${pc.paging.keyword}">
+                     	</div>
+                     	<div class="col-sm-1">
+                        	<button type="button" id="search-btn" class="btn" aria-label="Left Align">
+                 			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+	               			</button>
+	               		</div>
+                    
+		    		</form>
+		    	</div>
+		    </div>
+		    	   
             <div class="row margin-top-5">
                 <table class="table table-hover table-responsive">
                     <thead class="bg-info">
@@ -210,14 +228,15 @@
 
                 </table>
             </div>
-
+			
             <div class="row" align="right">
-
+				<c:if test="${loginuser.memberNick == noticeList.memberNick}">
 
                     <button type="button" id="write" class="btn btn-outline-primary float-right" onclick="location.href='<c:url value='/noticeBoard/noticeWrite'  />'"><b>작성하기</b></button>
 
-
+				</c:if>
             </div>
+            
 
  <div class="row text-center">
                 <nav aria-label="Page navigation example">
@@ -244,7 +263,41 @@
 		
         
     </div>
+   <script defer>
    
+   const msg = '${msg}';
+	if(msg !== '') {
+		alert(msg);
+	}
+	
+	const pagination = document.getElementById('pagination');
+	pagination.onclick = function(e) {
+		e.preventDefault();
+		const value = e.target.dataset.pagenum;
+		document.pageForm.pageNum.value = value;
+		document.pageForm.submit();
+	}
+ 
+      
+      $(function() { 
+
+		  $('#search-btn').click(function() {
+			  const condition = $('#condition').val();
+			  const keyword = $('#keyword').val();
+			  	  
+			  location.href = '/wefit/noticeBoard/?condition=' + condition + '&keyword=' + keyword;
+		  });  
+      	  
+      	  
+		  $('#keyword').keydown(function(key){
+				if(key.keyCode === 13) {
+					$('#search-btn').click();
+				}				
+		  });
+      
+      
+      });
+  </script>
     
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.spring.wefit.noticeboard.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.spring.wefit.command.NoticeBoardVO;
 import com.spring.wefit.commons.PageVO;
@@ -40,7 +41,6 @@ public interface INoticeBoardMapper {
 		
 	//신고 처리
 	void insertReport(NoticeBoardVO vo);
-	
 	
 	
 }

@@ -110,7 +110,9 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
+                <c:if test="${loginuser.memberNick == noticeList.memberNick}">
                     <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeContent.nbNum }" />'">수정하기</button>
+                    </c:if>
                     <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
                 </div>
                 <div class="row">
@@ -429,7 +431,7 @@
     		};
     		$.ajax({
                 type: "POST",
-                url: "<c:url value='/noticeReply/noticeLikely' />",
+                url: "<c:url value='/noticeBoard/noticeLikely' />",
                 headers: {
                     "Content-Type": "application/json"
                 },

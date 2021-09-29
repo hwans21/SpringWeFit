@@ -1,6 +1,8 @@
 package com.spring.wefit.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -178,7 +180,7 @@ public class NoticeBoardController {
 		// 글 신고 처리하기
 		@PostMapping("/noticeReport")
 		@ResponseBody
-		public String freeBoardReport(@RequestBody NoticeBoardVO vo) {
+		public String noticeBoardReport(@RequestBody NoticeBoardVO vo) {
 			System.out.println("글 번호:"+vo.getNbNum());
 			System.out.println("유저 번호"+vo.getMemberNum());
 			if(service.checkReport(vo) == 1) {
@@ -188,7 +190,5 @@ public class NoticeBoardController {
 				return "success";
 			}
 		}
-
-
-		
+	
 	}

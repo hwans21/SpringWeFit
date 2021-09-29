@@ -44,6 +44,8 @@ public interface INoticeBoardService {
 		
 		//신고 처리
 		void insertReport(NoticeBoardVO vo);
+		
+		
 
 		
 
