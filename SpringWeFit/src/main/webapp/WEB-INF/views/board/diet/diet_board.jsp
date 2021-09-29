@@ -189,7 +189,7 @@
 								</c:if>
 								<c:if test="${vo.dbRealImage1 == null }">
 									<a href="#"><img
-										src="http://localhost/upload/board/diet/white.jpg"
+										src="http://localhost/upload/board/diet/text-image.jpg"
 										width="280px" height="160px" alt="vid01"></a>
 								</c:if>
 								
@@ -214,12 +214,12 @@
 
                 </table>
             </div>
-
-            <div class="row" align="right">
-                <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/dietBoard/dietWrite' />'"><b>글쓰기</b></button>
-
-            </div> <!-- 관리자만 보이게 하기 -->
-
+			<c:if test="${loginuser != null}">
+	            <div class="row" align="right">
+	                <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/dietBoard/dietWrite' />'"><b>글쓰기</b></button>
+	
+	            </div> <!-- 관리자만 보이게 하기 -->
+	        </c:if>
 
 			<form action="<c:url value='/dietBoard/dietList' />" name="pageForm">
 				<div class="row text-center">

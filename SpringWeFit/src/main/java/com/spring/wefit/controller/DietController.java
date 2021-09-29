@@ -46,8 +46,6 @@ public class DietController {
 		int contentTotal = service.getTotal(vo);
 		System.out.println("총 게시글 수: " + contentTotal);
 		
-		//사진이 최소 하나 이상 or 하나도 없는(글만) 있는거 거르기
-		
 		
 		//게시글 리스트 뽑기
 		List<DietBoardVO> list = service.getList(vo);
@@ -142,18 +140,35 @@ public class DietController {
 	@PostMapping("/dietModify")
 	public String dietModify(MultipartFile[] fileName, HttpServletRequest request, DietBoardVO vo, RedirectAttributes ra) {
 		
+			//System.out.println("/dietBoard/dietModify: POST1");
 		
-		System.out.println("/board/dietWrite : 파일 업로드!");
 		CustomFileUpload fileUp = new CustomFileUpload();
+		
+			//System.out.println("/dietBoard/dietModify: POST2");
+		
 		String rootPath = request.getServletContext().getRealPath(""); // C:\Users\hwans\apache-tomcat-9.0.52\wtpwebapps\SpringWeFit\
+		
+			//System.out.println("/dietBoard/dietModify: POST3");
+		
 		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\diet\\"+vo.getMemberNick()+"\\"; 
 		
+			//System.out.println("/dietBoard/dietModify: POST4");
+		
 		DietBoardVO origin = service.getContent(vo.getDbNum());
+			
+			System.out.println("해당 글번호의 글 내용 정보 , origin: " + service.getContent(vo.getDbNum()));
+			
+			System.out.println("orgin의 getDbRealImage1: " + origin.getDbRealImage1());
+			
+			System.out.println("/dietBoard/dietModify: POST5");
 		
 		if(origin.getDbRealImage1() != null) {
 			fileUp.delete(origin.getDbRealImage1(), rootPath);
-			System.out.println(origin.getDbRealImage1()+"삭제 완료");
+			System.out.println(origin.getDbRealImage1() + "삭제완료");
 		}
+		
+			System.out.println("/dietBoard/dietModify: POST6");
+		
 		if(origin.getDbRealImage2() != null) {
 			fileUp.delete(origin.getDbRealImage2(), rootPath);
 			System.out.println(origin.getDbRealImage2()+"삭제 완료");
@@ -170,6 +185,7 @@ public class DietController {
 			fileUp.delete(origin.getDbRealImage5(), rootPath);
 			System.out.println(origin.getDbRealImage5()+"삭제 완료");
 		}
+		
 		
 		List<String> fileNameList = fileUp.fileUpload(fileName, 5, rootPath);
 		
@@ -198,14 +214,13 @@ public class DietController {
 		}
 		vo.setDbImageCount(imgCount);
 		
-		System.out.println("수정할 내용: " + vo);
+		
 		service.update(vo);
 		
-		ra.addFlashAttribute("msg", "updateSuccess");
-		System.out.println("board/diet/diet_modify: POST 글 수정 요청!");
-		
-		return "redirect:/dietBoard/dietDetail?dbNum=" + vo.getDbNum();
+		ra.addFlashAttribute("msg", "수정 완료되었습니다.");
+		return "redirect:/dietBoard/dietDetail?dbNum="+vo.getDbNum();
 	}
+
 	
 	//글 삭제하기
 	@PostMapping("/dietDelete")
@@ -213,7 +228,7 @@ public class DietController {
 		service.delete(vo.getDbNum());
 		ra.addFlashAttribute("msg", "게시글이 정상 삭제되었습니다.");
 		System.out.println("삭제완료");
-		return "redirect:/dietBoard/dietList";
+		return "redirect:/dietBoard/";
 	}
 	
 	//좋아요 처리

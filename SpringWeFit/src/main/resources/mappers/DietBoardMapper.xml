@@ -95,11 +95,15 @@
 		SET
 		dbTitle = #{dbTitle},
 		dbContent = #{dbContent},
-		dbImage1 = #{dbImage1}, dbImage2 = #{dbImage2},
-		dbImage3 = #{dbImage3}, dbImage4= #{dbImage4},
+		dbImage1 = #{dbImage1}, 
+		dbImage2 = #{dbImage2},
+		dbImage3 = #{dbImage3}, 
+		dbImage4= #{dbImage4},
 		dbImage5 = #{dbImage5},
-		dbRealImage1 = #{dbRealImage1}, dbRealImage2 = #{dbRealImage2},
-		dbRealImage3 = #{dbRealImage3}, dbRealImage4 = #{dbRealImage4},
+		dbRealImage1 = #{dbRealImage1}, 
+		dbRealImage2 = #{dbRealImage2},
+		dbRealImage3 = #{dbRealImage3}, 
+		dbRealImage4 = #{dbRealImage4},
 		dbRealImage5 = #{dbRealImage5},
 		dbImageCount, #{dbImageCount}
 
