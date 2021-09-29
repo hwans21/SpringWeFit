@@ -3,22 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper
-namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
+<mapper namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 
-<!-- 게시물 검색 -->
-
-<sql id="search">
-		<if test="condition == 'title'">
-			WHERE nbTitle LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'content'">
-			WHERE nbContent LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'writer'">
-			WHERE nickname LIKE '%'||#{keyword}||'%'
-		</if>
-	</sql>
 
 <!-- 게시물 작성 -->
 <insert id="regist">
@@ -113,7 +99,20 @@ namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 		INSERT INTO NoticeReport
 		VALUES(#{nbNum}, #{memberNum})
 	</insert>
-
+	
+	<sql id="search">
+		<if test="condition == 'title'">
+			WHERE nbTitle LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'content'">
+			WHERE nbContent LIKE '%'||#{keyword}||'%'
+		</if>
+		
+		<if test="condition == 'titleContent'">
+			WHERE nbTitle LIKE '%'||#{keyword}||'%'
+			OR nbContent LIKE '%'||#{keyword}||'%'
+		</if>
+	</sql>
 
 
 

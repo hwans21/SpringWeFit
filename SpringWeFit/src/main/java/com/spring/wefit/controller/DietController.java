@@ -228,7 +228,7 @@ public class DietController {
 		service.delete(vo.getDbNum());
 		ra.addFlashAttribute("msg", "게시글이 정상 삭제되었습니다.");
 		System.out.println("삭제완료");
-		return "redirect:/dietBoard/";
+		return "redirect:/dietBoard/dietList";
 	}
 	
 	//좋아요 처리

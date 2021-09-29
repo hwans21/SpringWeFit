@@ -66,5 +66,10 @@
 	WHERE crNum = #{crNum}
 </select>
 
+<select id="getCrByte" resultType="int">
+	SELECT LENGTHB(crContent) crContentByte 
+	FROM CourseReply
+	WHERE crNum = #{crNum}
+</select>
 
 </mapper>

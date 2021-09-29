@@ -7,189 +7,192 @@
  
  
  
- 	<sql id="search">
- 	
- 		<if test="condition == 'title'">
- 			WHERE mbTitle LIKE '%'||#{keyword}||'%'
- 		</if>
- 		<if test="condition == 'type'">
-			WHERE mbType LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'writer'">
-			WHERE memberNum LIKE '%'||#{keyword}||'%'
-		</if>
- 	
- 	</sql>
+    <sql id="search">
+       <if test="condition == 'title'">
+          WHERE mbTitle LIKE '%'||#{keyword}||'%'
+       </if>
+       <if test="condition == 'type'">
+         WHERE mbType LIKE '%'||#{keyword}||'%'
+      </if>
+      <if test="condition == 'writer'">
+         WHERE memberNum LIKE '%'||#{keyword}||'%'
+      </if>
+      
+    
+    </sql>
  
- 	<select id="getList" resultType="com.spring.wefit.command.marketBoardVO">
-				SELECT * FROM
-					(
-						SELECT ROWNUM as rn, market.* FROM
-							(
-								SELECT * FROM MarketBoard
-								<include refid="search" />
-								ORDER BY mbNum DESC
-							) market
-				)
-		  		<![CDATA[
-		  		WHERE rn > (#{pageNum}-1) * #{countPerPage}
-		  		AND rn <= #{pageNum} * #{countPerPage} 
-		  		]]>
+    <select id="getList" resultType="com.spring.wefit.command.marketBoardVO">
+            SELECT * FROM
+               (
+                  SELECT ROWNUM as rn, market.* FROM
+                     (
+                        SELECT * FROM MarketBoard
+                        <include refid="search" />
+                        ORDER BY mbNum DESC
+                         
+                     ) market
+            )
+              <![CDATA[
+              WHERE rn > (#{pageNum}-1) * #{countPerPage}
+              AND rn <= #{pageNum} * #{countPerPage} 
+              ]]>
 
- 	</select>
- 	
- 	
- 		
- 	
- 	<insert id="regist">
- 		INSERT INTO MarketBoard(mbNum,
- 								memberNum, 
- 								mbType, 
- 								mbTitle, 
- 								mbPrice, 
- 								mbContent, 
- 								mbImage1,
- 								mbRealImage1,
- 								mbImage2,
- 								mbRealImage2,
- 								mbImage3,
- 								mbRealImage3,
- 								mbImage4,
- 								mbRealImage4,
- 								mbImage5,
- 								mbRealImage5,
- 								mbImage6,
- 								mbRealImage6,
- 								mbImage7,
- 								mbRealImage7,
- 								mbImage8,
- 								mbRealImage8,
- 								mbImage9,
- 								mbRealImage9,
- 								mbImage10,
- 								mbRealImage10,
- 								mbAddrBasic,
- 								mbLongitude, 
- 								mbLatitude, 
- 								mbImageCount, 
- 								mbLookCount)
- 		values(marketBoard_seq.NEXTVAL,
- 			   #{memberNum},
- 			   #{mbType}, 
- 			   #{mbTitle}, 
- 			   #{mbPrice}, 
- 			   #{mbContent}, 
- 			   #{mbImage1}, 
- 			   #{mbRealImage1},
- 			   #{mbImage2}, 
- 			   #{mbRealImage2},
- 			   #{mbImage3}, 
- 			   #{mbRealImage3},
- 			   #{mbImage4}, 
- 			   #{mbRealImage4},
- 			   #{mbImage5}, 
- 			   #{mbRealImage5},
- 			   #{mbImage6}, 
- 			   #{mbRealImage6},
- 			   #{mbImage7}, 
- 			   #{mbRealImage7},
- 			   #{mbImage8}, 
- 			   #{mbRealImage8},
- 			   #{mbImage9}, 
- 			   #{mbRealImage9},
- 			   #{mbImage10}, 
- 			   #{mbRealImage10},
- 			   #{mbAddrBasic}, 
- 			   #{mbLongitude}, 
- 			   #{mbLatitude},
- 			   #{mbImageCount},
- 			   #{mbLookCount}
- 			   )
- 		
- 	</insert>
- 	
- 	<select id="getContent" resultType="com.spring.wefit.command.marketBoardVO">
- 		SELECT * FROM MarketBoard
- 		WHERE mbNum = #{mbNum}
- 	</select>
- 	
- 	<update id="update">
- 		UPDATE MarketBoard
- 		SET mbType = #{mbType}, 
- 			mbTitle = #{mbTitle}, 
- 			mbPrice = #{mbPrice}, 
- 			mbContent = #{mbContent}, 
- 			mbImage1 = #{mbImage1},
- 			mbRealImage1 = #{mbRealImage1},
- 			mbImage2 = #{mbImage2},
- 			mbRealImage2 = #{mbRealImage2},
- 			mbImage3 = #{mbImage3},
- 			mbRealImage3 = #{mbRealImage3},
- 			mbImage4 = #{mbImage4},
- 			mbRealImage4 = #{mbRealImage4},
- 			mbImage5 = #{mbImage5},
- 			mbRealImage5 = #{mbRealImage5},
- 			mbImage6 = #{mbImage6},
- 			mbRealImage6 = #{mbRealImage6},
- 			mbImage7 = #{mbImage7},
- 			mbRealImage7 = #{mbRealImage7},
- 			mbImage8 = #{mbImage8},
- 			mbRealImage8 = #{mbRealImage8},
- 			mbImage9 = #{mbImage9},
- 			mbRealImage9 = #{mbRealImage9},
- 			mbImage10 = #{mbImage10},
- 			mbRealImage10 = #{mbRealImage10},
- 			mbAddrBasic = #{mbAddrBasic}, 
- 			mbLongitude = #{mbLongitude}, 
- 			mbLatitude = #{mbLatitude}
- 		WHERE mbNum = #{mbNum}
- 	</update>
- 	
- 	<delete id="delete">
- 		DELETE FROM MarketBoard
- 		WHERE mbNum = #{mbNum}
- 	</delete>
- 	
- 	<select id="getTotal" resultType="int">
- 		SELECT COUNT(*)
- 		FROM MarketBoard
- 		<include refid="search" />
- 	</select>
- 	
- 	<update id="updateViewCount">
- 		UPDATE MarketBoard SET
- 			mbLookCount = mbLookCount + 1
- 		WHERE mbNum = #{mbNum}
- 	</update>
- 	
- 	<select id="checkLovely" resultType="int">
- 		SELECT COUNT(*) FROM MarketLikely
- 		WHERE mbNum = #{mbNum}
- 		AND memberNum = #{memberNum}
- 	</select>
- 	
- 	<insert id="insertLovely">
- 		INSERT INTO MarketLikely
- 		VALUES(#{mbNum}, #{memberNum})
- 	</insert>
- 	
- 	<select id="checkReport" resultType="int">
-		SELECT COUNT(*) FROM MarketReport
-		WHERE mbNum = #{mbNum }
-		AND memberNum = #{memberNum }
-	</select>
-	
-	<insert id="insertReport">
-		INSERT INTO MarketReport
-		VALUES(#{mbNum}, #{memberNum})
-	</insert>
-	
+    </select>
+    
+    
+       
+    
+    <insert id="regist">
+       INSERT INTO MarketBoard(mbNum,
+                         memberNum, 
+                         mbType, 
+                         mbTitle, 
+                         mbPrice, 
+                         mbContent, 
+                         mbImage1,
+                         mbRealImage1,
+                         mbImage2,
+                         mbRealImage2,
+                         mbImage3,
+                         mbRealImage3,
+                         mbImage4,
+                         mbRealImage4,
+                         mbImage5,
+                         mbRealImage5,
+                         mbImage6,
+                         mbRealImage6,
+                         mbImage7,
+                         mbRealImage7,
+                         mbImage8,
+                         mbRealImage8,
+                         mbImage9,
+                         mbRealImage9,
+                         mbImage10,
+                         mbRealImage10,
+                         mbAddrBasic,
+                         mbLongitude, 
+                         mbLatitude, 
+                         mbImageCount, 
+                         mbLookCount)
+       values(marketBoard_seq.NEXTVAL,
+             #{memberNum},
+             #{mbType}, 
+             #{mbTitle}, 
+             #{mbPrice}, 
+             #{mbContent}, 
+             #{mbImage1}, 
+             #{mbRealImage1},
+             #{mbImage2}, 
+             #{mbRealImage2},
+             #{mbImage3}, 
+             #{mbRealImage3},
+             #{mbImage4}, 
+             #{mbRealImage4},
+             #{mbImage5}, 
+             #{mbRealImage5},
+             #{mbImage6}, 
+             #{mbRealImage6},
+             #{mbImage7}, 
+             #{mbRealImage7},
+             #{mbImage8}, 
+             #{mbRealImage8},
+             #{mbImage9}, 
+             #{mbRealImage9},
+             #{mbImage10}, 
+             #{mbRealImage10},
+             #{mbAddrBasic}, 
+             #{mbLongitude}, 
+             #{mbLatitude},
+             #{mbImageCount},
+             #{mbLookCount}
+             )
+       
+    </insert>
+    
+    <select id="getContent" resultType="com.spring.wefit.command.marketBoardVO">
+       SELECT * FROM MarketBoard
+       WHERE mbNum = #{mbNum}
+    </select>
+    
+    <update id="update">
+       UPDATE MarketBoard
+       SET mbType = #{mbType}, 
+          mbTitle = #{mbTitle}, 
+          mbPrice = #{mbPrice}, 
+          mbContent = #{mbContent}, 
+          mbImage1 = #{mbImage1},
+          mbRealImage1 = #{mbRealImage1},
+          mbImage2 = #{mbImage2},
+          mbRealImage2 = #{mbRealImage2},
+          mbImage3 = #{mbImage3},
+          mbRealImage3 = #{mbRealImage3},
+          mbImage4 = #{mbImage4},
+          mbRealImage4 = #{mbRealImage4},
+          mbImage5 = #{mbImage5},
+          mbRealImage5 = #{mbRealImage5},
+          mbImage6 = #{mbImage6},
+          mbRealImage6 = #{mbRealImage6},
+          mbImage7 = #{mbImage7},
+          mbRealImage7 = #{mbRealImage7},
+          mbImage8 = #{mbImage8},
+          mbRealImage8 = #{mbRealImage8},
+          mbImage9 = #{mbImage9},
+          mbRealImage9 = #{mbRealImage9},
+          mbImage10 = #{mbImage10},
+          mbRealImage10 = #{mbRealImage10},
+          mbAddrBasic = #{mbAddrBasic}, 
+          mbLongitude = #{mbLongitude}, 
+          mbLatitude = #{mbLatitude}
+       WHERE mbNum = #{mbNum}
+    </update>
+    
+    <delete id="delete">
+       DELETE FROM MarketBoard
+       WHERE mbNum = #{mbNum}
+    </delete>
+    
+    <select id="getTotal" resultType="int">
+       SELECT COUNT(*)
+       FROM MarketBoard
+       <include refid="search" />
+    </select>
+    
+    <update id="updateViewCount">
+       UPDATE MarketBoard SET
+          mbLookCount = mbLookCount + 1
+       WHERE mbNum = #{mbNum}
+    </update>
+    
+    <select id="checkLovely" resultType="int">
+       SELECT COUNT(*) FROM MarketLikely
+       WHERE mbNum = #{mbNum}
+       AND memberNum = #{memberNum}
+    </select>
+    
+    <insert id="insertLovely">
+       INSERT INTO MarketLikely
+       VALUES(#{mbNum}, #{memberNum})
+    </insert>
+    
+    <select id="checkReport" resultType="int">
+      SELECT COUNT(*) FROM MarketReport
+      WHERE mbNum = #{mbNum }
+      AND memberNum = #{memberNum }
+   </select>
+   
+   <insert id="insertReport">
+      INSERT INTO MarketReport
+      VALUES(#{mbNum}, #{memberNum})
+   </insert>
+   
 
- 	<!-- <select id="" resultType="double">
- 		SELECT * FROM(
- 			SELECT DISTANCE_WG84(#{},#{},#{},#{}) as distance
- 		)
- 	</select> -->
- 	
+
+   <!--  <select id="" resultType="com.spring.wefit.command.marketBoardVO">
+       SELECT m.memberNum, m.memberLatitude, m. memberLongitude, mb.mbNum, mb.mbLatitude, mb.mbLongitude, distance_wgs84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
+      FROM member m, marketBoard mb
+      WHERE m.memberNum=mb.memberNum 
+      ORDER BY distance ASC;
+    </select>-->
+    
  
  </mapper>

@@ -158,7 +158,6 @@
 
                 <li class="sub2"><a href="<c:url value="/noticeBoard/" />">공지사항</a></li>
                 <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
-                <li class="sub2"><a href="/FRONT/views/board/qna/qna_board.jsp">질문게시판</a></li>
 
             </ul>
         </div>
@@ -226,19 +225,16 @@
                     </tbody>
                 </table>
 
-                </table>
+                
             </div>
 			
             <div class="row" align="right">
-				<c:if test="${loginuser.memberNick == noticeList.memberNick}">
 
-                    <button type="button" id="write" class="btn btn-outline-primary float-right" onclick="location.href='<c:url value='/noticeBoard/noticeWrite'  />'"><b>작성하기</b></button>
+           		<button type="button" id="write" class="btn btn-outline-primary float-right" onclick="location.href='<c:url value='/noticeBoard/noticeWrite'  />'"><b>작성하기</b></button>
 
-				</c:if>
-            </div>
-            
+            </div>     
 
- <div class="row text-center">
+ 			<div class="row text-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <c:if test="${pc.prev }">

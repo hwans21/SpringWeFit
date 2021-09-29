@@ -390,10 +390,7 @@ table tr td {
 									strAdd = '';
 								}
 
-								//응답 데이터의 길이가 0이하면 함수 종료
-								if (Data.length <= 0) {
-									return;
-								}
+								
 
 								let loginuserName = '${loginuser.memberNick!=null? loginuser.memberNick:''}';
 								for (let i = 0; i < Data.length; i++) {

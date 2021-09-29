@@ -11,13 +11,13 @@
 			</when>		
 			<otherwise>WHERE 
 				<if test="distance == '2km'">
-				pbCategory = '2km 이내'
+				pbDistance = '2km 이내'
 				</if>
 				<if test="distance == '5km'">
-				pbCategory = '5km 이내'
+				pbDistance = '5km 이내'
 				</if>
 				<if test="distance == '10km'">
-				pbCategory = '10km 이내'
+				pbDistance = '10km 이내'
 				</if>
 			</otherwise>	
 		</choose>
@@ -41,20 +41,17 @@
 		WHERE rn > (#{pageNum}-1)*#{countPerPage}
 		AND rn <= #{pageNum} * #{countPerPage}
 		]]>
-		
-		<!--  
+		<!-- 
 		SELECT * FROM 
-		(
-			SELECT p.*, m.memberNick, (SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
-				(SELECT COUNT(*) FROM PlaceReport WHERE pbNum=p.pbNum) as pbReportCount,
+			(
+				SELECT p.*, m.memberNick, (SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
 				DISTANCE_WGS84(#{Latitude}, #{Longitude}, p.pbLatitude, p.pbLongitude) as distance
 			FROM PlaceBoard p, Member m
 			WHERE p.memberNum = m.memberNum
 			ORDER BY pbRegdate DESC, distance ASC
-		) t
-		WHERE t.distance <2;
-		-->
-		
+			) t
+		WHERE t.distance < 2;
+		 -->
 	</select>
 
 	<select id="getContent" resultType="com.spring.wefit.command.PlaceBoardVO">

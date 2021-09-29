@@ -56,6 +56,7 @@
             <!--main left-->
             <form action="<c:url value='/dietBoard/dietModify' />" name="modifyForm" method="POST" enctype="multipart/form-data">
                 <table>
+                    <input type="hidden" name="dbNum" value="${dietList.dbNum }">
                     <tr>
                         <td>작성자</td>
                         <td><input type=text name=memberNick size=20 value="${dietList.memberNick}"> </td>
