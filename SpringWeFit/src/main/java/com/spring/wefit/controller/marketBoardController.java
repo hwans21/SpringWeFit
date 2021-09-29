@@ -42,6 +42,7 @@ public class MarketBoardController {
 		model.addAttribute("product", list);
 		model.addAttribute("page", pc.getPaging());
 		model.addAttribute("pc", pc);
+		System.out.println(vo.toString());
 
 		return "/board/market/market_board";
 	}

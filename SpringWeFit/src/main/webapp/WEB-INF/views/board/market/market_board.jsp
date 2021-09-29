@@ -133,12 +133,14 @@
                             		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=buy" />'">삽니다</button>
                               		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=sell" />'">팝니다</button>
                               		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=share" />'">나눠요</button>
+                              		
                               		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board" />'">전체 보기</button>
                             	<form action="<c:url value='/marketBoard/market_board' />">
                                 <div class="search-sec">
     
                                     <!--검색 조건-->
-                              		
+                              		<input name="latitude" type="hidden" value="${loginuser.memberLatitude}">
+                              		<input name="longitude" type="hidden" value="${loginuser.memberLongitude}">
                                     <select class="search-condition" name="condition">
                                         <option value="title">상품이름</option>
                                         <option value="addr">지역</option>
@@ -184,7 +186,7 @@
 										<a href="#">${product.mbAddrBasic}</a><br>
 										<a href="#">${product.mbTitle}</a><br>
 										<a href="#">가격: ${product.mbPrice }원</a>
-										<a href="#">작성자번호 : ${product.memberNick}</a>
+										
 									</p>
 									<p class="auth">
 										<span class="writeday">${product.mbRegDate}</span> <span

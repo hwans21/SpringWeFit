@@ -134,7 +134,9 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
+                	<c:if test="${loginuser.memberNum == detail.memberNum }">
                     <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_modify?mbNum=${detail.mbNum }" />'">수정하기</button>
+                    </c:if>
                     <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_board" />'">목록으로</button>
                 </div>
                 <div class="row">

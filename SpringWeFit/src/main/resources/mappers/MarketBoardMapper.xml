@@ -8,16 +8,19 @@
  
  
  	<sql id="search">
- 	
+ 		<if test="condition == ''">
+ 			AND mbTitle LIKE '%'||#{keyword}||'%'
+ 		</if>
  		<if test="condition == 'title'">
- 			WHERE mbTitle LIKE '%'||#{keyword}||'%'
+ 			AND mbTitle LIKE '%'||#{keyword}||'%'
  		</if>
  		<if test="condition == 'type'">
-			WHERE mbType LIKE '%'||#{keyword}||'%'
+			AND mbType LIKE '%'||#{keyword}||'%'
 		</if>
 		<if test="condition == 'writer'">
-			WHERE memberNum LIKE '%'||#{keyword}||'%'
+			AND memberNum LIKE '%'||#{keyword}||'%'
 		</if>
+		
  	
  	</sql>
  
@@ -26,9 +29,14 @@
 					(
 						SELECT ROWNUM as rn, market.* FROM
 							(
-								SELECT * FROM MarketBoard
+								SELECT m.memberNum, m.memberLatitude, m. memberLongitude,
+									 mb.mbNum, mb.mbLatitude, mb.mbLongitude, 
+									 distance_wgs84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
+								FROM member m, marketBoard mb
+								WHERE m.memberNum=mb.memberNum 
 								<include refid="search" />
 								ORDER BY mbNum DESC
+								 
 							) market
 				)
 		  		<![CDATA[
@@ -185,11 +193,13 @@
 	</insert>
 	
 
- 	<!-- <select id="" resultType="double">
- 		SELECT * FROM(
- 			SELECT DISTANCE_WG84(#{},#{},#{},#{}) as distance
- 		)
- 	</select> -->
+
+	<!--  <select id="" resultType="com.spring.wefit.command.marketBoardVO">
+ 		SELECT m.memberNum, m.memberLatitude, m. memberLongitude, mb.mbNum, mb.mbLatitude, mb.mbLongitude, distance_wgs84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
+		FROM member m, marketBoard mb
+		WHERE m.memberNum=mb.memberNum 
+		ORDER BY distance ASC;
+ 	</select>-->
  	
  
  </mapper>

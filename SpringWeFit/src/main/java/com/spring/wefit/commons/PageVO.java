@@ -19,13 +19,13 @@ public class PageVO {
 		
 		private String category;
 		
-		private double Latitude;
-		private double Longitude;
+		private double latitude;
+		private double longitude;
 		
 		public PageVO() {
 			this.pageNum = 1;
 			this.countPerPage = 20;
+			this.latitude = 0.0;
+			this.longitude = 0.0;
 		}
-		
-		//
 }
