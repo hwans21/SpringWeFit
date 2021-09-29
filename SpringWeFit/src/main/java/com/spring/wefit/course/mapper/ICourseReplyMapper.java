@@ -27,5 +27,8 @@ public interface ICourseReplyMapper {
 	
 	//댓글 수정, 삭제 권한 체크
 	int memberCheck(CourseReplyVO vo);
-
+	
+	// 댓글상세정보
+	CourseReplyVO getContent(int crNum);
+	
 }

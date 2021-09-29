@@ -48,4 +48,10 @@ public class CourseReplyService implements ICourseReplyService {
 		return mapper.memberCheck(vo);
 	}
 
+	@Override
+	public CourseReplyVO getContent(int crNum) {
+		// TODO Auto-generated method stub
+		return mapper.getContent(crNum);
+	}
+
 }

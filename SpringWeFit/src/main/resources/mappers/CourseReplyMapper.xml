@@ -61,6 +61,10 @@
 	WHERE crNum = #{crNum} AND memberNum = #{memberNum}
 </select>
 
+<select id="getContent" resultType="com.spring.wefit.command.CourseReplyVO">
+	SELECT * FROM CourseReply
+	WHERE crNum = #{crNum}
+</select>
 
 
 </mapper>

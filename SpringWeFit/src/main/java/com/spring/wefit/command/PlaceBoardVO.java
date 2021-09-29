@@ -56,7 +56,7 @@ ALTER TABLE PlaceBoard add(pbReportCount NUMBER(10, 0));
 public class PlaceBoardVO {
 	
 	private int pbNum;
-	private String memberNum;
+	private int memberNum;
 	private String pbCategory;
 	private String pbTitle;
 	private String pbContent;

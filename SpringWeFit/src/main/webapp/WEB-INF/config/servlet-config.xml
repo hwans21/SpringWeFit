@@ -83,8 +83,69 @@
 			<beans:ref bean="ManagerCheck" />
 		</interceptor>
 		<interceptor>
+			<mapping path="/courseBoard/write"/>
+			<mapping path="/courseBoard/regist"/>
+			<mapping path="/courseBoard/modify"/>
+			<mapping path="/courseBoard/delete"/>
+			<mapping path="/courseBoard/like"/>
+			<mapping path="/courseBoard/report"/>
+			
+			<mapping path="/courseReply/regist"/>
+			<mapping path="/courseReply/modify"/>
+			<mapping path="/courseReply/delete"/>
+			
+			<mapping path="/dietBoard/dietWrite"/>
+			<mapping path="/dietBoard/dietModify"/>
+			<mapping path="/dietBoard/dietDelete"/>
+			<mapping path="/dietBoard/dietLikely"/>
+			<mapping path="/dietBoard/dietReport"/>
+			
+			<mapping path="/dietReply/replyRegist"/>
+			<mapping path="/dietReply/dietReplyModify"/>
+			<mapping path="/dietReply/dietReplyDelete"/>
+			
 			<mapping path="/freeBoard/freeWrite"/>
 			<mapping path="/freeBoard/freeModify"/>
+			<mapping path="/freeBoard/freeDelete"/>
+			<mapping path="/freeBoard/freeLikely"/>
+			<mapping path="/freeBoard/freeReport"/>
+			
+			<mapping path="/freeReply/freeReplyRegist"/>
+			<mapping path="/freeReplyModify"/>
+			<mapping path="/freeReplyDelete"/>
+			
+			<mapping path="/marketBoard/market_write"/>
+			<mapping path="/marketBoard/regist"/>
+			<mapping path="/marketBoard/market_modify"/>
+			<mapping path="/marketBoard/update"/>
+			<mapping path="/marketBoard/delete"/>
+			<mapping path="/marketBoard/marketLikely"/>
+			<mapping path="/marketBoard/marketReport"/>
+			
+			<mapping path="/marketReply/regist"/>
+			<mapping path="/marketReply/modify"/>
+			<mapping path="/marketReply/delete"/>
+			
+			<mapping path="/noticeBoard/noticeWrite"/>
+			<mapping path="/noticeBoard/noticeModify"/>
+			<mapping path="/noticeBoard/noticeDelete"/>
+			<mapping path="/noticeBoard/noticeLikely"/>
+			<mapping path="/noticeBoard/noticeReport"/>
+			
+			<mapping path="/noticeReply/noticeReplyRegist"/>
+			<mapping path="/noticeReply/noticeReplyModify"/>
+			<mapping path="/noticeReply/noticeReplyDelete"/>
+			
+			<mapping path="/placeBoard/placeWrite"/>
+			<mapping path="/placeBoard/placeModify"/>
+			<mapping path="/placeBoard/placeDelete"/>
+			<mapping path="/placeBoard/placeLike"/>
+			<mapping path="/placeBoard/placeReport"/>
+			
+			<mapping path="/placeReply/replyRegist"/>
+			<mapping path="/placeReply/placeReplyModify"/>
+			<mapping path="/placeReply/placeReplyDelete"/>
+
 			<beans:ref bean="AuthCheck" />
 		</interceptor>
 	</interceptors>
