@@ -22,10 +22,13 @@ public class PageVO {
 		private double latitude;
 		private double longitude;
 		
+		private int distance;
+		
 		public PageVO() {
 			this.pageNum = 1;
 			this.countPerPage = 20;
 			this.latitude = 0.0;
 			this.longitude = 0.0;
+			this.distance = 15000;
 		}
 }

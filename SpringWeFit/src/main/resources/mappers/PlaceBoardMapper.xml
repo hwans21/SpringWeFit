@@ -25,33 +25,26 @@
 
 	<select id="getList" resultType="com.spring.wefit.command.PlaceBoardVO">
 		SELECT * FROM
-		(
-			SELECT ROWNUM as rn, place.* FROM
-			(
-				SELECT p.*, m.memberNick,(SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
-				(SELECT COUNT(*) FROM PlaceReport WHERE pbNum=p.pbNum) as pbReportCount
-				FROM PlaceBoard p, Member m
-				WHERE p.memberNum = m.memberNum
-				AND p.pbCategory LIKE '%'||#{condition}||'%'
-				AND p.pbTitle LIKE '%'||#{keyword}||'%'
-				ORDER BY pbRegDate DESC
-			) place
-		)
-		<![CDATA[
-		WHERE rn > (#{pageNum}-1)*#{countPerPage}
-		AND rn <= #{pageNum} * #{countPerPage}
-		]]>
-		<!-- 
-		SELECT * FROM 
-			(
-				SELECT p.*, m.memberNick, (SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
-				DISTANCE_WGS84(#{Latitude}, #{Longitude}, p.pbLatitude, p.pbLongitude) as distance
-			FROM PlaceBoard p, Member m
-			WHERE p.memberNum = m.memberNum
-			ORDER BY pbRegdate DESC, distance ASC
-			) t
-		WHERE t.distance < 2;
-		 -->
+      	(
+         	SELECT ROWNUM as rn, place.* FROM
+         (
+            SELECT p.*, m.memberNick,(SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
+            (SELECT COUNT(*) FROM PlaceReport WHERE pbNum=p.pbNum) as pbReportCount,
+            DISTANCE_WGS84(#{latitude}, #{longitude}, p.pbLatitude, p.pbLongitude) as distance
+            FROM PlaceBoard p, Member m
+            WHERE p.memberNum = m.memberNum
+            AND p.pbCategory LIKE '%'||#{condition}||'%'
+            AND p.pbTitle LIKE '%'||#{keyword}||'%'
+         	ORDER BY pbRegDate DESC
+         ) place
+         <![CDATA[
+         WHERE place.distance < #{distance}
+         ]]>
+      )
+      <![CDATA[
+      WHERE rn > (#{pageNum}-1)*#{countPerPage}
+      AND rn <= #{pageNum} * #{countPerPage}
+      ]]>
 	</select>
 
 	<select id="getContent" resultType="com.spring.wefit.command.PlaceBoardVO">
@@ -64,10 +57,16 @@
 	</select>
 	
 	 <select id="getTotal" resultType="int">
-		SELECT COUNT(*) FROM PlaceBoard p, Member m
-		WHERE p.memberNum = m.memberNum
-		AND p.pbTitle LIKE '%'||#{condition}||'%'
-		AND p.pbTitle LIKE '%'||#{keyword}||'%'
+		SELECT COUNT(*) FROM
+		(
+		    SELECT p.*,DISTANCE_WGS84(#{latitude}, #{longitude}, p.pbLatitude, p.pbLongitude) as distance FROM PlaceBoard p, Member m
+		    WHERE p.memberNum = m.memberNum
+		    AND p.pbTitle LIKE '%'||#{condition}||'%'
+		    AND p.pbTitle LIKE '%'||#{keyword}||'%'
+		)
+		 <![CDATA[
+         WHERE distance < #{distance}
+         ]]>
 	</select>
 	 
 	 

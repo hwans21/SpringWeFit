@@ -42,6 +42,7 @@ public class PlaceBoardController {
 		public String placeList(PageVO vo, Model model) {
 			System.out.println("/placeBoard/placeList: GET");
 			
+			System.out.println(vo.toString());
 			// 페이지 버튼 계산하기
 			vo.setCountPerPage(20);
 			PageCreator pc = new PageCreator();
