@@ -37,6 +37,8 @@ public class CourseReplyVO {
 	private String memberNick;
 	private int memberNum;
 	private Timestamp crRegDate;
+	
+	private int crContentByte;
 
 
 }

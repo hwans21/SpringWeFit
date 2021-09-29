@@ -109,7 +109,8 @@
 
 
 <select id="getContent" resultType="com.spring.wefit.command.CourseBoardVO">
-   SELECT * FROM CourseBoard
+   SELECT cb.*, LENGTHB(cbTitle) cbTitleByte, LENGTHB(cbContent) cbContentByte, LENGTHB(cbYouCode) cbYouCodeByte 
+   FROM CourseBoard cb
    WHERE cbNum=#{cbNum}
 </select>
 

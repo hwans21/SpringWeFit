@@ -31,7 +31,6 @@ public class CourseBoardController {
    
    @Autowired
    private ICourseBoardService service;
-   
    @Autowired
    private ICourseReplyService service2;
    
@@ -69,8 +68,20 @@ public class CourseBoardController {
    @PostMapping("/regist")
    public String courseRegist(CourseBoardVO vo, RedirectAttributes ra) {
       
-      //System.out.println(vo);
-	 vo.getCbYouCode();
+     System.out.println("사용자가 입력한 유튜브 주소: " + vo.getCbYouCode());
+
+	 String[] arrCbYouCode  = vo.getCbYouCode().split("/");
+	 String newCbYouCode = arrCbYouCode[3];
+     
+     if(vo.getCbYouCode().contains("watch?v=")) { // 사용자가 입력한 유튜브 주소가 https://www.youtube.com/watch?v=아이디 일 경우
+    	 String newCbYouCode2 = newCbYouCode.substring(8);
+    	 System.out.println("유튜브 주소 id: " + newCbYouCode2);
+    	 vo.setCbYouCode(newCbYouCode2);   	    	 
+     } else { // 사용자가 입력한 유튜브 주소가 https://youtu.be/아이디 일 경우
+    	 System.out.println("유튜브 주소 id: " + newCbYouCode);
+    	 vo.setCbYouCode(newCbYouCode); 
+     }
+ 
 	 service.regist(vo);
 	 ra.addFlashAttribute("msg", "게시글이 등록되었습니다.");
 	 return "redirect:/courseBoard/?category=";

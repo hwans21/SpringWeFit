@@ -95,23 +95,24 @@
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type="text" size="20" value="관리자" readonly></td>
+                        <td><input type="text" size="20" value="관리자" readonly disabled></td>
                         <!-- <td><input type="hidden" name="memberNum" size="20" value="1"></td> --> <!-- 관리자번호 넣어줌 -->
                     </tr>
 
+
+
                     <tr>
-                        <td>제목</td>
+                        <td>제목<sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></td>
                         <td><input type="text" id="cbTitle" name="cbTitle" size="60"></td>
                     </tr>
 
                     <tr>
-                        <td>내용</td>
+                        <td>내용<sup> ( <span id="nowByte2">최대 </span> / 2000bytes )</sup></td>
                         <td><textarea id="cbContent" name="cbContent" cols="75" rows="15"></textarea></td>
                     </tr>
 
-
                     <tr>
-                        <td>youtube 주소</td>
+                        <td>youtube 주소<sup> ( <span id="nowByte3">최대 </span> / 50bytes )</sup></td>
                         <td><input type="text" id="cbYouCode" name="cbYouCode" size="60"></td>
                     </tr>
                     
@@ -120,7 +121,7 @@
                         <td colspan="2">
                             <br>
                             <button type="button" id="registBtn" class="btn btn-primary">등록하기</button>
-                            <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/courseBoard/" />'">취소하기</button>
+                            <button type="button" id="cancelBtn" class="btn btn-default">취소하기</button>
                             <br><br><br>
                         </td>
                         
@@ -137,25 +138,61 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
     
-    
 
-   <script>
-     
-      
+
+ 	
+ 	<script>
+ 
+	   
       $(function() { // start jQuery
     	  
-/*           const str = $('#cbTitle').val();
-          
-          function getByteB(str) {
-    	 	  var b_yte = 0;
-    	 	  for(var i=0; i<str.length; ++i) {
-    	 		  (str.charCodeAt(i) > 127) ? b_yte += 3 : b_yte++;
-    	 	  }
-     	  	  return b_yte;
-          }
-          
-          const bstr = getByteB(str); */
-          
+      
+    	//제목 byte 체크
+    	  $('#cbTitle').keyup(function(){
+    	       bytesHandler(this);
+    	  });
+    	   function getTextLength(str) {
+    	       var rbyte = 0;
+    	       for (var i = 0; i < str.length; i++) {
+    	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+    	  	        	rbyte += 3;
+    	  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+    	  	        	rbyte += 2;
+    	  	        } else { //영문 등 나머지 1Byte
+    	  	        	rbyte++;
+    	  	        }
+    	      }
+    	       return rbyte;
+    	  }
+    	   function bytesHandler(obj){
+    	       var text = $(obj).val();
+    	       $('#nowByte').text(getTextLength(text)); 	   
+    	   }
+    	   
+    	   
+       	//내용 byte 체크
+     	  $('#cbContent').keyup(function(){
+     	       bytesHandler2(this);
+     	  });
+     	   function bytesHandler2(obj){
+     	       var text = $(obj).val();
+     	       $('#nowByte2').text(getTextLength(text)); 	   
+     	   }
+     	   
+     	   
+          //유튜브 링크 byte 체크
+      	  $('#cbYouCode').keyup(function(){
+      	       bytesHandler3(this);
+      	  });
+      	   function bytesHandler3(obj){
+      	       var text = $(obj).val();
+      	       $('#nowByte3').text(getTextLength(text)); 	   
+      	   }
+    	   
+    	  
+    	  
+    	  
+    	 
          
          $('#registBtn').click(function() {
             if($('#sports').val() === 'category') {
@@ -164,16 +201,29 @@
             } else if($('#cbTitle').val().trim() === '') {
                alert('제목을 입력해주세요.');   
                return;
-            } /* else if(bstr > 200) {
-               alert('제목은 짧게.');   
+            } else if(+($('#nowByte').text()) > 200) {
+               alert('제목은 최대 200byte를 초과할 수 없습니다.');   
                return;
-            }  */else if($('#cbYouCode').val().trim() === '') {
+            } else if(+($('#nowByte2').text()) > 2000) {
+                alert('내용은 최대 2000byte를 초과할 수 없습니다.');   
+                return;
+            } else if($('#cbYouCode').val().trim() === '') {
                alert('youtube 주소를 입력해주세요.');   
                return;
+            } else if(+($('#nowByte3').text()) > 50) {
+                alert('유튜브 주소는 최대 50byte를 초과할 수 없습니다.');   
+                return;
             } else {
                $('#registForm').submit();            
             }         
          }); // 글 등록 검증 끝
+         
+         
+         // 등록 취소
+         $('#cancelBtn').click(function() {
+        	 
+        	 history.back();
+         });
         
          
       }); // end jQuery

@@ -131,6 +131,11 @@
         	
         }
         
+        .modify-input > div > sup {
+        	font-size: 7px;
+        	font-weight: normal;
+        }
+        
         .lnr {
         	float: right; 
         	font-size: 25px;
@@ -156,8 +161,20 @@
         	margin-left: 60px;
         }
         
+        #reportByte {
+       		margin-left: 60px;
+        }
+        
         .reply-memberNum {
        		display: none;
+        }
+        
+        .active {
+        	display: block;
+        }
+        
+        .inactive {
+        	display: none;
         }
         
         
@@ -188,7 +205,7 @@
                 <div class="row">
                     <div class="container-fluid">
                         <div class="col-sm-12 video-wrap">
-                            <iframe width="100%" height="auto" src="${article.cbYouCode}"
+                            <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${article.cbYouCode}"
                                 title="YouTube video player" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
@@ -234,19 +251,20 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-	                             <%-- <c:if test="${loginuser}"> --%> <!-- 로그인 안한 사용자는 신고하기 버튼을 안보여줌 -->  
-	                                <td>
-	
-	                                    <button class="btn btn-info pull-right" data-toggle="modal" data-target="#modal-report"><span
-	                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
-	
-	                                </td>
-	                            <%-- </c:if> --%> 
-                            </tr>
-						
+                            <c:if test="${loginuser != null}"> <!-- 로그인 안한 사용자는 신고하기 버튼을 안보여줌 -->  
+	                            <tr>
+	                                <td></td>
+	                                <td></td>
+		                             
+		                                <td>
+		
+		                                    <button class="btn btn-info pull-right" data-toggle="modal" data-target="#modal-report"><span
+		                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
+		
+		                                </td>
+		                            
+	                            </tr>
+							</c:if>
                         </table>
                        
                     </div>
@@ -258,16 +276,19 @@
                 <div class="row">
                     <span id="reply-count" class="reply reply-count"></span>
                 </div>
+                
                 <div class="row">
+                	<div><sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></div>
                     <form id="reply-form">
                         <div class="input-group input-group-lg">
-
+							                         
                             <input type="text" id="crContent" class="form-control" placeholder="댓글을 작성해주세요" aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
                                 <button id="reply-btn" type="button" class="btn btn-default">
 	                                <span class="glyphicon glyphicon-send"></span>
                                 </button>
                             </span>
+                            
                         </div>
                     </form>
                 </div>
@@ -342,21 +363,24 @@
 
 							<div class="form-check">
   								<input class="form-check-input col-sm-1" type="checkbox" value="" id="cbReportChk6" name="cbReportChk[]">
-  								<label class="form-check-label col-sm-11" for="flexCheckDefault">기타</label>
+  								<label class="form-check-label col-sm-11" for="flexCheckDefault">기타 </label>
+								
 							</div>
 															
 	                        <div class="form-group">
-	                            <div class="col-sm-9">
+	                            <div class="col-sm-8">                         	
 	                                <input type="text" class="form-control" id="cbReportInput" name="cbReportInput" placeholder="신고사유를 입력해주세요" disabled>
 	                            </div>
+	                        <sup id="reportByte">( <span id="nowByte3">최대 </span> / 500bytes )</sup>
 	                        </div>
+	                        
 	 					
 	 					</form>
 	                </div>
 	
 	                <div class="modal-footer">
 	                    <button id="reportBtn" type="button" class="btn btn-primary">신고하기</button>
-	                    <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+	                    <button id="reportCancelBtn" type="button" class="btn btn-default" data-dismiss="modal">취소</button>
 	                </div>
          
                </div>
@@ -406,55 +430,85 @@
             //replyAppendTest(); //여기 주석처리함.
 
         });
-        $(window).resize(function () {
-            $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
-        });
-        $('.test:last-child').scroll(function () {
-            /*
-                document height -> 모든 row들의 높이 합
-                문서 전체의 높이를 의미합니다.
-                window height -> div.test의 높이
-                화면의 높이를 의미합니다.
-                scroll top
-                스크롤의 top이 위치하고 있는 높이를 의미합니다
-                
-            */
-            let replyTotalHeight = 0;
-            let count=0;
-            $('.test:last-child >.row').each(function () {
-                replyTotalHeight = replyTotalHeight + $(this).height()
-                count++;
-            });
-            if ($('.test:last-child').scrollTop() + $('.test:last-child').height() >= replyTotalHeight) {
-                // 로딩이미지 보여주기
-                // $('.test:last-child').append(`
-                //     <div id="loadingImg" class="row">
-                //         <img src="${pageContext.request.contextPath }/resources/img/load.gif" alt="">
-                //     </div>
-                // `);
-                // $('#loadingImg').remove();
-                //replyAppendTest(); //여기 주석처리함.
-				getList(pageNum, false);
-                pageNum = pageNum + 1;
-            }
-            console.log(count);
-       
-            // console.log($('.test:last-child').scrollTop()+","+$('.test:last-child').height()+","+)
-        });
-        // $(window).scroll(function(){
-        //     if($(window).scrollTop()+$(window).height()+1 >= $(document).height()){
-        //         console.log('스크롤 하단 감지');
-        //     }
-        // });
-
         
-        
-            
-
         
         $(function() { //start jQuery
         	
-        	
+        	//이 부분이 제이쿼리 선언문 밖에 있어서... 무한스크롤 작동이 안되었던 것임.
+        	$(window).resize(function () {
+                $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
+            });
+            
+            
+            let pageNum = 1; //pageNum 변수 선언. 1페이지로 일단 값 줌
+            
+            $('.test:last-child').scroll(function () {
+                /*
+                    document height -> 모든 row들의 높이 합
+                    문서 전체의 높이를 의미합니다.
+                    window height -> div.test의 높이
+                    화면의 높이를 의미합니다.
+                    scroll top
+                    스크롤의 top이 위치하고 있는 높이를 의미합니다
+                    
+                */
+                let replyTotalHeight = 0;
+                let count=0;
+                
+                
+                $('.test:last-child >.row').each(function () {
+                    replyTotalHeight = replyTotalHeight + $(this).height()
+                    count++;
+                });
+                
+         
+                if ($('.test:last-child').scrollTop() + $('.test:last-child').height() >= replyTotalHeight) {
+                    // 로딩이미지 보여주기
+                    // $('.test:last-child').append(`
+                    //     <div id="loadingImg" class="row">
+                    //         <img src="${pageContext.request.contextPath }/resources/img/load.gif" alt="">
+                    //     </div>
+                    // `);
+                    // $('#loadingImg').remove();
+                    //replyAppendTest(); //여기 주석처리함.
+                    
+                    pageNum = pageNum + 1; //스크롤닿을때 2페이지부터 출력 (위에서 pageNum = 1로 선언했으니까 1+1되면서 2부터들어가고..그다음 3,4,5페이지쭉나옴)
+                	getList(pageNum, false); // 글 1페이지 밑에 2페이지,, 그 밑에 3페이지 누적해서 보여주어야 함.            	
+                }
+                console.log(count);
+           
+                // console.log($('.test:last-child').scrollTop()+","+$('.test:last-child').height()+","+)
+            });
+            // $(window).scroll(function(){
+            //     if($(window).scrollTop()+$(window).height()+1 >= $(document).height()){
+            //         console.log('스크롤 하단 감지');
+            //     }
+            // });
+            
+            
+          //댓글 내용 byte 체크
+      	  $('#crContent').keyup(function(){
+      	       bytesHandler(this);
+      	  });
+      	   function getTextLength(str) {
+      	       var rbyte = 0;
+      	       for (var i = 0; i < str.length; i++) {
+      	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+      	  	        	rbyte += 3;
+      	  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+      	  	        	rbyte += 2;
+      	  	        } else { //영문 등 나머지 1Byte
+      	  	        	rbyte++;
+      	  	        }
+      	      }
+      	       return rbyte;
+      	  }
+      	   function bytesHandler(obj){
+      	       var text = $(obj).val();
+      	       $('#nowByte').text(getTextLength(text)); 	   
+      	   }
+      	   
+ 	
         	//댓글 등록
             $('#reply-btn').click(function() {
             	
@@ -474,6 +528,9 @@
   	            if(crContent.trim() === '') {
 	            	alert('댓글 내용을 입력해주세요.')
 	            	return;
+	            } else if(+($('#nowByte').text()) > 200) {
+	                alert('댓글 내용은 최대 200byte를 초과할 수 없습니다.');  
+	                return;
 	            }
             
 	            $.ajax({
@@ -490,13 +547,21 @@
 	            	success: function(data) {
 	            		$('#crContent').val('');
 	            		getList(1, true);
-	            		pageNum = 2;
+	            		$('#nowByte').text('최대');
+	            		alert('댓글이 등록되었습니다.');
 	            	},
 	            	error: function() {
 	            		alert('등록에 실패하였습니다. 관리자에게 문의하세요.');
 	            	}
 	            }); // end ajax
             }); //댓글 등록 이벤트 끝
+            
+  		  	$('#crContent').keydown(function(e){
+				if(e.keyCode === 13) {
+					e.preventDefault(); //인풋창에서 엔터누르면 form태그 action된곳으로 전송하는 기능이있나봄..그걸막아줌
+					$('#reply-btn').click();
+				}				
+		  	});
             
             
             
@@ -505,18 +570,16 @@
             getList(1, true);
             countLike();
             
-            let pageNum = 2;
-            
             //목록 출력하는 getList 함수
             
             function getList(pageNum, reset) {
             	
-            	const cbNum = "${article.cbNum}";
+            	//const cbNum = "${article.cbNum}";
             	
             	
             	$.getJSON(
-            			
-            		"/wefit/courseReply/" + cbNum + "/" + pageNum,
+            		
+            		"<c:url value='/courseReply/${article.cbNum}' />/" + pageNum,
             			
             		function(data) {
             			
@@ -536,6 +599,7 @@
             			//댓글 내용 출력
             			for(let i=0; i<replyList.length; i++) {
             				
+            				strAdd += '<form id="rform">'
             				strAdd += '<div class="reply reply-box">';
             				strAdd += '<span class="reply-writer">' + replyList[i].memberNick + '</span>&nbsp;&nbsp;';
             				strAdd += '<span class="reply-memberNum">' + replyList[i].memberNum + '</span>'; // memberNum 을 display:none으로 받음
@@ -543,12 +607,12 @@
             				strAdd += '<span class="mod-del">';
             				strAdd += '<small class="mod"><span id="update" class=' + replyList[i].crNum + '>수정</span></small>&nbsp;&nbsp;<small class="delete-btn"><a class="del" href="'+ replyList[i].crNum + '">삭제</a></small> </span><br><br>';
             				
-            				strAdd += '<div class="reply-content-plus-modify"><div class="modify-input"><input class="reply-modify-input" value="'+ replyList[i].crContent + '"><div class="lnr"><span class="lnr lnr-cross-circle"></span><span id="'+ replyList[i].crNum +'" class="lnr lnr-checkmark-circle"></span></div></div>';
+            				strAdd += '<div class="reply-content-plus-modify"><div class="modify-input"><div><sup> ( <span id="nowByte2" class="nowByte2">최대 </span> / 200bytes )</sup></div><input class="reply-modify-input" value="'+ replyList[i].crContent + '"><div class="lnr"><span class="lnr lnr-cross-circle"></span><span id="'+ replyList[i].crNum +'" class="lnr lnr-checkmark-circle"></span></div></div>';
             				
             				strAdd += '</div><span class="reply-content">'+ replyList[i].crContent +'</span>';
             				
             				strAdd += '</div>';
-            			
+            				strAdd += '</form>'
             				console.log(replyList[i].crRegDate); //진짜 밀리초를 출력하네...
             			}
             			
@@ -612,7 +676,6 @@
             			if(data === 'deleteSuccess') {
             				alert('댓글이 삭제되었습니다.');
     	            		getList(1, true);
-    	            		pageNum = 2;
             			} else {
             				alert('해당 댓글 삭제 권한이 없습니다.');
             			}
@@ -627,8 +690,29 @@
             
             
             
+
+     	   
             // 댓글 수정 버튼 누르면 수정창 뜨게 하기.
             $('#reply-list').on('click', '.mod > span', function() {
+            	
+            	
+            	//댓글 수정창에 기존 댓글 몇 바이트인지 출력해주기..
+            	const crNum = $(this).attr('class');
+            	
+            	$.getJSON(
+            			
+                		"<c:url value='/courseReply/replyByte/' />" + crNum,
+                			
+                		function(data) {           			
+                			let crContentByte = data.crContentByte;
+               			
+                			//바이트 출력	
+                			$('.nowByte2').html(crContentByte); //아이디는 고유값이어서그런지 .. 아이디로 값 넣는게 안됨...그래서 클래스로 지목함
+                		
+                		} // end function(data)         			
+                	
+                	)//end getJSON
+            	
             	
             	//수정 권한
             	const memberNum = "${loginuser.memberNum}";
@@ -640,32 +724,61 @@
             	}
             	
             	
-            	const modify_input = $(this).parents('.reply-box').children('.reply-content-plus-modify').children(".modify-input");
-            	modify_input.css('display', 'block');
-  	
-            	const reply_content = $(this).parents('.reply-box').children('.reply-content');
-            	reply_content.css('display', 'none');
-        
             	
+            	const modify_input = $(this).parents('.reply-box').children('.reply-content-plus-modify').children(".modify-input");
+            	//modify_input.css('display', 'block');
+  	       		
+            	$(".modify-input").removeClass('active');
+            	modify_input.toggleClass('active'); //수정버튼 클릭한 그 해당 댓글의 수정 input창만 보여주고 나머지 input창은 가린다.
+            	
+            	const reply_content = $(this).parents('.reply-box').children('.reply-content');
+            	
+            	//reply_content.css('display', 'none');
+            	$(".reply-content").removeClass('inactive');
+        		reply_content.toggleClass('inactive');
+
+        		
             	// 수정창에서 x버튼 누르면 수정창 사라지게 하기.
             	$('.lnr-cross-circle').click(function() {
             		
             		modify_input.css('display', 'none'); 
             		getList(1, true); //이걸 작성안하면 댓글 수정할때 수정하다가 x 누른 후 다시 수정버튼누르면...원래내용을 출력을 못함...(수정하다가 만 내용을 출력함)
 
-            		reply_content.css('display', 'block');           	
+            		reply_content.css('display', 'block');
             	}); // 수정창에서 x버튼 누르면 수정창 사라지게 하는 처리 끝 
+            	
+            	
                       
             }); //수정창 뜨게하는 처리 끝
             
-
             
+            
+            //댓글 수정 내용 byte 체크     
+      	   $('#reply-list').on('keyup', '.reply-modify-input', function() {
+      		  bytesHandler2(this);       		 
+      	   });
+      	   function bytesHandler2(obj){
+      	       var text = $(obj).val();
+      	       $('.nowByte2').text(getTextLength(text)); 	   
+      	   } //댓글 수정 내용 byte 체크 끝
+      	              
             
          // 댓글 수정 처리
         	$('#reply-list').on('click', '.lnr-checkmark-circle', function() {
         		
         		const crNum = $(this).attr('id');
         		const crContent = $(this).parents('.reply-box').children('.reply-content-plus-modify').children(".modify-input").children('.reply-modify-input').val();
+        		
+        		if(crContent.trim() === ''){
+        			alert('수정할 내용을 입력해주세요.');
+        			getList(1, true);
+        			return;
+        		} else if(+($('#nowByte2').text()) > 200) {
+	                alert('댓글 내용은 최대 200byte를 초과할 수 없습니다.');  
+	                return;
+	            }
+
+        		
         		
         		$.ajax({
             		type : "post",
@@ -681,7 +794,6 @@
             			if(data === 'modifySuccess') {
             				alert('댓글이 수정되었습니다.');
             				getList(1, true);
-            				pageNum = 2;
             			} else {
             				alert('수정에 실패하였습니다.');
             			}
@@ -693,6 +805,15 @@
             	}); //end ajax
         		
         	}); //수정 처리 끝
+        	
+        	
+        	//엔터키 눌러도 댓글 수정되게
+  		  	$('#reply-list').on('keydown', '.reply-modify-input', function(e) {
+				if(e.keyCode === 13) {
+					e.preventDefault(); //인풋창에서 엔터누르면 form태그 action된곳으로 전송하는 기능이있나봄..그걸막아줌
+					$(this).parents('.reply-box').children('.reply-content-plus-modify').children(".modify-input").children('.lnr').children('.lnr-checkmark-circle').click();
+				}				
+		  	}); //엔터키 눌러도 댓글 수정되게 끝
             
       
             
@@ -781,9 +902,35 @@
                    $("#cbReportInput").attr("disabled", false);
                 }else{
                    $("#cbReportInput").attr("disabled", true);
+                   $('#cbReportInput').val('');
+                   $('#nowByte3').text('최대');
                 }
             });
             
+          
+          //신고 내용 byte 체크
+       	  $('#cbReportInput').keyup(function(){
+       	       bytesHandler3(this);
+       	  });
+       	   function getTextLength(str) {
+       	       var rbyte = 0;
+       	       for (var i = 0; i < str.length; i++) {
+       	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+       	  	        	rbyte += 3;
+       	  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+       	  	        	rbyte += 2;
+       	  	        } else { //영문 등 나머지 1Byte
+       	  	        	rbyte++;
+       	  	        }
+       	      }
+       	       return rbyte;
+       	  }
+       	   function bytesHandler3(obj){
+       	       var text = $(obj).val();
+       	       $('#nowByte3').text(getTextLength(text)); 	   
+       	   }
+            
+
             
             // 신고 처리
             $('#reportBtn').click(function() {
@@ -838,6 +985,14 @@
                 	  return;
                   }
                  
+                 // 신고사유가 500byte 넘게 작성되었다면               
+                 if(+($('#nowByte3').text()) > 500) {
+                	alert('신고사유는 최대 500byte를 초과할 수 없습니다.');   
+                	return;
+            	}
+                 
+                 
+                 
                  //어떤 체크박스도 선택하지 않았다면
                  if(   $("input:checkbox[id=cbReportChk1]").is(":checked") == false 
                  	&& $("input:checkbox[id=cbReportChk2]").is(":checked") == false 
@@ -849,8 +1004,7 @@
                	  	  return;
                   } 
                  
-                 
-                 
+
                  
                  
                 const arr = {
@@ -875,12 +1029,24 @@
                         data: JSON.stringify(arr),
                         success: function (data) {
                             console.log('통신성공!' + data);
+                      		
+                            //체크박스 체크 해제하기
+                      		$('input:checkbox[id=cbReportChk1]').prop("checked", false);
+                      		$('input:checkbox[id=cbReportChk2]').prop("checked", false);
+                      		$('input:checkbox[id=cbReportChk3]').prop("checked", false);
+                      		$('input:checkbox[id=cbReportChk4]').prop("checked", false);
+                      		$('input:checkbox[id=cbReportChk5]').prop("checked", false);
+                      		$('input:checkbox[id=cbReportChk6]').prop("checked", false);
+                      		$('#cbReportInput').attr("disabled", true);
+                      		$('#nowByte3').text('최대');
+                      		$('#cbReportInput').val('');
+                      		
+                      		$('#modal-report').modal('hide'); //모달창 닫기
+                      		
                           	if(data === "reportSuccess"){    		
-                          		alert('신고가 접수되었습니다.');  	    
-                          		$('#modal-report').modal('hide'); //모달창 닫기
+                          		alert('신고가 접수되었습니다.');                          		
                           	} else {  		
-                          		alert('이미 신고하신 게시글입니다.');                         		
-                          		$('#modal-report').modal('hide'); //모달창 닫기
+                          		alert('이미 신고하신 게시글입니다.'); 
                           	}
                         },
                         error: function() {
@@ -890,9 +1056,28 @@
             	
             }); //신고 처리 끝
             
+            //신고 모달창에서 취소 누르면..
+            $('#reportCancelBtn').click(function() {
+          		$('input:checkbox[id=cbReportChk1]').prop("checked", false);
+          		$('input:checkbox[id=cbReportChk2]').prop("checked", false);
+          		$('input:checkbox[id=cbReportChk3]').prop("checked", false);
+          		$('input:checkbox[id=cbReportChk4]').prop("checked", false);
+          		$('input:checkbox[id=cbReportChk5]').prop("checked", false);
+          		$('input:checkbox[id=cbReportChk6]').prop("checked", false);
+          		$('#cbReportInput').attr("disabled", true);
+          		$('#nowByte3').text('최대');
+          		$('#cbReportInput').val('');
+            });
             
+          //신고 모달창에서 엔터키 누를때 신고처리 안되게
+  		  	$('#cbReportInput').keydown(function(e){
+				if(e.keyCode === 13) {
+					e.preventDefault();
+				}				
+		  	});
+           
         	
-        }); // end jQuery
+         }); // end jQuery
         
         
 

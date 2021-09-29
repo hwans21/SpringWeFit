@@ -274,15 +274,9 @@
 		                                  <div class="vid">                               
 		                                      <div class="video" onclick="location.href='<c:url value="/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}" />'">
 		                                         <%--  <a href="<c:url value='/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />"> --%> <!-- 여기도 detail요청 링크를 거니까 조회수가 2씩 증가함... -->
-		                                          <img src=
-	                                          		<c:set var="youcode" value="${vo.cbYouCode}" />
-	                                          		<c:set var="url" value="${fn:split(youcode, '/')}" />					                              
-					                                    <c:forEach var="you" begin="3" end="4" items="${url}" >
-					                                    "https://img.youtube.com/vi/<c:out value="${you}" />/mqdefault.jpg"
-					                                    </c:forEach>                                                                            
-		                                          width="280px" alt="${you}" /><!-- </a>  -->                            
+		                                          <img src="https://img.youtube.com/vi/${vo.cbYouCode}/mqdefault.jpg" width="280px" alt="${vo.cbYouCode}" /><!-- </a>  -->                            
 		                                          
-		                                          <p class="subject"><span class="category">${vo.cbCategory}</span><a href="<c:url value='/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />">${vo.cbTitle}</a></p>
+		                                          <p class="subject"><span class="category">${vo.cbCategory}</span><a href="#">${vo.cbTitle}</a></p>
 		                                          <p class="auth">관리자 &nbsp;&nbsp;
 		                                          	  <small class="writeday"><fmt:formatDate value="${vo.cbRegDate}" pattern="yy.MM.dd" /></small>  
 		                                              <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>${vo.crCount}</b></span>

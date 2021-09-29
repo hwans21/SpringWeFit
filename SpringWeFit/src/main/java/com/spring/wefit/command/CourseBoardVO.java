@@ -45,5 +45,10 @@ public class CourseBoardVO {
 	private Timestamp cbRegDate;
 	
 	private int crCount;
+	
+	private int cbTitleByte;
+	private int cbContentByte;
+	private int cbYouCodeByte;
+	
 
 }

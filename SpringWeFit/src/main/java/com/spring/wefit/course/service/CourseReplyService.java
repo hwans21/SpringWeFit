@@ -23,7 +23,7 @@ public class CourseReplyService implements ICourseReplyService {
 	}
 
 	@Override
-	public List<CourseReplyVO> getList(@Param("vo") PageVO vo, @Param("cbNum") int cbNum) {
+	public List<CourseReplyVO> getList(PageVO vo, int cbNum) {
 		return mapper.getList(vo, cbNum);
 	}
 
@@ -52,6 +52,11 @@ public class CourseReplyService implements ICourseReplyService {
 	public CourseReplyVO getContent(int crNum) {
 		// TODO Auto-generated method stub
 		return mapper.getContent(crNum);
+	}
+
+	@Override
+	public int getCrByte(int crNum) {
+		return mapper.getCrByte(crNum);
 	}
 
 }

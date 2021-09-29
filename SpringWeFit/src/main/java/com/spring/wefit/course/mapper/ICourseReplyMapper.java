@@ -30,5 +30,8 @@ public interface ICourseReplyMapper {
 	
 	// 댓글상세정보
 	CourseReplyVO getContent(int crNum);
+
+	//댓글 바이트 출력
+	int getCrByte(int crNum);
 	
 }
