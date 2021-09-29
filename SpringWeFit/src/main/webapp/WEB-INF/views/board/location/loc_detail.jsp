@@ -91,7 +91,9 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
+                <c:if test="${loginuser.memberNick == placeList.memberNick }">
                     <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/placeBoard/placeModify?pbNum=${placeList.pbNum}" />'">수정하기</button>
+                </c:if>
                     <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/placeBoard/placeList" />'">목록으로</button>
                 </div>
                 
@@ -213,9 +215,9 @@
                                 <td></td>
                                 <td>
                                		<c:if test="${loginuser != null }">
-	                                    <button id="reportBtn" class="btn btn-info pull-right"><span
-	                                            class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
-									
+	                                    <button id="reportBtn" class="btn btn-info pull-right">
+	                                    	<span class="glyphicon glyphicon-thumbs-down"></span> 신고하기
+	                                    </button>
 									</c:if>
                                 </td>
                             </tr>

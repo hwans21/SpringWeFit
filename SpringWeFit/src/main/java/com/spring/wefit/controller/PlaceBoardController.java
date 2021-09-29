@@ -58,8 +58,8 @@ public class PlaceBoardController {
 			
 			// jsp에 전달할 값들
 			model.addAttribute("placeList", list);
-			model.addAttribute("page",pc.getPaging());
-			model.addAttribute("pc",pc);
+			model.addAttribute("page", pc.getPaging());
+			model.addAttribute("pc", pc);
 
 			return "board/location/loc_board";
 			
@@ -78,6 +78,7 @@ public class PlaceBoardController {
 	public String placeBoardWrite(MultipartFile[] fileName, HttpServletRequest request, 
 			PlaceBoardVO vo, RedirectAttributes ra) {
 		
+		System.out.println("/placeBoard/placeWrite: Post");
 		CustomFileUpload fileUp = new CustomFileUpload();
 		String rootPath = request.getServletContext().getRealPath(""); 
 		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\place\\"+vo.getMemberNick()+"\\"; 
@@ -189,10 +190,6 @@ public class PlaceBoardController {
 		return map;
 	}
 
-	
-	
-	
-	
 	//장소 글 신고 처리하기
 	@PostMapping("/placeReport")
 	@ResponseBody
@@ -205,7 +202,7 @@ public class PlaceBoardController {
 			return "reportFail";
 		} else {
 			service.insertReport(vo);
-			return "reportSuccess";
+			return "success";
 		}
 	}
 	

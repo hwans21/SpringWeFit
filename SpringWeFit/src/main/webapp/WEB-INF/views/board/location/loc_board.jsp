@@ -79,14 +79,7 @@
                     <span id="title">장소 찾기</span>
                 </div>
                
-    			<div class="distance-area">
-    				<select id="dis-select">
-	    				<option value="">거리별</option>
-	    				<option value="2km" ${param.category == '2km' ? 'selected' : '' }>2km 이내</option>
-			            <option value="5km" ${param.category == '5km' ? 'selected' : '' }>5km 이내</option>
-			            <option value="10km" ${param.category == '10km' ? 'selected' : '' }>10km 이내</option>
-    				</select>
-    			</div>
+    	
     			
 				<!-- 지역 select
                 <div id="btn-list" class="row" align="left">
@@ -235,9 +228,13 @@
 	                    </div>
 	
 					<div class="search-area">
+			            <select id="search-condition">
+				            <option value="title" ${param.condition == 'title' ? 'selected' : '' }>제목</option>
+				            <option value="content" ${param.condition == 'content' ? 'selected' : '' }>내용</option>
+				            <option value="titleContent" ${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
+			             </select>
 					
-					
-						<select id="dis-select">
+						<select id="search-distance">
 		    				<option value="">거리별</option>
 		    				<option value="2km" ${param.category == '2km' ? 'selected' : '' }>2km 이내</option>
 				            <option value="5km" ${param.category == '5km' ? 'selected' : '' }>5km 이내</option>
@@ -333,7 +330,7 @@
 			alert('정상 등록 처리되었습니다.');
 		}
 	
-     // 카테고리 클릭 시 
+     // 종목카테고리 클릭 시 
      $('#allBtn').click(function(){
  		location.href=`<c:url value="/placeBoard/placeList?condition=&keyword=${pc.paging.keyword} " />`
  		});
@@ -371,10 +368,15 @@
       	location.href=`<c:url value="/placeBoard/placeList?condition=기타&keyword=${pc.paging.keyword} " />`
       	});
    	 
-   	// 검색버튼 
-   	 $('#searchBtn').click(function(){
-	   	 location.href=`<c:url value="/placeBoard/placeList?condition=${pc.paging.condition}&keyword="/>`+$('#search-input').val()
-	 });
+   	// 검색기능 구현 
+   	$('#search-btn').click(function() {
+			  const condition = $('#search-condition').val();
+			  const distance = $('#search-distance').val();
+			  const keyword = $('#search-keyword').val();
+			  	  
+			  location.href = '/wefit/placeBoard/placeList?condition=' + condition + + '&distance=' + distance + + '&keyword=' + keyword;
+		  });  
+      	  
 	 $('#search-input').keyup(function(e){
 		 if(e.keyCode == 13) {
     	 	location.href=`<c:url value="/placeBoard/placeList?condition=${pc.paging.condition}&keyword="/>`+$('#search-input').val()
@@ -382,7 +384,9 @@
 	 });
 	 
 	 
-     //
+	 
+	 
+     // 글쓰기버튼
      $(document).on('click', '#btnWriteForm', function(e){
 		e.preventDefault();
 		location.href = "${pageContext.request.contextPath}/board/boardForm";

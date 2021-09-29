@@ -20,8 +20,6 @@
             color: rgb(0, 173, 181);
         }
 
-
-
         table tr:first-child {
             border-top: 1px solid rgb(180, 180, 180);
         }
@@ -54,9 +52,6 @@
             </div>
 
             <!--main left-->
-
-
-
             <form action="<c:url value='/placeBoard/placeWrite' />" id="boardWrite" name="writeForm" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="memberNum" value="${loginuser.memberNum}">
 
@@ -83,44 +78,34 @@
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type="text" name="memberNick" size="20" value="${loginuser.memberNick }" readonly> </td>
-
-
+                        <td><input id="memberNick" type="text" name="memberNick" size="20" value="${loginuser.memberNick}" readonly> </td>
                     </tr>
 
                     <tr>
                         <td>제목</td>
-                        <td><input type=text name=pbTitle size="60"></td>
+                        <td><input id="pbTitle" type=text name=pbTitle size="60"></td>
                     </tr>
 
                     <tr>
                         <td>내용</td>
-                        <td><textarea name="pbContent" cols="75" rows="15"></textarea></td>
+                        <td><textarea id="pbContent" name="pbContent" cols="75" rows="15"></textarea></td>
                     </tr>
 
-                
                     <tr>
-                        <!--
-                            	다음 주소 api : 주소를 선택하면 지도도 함께 보여주기
-                            https://postcode.map.daum.net/guide#sample
-                        -->
                         <td>동네</td>
                         <td>
-                           <input type="hidden" id="sample6_postcode" placeholder="우편번호">
-                     <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
-                     	기본 주소 : <input type="text" id="sample6_address" name="pbAddrBasic" placeholder="주소" size="50"><br>
-                    	상세 주소 : <input type="text" id="sample6_detailAddress" name="pbAddrDetail" placeholder="상세주소" size="50"><br>
-                     <input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
-         
-                           <input type="hidden" name="pbLatitude" id="latitude" ><br>
-                           <input type="hidden" name="pbLongitude" id="longitude"><br>
-                           <input type="hidden" name="pbImageCount" value="0">
-                           <input type="hidden" name="pbLookCount" value="0">
+                            <input type="hidden" id="sample6_postcode" placeholder="우편번호">
+                     		<input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
+                     		기본 주소 : <input type="text" id="sample6_address" name="pbAddrBasic" placeholder="주소" size="50"><br>
+                    		상세 주소 : <input type="text" id="sample6_detailAddress" name="pbAddrDetail" placeholder="상세주소" size="50"><br>
+                     		<input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
+                            <input type="hidden" name="pbLatitude" id="latitude" ><br>
+                            <input type="hidden" name="pbLongitude" id="longitude"><br>
+                            <input type="hidden" name="pbImageCount" value="0">
+                            <input type="hidden" name="pbLookCount" value="0">
                         </td>
                     </tr>
                     
-                    
-
                     <tr>
                         <td>사진올리기 </td>
                         <td><input multiple type="file" name="fileName" size="10" maxlength="10" ></td>
@@ -133,13 +118,11 @@
 	                            <button class="btn" id="listBtn" type="button">취소하기</button>
                             <br><br><br>
                         </td>
-                        
                     </tr>
+                    
                 </table>
-
             </form>
         </div>
-
     </div>
 
 
@@ -150,8 +133,6 @@
  
 
 
-
-
 	<script>
     	const writeBtn = document.getElementById('writeBtn');
     	writeBtn.onclick = function() {
@@ -159,24 +140,22 @@
     				alert('종목은 필수 항목 입니다.');
     				document.writeForm.sports.focus();
     				return;
-    			} else if(document.writeForm.name.value === '') {
+    			} else if(document.writeForm.memberNick.value === '') {
 					alert('작성자는 필수 항목 입니다.');
 					document.writeForm.name.focus();
 					return;
-				} else if(document.writeForm.title.value === '') {
+				} else if(document.writeForm.pbTitle.value === '') {
 					alert('제목은 필수 항목 입니다.');
-	  				document.writeForm.title.focus();
+	  				document.writeForm.pbTitle.focus();
 	  				return;
-	  			/*
-				} else if(document.writeForm.addrbasic.value === '') {
+				} else if(document.writeForm.sample6_address.value === '') {
 					alert('주소는 필수 항목 입니다.');
-	  				document.writeForm.title.focus();
+	  				document.writeForm.sample6_address.focus();
 	  				return;
-				} else if(document.writeForm.addrdetail.value === '') {
+				} else if(document.writeForm.sample6_detailAddress.value === '') {
 					alert('상세주소는 필수 항목 입니다.');
-	  				document.writeForm.title.focus();
+	  				document.writeForm.sample6_detailAddress.focus();
 	  				return;
-	  				*/
 				} else {
 					document.writeForm.submit();
 				}
@@ -189,7 +168,6 @@
 				return;
 			}
 		});
-  		
   		</script>
   		
   		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -241,9 +219,6 @@
   		                geocoder.addressSearch($('#sample6_address').val(), coordinate);
   		            }
   		        }).open();
-  		        
-  		        
-  		        
   		    } // 다음 주소 끝
   		        
   		    var coordinate = function(result, status) {
