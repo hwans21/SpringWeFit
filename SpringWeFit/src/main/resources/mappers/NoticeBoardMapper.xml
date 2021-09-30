@@ -38,10 +38,20 @@
 	</sql>
 
 	<select id="getList" resultType="com.spring.wefit.command.NoticeBoardVO">
-		SELECT * FROM(SELECT ROWNUM as rn, notice.* FROM(SELECT * FROM
-		NoticeBoard
-		<include refid="search" />
-		ORDER BY nbNum DESC) notice) 
+		SELECT * FROM
+		(
+			SELECT ROWNUM as rn, notice.* FROM
+			(
+				SELECT n.*, 
+				(SELECT COUNT(*) FROM NoticeReply WHERE nbNum=n.nbNum) as nbReplyCount,
+				(SELECT COUNT(*) FROM NoticeReport WHERE nbNum=n.nbNum) as nbReportCount
+				FROM NoticeBoard n
+				<include refid="search" />
+				ORDER BY nbNum DESC
+			) notice
+		) 
+				
+				
 				<![CDATA[
 		  		WHERE rn > (#{pageNum}-1) * #{countPerPage}
 		  		AND rn <= #{pageNum} * #{countPerPage} 

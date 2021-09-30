@@ -65,25 +65,26 @@
                     </tr>
 
                     <tr>
-                        <td>제목</td>
+                        <td>제목<sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></td>
 
-                        <td><input id="input-title" type=text name="nbTitle" size="60" value="${noticeContent.nbTitle}"></td>
+                        <td><input id="titleInput" type=text name="nbTitle" size="60" value="${noticeContent.nbTitle}"></td>
 
                     </tr>
 
                     <tr>
-                        <td>내용</td>
+                        <td>내용<sup> ( <span id="nowByte2">최대 </span> / 2000bytes )</sup></td>
 
-                        <td><textarea name="nbContent" cols="75" rows="15">${noticeContent.nbContent}</textarea></td>
+                        <td><textarea name="nbContent" id="contentInput" cols="75" rows="15">${noticeContent.nbContent}</textarea></td>
 
                     </tr>
 
-                   
-                    <tr>
+                   <div class='uploadResult'>
+                    	<tr>
                         <td>사진올리기 </td>
 
-                        <td><input multiple type="file" name="fileName" size="1" maxlength="1"></td>
-                    </tr>
+                        <td><input multiple type="file" name="fileName" size="1" maxlength="1" value="${noticeContent.nbRealImage1 }"></td>
+                    	</tr>
+                    </div>
                     
                     <tr class="text-right">
                         <td colspan="2">
@@ -92,7 +93,7 @@
 
                             <button class="btn btn-primary" id="modifyBtn">수정하기</button>
                             <button class="btn btn-primary" id="deleteBtn">삭제하기</button>
-                            <button class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">취소하기</button>
+                            <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${noticeContent.nbNum}" />'">취소하기</button>
 
                             <br><br><br>
                         </td>
@@ -110,11 +111,13 @@
     </div>
     
     <script>
-    	let title = $('#input-title').val();
+    //	let title = $('#input-title').val();
     	
-    	$('#modifyBtn').click(function(){
-    		$('#modifyForm').submit();
-    	});
+    //	$('#modifyBtn').click(function(){
+   // 		$('#modifyForm').submit();
+   // 	});
+    
+     let bool = true;
     	$('#deleteBtn').click(function(){
     		if(confirm("정말로 삭제하시겠습니까?")){
 	    		$('#modifyForm').attr("action","<c:url value='/noticeBoard/noticeDelete'/>")
@@ -123,6 +126,74 @@
     	});
     	
     	
+		
+////////////////////////////////////////////////////////////////////////////////		
+		
+		 $(function() {
+   	  
+   	//제목 byte 체크
+   	  $('#titleInput').keyup(function(){
+   	       bytesHandler(this);
+   	  });
+   	   function getTextLength(str) {
+   	       var rbyte = 0;
+   	       for (var i = 0; i < str.length; i++) {
+   	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+   	  	        	rbyte += 3;
+   	  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte
+   	  	        	rbyte += 2;
+   	  	        } else { //영문 등 나머지 1Byte
+   	  	        	rbyte++;
+   	  	        }
+   	      }
+   	       return rbyte;
+   	  }
+   	   function bytesHandler(obj){
+   	       var text = $(obj).val();
+   	       $('#nowByte').text(getTextLength(text)); 	   
+   	   }
+   	   
+   	   
+      	//내용 byte 체크
+    	  $('#contentInput').keyup(function(){
+    	       bytesHandler2(this);
+    	  });
+    	   function bytesHandler2(obj){
+    	       var text = $(obj).val();
+    	       $('#nowByte2').text(getTextLength(text)); 	   
+    	   }
+     
+     });
+
+  
+     $(function() {
+        
+
+         $('#modifyBtn').click(function() {
+           if($('#titleInput').val() === '') {
+              alert('제목은 필수 항목 입니다.');
+              $('#titleInput').focus();
+                return;
+           }else if(+($('#nowByte').text()) > 200) {
+               alert('제목은 최대 200byte를 초과할 수 없습니다.');   
+               $('#titleInput').focus();
+                    return;
+           }else if(+($('#nowByte2').text()) > 2000) {
+                  alert('내용은 최대 2000byte를 초과할 수 없습니다.');   
+                  $('#contentInput').focus();
+                  return;
+           }else if(!bool){
+              alert('글쓰기 입력 정보를 다시 확인해주세요.'); 
+              return;
+           }else {
+              $('#modifyForm').submit();  
+              
+           }
+  
+        });
+         bool = true;  
+      
+     });
     </script>
 
     

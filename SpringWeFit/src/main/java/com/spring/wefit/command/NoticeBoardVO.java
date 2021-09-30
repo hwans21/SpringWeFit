@@ -46,7 +46,8 @@ public class NoticeBoardVO {
 	
 	
 	private String memberNick;
-	
+	private int nbReplyCount;
+	private int nbReportCount;
 	
 	
 	

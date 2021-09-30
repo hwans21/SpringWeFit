@@ -224,7 +224,7 @@
             } else if($('#cbYouCode').val().trim() === '') {
                alert('youtube 주소를 입력해주세요.');   
                return;
-            } else if($('#nowByte3').text() > 50) {
+            } else if(+($('#nowByte3').text()) > 50) {
                 alert('유튜브 주소는 최대 50byte를 초과할 수 없습니다.');   
                 return;
             } else {
