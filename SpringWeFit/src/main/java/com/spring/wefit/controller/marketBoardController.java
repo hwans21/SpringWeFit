@@ -101,6 +101,7 @@ public class MarketBoardController {
 			System.out.println(str);
 		}
 		vo.setMbImageCount(imgCount);
+		vo.setMbContent(vo.getMbContent().replace("\r\n", "<br>"));
 		
 		
 //		String[] arr = vo.getMbAddrBasic().split(" ");
@@ -221,6 +222,7 @@ public class MarketBoardController {
 			System.out.println(str);
 		}
 		vo.setMbImageCount(imgCount);
+		vo.setMbContent(vo.getMbContent().replace("\r\n", "<br>"));
 				
 		
 		System.out.println(vo);

@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -152,7 +153,7 @@
                                     </select>
                     
                                     <!--검색창, 버튼-->
-                                    <input type="text" name="keyword" placeholder="Search">
+                                    <input type="text" name="keyword" placeholder="Search" value=${pc.paging.keyword }>
                                     <button type="submit" class="btn" aria-label="Left Align">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                     </button>
@@ -174,8 +175,9 @@
 							<c:if test="${i.count % 3 == 1}">
 								<tr class="course">
 							</c:if>
-							<th scope="col" class="text-center"
-								onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }' />'">
+							
+							<th ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } scope="col" class="text-center"  onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }' />'">
+								
 								<div class=vid>
 									<a href="#"><img
 										src="/upload/board/market/${product.memberNum}/${product.mbRealImage1}"
@@ -189,19 +191,21 @@
 										
 										</a><br>
 										<a href="#">${product.mbAddrBasic}</a><br>
-										<a href="#">${product.mbTitle}</a><br>
+										<a href="#">${product.mbTitle} &nbsp;&nbsp;[${product.mbReplyCount }]</a><br>
 										<a href="#">가격: ${product.mbPrice }원</a>
 										
 									</p>
 									<p class="auth">
-										<span class="writeday">${product.mbRegDate}</span> <span
-											class="nickname">${product.memberNum}</span> <span
-											class="glyphicon glyphicon-picture" aria-hidden="true"><b>${product.mbImageCount}</b></span>
+										<span class="writeday"><fmt:formatDate value="${product.mbRegDate}" pattern="yy.MM.dd" /></span> <br>
+										<span class="nickname">작성자:${product.memberNick}</span><br>
+										<span class="glyphicon glyphicon-picture" aria-hidden="true"><b>${product.mbImageCount}</b></span>
+											
 										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${product.mbLookCount}</b></span>
 									</p>
 
 								</div>
 							</th>
+							
 							<c:if test="${i.count % 3 == 0}">
 								</tr>
 							</c:if>

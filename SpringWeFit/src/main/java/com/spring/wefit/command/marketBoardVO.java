@@ -97,6 +97,7 @@ public class marketBoardVO {
 	private String memberNick;
 	private int mbLikelyCount;
 	private int mbReportCount;
+	private int mbReplyCount;
 	
 	
 	

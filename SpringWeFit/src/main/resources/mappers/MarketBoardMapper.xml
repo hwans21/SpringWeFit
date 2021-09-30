@@ -14,8 +14,8 @@
        <if test="condition == 'type'">
          WHERE mbType LIKE '%'||#{keyword}||'%'
       </if>
-      <if test="condition == 'addr'">
-         WHERE mbAddrBasic LIKE '%'||#{keyword}||'%'
+      <if test="condition == 'writer'">
+         WHERE memberNum LIKE '%'||#{keyword}||'%'
       </if>
       
     
@@ -32,9 +32,11 @@
                (
                   SELECT ROWNUM as rn, market.* FROM
                      (
-                        SELECT mb.*,
+                        SELECT mb.*,m.memberNick,
+                        (SELECT COUNT(*) FROM MarketReply WHERE mbNum=mb.mbNum) as mbReplyCount,
+                        (SELECT COUNT(*) FROM MarketReport WHERE mbNum=mb.mbNum)as Report,
                         DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
-                         FROM MarketBoard mb
+                         FROM MarketBoard mb, member m
                         <include refid="search" />
                         ORDER BY mbNum DESC
                          
@@ -122,7 +124,8 @@
     </insert>
     
     <select id="getContent" resultType="com.spring.wefit.command.marketBoardVO">
-       SELECT * FROM MarketBoard
+       SELECT mb.*, m.memberNick 
+       FROM MarketBoard mb, member m
        WHERE mbNum = #{mbNum}
     </select>
     
@@ -169,12 +172,12 @@
        			SELECT mb.*,
                 DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
                 FROM MarketBoard mb
-                <include refid="search" />
+       			<include refid="search" />
                 )market
                  <![CDATA[
             	WHERE market.distance < #{distance}
             	]]>
-       			
+                
     </select>
     
     <update id="updateViewCount">

@@ -266,12 +266,8 @@
 							</p>
 							<div id="map" style="width:100%;height:350px;"></div>
                         </div>
-                       <!--   <div class="col-sm-10">주소 : 제주특별자치도 제주시 첨단로 242</div>
-                        <div class="col-sm-2">
-                            <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
-                                <button class="btn btn-info pull-right">길찾기</button>
-                            </a>
-                        </div>-->
+                       <!--   
+                        -->
                         <table>
                         	<tr>
                             	<td>가격: ${detail.mbPrice }</td>
@@ -279,14 +275,18 @@
                             <tr>
                                 <td>${detail.mbAddrBasic }</td>
                                 <td>
-                                    <a href="https://map.kakao.com/link/to/${detail.mbAddrBasic }">
-                                        <button class="btn btn-info pull-right">길찾기</button>
-                                    </a>
+                                    
+                        	<div class="col-sm-2">
+                            <a href="https://map.kakao.com/link/to/${detail.mbAddrBasic },${detail.mbLatitude },${detail.mbLongitude}">
+                                <button class="btn btn-info pull-right">길찾기</button>
+                            </a>
+                            </div>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td>작성일:${detail.mbRegDate }</td>
+                                <td>작성일: ${detail.mbRegDate }</td>
+                                <td>작성자: ${detail.memberNick }</td>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>${detail.mbLookCount }</td>
                                 <td>
 
