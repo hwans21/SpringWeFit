@@ -74,7 +74,9 @@
                     
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input multiple="multiple" type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td>
+                        	<input multiple="multiple" type="file" id="uploadFiles" name="fileName" size="10" maxlength="10">
+                        </td>
                     </tr>
                     
                     <tr class="text-right">
@@ -102,6 +104,8 @@
     	const writeBtn = document.getElementById('writeBtn');
     	console.log(writeBtn);
     	writeBtn.onclick = function() {
+  			var fileSize = document.getElementById("uploadFiles").files[0].size;
+  			var maxSize = 10 * 1024 * 1024; // 10MB
 			if(document.writeForm.memberNick.value === '') {
 				alert('작성자는 필수 항목 입니다.');
 				document.writeForm.memberNick.focus();
@@ -110,6 +114,9 @@
 				alert('제목은 필수 항목 입니다.');
   				document.writeForm.dbTitle.focus();
   				return;
+			}else if(document.getElementById("uploadFiles").files[0].size > 10 * 1024 * 1024) {
+				alert("첨부파일 사이즈는 10MB이내로 등록 가능합니다");
+				return;
 			}else {
 				$('#boardWrite').submit();
 			}
@@ -122,6 +129,22 @@
 				return;
 			}
 		});
+  		
+  		//파일용량 체크 함수
+  		fileCheck = function fileCheck() {
+			
+  			var fileSize = document.getElementById("uploadFiles").files[0].size;
+  			var maxSize = 10 * 1024 * 1024; // 10MB
+  			
+  			if(fileSize > maxSize) {
+  				alert("첨부파일 사이즈는 10MB이내로 등록 가능합니다");
+  			}
+  			
+		}
+
+  		
+  		
+  		
     </script>
     
     
