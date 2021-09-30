@@ -405,7 +405,6 @@
         	
             menuBarLocation();
             $(window).resize(function () {
-                console.log($(window).width())
                 menuBarLocation();
             });
 

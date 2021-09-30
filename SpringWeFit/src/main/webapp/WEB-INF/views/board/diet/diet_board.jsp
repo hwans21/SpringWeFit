@@ -79,7 +79,7 @@
         }
 
         .vid:hover {
-            border: 4px solid rgb(0, 173, 181);
+            border: 1px solid rgb(0, 173, 181);
             box-sizing: border-box;
         }
 
@@ -152,13 +152,11 @@
 					<div id="btn-list" class="row" align="right">
 	
 						<!--검색 조건-->
-						
 						<select class="search-condition" name="condition">
 							<option value="title">제목</option>
 							<option value="writer">작성자</option>
 							<option value="content">내용</option>
-						</select> <input type="text" placeholder="Search" name="keyword">
-	
+						</select> <input type="text" placeholder="Search" name="keyword" value="${dpc.paging.keyword}">
 						<button type="submit" class="btn" aria-label="Left Align">
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						</button>
@@ -179,7 +177,7 @@
 								<tr class="course">
 							</c:if>
 							
-							<th scope="col" class="text-center" id="dietviewCnt"
+							<th ${(loginuser.memberManagerYN=="YES" && vo.dbReportCount > 0)? "style='background-color:red'":"" } scope="col" class="text-center" id="dietviewCnt"
 								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
 								<div class="vid">
 								<c:if test="${vo.dbRealImage1 != null }">
@@ -189,7 +187,7 @@
 								</c:if>
 								<c:if test="${vo.dbRealImage1 == null }">
 									<a href="#"><img
-										src="http://localhost/upload/board/diet/text-image.jpg"
+										src="http://localhost/upload/text-image.png"
 										width="280px" height="160px" alt="vid01"></a>
 								</c:if>
 								
@@ -197,7 +195,7 @@
 										<a href="#">${vo.dbTitle}</a>
 									</p>
 									<p class="auth">
-										<span class="writeday"><fmt:formatDate value="${vo.dbRegDate}" pattern="yy.MM.dd HH:mm:ss" /></span> 
+										<span class="writeday"><fmt:formatDate value="${vo.dbRegDate}" pattern="yy.MM.dd HH:mm" /></span> 
 										<span class="nickname">${vo.memberNick }</span> 
 										<span class="glyphicon glyphicon-comment" aria-hidden="true"><b>${vo.drCount }</b></span>
 										<span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${vo.dbLookCount}</b></span>

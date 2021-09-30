@@ -3,6 +3,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,11 +49,19 @@ table tr td {
 	height: 100%;
 }
 
+.carousel-inner {
+	height: 100%;
+}
+.carousel-inner>.item {
+	height: 100%;
+}
+
 .carousel-inner>.item>img {
 	top: 0;
 	left: 0;
 	min-width: 100%;
 	min-height: 400px;
+	text-align: center;
 }
 
 #carousel-example-generic {
@@ -119,9 +129,9 @@ table tr td {
 			<c:if test="${dietList.dbImageCount > 0 }">
 				<div class="row">
 					<div class="container-fluid">
-						<div id="carousel-example-generic" class="carousel slide"
-							data-ride="carousel" data-interval="false">
-							<!-- Indicators -->
+						<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+							
+							
 							<ol class="carousel-indicators">
 								<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
 								<c:forEach var="pics" begin="1" end="${dietList.dbImageCount -1 }">
@@ -129,37 +139,41 @@ table tr td {
 								</c:forEach>
 							</ol>
 
-							<!-- Wrapper for slides -->
+						
 	                            <div class="carousel-inner" role="listbox">
+	                            
+	                            
 	                            	<c:if test="${dietList.dbRealImage1 != null }">
 		                                <div class="item active">
-		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage1 }" width="100%" alt="...">
-		
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage1 }" width="100%" height="100%" alt="...">
 		                                </div>
-	                            	
 	                            	</c:if >
+	                            	
+	                            	
 	                            	<c:if test="${dietList.dbRealImage2 != null }">
 		                                <div class="item">
-		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage2 }" width="100%" alt="...">
-		
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage2 }" width="100%" height="100%" alt="...">
 		                                </div>
 	                            	</c:if>
+	                            	
+	                            	
 	                            	<c:if test="${dietList.dbRealImage3 != null }">
 		                                <div class="item">
-		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage3 }" width="100%" alt="...">
-		
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage3 }" width="100%" height="100%" alt="...">
 		                                </div>
 	                            	</c:if>
+	                            	
+	                            	
 	                            	<c:if test="${dietList.dbRealImage4 != null }">
 		                                <div class="item">
-		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage4 }" width="100%" alt="...">
-		
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage4 }" width="100%" height="100%" alt="...">
 		                                </div>
 	                            	</c:if>
+	                            	
+	                            	
 	                            	<c:if test="${dietList.dbRealImage5 != null }">
 		                                <div class="item">
-		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage5 }" width="100%" alt="...">
-		
+		                                    <img src="/upload/board/diet/${dietList.memberNick }/${dietList.dbRealImage5 }" width="100%" height="100%" alt="...">
 		                                </div>
 	                            	</c:if>
 	                            	
@@ -192,8 +206,10 @@ table tr td {
 
 
 							<tr>
-								<td>작성일:<fmt:formatDate value="${dietList.dbRegDate}"
+								<td>작성일:&nbsp;&nbsp;&nbsp;<fmt:formatDate value="${dietList.dbRegDate}"
 										pattern="yyyy-MM-dd HH:mm" />
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${dietList.memberNick}
+										
 								</td>
 								<td>
 									<span class="glyphicon glyphicon-eye-open">
@@ -211,7 +227,7 @@ table tr td {
 
 							<tr>
 								<td colspan="3">
-									<p style="line-height: 150%;">${dietList.dbContent}</p>
+									<p style="line-height: 150%;">${fn:replace(dietList.dbContent, replaceChar,"<br/>") }</p>
 								</td>
 							</tr>
 							<tr>
@@ -238,7 +254,7 @@ table tr td {
 						???개</span>
 				</div>
 				<div class="row">
-					<form id="reply-form">
+					<form id="reply-form"> 
 						<div class="input-group input-group-lg">
 
 							<input id="replyInput" type="text" class="form-control"
@@ -635,8 +651,8 @@ table tr td {
 				const day = today.getDate(); //일
 				const hour = today.getHours(); // 시
 				const minute = today.getMinutes(); // 분
-				time = year + "년" + month + "월" + day + "일" + hour + "시"
-						+ minute + "분";
+				time = year + "-" + month + "-" + day + " " + hour + ":"
+						+ minute + "";
 
 			}
 			return time;
