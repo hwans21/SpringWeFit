@@ -41,6 +41,9 @@ public class PlaceBoardController {
 		@GetMapping("/placeList")
 		public String placeList(PageVO vo, Model model) {
 			System.out.println("/placeBoard/placeList: GET");
+			if(vo.getDistance() == 0) {
+				vo.setDistance(15000);
+			}
 			
 			System.out.println(vo.toString());
 			// 페이지 버튼 계산하기
@@ -56,6 +59,7 @@ public class PlaceBoardController {
 			
 			// 게시글 리스트 뽑기
 			List<PlaceBoardVO> list = service.getList(vo);
+			System.out.println("DB에서 잘 갖고왔니?" + list);
 			
 			// jsp에 전달할 값들
 			model.addAttribute("placeList", list);

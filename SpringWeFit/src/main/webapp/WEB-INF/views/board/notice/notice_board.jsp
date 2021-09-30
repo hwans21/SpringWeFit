@@ -1,9 +1,7 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -174,7 +172,7 @@
             
             
             	<div class="col-sm-4" id="search-parts">
-            		<form id='searchForm' action="<c:url value='/noticeBoard/noticeList' />" method='get'>
+            		<form action="<c:url value='/noticeBoard/noticeList' />">
 		    			<div class="col-sm-4">
 		    			<select class="form-control search-select" name="condition" id="condition">
                             <option value="titleContent" ${pc.paging.condition == 'titleContent' ? 'selected' : ''}>전체</option>
@@ -211,9 +209,9 @@
 
 					<c:forEach var="arr" items="${noticeList }">
                     
-                      <tr ${(loginuser.memberManagerYN=="YES" && arr.nbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${arr.nbNum }" />'">
+                      <tr onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${arr.nbNum }" />'">
                         <th scope="col" class="text-center">${arr.nbNum }</th>
-                        <th scope="col">${arr.nbTitle }&nbsp;&nbsp;&nbsp;[${arr.nbReplyCount}]</th>
+                        <th scope="col">${arr.nbTitle }</th>
                         <th scope="col" class="text-center">관리자</th>
                         <th scope="col" class="text-center"><fmt:formatDate value="${arr.nbRegDate }" pattern="yyyy-MM-dd"/></th>
                         <th scope="col" class="text-center">${arr.nbLookCount }</th>
@@ -262,26 +260,14 @@
     </div>
    <script>
    	$('#searchBtn').click(function(){
-   		
-	
-   		if($('#search-input').val()==='') {
-   			alert("검색어를 입력하세요.");
-   		
-   		}
-   		
-   		searchForm.submit();
-   		
    		const condition = $('#condition').val();
-		const keyword = $('#search-input').val();
-		  
-			
+		  const keyword = $('#search-input').val();
    		
 		  location.href = '/wefit/noticeBoard/?condition=' + condition + '&keyword=' + keyword;
 	});
    	
    	$('#search-input').keydown(function(key){ 
 		if(key.keyCode === 13) {
-			key.preventDefault();
 			$('#searchBtn').click(); 
 		}				
   });

@@ -81,4 +81,5 @@ public class PlaceBoardVO {
 	private String memberNick;
 	private int pbLikelyCount;
 	private int pbReportCount;
+	private int pbReplyCount;
 }

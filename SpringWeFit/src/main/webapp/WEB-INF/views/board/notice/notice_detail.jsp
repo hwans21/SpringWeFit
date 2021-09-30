@@ -97,10 +97,6 @@
         span.mod-del{
         	text-align: right
         }
-        
-        #content-part {
-        	padding-right:30px;
-        }
     </style>
 </head>
 
@@ -111,27 +107,14 @@
         <div class="row">
             <%@ include file="../../include/header.jsp" %>
         </div>
-        
         <div class="container-fluid">
-            <div class="col-md-8 col-sm-12 test" id="content-part">
-            
-            
+            <div class="col-md-8 col-sm-12 test">
                 <div class="row">
-                	<div class="col-sm-10"></div>
-                	
-                	<div class="col-sm-1">
-                		<c:if test="${loginuser.memberManagerYN == 'YES'}">
-                    	<button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeContent.nbNum }" />'">수정하기</button>
-                		</c:if> &nbsp; &nbsp;
-                	</div>
-                	
-                	<div class="col-sm-1">
-                    	<button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
-               		</div>
+                <c:if test="${loginuser.memberNick == noticeList.memberNick}">
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeContent.nbNum }" />'">수정하기</button>
+                </c:if>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
                 </div>
-                
-                
-                
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
@@ -140,10 +123,9 @@
                     </div>
                 </div>
 
-
-                <c:if test="${noticeContent.nbRealImage1 != null }">
+                <c:if test="${noticeContent.nbImageCount > 0 }">
 	                <div class="row">
-	                    <div class="container-fluid item active">
+	                    <div class="container-fluid">
 	                        <img src="/upload/board/notice/관리자/${noticeContent.nbRealImage1}" width="100%" alt="...">
 	
 	
@@ -152,14 +134,9 @@
                 </c:if>
                 <br>
 
-
-
-
-
-
                 <div class="row">
                     <div class="container-fluid">
-                        <table class="max-width">
+                        <table>
 
                             <tr>
                                 <td>작성일: <fmt:formatDate value="${noticeContent.nbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
