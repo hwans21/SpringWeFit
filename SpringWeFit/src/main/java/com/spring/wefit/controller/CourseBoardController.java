@@ -141,7 +141,19 @@ public class CourseBoardController {
    @PostMapping("/modify")
    public String courseModify(CourseBoardVO vo, PageVO page, RedirectAttributes ra) {
       
-      System.out.println(vo);
+	   System.out.println("사용자가 수정한 유튜브 주소: " + vo.getCbYouCode());
+
+		 String[] arrCbYouCode  = vo.getCbYouCode().split("/");
+		 String newCbYouCode = arrCbYouCode[3];
+	     
+	     if(vo.getCbYouCode().contains("watch?v=")) { // 사용자가 입력한 유튜브 주소가 https://www.youtube.com/watch?v=아이디 일 경우
+	    	 String newCbYouCode2 = newCbYouCode.substring(8);
+	    	 System.out.println("유튜브 주소 id: " + newCbYouCode2);
+	    	 vo.setCbYouCode(newCbYouCode2);   	    	 
+	     } else { // 사용자가 입력한 유튜브 주소가 https://youtu.be/아이디 일 경우
+	    	 System.out.println("유튜브 주소 id: " + newCbYouCode);
+	    	 vo.setCbYouCode(newCbYouCode); 
+	     }
       
       service.update(vo);
       ra.addFlashAttribute("msg", "수정이 완료되었습니다.");

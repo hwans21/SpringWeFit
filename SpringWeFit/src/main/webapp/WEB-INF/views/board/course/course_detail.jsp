@@ -97,12 +97,13 @@
         }
         
         .m {
+           margin-left: -15px;
            margin-right: 20px;
         }
         
-        .l {
-           margin-right: 5px;
-        }
+       .l {
+           margin-right: 20px;
+        } 
         
         
         .mod-del {
@@ -138,7 +139,8 @@
         
         .lnr {
         	float: right; 
-        	font-size: 25px;
+        	font-size: 15px;
+        	margin: 0 5px;
         }
         
         .lnr-cross-circle {
@@ -192,7 +194,9 @@
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
-                    <button class="btn btn-primary pull-right m" onclick="location.href='<c:url value="/courseBoard/modify?cbNum=${article.cbNum}&pageNum=${param.pageNum}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}" />'">수정하기</button>
+                    <c:if test="${loginuser.memberManagerYN == 'YES'}">
+                    	<button class="btn btn-primary pull-right m" onclick="location.href='<c:url value="/courseBoard/modify?cbNum=${article.cbNum}&pageNum=${param.pageNum}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}" />'">수정하기</button>
+                    </c:if>
                     <button class="btn btn-primary pull-right l" onclick="location.href='<c:url value="/courseBoard/?pageNum=${param.pageNum}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}" />'">목록으로</button>
                 </div>
                 <div class="row">
@@ -515,6 +519,7 @@
     			if(${loginuser == null ? true : false}){
     				alert('로그인이 필요합니다.');
     				$('#crContent').val('');
+    				$('#nowByte').text('최대');
     				return;
     			}
             	
@@ -604,10 +609,13 @@
             				strAdd += '<span class="reply-writer">' + replyList[i].memberNick + '</span>&nbsp;&nbsp;';
             				strAdd += '<span class="reply-memberNum">' + replyList[i].memberNum + '</span>'; // memberNum 을 display:none으로 받음
             				strAdd += '<small>'+ timeStamp(replyList[i].crRegDate) +'</small>';
-            				strAdd += '<span class="mod-del">';
-            				strAdd += '<small class="mod"><span id="update" class=' + replyList[i].crNum + '>수정</span></small>&nbsp;&nbsp;<small class="delete-btn"><a class="del" href="'+ replyList[i].crNum + '">삭제</a></small> </span><br><br>';
+            				if(replyList[i].memberNum == "${loginuser.memberNum}" || ${loginuser.memberManagerYN == "YES"}){
+            					strAdd += '<span class="mod-del">';
+            					strAdd += '<small class="mod"><span id="update" class=' + replyList[i].crNum + '>수정</span></small>&nbsp;&nbsp;<small class="delete-btn"><a class="del" href="'+ replyList[i].crNum + '">삭제</a></small> </span>';
+            				}
+            				strAdd += '<br><br>';
             				
-            				strAdd += '<div class="reply-content-plus-modify"><div class="modify-input"><div><sup> ( <span id="nowByte2" class="nowByte2">최대 </span> / 200bytes )</sup></div><input class="reply-modify-input" value="'+ replyList[i].crContent + '"><div class="lnr"><span class="lnr lnr-cross-circle"></span><span id="'+ replyList[i].crNum +'" class="lnr lnr-checkmark-circle"></span></div></div>';
+            				strAdd += '<div class="reply-content-plus-modify"><div class="modify-input"><div><sup> ( <span id="nowByte2" class="nowByte2">최대 </span> / 200bytes )</sup></div><input class="reply-modify-input" value="'+ replyList[i].crContent + '"><div class="lnr"><span class="lnr lnr-cross-circle">취소하기</span><span id="'+ replyList[i].crNum +'" class="lnr lnr-checkmark-circle">수정하기</span></div></div>';
             				
             				strAdd += '</div><span class="reply-content">'+ replyList[i].crContent +'</span>';
             				
@@ -658,7 +666,17 @@
             	// a 태그의 기능 중지
             	e.preventDefault();
             	
-            	 
+            	const memberNum = "${loginuser.memberNum}";
+            	const replyWriter = $(this).parents('.reply-box').children('.reply-memberNum').text(); //위에 댓글리스트 출력하는 for문에서 회원번호를 출력해주는데(display:none으로 해서 화면에 보이진 않음) 그 값을 가져옴
+            		
+            	const memberManagerYN = "${loginuser.memberManagerYN}";
+            	
+            	
+            	if(memberNum !== replyWriter && memberManagerYN !== 'YES'){
+            		alert('해당 댓글 삭제 권한이 없습니다.');
+            		return;
+            	} 
+            	
             	const crNum = $(this).attr('href');
             	console.log(crNum); //댓글 번호를 뜯어옴.
             	
@@ -666,8 +684,8 @@
             		type : "post",
             		url : "<c:url value='/courseReply/delete' />",
             		data: JSON.stringify({
-	            		"crNum" : crNum,
-	            		"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum}
+	            		"crNum" : crNum
+	            		//"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum}
 	            	}),
             		headers : {
             			"Content-Type" : "application/json"	
@@ -736,6 +754,15 @@
             	//reply_content.css('display', 'none');
             	$(".reply-content").removeClass('inactive');
         		reply_content.toggleClass('inactive');
+        		
+        		
+        		
+        		//댓글 수정하려고 입력하는 도중에 다른 댓글 눌러서 수정하다가 처음에 손댔던 댓글 입력창 클릭하면..입력해놓은 값이 아직도 남아있음. 그 값을 초기화 시켜주는 처리
+        		$('.reply-modify-input').focusout(function() {
+        		    // input 창밖으로 focus가 나갈때  event
+        		//    $('#rform')[0].reset(); //수정 다 하고 확인누르는 경우에도 reset되는바람에 수정이안된다..그래서 이코드에서 getList(1,true)로 바꿈.
+        			getList(1, true);
+        		});
 
         		
             	// 수정창에서 x버튼 누르면 수정창 사라지게 하기.

@@ -37,6 +37,8 @@
             float: right;
             margin: 20px;
         }
+        
+
     </style>
 </head>
 
@@ -100,8 +102,8 @@
 
 
                     <tr>
-                        <td>youtube 주소<sup> ( <span id="nowByte3">${article2.cbYouCodeByte} </span> / 50bytes )</sup></td>
-                        <td><input type=text id="cbYouCode" name="cbYouCode" size="60" value="${article2.cbYouCode}"></td>
+                        <td>youtube 주소<sup id="cbYouTube"> ( <span id="nowByte3">${article2.cbYouCodeByte} </span> / 50bytes )</sup></td>
+                        <td><input type=text id="cbYouCode" name="cbYouCode" size="60" value="https://youtu.be/${article2.cbYouCode}"></td>
                     </tr>
                     
                     
@@ -166,14 +168,25 @@
      	   }
      	   
      	   
-          //유튜브 링크 byte 체크
-      	  $('#cbYouCode').keyup(function(){
-      	       bytesHandler3(this);
-      	  });
-      	   function bytesHandler3(obj){
-      	       var text = $(obj).val();
-      	       $('#nowByte3').text(getTextLength(text)); 	   
-      	   }
+           //유튜브 링크 byte 체크
+       	  $('#cbYouCode').keyup(function(){
+       	       bytesHandler3(this);
+       	  });
+ 	              
+       	  function bytesHandler3(obj){
+       	       var text = $(obj).val();
+       	         	     
+       	       if($('#cbYouCode').val().includes("https://www.youtube.com/watch?v=")) {
+                     $('#nowByte3').text(+getTextLength(text) - 32);  //저 링크주소가 차지하는 바이트(32바이트)를 빼줌(왜냐하면 db에는 youtube풀주소가 저장되는게아니기 때문에.. 저장안되는 저 링크 부분은 바이트 계산 해주면 안된다.)             
+         		    return;
+          	   } else if($('#cbYouCode').val().includes("https://youtu.be/")) {
+                     $('#nowByte3').text(+getTextLength(text) - 17);               
+             		return;
+          	   } else {
+          		  $('#nowByte3').text(+getTextLength(text));
+          	   }
+       	   
+       	  }
     	   
          
          // 글 수정
@@ -193,7 +206,7 @@
             } else if($('#cbYouCode').val().trim() === '') {
                 alert('youtube 주소를 입력해주세요.');   
                 return;
-            } else if(+($('#nowByte3').text()) > 50) {
+            } else if($('#nowByte3').text() > 50) {
                  alert('유튜브 주소는 최대 50byte를 초과할 수 없습니다.');   
                 return;
             } else {

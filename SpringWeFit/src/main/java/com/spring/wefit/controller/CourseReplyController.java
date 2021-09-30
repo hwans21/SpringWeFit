@@ -76,12 +76,12 @@ public class CourseReplyController {
 	@PostMapping("/delete")
 	public String replyDelete(@RequestBody CourseReplyVO vo) {
 		
-		if(service.memberCheck(vo) == 1) {
+		//if(service.memberCheck(vo) == 1) {
 			service.delete(vo.getCrNum());
 			return "deleteSuccess";
-		} else {
-			return "noAuth";
-		}
+		//} else {
+		//	return "noAuth";
+		//}
 		
 	}
 	
