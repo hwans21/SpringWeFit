@@ -112,7 +112,7 @@
                 <div class="row">
                 <c:if test="${loginuser.memberNick == noticeList.memberNick}">
                     <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeContent.nbNum }" />'">수정하기</button>
-                    </c:if>
+                </c:if>
                     <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
                 </div>
                 <div class="row">

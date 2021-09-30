@@ -2,15 +2,17 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-<mapper namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
+
+<mapper
+	namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 
 
-<!-- 게시물 작성 -->
-<insert id="regist">
+	<!-- 게시물 작성 -->
+	<insert id="regist">
 		INSERT INTO NoticeBoard
 		(
-		nbNum, memberNum, nbTitle, nbContent,
+		nbNum, memberNum, nbTitle,
+		nbContent,
 		nbImage1, nbRealImage1,nbImageCount
 		)
 		VALUES
@@ -20,27 +22,32 @@
 		#{nbImage1}, #{nbRealImage1},#{nbImageCount}
 		)
 	</insert>
-	
-<!-- 게시물 목록 -->
-<select id="getList"
-		resultType="com.spring.wefit.command.NoticeBoardVO">
 
-				SELECT * FROM
-					(
-						SELECT ROWNUM as rn, notice.* FROM
-							(
-								SELECT * FROM NoticeBoard
-								<include refid="search" />
-								ORDER BY nbNum DESC
-							) notice 
-				)
-		  		<![CDATA[
+	<sql id="search">
+		<if test="condition == 'title'">
+			where nbTitle LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'content'">
+			where nbContent LIKE '%'||#{keyword}||'%'
+		</if>
+
+		<if test="condition == 'titleContent'">
+			where nbTitle LIKE '%'||#{keyword}||'%'
+			OR nbContent LIKE '%'||#{keyword}||'%'
+		</if>
+	</sql>
+
+	<select id="getList" resultType="com.spring.wefit.command.NoticeBoardVO">
+		SELECT * FROM(SELECT ROWNUM as rn, notice.* FROM(SELECT * FROM
+		NoticeBoard
+		<include refid="search" />
+		ORDER BY nbNum DESC) notice) 
+				<![CDATA[
 		  		WHERE rn > (#{pageNum}-1) * #{countPerPage}
 		  		AND rn <= #{pageNum} * #{countPerPage} 
 		  		]]>
-
 	</select>
-	
+
 	<select id="getContent"
 		resultType="com.spring.wefit.command.NoticeBoardVO">
 		SELECT * FROM NoticeBoard
@@ -59,7 +66,8 @@
 		UPDATE NoticeBoard
 		SET
 		nbTitle = #{nbTitle},
-		nbContent = #{nbContent},
+		nbContent =
+		#{nbContent},
 		nbImage1 = #{nbImage1},
 		nbRealImage1 = #{nbRealImage1},
 		nbImageCount=#{nbImageCount}
@@ -71,48 +79,40 @@
 		DELETE FROM NoticeBoard
 		WHERE nbNum = #{nbNum}
 	</delete>
-	
+
 	<update id="updateViewCount">
 		UPDATE NoticeBoard SET
-			nbLookCount=nbLookCount+1
+		nbLookCount=nbLookCount+1
 		WHERE nbNum = #{nbNum}
 	</update>
-	
+
 	<select id="checkLovely" resultType="int">
-		SELECT COUNT(*) FROM NoticeLikely
+		SELECT COUNT(*) FROM
+		NoticeLikely
 		WHERE nbNum = #{nbNum}
 		AND memberNum = #{memberNum}
 	</select>
-	
+
 	<insert id="insertLovely">
 		INSERT INTO NoticeLikely
-		VALUES(#{nbNum}, #{memberNum})
+		VALUES(#{nbNum},
+		#{memberNum})
 	</insert>
-	
+
 	<select id="checkReport" resultType="int">
-		SELECT COUNT(*) FROM NoticeReport
+		SELECT COUNT(*) FROM
+		NoticeReport
 		WHERE nbNum = #{nbNum}
 		AND memberNum = #{memberNum}
 	</select>
-	
+
 	<insert id="insertReport">
 		INSERT INTO NoticeReport
-		VALUES(#{nbNum}, #{memberNum})
+		VALUES(#{nbNum},
+		#{memberNum})
 	</insert>
-	
-	<sql id="search">
-		<if test="condition == 'title'">
-			WHERE nbTitle LIKE '%'||#{keyword}||'%'
-		</if>
-		<if test="condition == 'content'">
-			WHERE nbContent LIKE '%'||#{keyword}||'%'
-		</if>
-		
-		<if test="condition == 'titleContent'">
-			WHERE nbTitle LIKE '%'||#{keyword}||'%'
-			OR nbContent LIKE '%'||#{keyword}||'%'
-		</if>
-	</sql>
+
+
 
 
 

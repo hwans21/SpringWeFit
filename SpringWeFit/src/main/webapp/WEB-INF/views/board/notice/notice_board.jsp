@@ -155,7 +155,6 @@
         <div class="row">
             <ul id="sub_menu3" class="sub_menu">
 
-
                 <li class="sub2"><a href="<c:url value="/noticeBoard/" />">공지사항</a></li>
                 <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
 
@@ -183,12 +182,12 @@
                      	</div>
                      
                      	<div class="col-sm-7">
-                     		<input type="text" class="form-control search-input" name="keyword" id="keyword" value="${pc.paging.keyword}">
+                     		<input type="text" id="search-input" class="form-control search-input" name="keyword" placeholder="Search" value="${pc.paging.keyword }">
                      	</div>
                      	<div class="col-sm-1">
-                        	<button type="button" id="search-btn" class="btn" aria-label="Left Align">
-                 			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-	               			</button>
+                        	<button type="button" class="btn" aria-label="Left Align" id="searchBtn">
+                      			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    		</button>
 	               		</div>
                     
 		    		</form>
@@ -259,40 +258,20 @@
 		
         
     </div>
-   <script defer>
-   
-   const msg = '${msg}';
-	if(msg !== '') {
-		alert(msg);
-	}
-	
-	const pagination = document.getElementById('pagination');
-	pagination.onclick = function(e) {
-		e.preventDefault();
-		const value = e.target.dataset.pagenum;
-		document.pageForm.pageNum.value = value;
-		document.pageForm.submit();
-	}
- 
-      
-      $(function() { 
+   <script>
+   	$('#searchBtn').click(function(){
+   		const condition = $('#condition').val();
+		  const keyword = $('#search-input').val();
+   		
+		  location.href = '/wefit/noticeBoard/?condition=' + condition + '&keyword=' + keyword;
+	});
+   	
+   	$('#search-input').keydown(function(key){ 
+		if(key.keyCode === 13) {
+			$('#searchBtn').click(); 
+		}				
+  });
 
-		  $('#search-btn').click(function() {
-			  const condition = $('#condition').val();
-			  const keyword = $('#keyword').val();
-			  	  
-			  location.href = '/wefit/noticeBoard/?condition=' + condition + '&keyword=' + keyword;
-		  });  
-      	  
-      	  
-		  $('#keyword').keydown(function(key){
-				if(key.keyCode === 13) {
-					$('#search-btn').click();
-				}				
-		  });
-      
-      
-      });
   </script>
     
 </body>
