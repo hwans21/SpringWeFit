@@ -14,24 +14,36 @@
        <if test="condition == 'type'">
          WHERE mbType LIKE '%'||#{keyword}||'%'
       </if>
-      <if test="condition == 'writer'">
-         WHERE memberNum LIKE '%'||#{keyword}||'%'
+      <if test="condition == 'addr'">
+         WHERE mbAddrBasic LIKE '%'||#{keyword}||'%'
       </if>
       
     
     </sql>
+    
+    
+    
+    
+    
+    
  
     <select id="getList" resultType="com.spring.wefit.command.marketBoardVO">
             SELECT * FROM
                (
                   SELECT ROWNUM as rn, market.* FROM
                      (
-                        SELECT * FROM MarketBoard
+                        SELECT mb.*,
+                        DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
+                         FROM MarketBoard mb
                         <include refid="search" />
                         ORDER BY mbNum DESC
                          
                      ) market
-            )
+                <![CDATA[
+            	WHERE market.distance < #{distance}
+            	]]>
+            	)
+            	
               <![CDATA[
               WHERE rn > (#{pageNum}-1) * #{countPerPage}
               AND rn <= #{pageNum} * #{countPerPage} 
@@ -153,8 +165,16 @@
     
     <select id="getTotal" resultType="int">
        SELECT COUNT(*)
-       FROM MarketBoard
-       <include refid="search" />
+       FROM (
+       			SELECT mb.*,
+                DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
+                FROM MarketBoard mb
+                <include refid="search" />
+                )market
+                 <![CDATA[
+            	WHERE market.distance < #{distance}
+            	]]>
+       			
     </select>
     
     <update id="updateViewCount">

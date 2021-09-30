@@ -43,7 +43,8 @@
 			SELECT ROWNUM as rn, free.* FROM
 			(
 				SELECT f.*, m.memberNick,(SELECT COUNT(*) FROM FreeLikely WHERE fbNum=f.fbNum ) as fbLikelyCount,
-				(SELECT COUNT(*) FROM FreeReport WHERE fbNum=f.fbNum) as fbReportCount
+				(SELECT COUNT(*) FROM FreeReport WHERE fbNum=f.fbNum) as fbReportCount,
+				(SELECT COUNT(*) FROM FreeReply WHERE fbNum=f.fbNum) as fbReplyCount
 				FROM FreeBoard f, Member m
 				WHERE f.memberNum = m.memberNum
 				AND f.fbTitle LIKE '%'||#{condition}||'%'

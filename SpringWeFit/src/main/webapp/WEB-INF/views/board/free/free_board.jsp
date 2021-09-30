@@ -104,7 +104,7 @@
            <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
           </ul>
         </div>
-   
+   		<div class="container text-center">
         <div class="row">
                 
           <div class="col-sm-5">
@@ -114,12 +114,12 @@
               <div class="col-sm-7">
                   <div id="btn-list" class="row" align="right">
                     <div class="btn-group text-center" role="group" aria-label="Basic outlined example">
-                      <button type="button" class="btn btn-info btn-active" id="allBtn">전체</button>
-                      <button type="button" class="btn btn-info" id="freeBtn">자유글</button>
-                      <button type="button" class="btn btn-info" id="infoBtn">소식/정보</button>
-                      <button type="button" class="btn btn-info" id="advertBtn">홍보</button>
-                      <button type="button" class="btn btn-info" id="tipBtn">꿀팁</button>
-                      <button type="button" class="btn btn-info" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
+                      <button type="button" class="btn btn-info ${param.condition==''? 'active':'' }" id="allBtn">전체</button>
+                      <button type="button" class="btn btn-info ${param.condition=='[자유글]'? 'active':'' }" id="freeBtn">자유글</button>
+                      <button type="button" class="btn btn-info ${param.condition=='[소식/정보]'? 'active':'' }" id="infoBtn">소식/정보</button>
+                      <button type="button" class="btn btn-info ${param.condition=='[홍보]'? 'active':'' }" id="advertBtn">홍보</button>
+                      <button type="button" class="btn btn-info ${param.condition=='[꿀팁]'? 'active':'' }" id="tipBtn">꿀팁</button>
+                      <button type="button" class="btn btn-info ${param.condition=='[기타]'? 'active':'' }" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
                     </div>
                 
                     <input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
@@ -147,9 +147,10 @@
                     
                     <c:forEach var="arr" items="${freeList }">
                     
-                      <tr onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }" />'">
+                      <tr ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }" />'">
+                        
                         <th scope="col" class="text-center">${arr.fbNum }</th>
-                        <th scope="col">${arr.fbTitle }</th>
+                        <th scope="col">${arr.fbTitle }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>
                         <th scope="col" class="text-center">${arr.memberNick }</th>
                         <th scope="col" class="text-center"><fmt:formatDate value="${arr.fbRegDate }" pattern="yyyy-MM-dd"/></th>
                         <th scope="col" class="text-center">${arr.fbLookCount }</th>
@@ -219,7 +220,7 @@
             <div class="row" align="right">
                 <button type="button" id="write" class="btn btn-outline-primary" onclick="location.href='<c:url value="/freeBoard/freeWrite" />'"><b>글쓰기</b></button>
              </div>
-
+			</div>
             <div class="row text-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -228,7 +229,7 @@
                       </c:if>
                       
                       <c:forEach var="page" begin="${pc.beginPage }" end="${pc.endPage }">
-                      	<li class="page-item"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
+                      	<li class="page-item ${page == param.pageNum? 'active':''}"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
                       </c:forEach>
                
                       

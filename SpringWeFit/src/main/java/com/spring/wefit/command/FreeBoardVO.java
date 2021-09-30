@@ -62,4 +62,5 @@ public class FreeBoardVO {
 	private String memberNick;
 	private int fbLikelyCount;
 	private int fbReportCount;
+	private int fbReplyCount;
 }

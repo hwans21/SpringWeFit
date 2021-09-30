@@ -139,11 +139,16 @@
                                 <div class="search-sec">
     
                                     <!--검색 조건-->
-                              		<input name="latitude" type="hidden" value="${loginuser.memberLatitude}">
-                              		<input name="longitude" type="hidden" value="${loginuser.memberLongitude}">
                                     <select class="search-condition" name="condition">
-                                        <option value="title">상품이름</option>
-                                        <option value="addr">지역</option>
+                                        <option value="title" ${param.condition == 'title' ? 'selected' : '' }>상품이름</option>
+                                        <option value="addr" ${param.condition == 'addr' ? 'selected' : '' }>지역</option>
+                                    </select>
+                                    
+                                    <select id="search-distance" onchange="changeDistance(this)">
+                                    	<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
+                                    	<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
+                                    	<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
+                                    	<option value="10km" ${param.distance==10? 'selected':'' }>10km 이내</option>
                                     </select>
                     
                                     <!--검색창, 버튼-->
@@ -275,6 +280,22 @@
 		
 		
 	})
+	
+	 function changeDistance(obj){
+		 
+        if($(obj).val() === ""){
+        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=15000&keyword=${pc.paging.keyword} " />`
+        } else if($(obj).val() === "2km"){
+        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=2&keyword=${pc.paging.keyword} " />`
+        } else if($(obj).val() === "5km"){
+        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=5&keyword=${pc.paging.keyword} " />`
+        } else if($(obj).val() === "10km"){
+        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=10&keyword=${pc.paging.keyword} " />`
+        }
+        
+    }
+	
+	
 </script>
 
 

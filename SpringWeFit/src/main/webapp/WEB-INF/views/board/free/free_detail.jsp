@@ -4,6 +4,8 @@
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -218,7 +220,7 @@
                             <tr>
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
-										${content.fbContent }
+										${fn:replace(content.fbContent, replaceChar,"<br/>") }
                                     </p>
                                 </td>
                             </tr>

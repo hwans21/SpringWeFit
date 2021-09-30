@@ -49,6 +49,6 @@ public class CourseBoardVO {
 	private int cbTitleByte;
 	private int cbContentByte;
 	private int cbYouCodeByte;
-	
+	private int cbReportCount;
 
 }

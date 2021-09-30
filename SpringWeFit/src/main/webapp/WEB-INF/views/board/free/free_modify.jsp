@@ -79,13 +79,13 @@
                     </tr>
 
                     <tr>
-                        <td>제목</td>
+                        <td>제목<sup> ( <span id="titleByte"> </span> / 200bytes )</sup></td>
                         <td><input id="input-title" type="text" name="fbTitle" size="60" value="${content.fbTitle }"></td>
                     </tr>
 
                     <tr>
-                        <td>내용</td>
-                        <td><textarea name="fbContent" cols="75" rows="15">${content.fbContent }</textarea></td>
+                        <td>내용<sup> ( <span id="contentByte"> </span> / 2000bytes )</sup></td>
+                        <td><textarea id="input-content" name="fbContent" cols="75" rows="15">${content.fbContent }</textarea></td>
                     </tr>
 
                     
@@ -93,7 +93,7 @@
                     
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input multiple type="file" name="fileName" size="10" maxlength="10" ></td>
+                        <td><input id="uploadFiles" multiple type="file" name="fileName" size="10" maxlength="10" ></td>
                     </tr>
                     
                     <tr class="text-right">
@@ -126,6 +126,93 @@
     			$('#input-title').val(title.replace(category,$('#category').val()));
     		}
     	});
+    	let bool = true;
+    	//////////////////////
+    	function getTextLength(str) {
+		       var rbyte = 0;
+		       for (var i = 0; i < str.length; i++) {
+		    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+		  	        	rbyte += 3;
+		  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+		  	        	rbyte += 2;
+		  	        } else { //영문 등 나머지 1Byte
+		  	        	rbyte++;
+		  	        }
+		      }
+		      return rbyte;
+		 }
+		$(document).ready(function () {
+			$('#titleByte').text(getTextLength($(this).val()));
+			$('#contentByte').text(getTextLength($(this).val()));
+		});
+		
+		$('#title-input').keyup(function(){
+			$('#titleByte').text(getTextLength($(this).val()));
+		});
+		$('#content-input').keyup(function(){
+			$('#contentByte').text(getTextLength($(this).val()));
+		});
+		
+		
+		//각 파일당, 전체 용량 확인 함수
+        $("#uploadFiles").change(function(){
+      
+           if(this.files || this.files[0] || this.files[1] || this.files[2] || this.files[3] || this.files[4] != null) {
+              var maxSize = 50 * 1024 * 1024;
+              var totalSize = 0;
+              
+              if($('#uploadFiles')[0].files.length > 5) {
+                 alert('최대 사진 수는 5장입니다.');
+                 bool = false;
+                 return;
+              }
+              
+              console.log(this.files.length);
+              console.log('---------------');
+              
+              for(i=0; i<this.files.length; i++) {
+                 totalSize += this.files[i].size;
+              }
+                 for(i=0; i<5; i++) {
+                    if(this.files[0].size > 10 * 1024 * 1024){
+                       alert('한 이미지의 허용 크기는 10MB입니다.');
+                       bool = false;
+                       return;
+                    }
+                 }
+              if(totalSize > maxSize) {
+                 alert('사진의 총 용량은 50MB입니다.');
+                 bool = false;
+                 return;
+              }
+           }
+           bool = true;
+        }); //각 파일당, 전체 용량 확인 함수 종료
+	
+		$('#regBtn').click(function(){
+			if($('#title-input').val().trim() === ''){
+				alert('제목을 입력해주세요.');
+				return;
+			} else if(+($('#titleByte').text()) > 200){
+				alert('제목은 최대 200byte를 초과할 수 없습니다.');   
+	            return;
+			} else if($('#content-input').val().trim() === ''){
+				alert('내용을 입력해주세요.');
+				return;
+			} else if(+($('#contentByte').text()) > 2000){
+				alert('제목은 최대 2000byte를 초과할 수 없습니다.');   
+	            return;
+			}
+			if($('#title-input').val().indexOf($('#category').val()) === -1){ // 해당 태그 있는지 확인
+				
+				$('#title-input').val($('#category').val()+$('#titleInput').val()); // 제목에 태그 넣기
+			}
+			
+			$('#boardWrite').submit();
+		});
+    	//////////////////////
+    	
+    	
     	$('#modifyBtn').click(function(){
     		$('#freeModify-form').submit();
     	});

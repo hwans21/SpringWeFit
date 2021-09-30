@@ -58,7 +58,9 @@ public class FreeBoardController {
 		
 		// 게시글 리스트 뽑기
 		List<FreeBoardVO> list = service.getList(vo);
-		
+		for(FreeBoardVO d : list) {
+			System.out.println(d.getFbReportCount());
+		}
 		//jsp에 전달할 값들
 		model.addAttribute("freeList", list);
 		model.addAttribute("page",pc.getPaging());
