@@ -82,7 +82,7 @@
                     	<tr>
                         <td>사진올리기 </td>
 
-                        <td><input multiple type="file" name="fileName" size="1" maxlength="1" value="${noticeContent.nbRealImage1 }"></td>
+                        <td><input multiple type="file" name="fileName" id="fileName" size="1" maxlength="1" value="${noticeContent.nbRealImage1 }"></td>
                     	</tr>
                     </div>
                     
@@ -91,8 +91,8 @@
                             <br>
 
 
-                            <button class="btn btn-primary" id="modifyBtn">수정하기</button>
-                            <button class="btn btn-primary" id="deleteBtn">삭제하기</button>
+                            <button class="btn btn-primary" type="button" id="modifyBtn">수정하기</button>
+                            <button class="btn btn-primary" type="button" id="deleteBtn">삭제하기</button>
                             <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${noticeContent.nbNum}" />'">취소하기</button>
 
                             <br><br><br>
@@ -113,11 +113,11 @@
     <script>
     //	let title = $('#input-title').val();
     	
-    //	$('#modifyBtn').click(function(){
-   // 		$('#modifyForm').submit();
-   // 	});
+    	
+   // 	$('#modifyBtn').click(function(){
+  //  		$('#modifyForm').submit();
+  //  	});
     
-     let bool = true;
     	$('#deleteBtn').click(function(){
     		if(confirm("정말로 삭제하시겠습니까?")){
 	    		$('#modifyForm').attr("action","<c:url value='/noticeBoard/noticeDelete'/>")
@@ -128,7 +128,7 @@
     	
 		
 ////////////////////////////////////////////////////////////////////////////////		
-		
+		let bool = true;
 		 $(function() {
    	  
    	//제목 byte 체크
@@ -191,10 +191,34 @@
            }
   
         });
-         bool = true;  
-      
-     });
-    </script>
+       //각 파일당, 전체 용량 확인 함수
+         $("#fileName").change(function(){
+           if(this.files || this.files[0] || this.files[1] || this.files[2] || this.files[3] || this.files[4] != null) {
+              
+              
+              if($('#fileName')[0].files.length > 1) {
+                 alert('최대 사진 수는 1장입니다.');
+                 bool = false;
+                 return;
+              }
+              
+              
+                 for(i=0; i<5; i++) {
+                    if(this.files[0].size > 10 * 1024 * 1024){
+                       alert('한 이미지의 허용 크기는 10MB입니다.');
+                       bool = false;
+                       return;
+                    }
+                 }
+             
+           }
+
+                 
+           
+           bool = true;
+        }); //각 파일당, 전체 용량 확인 함수 종료
+   });
+	</script>
 
     
 </body>

@@ -57,7 +57,7 @@
             </div>
 
             <!--main left-->
-            <form action="<c:url value='/noticeBoard/noticeWrite' />" id="boardWrite" name="writeForm" method="POST" enctype="multipart/form-data">
+            <form action="<c:url value='/noticeBoard/noticeWrite' />" id="boardWrite" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="memberNum" value="${loginuser.memberNum}">
                 <table>
                     <tr>
@@ -84,8 +84,8 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button class="btn btn-primary" id="regBtn" type="button">등록하기</button>
-                            <button class="btn btn-default" id="listBtn" type="button" onclick="location.href='<c:url value="/noticeBoard/" />'">취소하기</button>
+                            <button class="btn btn-primary" type="button" id="regBtn" >등록하기</button>
+                            <button class="btn btn-default" type="button" id="listBtn" onclick="location.href='<c:url value="/noticeBoard/" />'">취소하기</button>
                             <br><br><br>
                         </td>
                         
@@ -196,7 +196,7 @@
                  
                     for(i=0; i<5; i++) {
                        if(this.files[0].size > 10 * 1024 * 1024){
-                          alert('한 이미지의 허용 크기는 10MB입니다.');
+                          alert('한 이미지의 허용 크기는 10MB입니다.');                        
                           bool = false;
                           return;
                        }

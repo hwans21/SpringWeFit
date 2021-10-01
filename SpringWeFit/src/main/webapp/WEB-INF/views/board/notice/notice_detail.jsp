@@ -2,8 +2,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@  taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -101,6 +107,11 @@
         #content-part {
         	padding-right:30px;
         }
+        
+        #replyBtn {
+        margin-bottom:30px;
+        }
+        
     </style>
 </head>
 
@@ -134,8 +145,9 @@
                 
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="titlebox">
-                            <h2>${noticeContent.nbTitle }</h2>
+                        <div class="titlebox">     
+                        	<h2>${fn:replace(fn:replace(fn:replace(noticeContent.nbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
+</h2>               
                         </div>
                     </div>
                 </div>
@@ -159,7 +171,7 @@
 
                 <div class="row">
                     <div class="container-fluid">
-                        <table class="max-width">
+                        <table style="width:100%">
 
                             <tr>
                                 <td>작성일: <fmt:formatDate value="${noticeContent.nbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
@@ -177,7 +189,7 @@
                             <tr>
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
-										${noticeContent.nbContent }
+                                    	${fn:replace(fn:replace(fn:replace(noticeContent.nbContent, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
                                     </p>
                                 </td>
                             </tr>
@@ -199,7 +211,7 @@
                 </div>
 
             </div>
-            <div class="col-md-4 col-sm-12 test">
+            <div class="col-md-4 col-sm-12 test" id="reply-part">
                 
                 <div class="row">
                     <span id="replyCountSpan"class="reply reply-count">댓글 : ???개</span>
@@ -210,9 +222,11 @@
 
                             <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
+                                <sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup>
                             <span class="input-group-btn" id="basic-input">
                                 <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
+                                        <sup>  </sup>
                             </span>
                         </div>
                    	
@@ -235,6 +249,10 @@
     </div>
 
      <script defer>
+     
+     //function safe_tags(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') ; }
+     //var tagsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;' }; function replaceTag(tag) { return tagsToReplace[tag] || tag; } function safe_tags_replace(str) { return str.replace(/[&<>]/g, replaceTag); }
+     
         let strAdd = '';
     	let pageNum = 2;
     	let boolRegist = true;
@@ -250,7 +268,7 @@
         		"<c:url value='/noticeReply/noticeReplyList/${noticeContent.nbNum }/' />" + pageNum,
         		function(data){
         			console.log(data);
-        			$('#replyCountSpan').html('댓글 :'+data.total+'개');
+        			$('#replyCountSpan').html('댓글 : '+data.total+'개');
                     if(reset === true){
                         strAdd='';
                     }
@@ -302,7 +320,76 @@
             return time;
         }
         
+        //////////////////////////////////////
+        $('#replyInput').keyup(function(){
+           bytesHandler(this);
+      });
+       function getTextLength(str) {
+           var rbyte = 0;
+           for (var i = 0; i < str.length; i++) {
+              if(str.charCodeAt(i) > 127) { // 한글 3Byte
+                    rbyte += 3;
+                 } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+                    rbyte += 2;
+                 } else { //영문 등 나머지 1Byte
+                    rbyte++;
+                 }
+          }
+           return rbyte;
+      }
+       function bytesHandler(obj){
+           var text = $(obj).val();
+           $('#nowByte').text(getTextLength(text));       
+       }
+      
+/////////////////////
+   
+      		
+       //////////////////////////
+        
         $('#replyBtn').click(function(){
+        	if($('#replyInput').val()==='') {
+      			alert("댓글을 입력하세요.");
+      			return;
+      		}
+        	if(+($('#nowByte').text()) > 200)   {
+               alert('댓글은 200byte를 초과할 수 없습니다')
+         		return;
+           
+           } else if(boolRegist){
+              replyRegist();
+              
+           } else {
+              replyModify(nrClassName);
+              
+           }
+        });
+        $('#replyInput').keydown(function(e){
+        	if(e.keyCode === 13){
+        		e.preventDefault();
+        		if($('#replyInput').val()==='') {
+          			alert("댓글을 입력하세요.");
+          			return;
+          		}
+            	if(+($('#nowByte').text()) > 200)   {
+                   alert('댓글은 200byte를 초과할 수 없습니다')
+             		return;
+               
+               } else if(boolRegist){
+                  replyRegist();
+                  
+               } else {
+                  replyModify(nrClassName);
+                  
+               }
+        	}
+        })
+        
+      
+        /////////////////////////////////////////////////////
+        
+        
+  /*    $('#replyBtn').click(function(){
         	if(boolRegist){
 	        	replyRegist();
 	        	$('#replyInput').val('');
@@ -310,8 +397,8 @@
         		replyModify(nrClassName);
         		$('#replyInput').val('');
         	}
-        });
-        $('#replyInput').keydown(function(e){
+        });*/
+  /*      $('#replyInput').keydown(function(e){
         	if(e.keyCode === 13){
         		if(boolRegist){
     	        	replyRegist();
@@ -321,9 +408,19 @@
             		$('#replyInput').val('');
             	}
         	}
-        })
+        }) */
         
-        
+        ////////////////////////
+       // $('#replyBtn').click(function() {
+        //    if($('#replyInput').val().length > 200) {
+        //        alert('댓글은 최대 200byte를 초과할 수 없습니다.');   
+        //        $('#replyInput').focus();
+        //             return;
+        //    }else{
+	    //    	replyRegist();
+       //  });
+        /////////////////////////////////
+      
         $(document).ready(function () {
            
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
@@ -405,6 +502,7 @@
                     console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
             }); //비동기 처리 끝
+        	$('#replyInput').val('');
         }
 		function replyModify(nrClassName){
 			if(${loginuser==null? true:false }){
@@ -440,6 +538,7 @@
             nrClassName = '';
             replyLoad(1,true);
             pageNum=2;
+            $('#replyInput').val('');
 		}
 		
 		$('#lovelyBtn').click(function(){
@@ -512,8 +611,10 @@
     	$('#replyList').click(function(e){
     		if(e.target.className.indexOf('replyModBtn') != -1){
     			$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
+    			$('#nowByte').text(getTextLength($('#replyInput').val()));
     			boolRegist = false;
     			nrClassName = $(e.target).attr('class');
+    			$('#replyInput').focus();
     		}
     		if(e.target.className.indexOf('replyDelBtn') != -1){
     			if(${loginuser==null? true:false}){
@@ -543,9 +644,12 @@
                         alert('통신에 실패했습니다. 관리자에게 문의하세요');
                     }
                 });
+    			
     		}
     	});
     	
+    	///////////////////////////////////////
+    	//var tagsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;' }; function replaceTag(tag) { return tagsToReplace[tag] || tag; } function safe_tags_replace(str) { return str.replace(/[&<>]/g, replaceTag); }
     	
     	
 
