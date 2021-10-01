@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.spring.wefit.command.marketBoardVO;
+import com.spring.wefit.command.MarketBoardVO;
 import com.spring.wefit.commons.CustomFileUpload;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
@@ -39,7 +39,7 @@ public class MarketBoardController {
 		pc.setPaging(vo);
 		pc.setArticleTotalCount(service.getTotal(vo));
 		
-		List<marketBoardVO> list = service.getList(vo);
+		List<MarketBoardVO> list = service.getList(vo);
 		model.addAttribute("product", list);
 		model.addAttribute("page", pc.getPaging());
 		model.addAttribute("pc", pc);
@@ -55,7 +55,7 @@ public class MarketBoardController {
 	}
 
 	@PostMapping("/regist")
-	public String regist(MultipartFile[] fileName, HttpServletRequest request, marketBoardVO vo, RedirectAttributes ra) {
+	public String regist(MultipartFile[] fileName, HttpServletRequest request, MarketBoardVO vo, RedirectAttributes ra) {
 		
 		CustomFileUpload fileUp = new CustomFileUpload();
 		String rootPath = request.getServletContext().getRealPath("");
@@ -134,13 +134,13 @@ public class MarketBoardController {
 
 	// 글 수정
 	@PostMapping("/update")
-	public String update(marketBoardVO vo,MultipartFile[] fileName,HttpServletRequest request) {
+	public String update(MarketBoardVO vo,MultipartFile[] fileName,HttpServletRequest request) {
 		
 		CustomFileUpload fileUp = new CustomFileUpload();
 		String rootPath = request.getServletContext().getRealPath(""); // C:\Users\hwans\apache-tomcat-9.0.52\wtpwebapps\SpringWeFit\
 		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\market\\"+vo.getMemberNum()+"\\"; 
 		
-		marketBoardVO origin = service.getContent(vo.getMbNum());
+		MarketBoardVO origin = service.getContent(vo.getMbNum());
 		
 		if(origin.getMbRealImage1() != null) {
 			fileUp.delete(origin.getMbRealImage1(), rootPath);
@@ -239,7 +239,7 @@ public class MarketBoardController {
 	// 글 좋아요 처리하기
 		@PostMapping("/marketLikely")
 		@ResponseBody
-		public String marketBoardLikely(@RequestBody marketBoardVO vo) {
+		public String marketBoardLikely(@RequestBody MarketBoardVO vo) {
 			System.out.println("글 번호:"+vo.getMbNum());
 			System.out.println("유저 번호"+vo.getMemberNum());
 			if(service.checkLovely(vo) == 1) {
@@ -253,7 +253,7 @@ public class MarketBoardController {
 		// 글 신고 처리하기
 		@PostMapping("/marketReport")
 		@ResponseBody
-		public String marketBoardReport(@RequestBody marketBoardVO vo) {
+		public String marketBoardReport(@RequestBody MarketBoardVO vo) {
 			System.out.println("글 번호:"+vo.getMbNum());
 			System.out.println("유저 번호"+vo.getMemberNum());
 			if(service.checkReport(vo) == 1) {

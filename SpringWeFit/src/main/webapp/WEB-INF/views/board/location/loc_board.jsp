@@ -48,6 +48,11 @@
 #all {
 	font-weight: bold;
 }
+.search-area {
+			margin-top: 15px;
+			margin-right: 10px;
+		} 
+
 
 input {
 	padding: 5px;
@@ -80,55 +85,57 @@ input {
 		<div class="row">
 
 			<div class="container">
-
-				<div class="col-sm-5">
-					<span id="title">장소 찾기</span>
-				</div>
-
-				<!-- 종목 -->
-				<div id="btn-list" class="row" align="right">
-					<div id="sportsBtn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
-						<button type="button" class="btn btn-info btn-active" id="allBtn">전체</button>
-						<button type="button" class="btn btn-info" id="swimmingBtn">수영</button>
-						<button type="button" class="btn btn-info" id="badmintonBtn">배드민턴</button>
-						<button type="button" class="btn btn-info" id="squashBtn">스쿼시</button>
-						<button type="button" class="btn btn-info" id="bicycleBtn">자전거</button>
-						<button type="button" class="btn btn-info" id="runningBtn">달리기</button>
-						<button type="button" class="btn btn-info" id="hikingBtn">등산</button>
-						<button type="button" class="btn btn-info" id="trainingBtn">홈트짐트</button>
-						<button type="button" class="btn btn-info" id="pilatesBtn">필라테스</button>
-						<button type="button" class="btn btn-info" id="golfBtn">골프</button>
-						<button type="button" class="btn btn-info" id="skateBtn">스케이트</button>
-						<button type="button" class="btn btn-info" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
+				<div class="row">
+					<div class="col-sm-5">
+						<span id="title">장소 찾기</span>
 					</div>
-				
 
-					<div class="search-area">
-						<select id="search-condition" >
-							<option value="title"
-								${param.condition == 'title' ? 'selected' : '' }>제목</option>
-							<option value="content"
-								${param.condition == 'content' ? 'selected' : '' }>내용</option>
-							<option value="titleContent"
-								${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
-							<option value="area"
-								${param.condition == 'area' ? 'selected' : '' }>지역명</option>
-						</select> 
+					<!-- 종목 -->
+					<div id="btn-list" class="row" align="right">
+						<div id="sportsBtn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
+							<button type="button" class="btn btn-info btn-active" id="allBtn">전체</button>
+							<button type="button" class="btn btn-info" id="swimmingBtn">수영</button>
+							<button type="button" class="btn btn-info" id="badmintonBtn">배드민턴</button>
+							<button type="button" class="btn btn-info" id="squashBtn">스쿼시</button>
+							<button type="button" class="btn btn-info" id="bicycleBtn">자전거</button>
+							<button type="button" class="btn btn-info" id="runningBtn">달리기</button>
+							<button type="button" class="btn btn-info" id="hikingBtn">등산</button>
+							<button type="button" class="btn btn-info" id="trainingBtn">홈트짐트</button>
+							<button type="button" class="btn btn-info" id="pilatesBtn">필라테스</button>
+							<button type="button" class="btn btn-info" id="golfBtn">골프</button>
+							<button type="button" class="btn btn-info" id="skateBtn">스케이트</button>
+							<button type="button" class="btn btn-info" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
+						</div>
 					
-						<select id="search-distance" onchange="changeDistance(this)">
-							<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
-							<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
-							<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
-							<option value="10km" ${param.distance==10? 'selected':'' }>10km 이내</option>
-						</select> 
+
+						<div class="search-area">
+							<select id="search-condition" >
+								<option value="title"
+									${param.condition == 'title' ? 'selected' : '' }>제목</option>
+								<option value="content"
+									${param.condition == 'content' ? 'selected' : '' }>내용</option>
+								<option value="titleContent"
+									${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
+								<option value="area"
+									${param.condition == 'area' ? 'selected' : '' }>지역명</option>
+							</select> 
 						
-						<input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
-	
-						<button type="button" class="btn" aria-label="Left Align" id="searchBtn">
-							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						</button>
+							<select id="search-distance" onchange="changeDistance(this)">
+								<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
+								<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
+								<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
+								<option value="10km" ${param.distance==10? 'selected':'' }>10km 이내</option>
+							</select> 
+							
+							<input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
+		
+							<button type="button" class="btn" aria-label="Left Align" id="searchBtn">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</button>
+						</div>
 					</div>
 				</div>
+				
 			
 				<div class="row margin-top-5">
 					<table class="table table-hover table-responsive">

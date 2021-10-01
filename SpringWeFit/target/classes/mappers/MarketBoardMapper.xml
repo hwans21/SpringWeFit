@@ -27,7 +27,7 @@
     
     
  
-    <select id="getList" resultType="com.spring.wefit.command.marketBoardVO">
+    <select id="getList" resultType="com.spring.wefit.command.MarketBoardVO">
             SELECT * FROM
                (
                   SELECT ROWNUM as rn, market.* FROM
@@ -124,7 +124,7 @@
        
     </insert>
     
-    <select id="getContent" resultType="com.spring.wefit.command.marketBoardVO">
+    <select id="getContent" resultType="com.spring.wefit.command.MarketBoardVO">
        SELECT mb.*, m.memberNick 
        FROM MarketBoard mb, member m
        WHERE mb.mbNum = #{mbNum}

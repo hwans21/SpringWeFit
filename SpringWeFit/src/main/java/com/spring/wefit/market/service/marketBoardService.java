@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.wefit.command.marketBoardVO;
+import com.spring.wefit.command.MarketBoardVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.market.mapper.IMarketBoardMapper;
 
@@ -16,13 +16,13 @@ public class marketBoardService implements IMarketBoardService {
 	private IMarketBoardMapper mapper;
 
 	@Override
-	public void regist(marketBoardVO vo) {
+	public void regist(MarketBoardVO vo) {
 		mapper.regist(vo);
 
 	}
 
 	@Override
-	public List<marketBoardVO> getList(PageVO vo) {
+	public List<MarketBoardVO> getList(PageVO vo) {
 		
 		return mapper.getList(vo);
 	}
@@ -33,12 +33,12 @@ public class marketBoardService implements IMarketBoardService {
 	}
 
 	@Override
-	public marketBoardVO getContent(int mbNum) {
+	public MarketBoardVO getContent(int mbNum) {
 		return mapper.getContent(mbNum);
 	}
 
 	@Override
-	public void update(marketBoardVO vo) {
+	public void update(MarketBoardVO vo) {
 		mapper.update(vo);
 	}
 
@@ -54,22 +54,22 @@ public class marketBoardService implements IMarketBoardService {
 	}
 
 	@Override
-	public int checkLovely(marketBoardVO vo) {
+	public int checkLovely(MarketBoardVO vo) {
 		return mapper.checkLovely(vo);
 	}
 
 	@Override
-	public void insertLovely(marketBoardVO vo) {
+	public void insertLovely(MarketBoardVO vo) {
 		mapper.insertLovely(vo);
 	}
 
 	@Override
-	public int checkReport(marketBoardVO vo) {
+	public int checkReport(MarketBoardVO vo) {
 		return mapper.checkReport(vo);
 	}
 
 	@Override
-	public void insertReport(marketBoardVO vo) {
+	public void insertReport(MarketBoardVO vo) {
 		mapper.insertReport(vo);
 	}
 

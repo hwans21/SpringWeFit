@@ -7,7 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.spring.wefit.command.marketBoardVO;
+import com.spring.wefit.command.MarketBoardVO;
 import com.spring.wefit.market.mapper.IMarketBoardMapper;
 
 @WebAppConfiguration
@@ -21,11 +21,11 @@ public class marketBoardMapperTest {
 	@Test
 	public void registTest() {
 		for(int i=1; i<30; i++) {
-			marketBoardVO vo = new marketBoardVO();
+			MarketBoardVO vo = new MarketBoardVO();
 			vo.setMbNum(i);
 			vo.setMemberNum(i);
-			vo.setMbType("�׽�Ʈ" +i);
-			vo.setMbContent("�׽�Ʈ" + i);
+			vo.setMbType("�׽�Ʈ" +i);
+			vo.setMbContent("�׽�Ʈ" + i);
 			vo.setMbAddrBasic("test"+ i);
 			vo.setMbAddrDetail("test");
 			

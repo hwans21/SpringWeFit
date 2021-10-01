@@ -65,7 +65,8 @@
         
         #btn-list {
           
-          margin: 10px 20px 30px;
+            margin-top: 15px;
+	        margin-bottom: 25px;
         
         }
 
@@ -196,62 +197,67 @@
         </div> -->
 
         <div class="row">
-            <div class="col-sm-10">
-                <div>
-                    <span id="course">운동 강의</span>
+        	<div class="container">
+                <div class="row">
+                    <div class="col-sm-5" align="left">
+                        <span id="course">운동 강의</span>
+                    </div>
+                    <div id="btn-list" class="row" align="right">
+                        <div id="category-btn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
+                            <button type="button" class="btn btn-info ${param.category == '' ? 'active' : ''}" value="">전체</button>
+                            <button type="button" class="btn btn-info ${param.category == 'swimming' ? 'active' : ''}" value="swimming">수영</button>
+                            <button type="button" class="btn btn-info ${param.category == 'badminton' ? 'active' : ''}" value="badminton">배드민턴</button>
+                            <button type="button" class="btn btn-info ${param.category == 'squash' ? 'active' : ''}" value="squash">스쿼시</button>
+                            <button type="button" class="btn btn-info ${param.category == 'bicycle' ? 'active' : ''}" value="bicycle">자전거</button>
+                            <button type="button" class="btn btn-info ${param.category == 'running' ? 'active' : ''}" value="running">달리기</button>
+                            <button type="button" class="btn btn-info ${param.category == 'hiking' ? 'active' : ''}" value="hiking">등산</button>
+                            <button type="button" class="btn btn-info ${param.category == 'training' ? 'active' : ''}" value="training">홈트짐트</button>
+                            <button type="button" class="btn btn-info ${param.category == 'pilates' ? 'active' : ''}" value="pilates">필라테스</button>
+                            <button type="button" class="btn btn-info ${param.category == 'golf' ? 'active' : ''}" value="golf">골프</button>
+                            <button type="button" class="btn btn-info ${param.category == 'skate' ? 'active' : ''}" value="skate">스케이트</button>
+                            <button type="button" class="btn btn-info ${param.category == 'etc' ? 'active' : ''}" value="etc">기타</button>&nbsp;&nbsp;&nbsp;
+                        </div>
+                        
+                        <div class="search-area">
+                             <select id="search-category">
+                                <option value="">강의 전체</option>
+                                <option value="swimming" ${param.category == 'swimming' ? 'selected' : '' }>수영</option>
+                                <option value="badminton" ${param.category == 'badminton' ? 'selected' : '' }>배드민턴</option>
+                                <option value="squash" ${param.category == 'squash' ? 'selected' : '' }>스쿼시</option>
+                                <option value="bicycle" ${param.category == 'bicycle' ? 'selected' : '' }>자전거</option>
+                                <option value="running" ${param.category == 'running' ? 'selected' : '' }>달리기</option>
+                                <option value="hiking" ${param.category == 'hiking' ? 'selected' : '' }>등산</option>
+                                <option value="training" ${param.category == 'training' ? 'selected' : '' }>홈트짐트</option>
+                                <option value="pilates" ${param.category == 'pilates' ? 'selected' : '' }>필라테스</option>
+                                <option value="golf" ${param.category == 'golf' ? 'selected' : '' }>골프</option>
+                                <option value="skate" ${param.category == 'skate' ? 'selected' : '' }>스케이트</option>
+                                <option value="etc" ${param.category == 'etc' ? 'selected' : '' }>기타</option>
+                             </select>
+                            
+                            <select id="search-condition">
+                                <option value="title" ${param.condition == 'title' ? 'selected' : '' }>제목</option>
+                                <option value="content" ${param.condition == 'content' ? 'selected' : '' }>내용</option>
+                                <option value="titleContent" ${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
+                             </select>
+                            
+                            <input type="text" id="search-keyword" placeholder="Search" value="${param.keyword}">
+                              
+                            <button type="button" id="search-btn" class="btn" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </div>    
+                    
+                    </div>
                 </div>
+                
             </div>
+            
         </div>  
         
 		
 		
 		        
-        <div id="btn-list" class="row" align="right">
-            <div id="category-btn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-info ${param.category == '' ? 'active' : ''}" value="">전체</button>
-                <button type="button" class="btn btn-info ${param.category == 'swimming' ? 'active' : ''}" value="swimming">수영</button>
-                <button type="button" class="btn btn-info ${param.category == 'badminton' ? 'active' : ''}" value="badminton">배드민턴</button>
-                <button type="button" class="btn btn-info ${param.category == 'squash' ? 'active' : ''}" value="squash">스쿼시</button>
-                <button type="button" class="btn btn-info ${param.category == 'bicycle' ? 'active' : ''}" value="bicycle">자전거</button>
-                <button type="button" class="btn btn-info ${param.category == 'running' ? 'active' : ''}" value="running">달리기</button>
-                <button type="button" class="btn btn-info ${param.category == 'hiking' ? 'active' : ''}" value="hiking">등산</button>
-                <button type="button" class="btn btn-info ${param.category == 'training' ? 'active' : ''}" value="training">홈트짐트</button>
-                <button type="button" class="btn btn-info ${param.category == 'pilates' ? 'active' : ''}" value="pilates">필라테스</button>
-                <button type="button" class="btn btn-info ${param.category == 'golf' ? 'active' : ''}" value="golf">골프</button>
-                <button type="button" class="btn btn-info ${param.category == 'skate' ? 'active' : ''}" value="skate">스케이트</button>
-                <button type="button" class="btn btn-info ${param.category == 'etc' ? 'active' : ''}" value="etc">기타</button>&nbsp;&nbsp;&nbsp;
-            </div>
-            
-            <div class="search-area">
-	             <select id="search-category">
-	                <option value="">강의 전체</option>
-		            <option value="swimming" ${param.category == 'swimming' ? 'selected' : '' }>수영</option>
-		            <option value="badminton" ${param.category == 'badminton' ? 'selected' : '' }>배드민턴</option>
-		            <option value="squash" ${param.category == 'squash' ? 'selected' : '' }>스쿼시</option>
-		            <option value="bicycle" ${param.category == 'bicycle' ? 'selected' : '' }>자전거</option>
-		            <option value="running" ${param.category == 'running' ? 'selected' : '' }>달리기</option>
-		            <option value="hiking" ${param.category == 'hiking' ? 'selected' : '' }>등산</option>
-		            <option value="training" ${param.category == 'training' ? 'selected' : '' }>홈트짐트</option>
-		            <option value="pilates" ${param.category == 'pilates' ? 'selected' : '' }>필라테스</option>
-		            <option value="golf" ${param.category == 'golf' ? 'selected' : '' }>골프</option>
-		            <option value="skate" ${param.category == 'skate' ? 'selected' : '' }>스케이트</option>
-		            <option value="etc" ${param.category == 'etc' ? 'selected' : '' }>기타</option>
-	             </select>
-	            
-	            <select id="search-condition">
-		            <option value="title" ${param.condition == 'title' ? 'selected' : '' }>제목</option>
-		            <option value="content" ${param.condition == 'content' ? 'selected' : '' }>내용</option>
-		            <option value="titleContent" ${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
-	             </select>
-	            
-	            <input type="text" id="search-keyword" placeholder="Search" value="${param.keyword}">
-	              
-	            <button type="button" id="search-btn" class="btn" aria-label="Left Align">
-	                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-	            </button>
-        	</div>    
         
-        </div>
   
   
   

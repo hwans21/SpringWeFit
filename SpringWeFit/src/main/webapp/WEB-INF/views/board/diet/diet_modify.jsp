@@ -133,6 +133,56 @@
 				}
 	
 			});
+	    	
+	  		
+	          //제목 byte 체크
+	    	  $('#dbTitle').keyup(function(){
+	    	       bytesHandler(this);
+	    	  });
+	    	
+	          //내용 byte 체크
+	      	  $('#dbContent').keyup(function(){
+	      	       bytesHandler2(this);
+	      	  });
+	    	
+	    	  //제목 바이트 수 보여주기
+	    	  function bytesHandler(obj){
+	    		   
+	    	       var text = $(obj).val();
+	    	       var byteTitle = $('#nowByte').text(getTextLength(text)); 	
+	    	       if(byteTitle.val() > maxTitle) {
+	    	       alert('제목은 200바이트를 초과할 수 없습니다.');
+	    	       return;
+	    	    	   
+	    	       }
+	    	  }
+	    	  
+	    	  //내용 바이트 수 보여주기
+	      	  function bytesHandler2(obj){
+	      		 
+	      	       var text = $(obj).val();
+	      	       $('#nowByte2').text(getTextLength(text)); 	   
+	      	  }
+	      	   
+	    	  
+	    	  function getTextLength(str) {
+	    		  var rbyte = 0; 
+	    		  const maxTitle = 200; //제목 최대 바이트
+	    		  const maxContent = 2000; //내용 최대 바이트
+	    		  
+	    	       for (var i = 0; i < str.length; i++) {
+	    	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+	    	  	        	rbyte += 3;
+	    	  	        } else if(str.charCodeAt(i) < 12) {
+	    	  	        	rbyte += 2;
+	    	  	        } else { //영문 등 나머지 1Byte
+	    	  	        	rbyte++;
+	    	  	        }
+	    	      }
+	    	       return rbyte;
+	    	  }
+	    	  
+	    	  
 			
 			
 			$('#delBtn').click(function() {

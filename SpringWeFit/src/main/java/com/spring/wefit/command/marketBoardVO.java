@@ -58,7 +58,7 @@ CREATE SEQUENCE marketBoard_seq
 @Getter
 @Setter
 @ToString
-public class marketBoardVO {
+public class MarketBoardVO {
 	
 	private int mbNum;
 	private int memberNum;

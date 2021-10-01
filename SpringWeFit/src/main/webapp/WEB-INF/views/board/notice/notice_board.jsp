@@ -164,8 +164,8 @@
         <div class="row">
             <ul id="sub_menu3" class="sub_menu">
 
-                <li class="sub2"><a href="<c:url value="/noticeBoard/" />">공지사항</a></li>
-                <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
+                <li class="sub2"><a id="subMenuNotice" href="<c:url value="/noticeBoard/" />">공지사항</a></li>
+           		<li class="sub2"><a id="subMenuFree" href="<c:url value="/freeBoard/" />">자유게시판</a></li>
 
             </ul>
         </div>
@@ -266,6 +266,11 @@
         
     </div>
    <script>
+	   if(window.location.pathname.indexOf("/noticeBoard") !== -1){
+			$('#subMenuNotice').css("font-size","18px").css("font-weight","700");
+		} else if(window.location.pathname.indexOf("/freeBoard") !== -1){
+			$('#subMenuFree').css("font-size","18px").css("font-weight","700");
+		}
    	$('#searchBtn').click(function(){
    		
 	
