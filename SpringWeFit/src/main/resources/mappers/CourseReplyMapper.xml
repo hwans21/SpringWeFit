@@ -48,7 +48,7 @@
 
 <update id="update">
 	UPDATE CourseReply SET crContent = #{crContent}, crRegDate = SYSDATE
-	WHERE crNum = #{crNum}
+	WHERE crNum = #{crNum}	
 </update>
 
 <delete id="delete">

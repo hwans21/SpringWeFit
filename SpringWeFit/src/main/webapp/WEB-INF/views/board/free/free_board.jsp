@@ -4,6 +4,10 @@
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,8 +104,8 @@
         </div>
         <div class="row">
           <ul id="sub_menu3" class="sub_menu">
-           <li class="sub2"><a href="<c:url value="/noticeBoard/" />">공지사항</a></li>
-           <li class="sub2"><a href="<c:url value="/freeBoard/" />">자유게시판</a></li>
+           <li class="sub2"><a id="subMenuNotice" href="<c:url value="/noticeBoard/" />">공지사항</a></li>
+           <li class="sub2"><a id="subMenuFree" href="<c:url value="/freeBoard/" />">자유게시판</a></li>
           </ul>
         </div>
    		<div class="container text-center">
@@ -150,7 +154,7 @@
                       <tr ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }" />'">
                         
                         <th scope="col" class="text-center">${arr.fbNum }</th>
-                        <th scope="col">${arr.fbTitle }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>
+                        <th scope="col">${fn:replace(fn:replace(fn:replace(arr.fbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>
                         <th scope="col" class="text-center">${arr.memberNick }</th>
                         <th scope="col" class="text-center"><fmt:formatDate value="${arr.fbRegDate }" pattern="yyyy-MM-dd"/></th>
                         <th scope="col" class="text-center">${arr.fbLookCount }</th>
@@ -247,6 +251,12 @@
         
     </div>
     <script>
+	    if(window.location.pathname.indexOf("/noticeBoard") !== -1){
+			$('#subMenuNotice').css("font-size","18px").css("font-weight","700");
+		} else if(window.location.pathname.indexOf("/freeBoard") !== -1){
+			$('#subMenuFree').css("font-size","18px").css("font-weight","700");
+		}
+    	
     	$('#allBtn').click(function(){
     		location.href=`<c:url value="/freeBoard/?condition=&keyword=${pc.paging.keyword} " />`
     	});

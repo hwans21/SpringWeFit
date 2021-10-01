@@ -6,6 +6,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -90,6 +93,7 @@
             font-size: 15px;
             font-weight: 400;
         }
+        
 
         .reply-box {
             padding-bottom: 20px;
@@ -120,7 +124,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>${content.fbTitle }</h2>
+                            <h2>${fn:replace(fn:replace(fn:replace(content.fbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }</h2>
                         </div>
                     </div>
                 </div>
@@ -220,7 +224,7 @@
                             <tr>
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
-										${fn:replace(content.fbContent, replaceChar,"<br/>") }
+										${fn:replace(fn:replace(fn:replace(content.fbContent, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
                                     </p>
                                 </td>
                             </tr>
@@ -354,7 +358,7 @@
                 const day = today.getDate(); //일
                 const hour = today.getHours(); // 시
                 const minute = today.getMinutes(); // 분
-                time = year + "년" + month + "월" + day + "일" + hour + "시" + minute + "분";
+                time = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
 
             }
             return time;

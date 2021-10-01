@@ -81,14 +81,11 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <!-- Link 메뉴 (class가 active가 포함되어 있기 때문에 선택된 메뉴 뜻) -->
-                    <li>
-                        <a href="<c:url value='/placeBoard/placeList' />">함께 운동해요 <span class="sr-only">(current)</span></a>
-                    </li>
-                    <!-- Link 메뉴 -->
-                    <li><a href='<c:url value='/courseBoard/?category=' />'>운동강의</a></li>
-                    <li><a href="<c:url value='/dietBoard/dietList' />">오늘먹은식단</a></li>
-                    <li><a href="<c:url value='/noticeBoard/' />">게시판</a></li>
-                    <li><a href="<c:url value='/marketBoard/market_board' />">장터</a></li>
+                    <li><a id="menuPlace" href="<c:url value='/placeBoard/placeList' />">함께 운동해요 </a></li>
+                    <li><a id="menuCourse" href='<c:url value='/courseBoard/?category=' />'>운동강의</a></li>
+                    <li><a id="menuDiet" href="<c:url value='/dietBoard/dietList' />">오늘먹은식단</a></li>
+                    <li><a id="menuNotice" href="<c:url value='/noticeBoard/' />">게시판</a></li>
+                    <li><a id="menuMarket" href="<c:url value='/marketBoard/market_board' />">장터</a></li>
                 </ul>
 
                 <!-- 오른쪽 정렬의 메뉴 -->
@@ -400,7 +397,19 @@
 		const regExpPhone = /^[0-9]*$/;
         /*부트스트랩 jquery*/
         
-        $(document).ready(function () {
+        if(window.location.pathname.indexOf("/placeBoard") !== -1){
+       		$('#menuPlace').css("color","black").css("font-size","23px");
+       	} else if(window.location.pathname.indexOf("/courseBoard") !== -1){
+       		$('#menuCourse').css("color","black").css("font-size","23px");
+       	} else if(window.location.pathname.indexOf("/dietBoard") !== -1){
+       		$('#menuDiet').css("color","black").css("font-size","23px");
+       	} else if((window.location.pathname.indexOf("/noticeBoard") !== -1) || (window.location.pathname.indexOf("/freeBoard") !== -1)){
+       		$('#menuNotice').css("color","black").css("font-size","23px");
+       	} else if(window.location.pathname.indexOf("/marketBoard") !== -1){
+       		$('#menuMarket').css("color","black").css("font-size","23px");
+       	}
+        $(document).ready(function () { 
+        	 
         	
         	
             menuBarLocation();

@@ -6,6 +6,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -204,7 +206,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>${article.cbTitle}</h2>
+                            <h2>${fn:replace(fn:replace(fn:replace(article.cbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }</h2>
                         </div>
                     </div>
                 </div>
@@ -242,7 +244,7 @@
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
                                     	
-                                        ${fn:replace(article.cbContent, replaceChar,"<br/>") }
+                                        ${fn:replace(fn:replace(fn:replace(article.cbContent, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
                               <!--
                                                        보이는 눈에 주며, 커다란 속잎나고, 동산에는 그들의 그들은 실로 부패뿐이다. 얼마나 따뜻한 얼음 것은 이것이야말로 것이다. 위하여, 싹이 수
                                                        이성은 어디 길지 보라. 청춘의 모래뿐일 황금시대의 인간은 우리의 말이다. 뜨고, 이상, 끓는 구하기 미묘한 원대하고, 우리는 위하여서. 그것은
