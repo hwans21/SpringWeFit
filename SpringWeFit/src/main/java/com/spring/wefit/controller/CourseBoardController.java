@@ -105,10 +105,6 @@ public class CourseBoardController {
 	  //cbContent부분(textarea) 줄개행은 db에 \r\n으로 저장이 된다.
 	  //그걸 <br>로 바꿔야 화면에 줄개행이되어서 출력이된다. (html은 줄개행이 <br>인가봄)
 	  
-	  if(vo.getCbContent() != null) {
-		  String newBrContent = vo.getCbContent().replace("\r\n","<br>");
-		  vo.setCbContent(newBrContent);
-	  }
 	  
   
       model.addAttribute("article", vo);

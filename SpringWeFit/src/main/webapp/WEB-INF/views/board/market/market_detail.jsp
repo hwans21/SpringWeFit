@@ -1,6 +1,10 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +65,7 @@
 
         #carousel-example-generic {
             /* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
-            height: 1000px;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
         }
 
@@ -137,12 +141,13 @@
                 	<c:if test="${loginuser.memberNum == detail.memberNum }">
                     <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_modify?mbNum=${detail.mbNum }" />'">수정하기</button>
                     </c:if>
-                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_board" />'">목록으로</button>
+                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_board?pageNum=${p.pageNum }&keyword=${p.keyword }&condition=${p.condition }" />'">목록으로</button>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>${detail.mbTitle }</h2>
+                            <h2>${fn:replace(fn:replace(fn:replace(detail.mbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }</h2>
+                            <input type="hidden" name="mbNum" id="mbNum" value="${detail.mbNum }">
                         </div>
                     </div>
                 </div>
@@ -300,7 +305,8 @@
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
 
-                                        ${detail.mbContent }
+                                       ${fn:replace(fn:replace(fn:replace(detail.mbContent, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
+                                       
                                     </p>
                                 </td>
                             </tr>
@@ -329,13 +335,15 @@
                 <div class="row">
                     <form id="reply-form">
                         <div class="input-group input-group-lg">
-
+								
                             <input type="text" id="replyInput" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
                                 <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
+                            
                             </span>
+                            <sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup>
                         </div>
                     </form>
                 </div>
@@ -423,15 +431,46 @@
             return time;
         }
         
+
+   	 $('#replyInput').keyup(function(){
+ 	       bytesHandler(this);
+ 	  });
+ 	   function getTextLength(str) {
+ 	       var rbyte = 0;
+ 	       for (var i = 0; i < str.length; i++) {
+ 	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+ 	  	        	rbyte += 3;
+ 	  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+ 	  	        	rbyte += 2;
+ 	  	        } else { //영문 등 나머지 1Byte
+ 	  	        	rbyte++;
+ 	  	        }
+ 	      }
+ 	       return rbyte;
+ 	  }
+ 	   function bytesHandler(obj){
+ 	       var text = $(obj).val();
+ 	       $('#nowByte').text(getTextLength(text)); 	   
+ 	   }
+       
+     
+        
         $('#replyBtn').click(function(){
-        	if(boolRegist){
+        	if(+($('#nowByte').text()) > 200)	{
+				alert('댓글은 200byte를 초과할 수 없습니다')
+				return;
+        	}else if(boolRegist){
 	        	replyRegist();
 	        	$('#replyInput').val('');
-        	} else {
+        	}else {
         		replyModify(mrClassName);
         		$('#replyInput').val('');
         	}
         });
+        
+        	
+        
+        
         $('#replyInput').keydown(function(e){
         	if(e.keyCode === 13){
         		if(boolRegist){

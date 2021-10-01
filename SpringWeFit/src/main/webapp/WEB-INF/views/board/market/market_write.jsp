@@ -103,7 +103,7 @@
                         <td>
                            <input type="hidden" id="sample6_postcode" placeholder="우편번호">
                      <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
-                     거래장소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50"><br>
+                     거래장소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50" readonly><br>
                      <input type="hidden" id="sample6_detailAddress" name="mbAddrDetail" placeholder="상세주소">
                      <input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
          

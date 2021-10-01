@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,7 +102,6 @@ public class MarketBoardController {
 			System.out.println(str);
 		}
 		vo.setMbImageCount(imgCount);
-		vo.setMbContent(vo.getMbContent().replace("\r\n", "<br>"));
 		
 		
 //		String[] arr = vo.getMbAddrBasic().split(" ");
@@ -116,7 +116,7 @@ public class MarketBoardController {
 	}
 
 	@GetMapping("/market_detail")
-	public String detail(@RequestParam int mbNum,PageVO page, Model model) {
+	public String detail(@RequestParam int mbNum,@ModelAttribute("p") PageVO page, Model model) {
 		
 		service.updateViewCount(service.getContent(mbNum).getMbNum());
 		model.addAttribute("detail", service.getContent(mbNum));
@@ -222,7 +222,6 @@ public class MarketBoardController {
 			System.out.println(str);
 		}
 		vo.setMbImageCount(imgCount);
-		vo.setMbContent(vo.getMbContent().replace("\r\n", "<br>"));
 				
 		
 		System.out.println(vo);

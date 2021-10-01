@@ -174,11 +174,11 @@
        			SELECT mb.*,
                 DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
                 FROM MarketBoard mb
-       			<include refid="search" />
                 )market
                  <![CDATA[
             	WHERE market.distance < #{distance}
             	]]>
+       			<include refid="search" />
                 
     </select>
     

@@ -206,7 +206,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>${fn:replace(fn:replace(fn:replace(article.cbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }</h2>
+                            <h2>${fn:replace(fn:replace(fn:replace(article.cbTitle, replaceChar2,"&gt;"),replaceChar1,"&lt;"),replaceChar,"<br/>") }</h2>
                         </div>
                     </div>
                 </div>

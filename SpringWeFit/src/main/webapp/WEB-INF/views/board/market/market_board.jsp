@@ -176,7 +176,7 @@
 								<tr class="course">
 							</c:if>
 							
-							<th ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } scope="col" class="text-center"  onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }' />'">
+							<th ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } scope="col" class="text-center"  onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${product.mbNum }&pageNum=${pc.paging.pageNum }&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }' />'">
 								
 								<div class=vid>
 									<a href="#"><img
