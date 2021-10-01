@@ -761,11 +761,11 @@
         		
         		
         		//댓글 수정하려고 입력하는 도중에 다른 댓글 눌러서 수정하다가 처음에 손댔던 댓글 입력창 클릭하면..입력해놓은 값이 아직도 남아있음. 그 값을 초기화 시켜주는 처리
-        		$('.reply-modify-input').focusout(function() {
+        		//$('.reply-modify-input').focusout(function() {
         		    // input 창밖으로 focus가 나갈때  event
         		//    $('#rform')[0].reset(); //수정 다 하고 확인누르는 경우에도 reset되는바람에 수정이안된다..그래서 이코드에서 getList(1,true)로 바꿈.
-        			getList(1, true);
-        		});
+        		//	getList(1, true);
+        		//});
 
         		
             	// 수정창에서 x버튼 누르면 수정창 사라지게 하기.

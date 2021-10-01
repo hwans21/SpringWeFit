@@ -164,12 +164,12 @@ public class CourseBoardController {
    }
    
    @PostMapping("/delete")
-   public String courseDelete(@RequestParam int cbNum, RedirectAttributes ra) {
+   public String courseDelete(@RequestParam int cbNum, PageVO page, RedirectAttributes ra) {
       
       service.delete(cbNum);
       ra.addFlashAttribute("msg", "삭제가 완료되었습니다.");
       
-      return "redirect:/courseBoard/?category=";
+      return "redirect:/courseBoard/?category=" + page.getCategory() + "&condition=" + page.getCondition() + "&keyword=" + page.getKeyword(); //pageNum도 하고싶은데...(2페이지 첫번째 글이 마지막글일때)2페이지 첫번째 글 삭제하면..1페이지를 보여줘야하는데 그럴수가 없어서.. pageNum은 묻혀주지 않음.
    }
    
 

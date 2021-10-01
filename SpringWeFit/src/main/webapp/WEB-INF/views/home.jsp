@@ -19,12 +19,12 @@
         }
         .section .main_img {
             width: 100%;
-            height: 400px;
+           /*  height: 400px; */
         }
         .carousel-inner .item {
             vertical-align: middle;
             width: 100%;
-            height: 650px;
+            height: 360px;
         }
 
         .carousel-inner .item img {
@@ -61,11 +61,14 @@
 
         <div class="row"> 
             <div class="section">
-                <img src="${pageContext.request.contextPath }/resources/img/main/main.jpg" alt="" class="main_img">
 
                 <div class="container">
-                   
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                
+	                <div class="col-md-6">
+	                    <img src="${pageContext.request.contextPath }/resources/img/main/main2.jpg" alt="" class="main_img" height="360px">
+	                </div>
+
+                    <div id="myCarousel" class="carousel slide col-md-6" data-ride="carousel">
                       <!-- Indicators -->
                     <ol class="carousel-indicators">
                         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -78,7 +81,7 @@
                         <div class="item active">
                         <a href="/FRONT/views/board/course/ck_course_board2.html"> <!-- 해당 이미지가 있는 게시글로 링크 -->
                             <img src="${pageContext.request.contextPath }/resources/img/course/vid01.jpg" alt="" style="width:100%;">
-                            <div class="carousel-caption">
+                             <div class="carousel-caption">
                                 <h3>운동강의<br>함께 따라해봐요! </h3>
                             </div>
                         </a>
@@ -86,16 +89,17 @@
                     
                         <div class="item">
                         <a href="#"> <!-- 해당 이미지가 있는 게시글로 링크 -->
-                            <img src="${pageContext.request.contextPath }/resources/img/location/site01.jpg" alt="" style="width:100%;">
-                            <div class="carousel-caption">
-                                <h3>운동하기<br>함께 운동해요!</h3>
-                            </div>
+                        	
+	                        <img src="${pageContext.request.contextPath }/resources/img/location/site01.jpg" alt="" style="width:100%;">        
+ 	                        <div class="carousel-caption">
+	                            <h3>운동하기<br>함께 운동해요!</h3>
+	                        </div>
                         </a>
                         </div>
                         
                         <div class="item">
                         <a href="#"> <!-- 해당 이미지가 있는 게시글로 링크 -->
-                            <img src="${pageContext.request.contextPath }/resources/resource/img/product/슈펜 테크 운동화.jpg" alt="" style="width:100%;">
+                            <!-- <img src="" alt="" style="width:100%;"> -->
                             <div class="carousel-caption">
                                 <h3>중고장터<br>뭐든 사고팔아요!</h3>
                             </div>
