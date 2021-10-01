@@ -39,7 +39,6 @@ public class CourseBoardController {
    public String courseList(PageVO vo, Model model) {
 	   
 	  System.out.println("리스트요청~~");
-	   
 	  //여기서 setCounterPerPage를 사용해서 9로 바꿔주기.
 	  vo.setCountPerPage(9);
 	  
@@ -51,7 +50,9 @@ public class CourseBoardController {
 	  model.addAttribute("pc", pc);   
 	   
 	  //System.out.println(vo);
-	  
+	  for(CourseBoardVO t : service.getList(vo)) {
+		  System.out.println(t.toString());
+	  }
       model.addAttribute("courseList", service.getList(vo));
 
       return "board/course/course_board";

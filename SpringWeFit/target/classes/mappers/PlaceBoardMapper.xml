@@ -22,6 +22,22 @@
 			</otherwise>	
 		</choose>
 	</sql>
+	
+	<sql id="search" >
+		<if test="condition == 'title'">
+			AND p.pbTitle LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'content'">
+			AND p.pbContent LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'titleContent'">
+			AND p.pbTitle LIKE '%'||#{keyword}||'%'
+			OR p.pbContent LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="condition == 'area'">
+			AND p.pbAddrBasic LIKE '%'||#{keyword}||'%'
+		</if>
+	</sql>
 
 	<select id="getList" resultType="com.spring.wefit.command.PlaceBoardVO">
 		SELECT * FROM
@@ -30,11 +46,12 @@
          (
             SELECT p.*, m.memberNick,(SELECT COUNT(*) FROM PlaceLikely WHERE pbNum=p.pbNum) as pbLikelyCount,
             (SELECT COUNT(*) FROM PlaceReport WHERE pbNum=p.pbNum) as pbReportCount,
+            (SELECT COUNT(*) FROM PlaceReply WHERE pbNum=p.pbNum) as pbReplyCount,
             DISTANCE_WGS84(#{latitude}, #{longitude}, p.pbLatitude, p.pbLongitude) as distance
             FROM PlaceBoard p, Member m
             WHERE p.memberNum = m.memberNum
-            AND p.pbCategory LIKE '%'||#{condition}||'%'
-            AND p.pbTitle LIKE '%'||#{keyword}||'%'
+            AND p.pbCategory LIKE '%'||#{category}||'%'
+           	<include refid="search" />
          	ORDER BY pbRegDate DESC
          ) place
          <![CDATA[
@@ -61,14 +78,13 @@
 		(
 		    SELECT p.*,DISTANCE_WGS84(#{latitude}, #{longitude}, p.pbLatitude, p.pbLongitude) as distance FROM PlaceBoard p, Member m
 		    WHERE p.memberNum = m.memberNum
-		    AND p.pbTitle LIKE '%'||#{condition}||'%'
-		    AND p.pbTitle LIKE '%'||#{keyword}||'%'
+		    AND p.pbCategory LIKE '%'||#{category}||'%'
+		    <include refid="search" />
 		)
 		 <![CDATA[
          WHERE distance < #{distance}
          ]]>
 	</select>
-	 
 	 
 	<insert id="regist">
 		INSERT INTO PlaceBoard
@@ -138,6 +154,7 @@
 		SELECT COUNT(*) FROM PlaceLikely
 		WHERE pbNum = #{pbNum}
 	</select>
+	
 	
 	
 	<insert id="insertReport">

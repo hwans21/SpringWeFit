@@ -41,8 +41,9 @@
 </select>
 
 <select id="getTotal" resultType="int">
-	SELECT COUNT(*) FROM CourseReply
-	WHERE cbNum = #{cbNum}
+	SELECT COUNT(*) FROM CourseReply cr, Member m
+	WHERE cr.cbNum = #{cbNum}
+	AND cr.memberNum = m.memberNum
 </select>
 
 <update id="update">

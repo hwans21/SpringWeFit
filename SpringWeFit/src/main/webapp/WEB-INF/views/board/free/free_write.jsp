@@ -117,6 +117,16 @@
         <%@ include file="../../include/footer.jsp" %>
     </div>
 	<script>
+		let bool = true;
+	
+		$('#category').change(function(){
+	    	let title = $('#titleInput').val();
+			let category = title.substring(title.indexOf("["),title.indexOf("]")+1);
+			if(category !== $('#category').val()){
+				$('#titleInput').val(title.replace(category,$('#category').val()));
+			}
+			$('#titleByte').text(getTextLength($(titleInput).val()));
+		});
 		function getTextLength(str) {
 		       var rbyte = 0;
 		       for (var i = 0; i < str.length; i++) {
@@ -131,8 +141,9 @@
 		      return rbyte;
 		 }
 		$(document).ready(function () {
-			$('#titleByte').text(getTextLength($(this).val()));
-			$('#contentByte').text(getTextLength($(this).val()));
+			$('#titleInput').val($('#category').val());
+			$('#titleByte').text(getTextLength($(titleInput).val()));
+			$('#contentByte').text(getTextLength($(contentInput).val()));
 		});
 		
 		$('#titleInput').keyup(function(){
@@ -142,10 +153,10 @@
 			$('#contentByte').text(getTextLength($(this).val()));
 		});
 	
-		let bool = true;
         
         //각 파일당, 전체 용량 확인 함수
         $("#uploadFiles").change(function(){
+          bool = true;
       		
            if(this.files || this.files[0] || this.files[1] || this.files[2] || this.files[3] || this.files[4] != null) {
               var maxSize = 50 * 1024 * 1024;
@@ -177,7 +188,6 @@
                  return;
               }
            }
-           bool = true;
         }); //각 파일당, 전체 용량 확인 함수 종료
 	
 		$('#regBtn').click(function(){

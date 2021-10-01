@@ -88,6 +88,7 @@
                     <tr>
                         <td>작성자</td>
                         <td><input type=text size=20 value="관리자" readonly disabled> </td>
+                        <input type="hidden" name="memberNum" size="20" value="${loginuser.memberNum }">
                     </tr>
 
                     <tr>

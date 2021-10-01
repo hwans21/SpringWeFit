@@ -1,6 +1,8 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +110,7 @@
                     
                     <tr>
                         <td>사진올리기 </td>
-                        <td><input multiple type="file" name="fileName" size="10" maxlength="10" onchange="checkFile(this)"></td>
+                        <td><input multiple type="file" id="uploadFiles" name="fileName" size="10" maxlength="10" onchange="checkFile(this)"></td>
                     </tr>
                     
                     <tr class="text-right">
@@ -135,31 +137,37 @@
 
 	<script>
     	const writeBtn = document.getElementById('writeBtn');
-    	writeBtn.onclick = function() {
-    			if(document.writeForm.sports.value === 'category'){
-    				alert('종목은 필수 항목 입니다.');
-    				document.writeForm.sports.focus();
-    				return;
-    			} else if(document.writeForm.memberNick.value === '') {
-					alert('작성자는 필수 항목 입니다.');
-					document.writeForm.name.focus();
-					return;
-				} else if(document.writeForm.pbTitle.value === '') {
-					alert('제목은 필수 항목 입니다.');
-	  				document.writeForm.pbTitle.focus();
-	  				return;
-				} else if(document.writeForm.sample6_address.value === '') {
-					alert('주소는 필수 항목 입니다.');
-	  				document.writeForm.sample6_address.focus();
-	  				return;
-				} else if(document.writeForm.sample6_detailAddress.value === '') {
-					alert('상세주소는 필수 항목 입니다.');
-	  				document.writeForm.sample6_detailAddress.focus();
-	  				return;
-				} else {
-					document.writeForm.submit();
-				}
-		};
+        let bool = true;
+        writeBtn.onclick = function() {
+        	if(document.writeForm.sports.value === 'category'){
+				alert('종목은 필수 항목 입니다.');
+				document.writeForm.sports.focus();
+				return;
+			} else if(document.writeForm.pbTitle.value === '') {
+				alert('제목은 필수 항목 입니다.');
+  				document.writeForm.pbTitle.focus();
+  				return;
+			} else if($('#pbTitle').val().length > 200) {
+                alert('제목은 최대 200byte를 초과할 수 없습니다.');   
+                $('#pbTitle').focus();
+                return;
+			} else if($('#pbContent').val().length > 2000) {
+                alert('내용은 최대 2000byte를 초과할 수 없습니다.');   
+                $('pbContent').focus();
+                return;
+			} else if(document.writeForm.sample6_address.value === '' ) {
+				alert('주소는 필수 항목 입니다.');
+  				document.writeForm.sample6_address.focus();
+  				return;
+			} else {
+				document.writeForm.submit();
+			}
+        };
+        	
+     
+
+        
+    	
     	
   		$('#listBtn').click(function() {
 			if(confirm('목록으로 돌아가시겠습니까?')) {
@@ -229,27 +237,73 @@
   		        }
   		    };
   		  
-  		   // 파일 업로드 용량 체크
-  		  function checkFile(el){
-
-  			// files 로 해당 파일 정보 얻기.
-  			var file = el.files;
-
-  			// file[0].size 는 파일 용량 정보입니다.
-  			if(file[0].size > 1024 * 1024 * 2){
-  				// 용량 초과시 경고후 해당 파일의 용량도 보여줌
-  				alert('2MB 이하 파일만 등록할 수 있습니다.\n\n' + '현재파일 용량 : ' + (Math.round(file[0].size / 1024 / 1024 * 100) / 100) + 'MB');
-  			}
-
-  			// 체크를 통과했다면 종료.
-  			else return;
-
-  			// 체크에 걸리면 선택된 내용 취소 처리를 해야함.
-  			// 파일선택 폼의 내용은 스크립트로 컨트롤 할 수 없습니다.
-  			// 그래서 그냥 새로 폼을 새로 써주는 방식으로 초기화 합니다.
-  			// 이렇게 하면 간단 !?
-  			el.outerHTML = el.outerHTML;
-  		}
+  		//제목 byte 체크
+      	  $('#pbTitle').keyup(function(){
+      	       bytesHandler(this);
+      	  });
+      	   function getTextLength(str) {
+      	       var rbyte = 0;
+      	       for (var i = 0; i < str.length; i++) {
+      	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+      	  	        	rbyte += 3;
+      	  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+      	  	        	rbyte += 2;
+      	  	        } else { //영문 등 나머지 1Byte
+      	  	        	rbyte++;
+      	  	        }
+      	      }
+      	       return rbyte;
+      	  }
+      	   function bytesHandler(obj){
+      	       var text = $(obj).val();
+      	       $('#nowByte').text(getTextLength(text)); 	   
+      	   }
+      	   
+         //내용 byte 체크
+       	  $('#pbContent').keyup(function(){
+       	       bytesHandler2(this);
+       	  });
+       	   function bytesHandler2(obj){
+       	       var text = $(obj).val();
+       	       $('#nowByte2').text(getTextLength(text)); 	   
+       	  }
+       	   
+  		     //각 파일당, 전체 용량 확인 함수
+           $("input[name=fileName]").off().on("change", function(){
+             	bool = true;
+         
+              if(this.files || this.files[0] || this.files[1] || this.files[2] || this.files[3] || this.files[4] != null) {
+                 var maxSize = 50 * 1024 * 1024;
+                 var totalSize = 0;
+                 
+                 if($('#uploadFiles')[0].files.length > 5) {
+                    alert('최대 사진 수는 5장입니다.');
+                    bool = false;
+                    return;
+                 }
+                 
+                 for(i=0; i<this.files.length; i++) {
+                    totalSize += this.files[i].size;
+                 }
+                 for(i=0; i<5; i++) {
+                    if(this.files[i].size > 10 * 1024 * 1024){
+                       alert('한 이미지의 허용 크기는 10MB입니다.');
+                       bool = false;
+                       return;
+                    }
+                 }
+                 if(totalSize > maxSize) {
+                    alert('사진의 총 용량은 50MB입니다.');
+                    bool = false;
+                    return;
+                 }
+              }
+           }); //각 파일당, 전체 용량 확인 함수 종료
+  		   
+  		   
+  		   
+  		   
+  		   
     </script>
     
 

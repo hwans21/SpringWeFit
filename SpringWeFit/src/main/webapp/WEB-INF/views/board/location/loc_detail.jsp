@@ -1,266 +1,290 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+	pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
+
 <!DOCTYPE html>
 
 
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <style>
-        .titlebox h2 {
-            border-bottom: 1px solid rgb(0, 173, 181);
-            margin: 20px 0px;
-            padding-bottom: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            color: rgb(0, 173, 181);
-        }
-        table tr td {
-            padding: 15px;
-            border-bottom: 1px solid #ccc;
-        }
-        .titlefoot {
-            float: right;
-            margin: 20px;
-        }
-        .video-wrap {
-            position: relative;
-            padding-bottom: 56.25%;
-            padding-top: 30px;
-            height: 0;
-            overflow: hidden;
-        }
-        .video-wrap iframe,
-        .video-wrap object,
-        .video-wrap embed {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .carousel-inner>.item>img {
-            top: 0;
-            left: 0;
-            min-width: 100%;
-            min-height: 400px;
-        }
-        #carousel-example-generic {
-            /* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
-            height: 800px;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        .test {
-            height: 1000px;
-            overflow: auto;
-        }
-        .test:last-child .row {
-            margin-top: 20px;
-            margin-left: 20px.;
-        }
-        .reply {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .reply small {
-            font-size: 15px;
-            font-weight: 400;
-        }
-        .reply-box {
-            padding-bottom: 20px;
-            border-bottom: 1px solid #ccc;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+.titlebox h2 {
+	border-bottom: 1px solid rgb(0, 173, 181);
+	margin: 20px 0px;
+	padding-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	color: rgb(0, 173, 181);
+}
+
+table tr td {
+	padding: 15px;
+	border-bottom: 1px solid #ccc;
+}
+
+.titlefoot {
+	float: right;
+	margin: 20px;
+}
+
+.video-wrap {
+	position: relative;
+	padding-bottom: 56.25%;
+	padding-top: 30px;
+	height: 0;
+	overflow: hidden;
+}
+
+.video-wrap iframe, .video-wrap object, .video-wrap embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.carousel-inner>.item>img {
+	top: 0;
+	left: 0;
+	min-width: 100%;
+	min-height: 400px;
+}
+
+#carousel-example-generic {
+	/* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
+	height: 800px;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+.test {
+	height: 1000px;
+	overflow: auto;
+}
+
+.test:last-child .row {
+	margin-top: 20px;
+	margin-left: 20px .;
+}
+
+.reply {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.reply small {
+	font-size: 15px;
+	font-weight: 400;
+}
+
+.reply-box {
+	padding-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container-fluid h-100">
+	<div class="container-fluid h-100">
 
-        <div class="row">
-            <%@ include file="../../include/header.jsp" %>
-        </div>
+		<div class="row">
+			<%@ include file="../../include/header.jsp"%>
+		</div>
 
-        <div class="container-fluid">
-            <div class="col-md-8 col-sm-12 test">
-                <div class="row">
-                <c:if test="${loginuser.memberNick == placeList.memberNick }">
-                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/placeBoard/placeModify?pbNum=${placeList.pbNum}" />'">수정하기</button>
-                </c:if>
-                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/placeBoard/placeList" />'">목록으로</button>
-                </div>
-                
-              
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="titlebox">
-                            <h2>${placeList.pbTitle}</h2>
-                        </div>
-                    </div>
-                </div>
-
-  				<c:if test="${placeList.pbImageCount > 0 }">
-	                <div class="row">
-	                    <div class="container-fluid">
-	                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"
-	                            data-interval="false">
-	                            <!-- Indicators -->
-	                            <ol class="carousel-indicators">
-		                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-			                          <c:forEach var="index" begin="1" end="${placeList.pbImageCount-1}">
-				                         <li data-target="#carousel-example-generic" data-slide-to="${index}"></li>
-			                        1</c:forEach>
-		                        </ol>
-								
-	
-	                            <!-- Wrapper for slides -->
-	                            <div class="carousel-inner" role="listbox">
-	                                <c:if test="${placeList.pbRealImage1 != null }">
-			                             <div class="item active">
-			                                  <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage1 }" width="100%" alt="...">
-			                             </div>
-		                            </c:if >
-	                                
-	                                <c:if test="${placeList.pbRealImage2 != null }">
-			                             <div class="item">
-			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage2 }" width="100%" alt="...">
-			                             </div>
-		                           	</c:if>
-		                           	
-		                            <c:if test="${placeList.pbRealImage3 != null }">
-			                             <div class="item">
-			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage3 }" width="100%" alt="...">
-			                             </div>
-		                            </c:if>
-		                            	
-		                            <c:if test="${placeList.pbRealImage4 != null }">
-			                             <div class="item">
-			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage4 }" width="100%" alt="...">
-			                             </div>
-		                            </c:if>
-		                            	
-		                            <c:if test="${placeList.pbRealImage5 != null }">
-			                             <div class="item">
-			                                 <img src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage5 }" width="100%" alt="...">
-			                             </div>
-		                            </c:if>
-	                            </div>
-		
-	                            <!-- Controls -->
-	                            <a class="left carousel-control" href="#carousel-example-generic" role="button"
-	                                data-slide="prev">
-	                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-	                                <span class="sr-only">Previous</span>
-	                            </a>
-	                            <a class="right carousel-control" href="#carousel-example-generic" role="button"
-	                                data-slide="next">
-	                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-	                                <span class="sr-only">Next</span>
-	                            </a>
-	                        </div>
-		                    </div>
-		                </div>
+		<div class="container-fluid">
+			<div class="col-md-8 col-sm-12 test">
+				<div class="row">
+					<c:if test="${loginuser.memberNick == placeList.memberNick }">
+						<button type="button" class="btn btn-primary pull-right"
+							onclick="location.href='<c:url value="/placeBoard/placeModify?pbNum=${placeList.pbNum}" />'">수정하기</button>
 					</c:if>
-                <br>
+					<button type="button" class="btn btn-primary pull-right"
+						onclick="location.href='<c:url value="/placeBoard/placeList" />'">목록으로</button>
+				</div>
 
-                <div class="row">
-                    <div class="container-fluid">
-                    
-                    	<!-- 시설 표시된 지도.. -->
-                    	<div id="map" style="width:100%;height:350px;"></div>
-                    	<!-- 
+
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="titlebox">
+							<h2>${placeList.pbTitle}</h2>
+						</div>
+					</div>
+				</div>
+
+				<c:if test="${placeList.pbImageCount > 0 }">
+					<div class="row">
+						<div class="container-fluid">
+							<div id="carousel-example-generic" class="carousel slide"
+								data-ride="carousel" data-interval="false">
+								<!-- Indicators -->
+								<ol class="carousel-indicators">
+									<li data-target="#carousel-example-generic" data-slide-to="0"
+										class="active"></li>
+									<c:forEach var="index" begin="1"
+										end="${placeList.pbImageCount-1}">
+										<li data-target="#carousel-example-generic"
+											data-slide-to="${index}"></li>
+			                        1</c:forEach>
+								</ol>
+
+
+								<!-- Wrapper for slides -->
+								<div class="carousel-inner" role="listbox">
+									<c:if test="${placeList.pbRealImage1 != null }">
+										<div class="item active">
+											<img
+												src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage1 }"
+												width="100%" alt="...">
+										</div>
+									</c:if>
+
+									<c:if test="${placeList.pbRealImage2 != null }">
+										<div class="item">
+											<img
+												src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage2 }"
+												width="100%" alt="...">
+										</div>
+									</c:if>
+
+									<c:if test="${placeList.pbRealImage3 != null }">
+										<div class="item">
+											<img
+												src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage3 }"
+												width="100%" alt="...">
+										</div>
+									</c:if>
+
+									<c:if test="${placeList.pbRealImage4 != null }">
+										<div class="item">
+											<img
+												src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage4 }"
+												width="100%" alt="...">
+										</div>
+									</c:if>
+
+									<c:if test="${placeList.pbRealImage5 != null }">
+										<div class="item">
+											<img
+												src="/upload/board/place/${placeList.memberNick }/${placeList.pbRealImage5 }"
+												width="100%" alt="...">
+										</div>
+									</c:if>
+								</div>
+
+								<!-- Controls -->
+								<a class="left carousel-control"
+									href="#carousel-example-generic" role="button"
+									data-slide="prev"> <span
+									class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									<span class="sr-only">Previous</span>
+								</a> <a class="right carousel-control"
+									href="#carousel-example-generic" role="button"
+									data-slide="next"> <span
+									class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									<span class="sr-only">Next</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</c:if>
+				<br>
+
+				<div class="row">
+					<div class="container-fluid">
+
+						<!-- 시설 표시된 지도.. -->
+						<div id="map" style="width: 100%; height: 350px;"></div>
+						<!-- 
                         <div class="col-sm-12">
                             <img width="100%" height="auto" src="${pageContext.request.contextPath }/resources/img/location/mapexam.png" alt="">
                         </div>
 						-->
-						
-                        <table>
-                            <tr>
-                                <td>주소 :${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
-                                <td>
-                                    <!-- 
-                                     <a href="https://map.kakao.com/link/to/장소명,33.450701,126.570667">
-                                     -->
-                                    <a href="https://map.kakao.com/link/to/${placeList.pbTitle},${placeList.pbLatitude},${placeList.pbLongitude}">
-                                        <button class="btn btn-info pull-right">길찾기</button>
-                                    </a>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td>작성일:${placeList.pbRegDate}</td>
-                                <td><span class="glyphicon glyphicon-eye-open"></span>${placeList.pbLookCount}</td>
-                                <td>
-	                                    <button id="likeBtn" class="btn btn-info pull-right">
-	                                    <span class="glyphicon glyphicon-heart"></span><span id="countLike">좋아요</span></button>
-                                </td>
-                            </tr>
+						<table>
+							<tr>
+								<td>주소 :${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
+								<td><a
+									href="https://map.kakao.com/link/to/${placeList.pbTitle},${placeList.pbLatitude},${placeList.pbLongitude}">
+										<button class="btn btn-info pull-right">길찾기</button>
+								</a></td>
+							</tr>
 
-                            <tr>
-                                <td colspan="3">
-                                    <p style="line-height: 150%;">
-						                ${placeList.pbContent}  
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>
-                               		<c:if test="${loginuser != null }">
-	                                    <button id="reportBtn" class="btn btn-info pull-right">
-	                                    	<span class="glyphicon glyphicon-thumbs-down"></span> 신고하기
-	                                    </button>
-									</c:if>
-                                </td>
-                            </tr>
+							<tr>
+								<td>작성일:${placeList.pbRegDate}</td>
+								<td><span class="glyphicon glyphicon-eye-open"></span>${placeList.pbLookCount}</td>
+								<td>
+									<button id="likeBtn" class="btn btn-info pull-right">
+										<span class="glyphicon glyphicon-heart"></span><span
+											id="countLike">좋아요</span>
+									</button>
+								</td>
+							</tr>
 
-                        </table>
-                    </div>
-                </div>
+							<tr>
+								<td colspan="3">
+									<p style="line-height: 150%;">${fn:replace(placeList.pbContent, replaceChar,"<br/>") }</p>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td><c:if test="${loginuser != null }">
+										<button id="reportBtn" class="btn btn-info pull-right">
+											<span class="glyphicon glyphicon-thumbs-down"></span> 신고하기
+										</button>
+									</c:if></td>
+							</tr>
 
-            </div>
-            
-            <!-- 댓글창 -->
-            <div class="col-md-4 col-sm-12 test">
-                
-                <div class="row">
-                    <span id="replyCountSpan" class="reply reply-count">댓글 : ???개</span>
-                </div>
-                <div class="row">
-                        <div class="input-group input-group-lg">
+						</table>
+					</div>
+				</div>
 
-                            <input type="text" id="replyInput" class="form-control" placeholder="댓글을 작성해주세요"
-                                aria-describedby="basic-input">
-                            <span class="input-group-btn" id="basic-input">
-                                <button id="replyBtn" type="button" class="btn btn-default">
-                                	<span class="glyphicon glyphicon-send"></span>
-                                </button>
-                            </span>
-                        </div>
-                </div>
-                <div id="replyList" class="row container-fluid">
-	                                
-                </div>
+			</div>
 
-            </div>
-        </div>
+			<!-- 댓글창 -->
+			<div class="col-md-4 col-sm-12 test">
+
+				<div class="row">
+					<span id="replyCountSpan" class="reply reply-count">댓글 :
+						???개</span>
+				</div>
+
+				<div class="row">
+					<div class="input-group input-group-lg">
+
+						<input type="text" id="replyInput" class="form-control"
+							placeholder="댓글을 작성해주세요" aria-describedby="basic-input">
+						<span class="input-group-btn" id="basic-input">
+							<button id="replyBtn" type="button" class="btn btn-default">
+								<span class="glyphicon glyphicon-send"></span>
+							</button>
+						</span>
+					</div>
+				</div>
+
+				<div id="replyList" class="row container-fluid"></div>
+
+			</div>
+		</div>
 
 
 
-        <div class="row">
-            <%@ include file="../../include/footer.jsp" %>
-        </div>
+		<div class="row">
+			<%@ include file="../../include/footer.jsp"%>
+		</div>
 
 
-    </div>
+	</div>
 
 	<script defer>
 		let strAdd = '';
@@ -510,7 +534,7 @@
     		}
     	});
 	    
-	 // 좋아요 처리
+	 	// 좋아요 처리
         $('#likeBtn').click(function() {
         	
         	//로그인 안하면 좋아요 못하도록.
@@ -552,26 +576,20 @@
         
         
         
-     // 좋아요 개수 출력
-        function countLike() {
+     	// 좋아요 개수 출력
+       function countLike() {
         	          	
 			const pbNum = "${placeList.pbNum}";
-        	
         	$.getJSON(
-        			
         		"/wefit/placeBoard/" + pbNum,
-        			
         		function(data) {           			
         			let count = data.count;
-       			
+
         			//좋아요 개수 출력
         			$('#countLike').html(count);
         		
-        		
         		} // end function(data)         			
-        	
         	)//end getJSON
-        
         } //countLike 함수 끝
 	
 		//신고 처리
@@ -607,47 +625,47 @@
         });
         
         
-        
+        // 카카오 지도 api
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
         mapOption = {
             center: new kakao.maps.LatLng('${placeList.pbLatitude}', '${placeList.pbLongitude}'), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
         };  
 
-    // 지도를 생성합니다    
-    var map = new kakao.maps.Map(mapContainer, mapOption); 
-
-    // 주소-좌표 변환 객체를 생성합니다
-    var geocoder = new kakao.maps.services.Geocoder();
-
-    // 주소로 좌표를 검색합니다
-    geocoder.addressSearch('${placeList.pbAddrBasic}', function(result, status) {
-
-        // 정상적으로 검색이 완료됐으면 
-         if (status === kakao.maps.services.Status.OK) {
-
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-            // 결과값으로 받은 위치를 마커로 표시합니다
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: coords
-            });
-
-            // 인포윈도우로 장소에 대한 설명을 표시합니다
-            var infowindow = new kakao.maps.InfoWindow({
-                content: '<div style="width:150px;text-align:center;padding:6px 0;">시설위치</div>'
-            });
-            infowindow.open(map, marker);
-
-            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-            map.setCenter(coords);
-        } 
-    });    
+	    // 지도를 생성합니다    
+	    var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	    // 주소-좌표 변환 객체를 생성합니다
+	    var geocoder = new kakao.maps.services.Geocoder();
+	
+	    // 주소로 좌표를 검색합니다
+	    geocoder.addressSearch('${placeList.pbAddrBasic}', function(result, status) {
+	
+	        // 정상적으로 검색이 완료됐으면 
+	         if (status === kakao.maps.services.Status.OK) {
+	
+	            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	
+	            // 결과값으로 받은 위치를 마커로 표시합니다
+	            var marker = new kakao.maps.Marker({
+	                map: map,
+	                position: coords
+	            });
+	
+	            // 인포윈도우로 장소에 대한 설명을 표시합니다
+	            var infowindow = new kakao.maps.InfoWindow({
+	                content: '<div style="width:150px;text-align:center;padding:6px 0;">시설위치</div>'
+	            });
+	            infowindow.open(map, marker);
+	
+	            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	            map.setCenter(coords);
+	        } 
+	    });    
 
 	</script>
-	
-	
+
+
 </body>
 
 </html>

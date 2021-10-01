@@ -9,13 +9,13 @@
  
     <sql id="search">
        <if test="condition == 'title'">
-          WHERE mbTitle LIKE '%'||#{keyword}||'%'
+          AND mbTitle LIKE '%'||#{keyword}||'%'
        </if>
        <if test="condition == 'type'">
-         WHERE mbType LIKE '%'||#{keyword}||'%'
+         AND mbType LIKE '%'||#{keyword}||'%'
       </if>
       <if test="condition == 'writer'">
-         WHERE memberNum LIKE '%'||#{keyword}||'%'
+         AND memberNum LIKE '%'||#{keyword}||'%'
       </if>
       
     
@@ -37,6 +37,7 @@
                         (SELECT COUNT(*) FROM MarketReport WHERE mbNum=mb.mbNum)as Report,
                         DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
                          FROM MarketBoard mb, member m
+                         WHERE mb.memberNum = m.memberNum
                         <include refid="search" />
                         ORDER BY mbNum DESC
                          
@@ -126,7 +127,8 @@
     <select id="getContent" resultType="com.spring.wefit.command.marketBoardVO">
        SELECT mb.*, m.memberNick 
        FROM MarketBoard mb, member m
-       WHERE mbNum = #{mbNum}
+       WHERE mb.mbNum = #{mbNum}
+       AND mb.memberNum = m.memberNum
     </select>
     
     <update id="update">

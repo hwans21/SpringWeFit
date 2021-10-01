@@ -9,7 +9,7 @@
 	<choose>	
 		<when test = "category == ''">	  
 		</when>		
-		<otherwise>WHERE 
+		<otherwise>AND 
 			<if test="category == 'swimming'">
 			cbCategory = '수영'
 			</if>
@@ -64,10 +64,10 @@
 	<if test="condition != null and !condition.equals('')">
 		<choose>		
 			<when test = "category == ''">	  
-			WHERE <include refid = "search" /> 
+			AND <include refid = "search" /> 
 			</when>			
 			<otherwise>		
-			AND <include refid = "search" /> 
+			AND <include refid = "search" />
 			</otherwise>
 		</choose>
 	</if>
@@ -88,11 +88,13 @@
 		SELECT ROWNUM as rn, tbl.*
 		FROM
 		   (																	  <!-- 댓글 개수 카운트 한걸 crCount로 명명하면.. 이 이름 똑같이 vo객체에서 변수선언하면 알아서 거기에 값이 들어감 -->
-		   SELECT cb.*, (SELECT COUNT(*) FROM CourseReply WHERE cbNum = cb.cbNum) as crCount,
-		   (SELECT COUNT(*) FROM CourseReport WHERE cbNum = cb.cbNum) as cbReportCount
-		   FROM CourseBoard cb
+		   SELECT cb.*, (SELECT COUNT(*) FROM CourseReply WHERE cbNum = cb.cbNum AND memberNum = m.memberNum) as crCount,
+		   (SELECT COUNT(*) FROM CourseReport WHERE cbNum = cb.cbNum AND memberNum = m.memberNum) as cbReportCount
+		   FROM CourseBoard cb, Member m
+		   WHERE cb.memberNum = m.memberNum
 		   <include refid = "category" /> 
 		   <include refid = "sqlSearch" /> 
+		   
 		   ORDER BY cbNum DESC
 		   ) tbl
 	)
@@ -103,7 +105,8 @@
 </select>
 
 <select id="getTotal" resultType="int">
-	SELECT COUNT(*) FROM CourseBoard
+	SELECT COUNT(*) FROM CourseBoard cb, Member m
+	WHERE cb.memberNum = m.memberNum
 	<include refid = "category" />
 	<include refid = "sqlSearch" /> 
 </select>

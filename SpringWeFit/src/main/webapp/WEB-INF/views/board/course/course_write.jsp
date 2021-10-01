@@ -101,7 +101,7 @@
                     <tr>
                         <td>작성자</td>
                         <td><input type="text" size="20" value="관리자" readonly disabled></td>
-                        <!-- <td><input type="hidden" name="memberNum" size="20" value="1"></td> --> <!-- 관리자번호 넣어줌 -->
+                       	<input type="hidden" name="memberNum" size="20" value="${loginuser.memberNum }">
                     </tr>
 
 

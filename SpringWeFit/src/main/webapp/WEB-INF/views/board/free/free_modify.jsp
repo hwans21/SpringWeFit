@@ -101,7 +101,7 @@
                             <br>
                             <button id="modifyBtn" class="btn btn-primary" type="button" >수정하기</button>
                             <button id="deleteBtn" class="btn btn-primary" type="button" >삭제하기</button>
-                            <button class="btn btn-default" type="button" onclick="location.href='/FRONT/views/board/free/free_detail.html'">취소하기</button>
+                            <button id="cancelBtn" class="btn btn-default" type="button">취소하기</button>
                             <br><br><br>
                         </td>
 
@@ -119,12 +119,13 @@
     </div>
 
     <script>
-    	let title = $('#input-title').val();
     	$('#category').change(function(){
+	    	let title = $('#input-title').val();
     		let category = title.substring(title.indexOf("["),title.indexOf("]")+1);
     		if(category !== $('#category').val()){
     			$('#input-title').val(title.replace(category,$('#category').val()));
     		}
+    		$('#titleByte').text(getTextLength($('#input-title').val()));
     	});
     	let bool = true;
     	//////////////////////
@@ -142,14 +143,14 @@
 		      return rbyte;
 		 }
 		$(document).ready(function () {
-			$('#titleByte').text(getTextLength($(this).val()));
-			$('#contentByte').text(getTextLength($(this).val()));
+			$('#titleByte').text(getTextLength($('#input-title').val()));
+			$('#contentByte').text(getTextLength($('#input-content').val()));
 		});
 		
-		$('#title-input').keyup(function(){
+		$('#input-title').keyup(function(){
 			$('#titleByte').text(getTextLength($(this).val()));
 		});
-		$('#content-input').keyup(function(){
+		$('#input-content').keyup(function(){
 			$('#contentByte').text(getTextLength($(this).val()));
 		});
 		
@@ -157,6 +158,7 @@
 		//각 파일당, 전체 용량 확인 함수
         $("#uploadFiles").change(function(){
       
+           bool = true;
            if(this.files || this.files[0] || this.files[1] || this.files[2] || this.files[3] || this.files[4] != null) {
               var maxSize = 50 * 1024 * 1024;
               var totalSize = 0;
@@ -173,56 +175,60 @@
               for(i=0; i<this.files.length; i++) {
                  totalSize += this.files[i].size;
               }
-                 for(i=0; i<5; i++) {
-                    if(this.files[0].size > 10 * 1024 * 1024){
-                       alert('한 이미지의 허용 크기는 10MB입니다.');
-                       bool = false;
-                       return;
-                    }
+              for(i=0; i<5; i++) {
+                 if(this.files[0].size > 10 * 1024 * 1024){
+                    alert('한 이미지의 허용 크기는 10MB입니다.');
+                    bool = false;
+                    return;
                  }
+              }
               if(totalSize > maxSize) {
                  alert('사진의 총 용량은 50MB입니다.');
                  bool = false;
                  return;
               }
            }
-           bool = true;
         }); //각 파일당, 전체 용량 확인 함수 종료
 	
-		$('#regBtn').click(function(){
-			if($('#title-input').val().trim() === ''){
+		$('#modifyBtn').click(function(){
+			if($('#input-title').val().trim() === ''){
 				alert('제목을 입력해주세요.');
+				$('#input-title').focus();
 				return;
 			} else if(+($('#titleByte').text()) > 200){
-				alert('제목은 최대 200byte를 초과할 수 없습니다.');   
+				alert('제목은 최대 200byte를 초과할 수 없습니다.'); 
+				$('#input-title').focus();
 	            return;
-			} else if($('#content-input').val().trim() === ''){
+			} else if($('#input-content').val().trim() === ''){
 				alert('내용을 입력해주세요.');
+				$('#input-content').focus();
 				return;
 			} else if(+($('#contentByte').text()) > 2000){
-				alert('제목은 최대 2000byte를 초과할 수 없습니다.');   
+				alert('내용은 최대 2000byte를 초과할 수 없습니다.');
+				$('#input-content').focus();
 	            return;
+			} else if(!bool){
+				alert('사진파일을 확인해주세요');
+				return;
 			}
-			if($('#title-input').val().indexOf($('#category').val()) === -1){ // 해당 태그 있는지 확인
+			if($('#input-title').val().indexOf($('#category').val()) === -1){ // 해당 태그 있는지 확인
 				
-				$('#title-input').val($('#category').val()+$('#titleInput').val()); // 제목에 태그 넣기
+				$('#input-title').val($('#category').val()+$('#input-title').val()); // 제목에 태그 넣기
 			}
 			
-			$('#boardWrite').submit();
+			$('#freeModify-form').submit();
 		});
     	//////////////////////
     	
-    	
-    	$('#modifyBtn').click(function(){
-    		$('#freeModify-form').submit();
-    	});
     	$('#deleteBtn').click(function(){
     		if(confirm("정말로 삭제하시겠습니까?")){
 	    		$('#freeModify-form').attr("action","<c:url value='/freeBoard/freeDelete'/>")
 	    		$('#freeModify-form').submit();
     		}
     	});
-    	
+    	$('#cancelBtn').click(function(){
+    		location.href="<c:url value='/freeBoard/freeDetail?fbNum=${content.fbNum }' />"
+    	});
     	
     </script>
 

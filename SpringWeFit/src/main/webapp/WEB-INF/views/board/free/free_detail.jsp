@@ -249,8 +249,8 @@
                 </div>
                 <div class="row">
                     
+						<div><sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></div>
                         <div class="input-group input-group-lg">
-
                             <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
@@ -287,6 +287,20 @@
             while (Date.now() < wakeUpTime) { }
         }
         
+        function getTextLength(str) {
+		       var rbyte = 0;
+		       for (var i = 0; i < str.length; i++) {
+		    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+		  	        	rbyte += 3;
+		  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+		  	        	rbyte += 2;
+		  	        } else { //영문 등 나머지 1Byte
+		  	        	rbyte++;
+		  	        }
+		      }
+		      return rbyte;
+		 } // 바이트 체크 함수
+        
         
         function replyLoad(pageNum, reset){
         	$.getJSON(
@@ -317,6 +331,7 @@
         			
         	); // end getJson
         }
+		 
         
         // 날짜 처리 함수
         function timeStamp(millis) {
@@ -348,21 +363,23 @@
         $('#replyBtn').click(function(){
         	if(boolRegist){
 	        	replyRegist();
-	        	$('#replyInput').val('');
+	        	$('#replyInput').focus();
         	} else {
         		replyModify(frClassName);
-        		$('#replyInput').val('');
+        		$('#replyInput').focus();
         	}
         });
-        $('#replyInput').keydown(function(e){
+        $('#replyInput').keyup(function(e){
         	if(e.keyCode === 13){
         		if(boolRegist){
     	        	replyRegist();
-    	        	$('#replyInput').val('');
+    	        	$('#replyInput').focus();
             	} else {
             		replyModify(frClassName);
-            		$('#replyInput').val('');
+            		$('#replyInput').focus();
             	}
+        	} else {
+        		$('#nowByte').html(getTextLength($('#replyInput').val()));
         	}
         })
         
@@ -423,6 +440,9 @@
 			if(${loginuser==null? true:false }){
 				alert('로그인이 필요합니다.');
 				return;
+			} else if(+($('#nowByte').html())>200){
+				alert('댓글 내용은 최대 200byte를 초과할 수 없습니다.');
+				return;
 			}
 			
         	$.ajax({
@@ -449,10 +469,14 @@
                     console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
             }); //비동기 처리 끝
+        	$('#replyInput').val('');
         }
 		function replyModify(frClassName){
 			if(${loginuser==null? true:false }){
 				alert('로그인이 필요합니다.');
+				return;
+			} else if(+($('#nowByte').html())>200){
+				alert('댓글 내용은 최대 200byte를 초과할 수 없습니다.');
 				return;
 			}
 			
@@ -484,6 +508,7 @@
             frClassName = '';
             replyLoad(1,true);
             pageNum=2;
+            $('#replyInput').val('');
 		}
 		
 		$('#lovelyBtn').click(function(){
@@ -555,13 +580,15 @@
     	$('#replyList').click(function(e){
     		if(e.target.className.indexOf('replyModBtn') != -1){
     			$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
+    			$('#nowByte').html(getTextLength($('#replyInput').val()));
     			boolRegist = false;
     			frClassName = $(e.target).attr('class');
+    			$('#replyInput').focus();
     		}
     		if(e.target.className.indexOf('replyDelBtn') != -1){
     			if(${loginuser==null? true:false}){
     				return;
-    			}
+    			} 
     			const arr = {
    					"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum },
                    	"frNum": e.target.className	
