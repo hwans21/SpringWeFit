@@ -84,6 +84,8 @@ public class PlaceBoardController {
 			PlaceBoardVO vo, RedirectAttributes ra) {
 		
 		System.out.println("/placeBoard/placeWrite: Post");
+		System.out.println(vo.toString());
+		
 		CustomFileUpload fileUp = new CustomFileUpload();
 		String rootPath = request.getServletContext().getRealPath(""); 
 		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\place\\"+vo.getMemberNick()+"\\"; 

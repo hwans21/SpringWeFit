@@ -2,10 +2,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -159,7 +163,9 @@ input {
 									</td>
 
 									<td><a href="<c:url value='/placeBoard/placeDetail?pbNum=${vo.pbNum}&pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword}&condition=${pc.paging.condition}' />">
-										${vo.pbTitle}&nbsp;&nbsp;[${vo.pbReplyCount}]</a> &nbsp;&nbsp;&nbsp;</td>
+										${fn:replace(fn:replace(fn:replace(vo.pbTitle, replaceChar,"<br/>"),
+										replaceChar1,"&lt;"),replaceChar2,"&gt;") }&nbsp;&nbsp;[${vo.pbReplyCount}]</a> &nbsp;&nbsp;&nbsp;</td>
+										
 									<td class="text-center">${vo.memberNick}</td>
 									<td class="text-center">${vo.pbLookCount}</td>
 									<td class="text-center"><fmt:formatDate value="${vo.pbRegDate}" pattern="yy/MM/dd HH:mm" /></td>

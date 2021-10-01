@@ -1,6 +1,7 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
     
 
 
@@ -59,7 +60,7 @@
 
                 <table>
                     <tr>
-                        <td>종목</td>
+                        <td>종목 * </td>
                         <td>
                             <select id="sports" name="pbCategory">
                                 <option value='category'>종목선택</option>
@@ -79,27 +80,27 @@
                     </tr>
 
                     <tr>
-                        <td>작성자</td>
+                        <td>작성자 * </td>
                         <td><input id="memberNick" type="text" name="memberNick" size="20" value="${loginuser.memberNick}" readonly> </td>
                     </tr>
 
                     <tr>
-                        <td>제목</td>
+                        <td>제목 * <sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></td>
                         <td><input id="pbTitle" type=text name=pbTitle size="60"></td>
                     </tr>
 
                     <tr>
-                        <td>내용</td>
+                        <td>내용<sup> ( <span id="nowByte2">최대 </span> / 2000bytes )</sup></td>
                         <td><textarea id="pbContent" name="pbContent" cols="75" rows="15"></textarea></td>
                     </tr>
 
                     <tr>
-                        <td>동네</td>
+                        <td>위치 *</td>
                         <td>
                             <input type="hidden" id="sample6_postcode" placeholder="우편번호">
                      		<input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
-                     		기본 주소 : <input type="text" id="sample6_address" name="pbAddrBasic" placeholder="주소" size="50"><br>
-                    		상세 주소 : <input type="text" id="sample6_detailAddress" name="pbAddrDetail" placeholder="상세주소" size="50"><br>
+                     		기본 주소 * : <input type="text" id="sample6_address" name="pbAddrBasic" placeholder="주소" size="50"><br>
+                    		상세 주소     : <input type="text" id="sample6_detailAddress" name="pbAddrDetail" placeholder="상세주소" size="50"><br>
                      		<input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
                             <input type="hidden" name="pbLatitude" id="latitude" ><br>
                             <input type="hidden" name="pbLongitude" id="longitude"><br>
@@ -136,6 +137,7 @@
 
 
 	<script>
+		//글 검증
     	const writeBtn = document.getElementById('writeBtn');
         let bool = true;
         writeBtn.onclick = function() {
@@ -164,11 +166,7 @@
 			}
         };
         	
-     
-
-        
-    	
-    	
+    	// 취소 버튼 클릭시
   		$('#listBtn').click(function() {
 			if(confirm('목록으로 돌아가시겠습니까?')) {
 				location.href='<c:url value="/placeBoard/placeList" />';
@@ -178,6 +176,7 @@
 		});
   		</script>
   		
+  		<!--카카오 주소 api -->
   		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   		<script>
   		    function sample6_execDaumPostcode() {

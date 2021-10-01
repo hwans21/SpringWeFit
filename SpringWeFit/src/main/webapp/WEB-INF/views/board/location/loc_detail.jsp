@@ -6,7 +6,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 
 <!DOCTYPE html>
 
@@ -116,7 +119,9 @@ table tr td {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="titlebox">
-							<h2>${placeList.pbTitle}</h2>
+							<h2>[${placeList.pbCategory}]
+							${fn:replace(fn:replace(fn:replace(placeList.pbTitle, replaceChar,"<br/>"),
+								replaceChar1,"&lt;"),replaceChar2,"&gt;") }</h2>
 						</div>
 					</div>
 				</div>
@@ -136,7 +141,6 @@ table tr td {
 											data-slide-to="${index}"></li>
 			                        1</c:forEach>
 								</ol>
-
 
 								<!-- Wrapper for slides -->
 								<div class="carousel-inner" role="listbox">
@@ -204,45 +208,37 @@ table tr td {
 
 						<!-- 시설 표시된 지도.. -->
 						<div id="map" style="width: 100%; height: 350px;"></div>
-						<!-- 
-                        <div class="col-sm-12">
-                            <img width="100%" height="auto" src="${pageContext.request.contextPath }/resources/img/location/mapexam.png" alt="">
-                        </div>
-						-->
 
 						<table>
 							<tr>
-								<td>주소 :${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
-								<td><a
-									href="https://map.kakao.com/link/to/${placeList.pbTitle},${placeList.pbLatitude},${placeList.pbLongitude}">
-										<button class="btn btn-info pull-right">길찾기</button>
-								</a></td>
-							</tr>
-
-							<tr>
-								<td>작성일:${placeList.pbRegDate}</td>
-								<td><span class="glyphicon glyphicon-eye-open"></span>${placeList.pbLookCount}</td>
+								<td>작성일  :  ${placeList.pbRegDate}</td>
+								<td><span class="glyphicon glyphicon-eye-open"></span>  ${placeList.pbLookCount}</td>
 								<td>
 									<button id="likeBtn" class="btn btn-info pull-right">
-										<span class="glyphicon glyphicon-heart"></span><span
-											id="countLike">좋아요</span>
+										<span class="glyphicon glyphicon-heart"></span><span id="countLike">좋아요</span>
 									</button>
 								</td>
+							</tr>
+							
+							<tr>
+								<td>주소 :  ${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
+								<td><a href="https://map.kakao.com/link/to/${placeList.pbAddrBasic},${placeList.pbLatitude},${placeList.pbLongitude}">
+										<button class="btn btn-info pull-right">길찾기</button></a></td>
 							</tr>
 
 							<tr>
 								<td colspan="3">
-									<p style="line-height: 150%;">${fn:replace(placeList.pbContent, replaceChar,"<br/>") }</p>
-								</td>
+									<p style="line-height: 150%;">${fn:replace(fn:replace(fn:replace(placeList.pbContent, replaceChar,"<br/>"),
+									replaceChar1,"&lt;"),replaceChar2,"&gt;") }</p></td>
 							</tr>
+							
 							<tr>
 								<td></td>
 								<td></td>
 								<td><c:if test="${loginuser != null }">
 										<button id="reportBtn" class="btn btn-info pull-right">
 											<span class="glyphicon glyphicon-thumbs-down"></span> 신고하기
-										</button>
-									</c:if></td>
+										</button></c:if></td>
 							</tr>
 
 						</table>
@@ -260,16 +256,16 @@ table tr td {
 				</div>
 
 				<div class="row">
-					<div class="input-group input-group-lg">
-
-						<input type="text" id="replyInput" class="form-control"
-							placeholder="댓글을 작성해주세요" aria-describedby="basic-input">
-						<span class="input-group-btn" id="basic-input">
-							<button id="replyBtn" type="button" class="btn btn-default">
-								<span class="glyphicon glyphicon-send"></span>
-							</button>
-						</span>
-					</div>
+					<div><sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></div>
+						<div class="input-group input-group-lg">
+							<input type="text" id="replyInput" class="form-control"
+								placeholder="댓글을 작성해주세요" aria-describedby="basic-input">
+							<span class="input-group-btn" id="basic-input">
+								<button id="replyBtn" type="button" class="btn btn-default">
+									<span class="glyphicon glyphicon-send"></span>
+								</button>
+							</span>
+						</div>
 				</div>
 
 				<div id="replyList" class="row container-fluid"></div>
@@ -277,13 +273,9 @@ table tr td {
 			</div>
 		</div>
 
-
-
 		<div class="row">
 			<%@ include file="../../include/footer.jsp"%>
 		</div>
-
-
 	</div>
 
 	<script defer>
@@ -291,11 +283,23 @@ table tr td {
 	   	let pageNum = 2;
 	   	let boolRegist = true;
 	   	let prClassName = '';
-	       function sleep(ms) {
-	           const wakeUpTime = Date.now() + ms;
-	           while (Date.now() < wakeUpTime) { }
-	       }
-       
+       function sleep(ms) {
+           const wakeUpTime = Date.now() + ms;
+           while (Date.now() < wakeUpTime) { }
+       }
+       function getTextLength(str) {
+           var rbyte = 0;
+           for (var i = 0; i < str.length; i++) {
+              if(str.charCodeAt(i) > 127) { // 한글 3Byte
+                    rbyte += 3;
+                 } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+                    rbyte += 2;
+                 } else { //영문 등 나머지 1Byte
+                    rbyte++;
+                 }
+          }
+          return rbyte;
+     } // 바이트 체크 함수
 	       
 	   
 		//댓글 목록 페이징 처리
@@ -353,27 +357,7 @@ table tr td {
        }
        
     
-     	//댓글 버튼 클릭 시 
-		$('#replyBtn').click(function(){
-	    	if(boolRegist){
-	        	replyRegist();
-	        	$('#replyInput').val('');
-	    	} else {
-	    		placeReplyModify(prClassName);
-	    		$('#replyInput').val('');
-	    	}
-	    });
-	    $('#replyInput').keydown(function(e){
-	    	if(e.keyCode === 13){
-	    		if(boolRegist){
-		        	replyRegist();
-		        	$('#replyInput').val('');
-	        	} else {
-	        		placeReplyModify(prClassName);
-	        		$('#replyInput').val('');
-	        	}
-	    	}
-	    })
+     	
 	    
 	    //댓글 목록
 	    $(document).ready(function () {
@@ -424,15 +408,41 @@ table tr td {
         //     }
         // });
 	    
-	  
+	  //댓글 버튼 클릭 시 
+		$('#replyBtn').click(function(){
+	    	if(boolRegist){
+	        	replyRegist();
+	        	$('#replyInput').focus();
+	    	} else {
+	    		placeReplyModify(prClassName);
+	    		$('#replyInput').focus();
+	    	}  
+	    });
+	    $('#replyInput').keyup(function(e){
+	    	if(e.keyCode === 13){
+	    		if(boolRegist){
+		        	replyRegist();
+		        	$('#replyInput').focus();
+	        	} else {
+	        		placeReplyModify(prClassName);
+	        		$('#replyInput').focus();
+	        	}
+	    	} else {
+	    		$('#nowByte').html(getTextLength($('#replyInput').val()));
+	    	}
+	    });
+	    
 	    //댓글 등록
 	    function replyRegist(){
-	    	<!--
+	    	
 			if(${loginuser==null? true:false}){
 				alert('로그인이 필요합니다.');
 				return;
+			} else if(+($('#nowByte').html())>200){
+				alert('댓글 내용은 200바이트를 초과할 수 없습니다.');
+				return;
 			}
-			-->
+			
 			
         	$.ajax({
                 type: "POST",
@@ -450,20 +460,25 @@ table tr td {
                     console.log('통신성공!' + data);	
             		       		
             		replyLoad(1,true);
+            		$('#nowByte').text('최대');
+            		alert('댓글이 등록되었습니다.');
             		pageNum=2;
-            		alert('댓글 등록 완료!!');
                 },
                 error: function (request, status, error) {
                     alert('통신에 실패했습니다. 관리자에게 문의하세요');
                     console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
             }); //비동기 처리 끝
+        	$('#replyInput').val('');
         }
 	    
 	    //댓글 수정 시
 	    function placeReplyModify(prClassName){
 			if(${loginuser==null? true:false }){
 				alert('로그인이 필요합니다.');
+				return;
+			} else if(+($('#nowByte').html())>200){
+				alert('댓글 내용은 200바이트를 초과할 수 없습니다.');
 				return;
 			}
 			
@@ -495,11 +510,13 @@ table tr td {
             prClassName = '';
             replyLoad(1,true);
             pageNum=2;
+            $('#replyInput').val('');
 		}
 
 	    $('#replyList').click(function(e){
     		if(e.target.className.indexOf('replyModBtn') != -1){
     			$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
+    			$('#nowByte').html(getTextLength($('#replyInput').val()));
     			boolRegist = false;
     			prClassName = $(e.target).attr('class');
     		}
@@ -537,11 +554,11 @@ table tr td {
 	 	// 좋아요 처리
         $('#likeBtn').click(function() {
         	
-        	//로그인 안하면 좋아요 못하도록.
-			if(${loginuser == null ? true : false }){
+			if(${loginuser==null? true:false}){
+				alert('로그인이 필요합니다.');
 				return;
 			}
-        	
+			
         	const pbNum = ${placeList.pbNum};
         	const memberNum = ${loginuser.memberNum == null ? -1 :loginuser.memberNum};
         	
