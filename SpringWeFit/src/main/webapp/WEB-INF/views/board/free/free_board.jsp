@@ -34,14 +34,15 @@
             top: 250px;
         }
        
-        .container {
-          font-family: "NanumGothic";
-        }
+        
 
         #title {
+       	margin-top: 20px;
+           margin-bottom: 20px;
           color: rgb(0, 173, 181);
           font-size: 45px;
           font-weight: bold;
+          text-align: left;
         }
 
         #all {
@@ -62,34 +63,7 @@
           margin-top: 15px;
           margin-bottom: 25px;
         }
-        /* 서브 메뉴 */
-        .sub_menu {
-            
-            width: 100%;
-            background-color: rgb(0, 173, 181);
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-        }
-        .sub2 {
-            display: inline-block;
-            margin: 0 auto;
-        }
-
-        .sub2 > a:link, .sub2 > a:visited, .sub2 > a:active {
-            margin: 5px 35px;
-            font-size: 15px;
-            line-height: 50px;
-            text-decoration: none;
-            color: #fff;
-        }
-
-        .sub2 a:hover { 
-            color: #fff;
-            font-weight: 600;
-        }
-        #sub_menu3 {
-            text-align: center;
-            box-sizing: border-box; /*중요*/
-        }
+        
       
 
     </style>
@@ -102,38 +76,34 @@
         <div class="row">
             <%@ include file="../../include/header.jsp" %>
         </div>
-        <div class="row">
-          <ul id="sub_menu3" class="sub_menu">
-           <li class="sub2"><a id="subMenuNotice" href="<c:url value="/noticeBoard/" />">공지사항</a></li>
-           <li class="sub2"><a id="subMenuFree" href="<c:url value="/freeBoard/" />">자유게시판</a></li>
-          </ul>
-        </div>
+        
    		<div class="container text-center">
         <div class="row">
                 
-          <div class="col-sm-5">
+          <div class="col-sm-5" align="left">
             <span id="title">자유게시판</span>
           </div>
 
-              <div class="col-sm-7">
-                  <div id="btn-list" class="row" align="right">
-                    <div class="btn-group text-center" role="group" aria-label="Basic outlined example">
-                      <button type="button" class="btn btn-info ${param.condition==''? 'active':'' }" id="allBtn">전체</button>
-                      <button type="button" class="btn btn-info ${param.condition=='[자유글]'? 'active':'' }" id="freeBtn">자유글</button>
-                      <button type="button" class="btn btn-info ${param.condition=='[소식/정보]'? 'active':'' }" id="infoBtn">소식/정보</button>
-                      <button type="button" class="btn btn-info ${param.condition=='[홍보]'? 'active':'' }" id="advertBtn">홍보</button>
-                      <button type="button" class="btn btn-info ${param.condition=='[꿀팁]'? 'active':'' }" id="tipBtn">꿀팁</button>
-                      <button type="button" class="btn btn-info ${param.condition=='[기타]'? 'active':'' }" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
-                    </div>
-                
-                    <input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
-                  
-                    <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
-                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-
-                  </div>
+              
+        </div>
+        <div class="col-sm-7 pull-right" align="right">
+            <div id="btn-list" class="row" align="right">
+              <div class="btn-group text-center" role="group" aria-label="Basic outlined example">
+                <button type="button" class="btn btn-info ${param.condition==''? 'active':'' }" id="allBtn">전체</button>
+                <button type="button" class="btn btn-info ${param.condition=='[자유글]'? 'active':'' }" id="freeBtn">자유글</button>
+                <button type="button" class="btn btn-info ${param.condition=='[소식/정보]'? 'active':'' }" id="infoBtn">소식/정보</button>
+                <button type="button" class="btn btn-info ${param.condition=='[홍보]'? 'active':'' }" id="advertBtn">홍보</button>
+                <button type="button" class="btn btn-info ${param.condition=='[꿀팁]'? 'active':'' }" id="tipBtn">꿀팁</button>
+                <button type="button" class="btn btn-info ${param.condition=='[기타]'? 'active':'' }" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
               </div>
+          
+              <input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
+            
+              <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              </button>
+
+            </div>
         </div>
 
             <div class="row margin-top-5">

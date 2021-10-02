@@ -93,15 +93,29 @@
             font-size: 15px;
             font-weight: 400;
         }
-        
 
         .reply-box {
             padding-bottom: 20px;
             border-bottom: 1px solid #ccc;
+            overflow:hidden;
         }
         
-        span.mod-del{
-        	text-align: right
+        .mod-del{
+        	float: right;
+        	margin-right: 10px;
+        }
+        .mod-del > small {
+        	cursor: pointer;
+        	font-size: 13px;
+        }
+        
+        .reply-box small {
+        	font-size:13px;
+        }
+        
+        .reply-content {
+        	font-size: 15px;
+        	font-weight: normal;
         }
     </style>
 </head>
@@ -224,7 +238,7 @@
                             <tr>
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
-										${fn:replace(fn:replace(fn:replace(content.fbContent, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
+										${fn:replace(fn:replace(fn:replace(content.fbContent, replaceChar2,"&gt;"),replaceChar1,"&lt;"),replaceChar,"<br/>") }
                                     </p>
                                 </td>
                             </tr>

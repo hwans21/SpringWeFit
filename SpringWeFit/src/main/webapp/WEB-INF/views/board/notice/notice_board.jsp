@@ -16,6 +16,7 @@
 <html lang="en">
 
 <head>
+	
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -37,9 +38,7 @@
             height: 500px;
         }
 
-        .container {
-            font-family: "NanumGothic";
-        }
+       
 
         /* h2 {
           color: rgb(0, 173, 181);
@@ -51,14 +50,15 @@
             /* border-bottom: 1px solid rgb(0, 173, 181); */
             margin-top: 20px;
             margin-bottom: 20px;
-            font-size: 40px;
+            font-size: 45px;
             font-weight: bold;
             color: rgb(0, 173, 181);
             text-align: left;
         }
         
         #search-parts {
-        margin-top: 40px;
+        	margin-left:25px;
+        	margin-bottom: 25px;
         }
 
         input {
@@ -72,86 +72,19 @@
             color: rgb(0, 173, 181);
         }
 
-        #btn-list {
-            margin-top: 15px;
-            margin-bottom: 25px;
-        }
 
-        .vid {
-            margin: 15px 5px;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-
-        .vid:hover {
-            border: 4px solid rgb(0, 173, 181);
-            box-sizing: border-box;
-        }
+        
 
 
         /* .course {      
             box-sizing: border-box;        
         } */
 
-        .subject {
-            height: 70px;
-            margin: 10px;
-        }
+       
 
-        .auth {
-            text-align: left;
-            font-size: 15px;
-            padding: 0 13px;
-            overflow: hidden;
-        }
+        
 
-        .auth span {
-            float: right;
-            font-size: 14px;
-            padding-left: 22px;
-        }
-
-        .glyphicon-comment {
-            color: skyblue;
-        }
-
-        .glyphicon-eye-open {
-            color: purple;
-        }
-
-        .glyphicon b {
-            color: #000;
-            padding-left: 8px;
-        }
-
-        /* 서브 메뉴 */
-        .sub_menu {
-            width: 100%;
-            height: 50px;
-            background-color: rgb(0, 173, 181);
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-        }
-        .sub2 {
-            display: inline-block;
-            margin:0 auto;
-        }
-
-        .sub2 > a:link, .sub2 > a:visited, .sub2 > a:active {
-            margin: 5px 35px;
-            font-size: 15px;
-            line-height: 50px;
-            text-decoration: none;
-            color: #fff;
-        }
-
-        .sub2 a:hover { 
-            color: #fff;
-            font-weight: 600;
-        }
-        #sub_menu3 {
-            text-align: center;
-            box-sizing: border-box; /*중요*/
-        }
+        
     </style>
 </head>
 
@@ -160,15 +93,9 @@
     <div class="container-fluid h-100">
         <div class="row">
             <%@ include file="../../include/header.jsp" %>
+            
         </div>
-        <div class="row">
-            <ul id="sub_menu3" class="sub_menu">
-
-                <li class="sub2"><a id="subMenuNotice" href="<c:url value="/noticeBoard/" />">공지사항</a></li>
-           		<li class="sub2"><a id="subMenuFree" href="<c:url value="/freeBoard/" />">자유게시판</a></li>
-
-            </ul>
-        </div>
+        
         <div class="container text-center">
 
 
@@ -180,29 +107,24 @@
                 </div>
             
             
-            	<div class="col-sm-4" id="search-parts">
-            		<form id='searchForm' action="<c:url value='/noticeBoard/noticeList' />" method='get'>
-		    			<div class="col-sm-4">
-		    			<select class="form-control search-select" name="condition" id="condition">
-                            <option value="titleContent" ${pc.paging.condition == 'titleContent' ? 'selected' : ''}>전체</option>
-                            <option value="title" ${pc.paging.condition == 'title' ? 'selected' : ''}>제목</option>
-                            <option value="content" ${pc.paging.condition == 'content' ? 'selected' : ''}>내용</option>
-                     	</select>
-                     	</div>
-                     
-                     	<div class="col-sm-7">
-                     		<input type="text" id="search-input" class="form-control search-input" name="keyword" placeholder="Search" value="${pc.paging.keyword }">
-                     	</div>
-                     	<div class="col-sm-1">
-                        	<button type="button" class="btn" aria-label="Left Align" id="searchBtn">
-                      			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    		</button>
-	               		</div>
-                    
-		    		</form>
-		    	</div>
+            	
 		    </div>
-		    	   
+		    <div class="pull-right col-sm-5" id="search-parts" align="right">
+           		<form id='searchForm' class="form-inline" action="<c:url value='/noticeBoard/noticeList' />" method='get'>
+	    			<select class="form-control search-select" name="condition" id="condition">
+						<option value="titleContent" ${pc.paging.condition == 'titleContent' ? 'selected' : ''}>전체</option>
+						<option value="title" ${pc.paging.condition == 'title' ? 'selected' : ''}>제목</option>
+						<option value="content" ${pc.paging.condition == 'content' ? 'selected' : ''}>내용</option>
+                   	</select>
+                  
+               		<input type="text" id="search-input" class="form-control search-input" name="keyword" placeholder="Search" value="${pc.paging.keyword }">
+                   	<button type="button" class="btn" aria-label="Left Align" id="searchBtn">
+                 			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+               		</button>
+                   
+	    		</form>
+	    	</div>
+		       
             <div class="row margin-top-5">
                 <table class="table table-hover table-responsive">
                     <thead class="bg-info">

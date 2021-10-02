@@ -35,14 +35,13 @@
 	top: 250px;
 }
 
-.container {
-	font-family: "NanumGothic";
-}
+
 
 #title {
 	color: rgb(0, 173, 181);
 	font-size: 45px;
 	font-weight: bold;
+	cursor:pointer;
 }
 
 #all {
@@ -69,7 +68,9 @@ input {
 	margin-top: 15px;
 	margin-bottom: 25px;
 }
-
+tr{
+	cursor: pointer;
+}
 
 
 </style>
@@ -86,7 +87,7 @@ input {
 
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-5">
+					<div class="col-sm-5" align="left">
 						<span id="title">장소 찾기</span>
 					</div>
 
@@ -108,8 +109,8 @@ input {
 						</div>
 					
 
-						<div class="search-area">
-							<select id="search-condition" >
+						<div class="search-area form-inline">
+							<select id="search-condition" class="form-control" >
 								<option value="title"
 									${param.condition == 'title' ? 'selected' : '' }>제목</option>
 								<option value="content"
@@ -120,7 +121,7 @@ input {
 									${param.condition == 'area' ? 'selected' : '' }>지역명</option>
 							</select> 
 						
-							<select id="search-distance" onchange="changeDistance(this)">
+							<select id="search-distance" class="form-control" onchange="changeDistance(this)">
 								<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
 								<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
 								<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
@@ -169,9 +170,9 @@ input {
 										</p>
 									</td>
 
-									<td><a href="<c:url value='/placeBoard/placeDetail?pbNum=${vo.pbNum}&pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword}&condition=${pc.paging.condition}' />">
+									<td>
 										${fn:replace(fn:replace(fn:replace(vo.pbTitle, replaceChar,"<br/>"),
-										replaceChar1,"&lt;"),replaceChar2,"&gt;") }&nbsp;&nbsp;[${vo.pbReplyCount}]</a> &nbsp;&nbsp;&nbsp;</td>
+										replaceChar1,"&lt;"),replaceChar2,"&gt;") }&nbsp;&nbsp;[${vo.pbReplyCount}] &nbsp;&nbsp;&nbsp;</td>
 										
 									<td class="text-center">${vo.memberNick}</td>
 									<td class="text-center">${vo.pbLookCount}</td>
@@ -225,10 +226,13 @@ input {
 
 
 	<script>
+	  $('#title').click(function() {
+    	location.href='<c:url value="/placeBoard/placeList" />';
+	  });
       const msg = '${msg}';
       if(msg === 'registSuccess') {
          alert('정상 등록 처리되었습니다.');
-      }
+      }	
    
      // 종목카테고리 클릭 시 
      $('#allBtn').click(function(){

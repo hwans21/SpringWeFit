@@ -94,6 +94,25 @@
         .reply-box {
             padding-bottom: 20px;
             border-bottom: 1px solid #ccc;
+            overflow:hidden;
+        }
+        
+        .mod-del{
+        	float: right;
+        	margin-right: 10px;
+        }
+        .mod-del > small {
+        	cursor: pointer;
+        	font-size: 13px;
+        }
+        
+        .reply-box small {
+        	font-size:13px;
+        }
+        
+        .reply-content {
+        	font-size: 15px;
+        	font-weight: normal;
         }
         .map_wrap {position:relative;
         		   width:100%;
@@ -273,19 +292,17 @@
                         </div>
                        <!--   
                         -->
-                        <table>
+                        <table style="width:100%">
                         	<tr>
-                            	<td>가격: ${detail.mbPrice }</td>
+                            	<td colspan="4">가격: ${detail.mbPrice }</td>
                             </tr>
                             <tr>
-                                <td>${detail.mbAddrBasic }</td>
+                                <td colspan="3">${detail.mbAddrBasic }</td>
                                 <td>
                                     
-                        	<div class="col-sm-2">
-                            <a href="https://map.kakao.com/link/to/${detail.mbAddrBasic },${detail.mbLatitude },${detail.mbLongitude}">
-                                <button class="btn btn-info pull-right">길찾기</button>
-                            </a>
-                            </div>
+		                            <a href="https://map.kakao.com/link/to/${detail.mbAddrBasic },${detail.mbLatitude },${detail.mbLongitude}">
+		                                <button class="btn btn-info pull-right">길찾기</button>
+		                            </a>
                                 </td>
                             </tr>
 
@@ -302,7 +319,7 @@
                             </tr>
 
                             <tr>
-                                <td colspan="3">
+                                <td colspan="4">
                                     <p style="line-height: 150%;">
 
                                        ${fn:replace(fn:replace(fn:replace(detail.mbContent, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
@@ -311,9 +328,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td>
+                                
+                                <td colspan="4">
 
                                     <button id="reportBtn" class="btn btn-info pull-right"><span
                                             class="glyphicon glyphicon-thumbs-down"></span> 신고하기</button>
@@ -333,19 +349,17 @@
                 </div>
                 
                 <div class="row">
-                    <form id="reply-form">
+                    
+						<div><sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></div>
                         <div class="input-group input-group-lg">
-								
-                            <input type="text" id="replyInput" class="form-control" placeholder="댓글을 작성해주세요"
+                            <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
                             <span class="input-group-btn" id="basic-input">
                                 <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
-                            
                             </span>
-                            <sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup>
                         </div>
-                    </form>
+                   	
                 </div>
                 
                <div id="replyList" class="row container-fluid">

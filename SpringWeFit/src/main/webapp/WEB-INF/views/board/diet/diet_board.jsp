@@ -31,9 +31,7 @@
             height: 500px;
         }
 
-        .container {
-            font-family: "NanumGothic";
-        }
+        
 
         /* h2 {
           color: rgb(0, 173, 181);
@@ -41,14 +39,11 @@
           font-weight: bold;
         } */
 
-        .titlebox h2 {
-            /* border-bottom: 1px solid rgb(0, 173, 181); */
-            margin-top: 20px;
-            margin-bottom: 20px;
-            font-size: 25px;
-            font-weight: bold;
+        #title {
             color: rgb(0, 173, 181);
-            text-align: left;
+            font-size: 45px;
+            font-weight: bold;
+            cursor:pointer;
         }
 
         input {
@@ -81,6 +76,7 @@
         .vid:hover {
             border: 1px solid rgb(0, 173, 181);
             box-sizing: border-box;
+            cursor: pointer;
         }
 
 
@@ -134,25 +130,25 @@
         <div class="row">
             <%@ include file="../../include/header.jsp" %>
         </div>
-
-        <div class="container text-center">
+        <div class="row">
+            <div class="container">
 
             <!-- <div class="row">
                 <h2 class="font-weight-bold text-center">운동 강의</h2>
             </div> -->
 
             <div class="row">
-                <div class="col-sm-8">
-                    <div class="titlebox">
-                        <h2>오늘먹은 식단</h2>
-                    </div>
+                <div class="col-sm-5" align="left">
+                    
+                    <span id="title">오늘먹은 식단</span>
+                    
                 </div>
-              	
+              	<div class="row"></div>
               	<form action="<c:url value='/dietBoard/dietList' />">
-					<div id="btn-list" class="row" align="right">
+					<div id="btn-list" class="form-inline" align="right">
 	
 						<!--검색 조건-->
-						<select class="search-condition" name="condition">
+						<select class="search-condition form-control" name="condition">
 							<option value="title">제목</option>
 							<option value="writer">작성자</option>
 							<option value="content">내용</option>
@@ -181,18 +177,18 @@
 								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
 								<div class="vid">
 								<c:if test="${vo.dbRealImage1 != null }">
-									<a href="#"><img
-										src="http://localhost/upload/board/diet/${vo.memberNick}/${vo.dbRealImage1}"
-										width="280px" height="160px" alt="vid01"></a>
+									<img
+										src="/upload/board/diet/${vo.memberNick}/${vo.dbRealImage1}"
+										width="280px" height="160px" alt="vid01">
 								</c:if>
 								<c:if test="${vo.dbRealImage1 == null }">
-									<a href="#"><img
-										src="http://localhost/upload/text-image.png"
-										width="280px" height="160px" alt="vid01"></a>
+									<img
+										src="${pageContext.request.contextPath }/resources/img/logo/logo.png"
+										width="280px" height="160px" alt="vid01">
 								</c:if>
 								
 									<p class="subject">
-										<a href="#">${vo.dbTitle}</a>
+										${vo.dbTitle}
 									</p>
 									<p class="auth">
 										<span class="writeday"><fmt:formatDate value="${vo.dbRegDate}" pattern="yy.MM.dd HH:mm" /></span> 
@@ -254,6 +250,8 @@
 
             
         </div>
+        </div>
+        
         <div class="row">
             <%@ include file="../../include/footer.jsp" %>
         </div>

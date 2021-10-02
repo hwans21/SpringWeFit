@@ -1,6 +1,5 @@
 package com.spring.wefit.controller;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.wefit.command.CourseBoardVO;
 import com.spring.wefit.command.DietBoardVO;
@@ -21,9 +18,7 @@ import com.spring.wefit.command.FreeBoardVO;
 import com.spring.wefit.command.MarketBoardVO;
 import com.spring.wefit.command.NoticeBoardVO;
 import com.spring.wefit.command.PlaceBoardVO;
-import com.spring.wefit.command.marketBoardVO;
 import com.spring.wefit.commons.PageVO;
-import com.spring.wefit.course.mapper.ICourseBoardMapper;
 import com.spring.wefit.course.service.ICourseBoardService;
 import com.spring.wefit.diet.service.IDietBoardService;
 import com.spring.wefit.free.service.IFreeBoardService;
@@ -85,12 +80,15 @@ public class HomeController {
 		
 		PageVO vo = new PageVO();
 		vo.setPageNum(1);
+		vo.setCategory("");
 		vo.setCountPerPage(4);
 		List<DietBoardVO> dietlist = dietservice.getList(vo);
-		List<CourseBoardVO> courselist = courseservice.getList(vo);
-		List<FreeBoardVO> freelist = freeservice.getList(vo);
 		List<MarketBoardVO> marketlist = marketservice.getList(vo);
-		List<PlaceBoardVO> placelist = placeservice.getList(vo);
+		List<CourseBoardVO> courselist = courseservice.getList(vo);
+		
+		vo.setCountPerPage(5);
+		List<FreeBoardVO> freelist = freeservice.getList(vo);
+		
 		vo.setCountPerPage(10);
 		List<NoticeBoardVO> noticelist = noticeservice.getList(vo);
 		
@@ -98,7 +96,6 @@ public class HomeController {
 		model.addAttribute("courselist", courselist);
 		model.addAttribute("freelist", freelist);
 		model.addAttribute("marketlist", marketlist);
-		model.addAttribute("placelist", placelist);
 		model.addAttribute("noticelist", noticelist);
 		
 		return "home";

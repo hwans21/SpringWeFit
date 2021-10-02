@@ -80,19 +80,38 @@ table tr td {
 }
 
 .reply {
-	font-size: 20px;
-	font-weight: 600;
-}
+            font-size: 20px;
+            font-weight: 600;
+        }
 
-.reply small {
-	font-size: 15px;
-	font-weight: 400;
-}
+        .reply small {
+            font-size: 15px;
+            font-weight: 400;
+        }
 
-.reply-box {
-	padding-bottom: 20px;
-	border-bottom: 1px solid #ccc;
-}
+        .reply-box {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            overflow:hidden;
+        }
+        
+        .mod-del{
+        	float: right;
+        	margin-right: 10px;
+        }
+        .mod-del > small {
+        	cursor: pointer;
+        	font-size: 13px;
+        }
+        
+        .reply-box small {
+        	font-size:13px;
+        }
+        
+        .reply-content {
+        	font-size: 15px;
+        	font-weight: normal;
+        }
 </style>
 </head>
 
@@ -209,7 +228,7 @@ table tr td {
 						<!-- 시설 표시된 지도.. -->
 						<div id="map" style="width: 100%; height: 350px;"></div>
 
-						<table>
+						<table style="width:100%">
 							<tr>
 								<td>작성일  :  ${placeList.pbRegDate}</td>
 								<td><span class="glyphicon glyphicon-eye-open"></span>  ${placeList.pbLookCount}</td>
@@ -221,7 +240,7 @@ table tr td {
 							</tr>
 							
 							<tr>
-								<td>주소 :  ${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
+								<td colspan="2">주소 :  ${placeList.pbAddrBasic} ${placeList.pbAddrDetail}</td>
 								<td><a href="https://map.kakao.com/link/to/${placeList.pbAddrBasic},${placeList.pbLatitude},${placeList.pbLongitude}">
 										<button class="btn btn-info pull-right">길찾기</button></a></td>
 							</tr>

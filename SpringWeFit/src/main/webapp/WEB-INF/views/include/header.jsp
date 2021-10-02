@@ -84,7 +84,8 @@
                     <li><a id="menuPlace" href="<c:url value='/placeBoard/placeList' />">함께 운동해요 </a></li>
                     <li><a id="menuCourse" href='<c:url value='/courseBoard/?category=' />'>운동강의</a></li>
                     <li><a id="menuDiet" href="<c:url value='/dietBoard/dietList' />">오늘먹은식단</a></li>
-                    <li><a id="menuNotice" href="<c:url value='/noticeBoard/' />">게시판</a></li>
+                    <li><a id="menuNotice" href="<c:url value='/noticeBoard/' />">공지사항</a></li>
+                    <li><a id="menuFree" href="<c:url value='/freeBoard/' />">자유게시판</a></li>
                     <li><a id="menuMarket" href="<c:url value='/marketBoard/market_board' />">장터</a></li>
                 </ul>
 
@@ -403,11 +404,13 @@
        		$('#menuCourse').css("color","black").css("font-size","23px");
        	} else if(window.location.pathname.indexOf("/dietBoard") !== -1){
        		$('#menuDiet').css("color","black").css("font-size","23px");
-       	} else if((window.location.pathname.indexOf("/noticeBoard") !== -1) || (window.location.pathname.indexOf("/freeBoard") !== -1)){
+       	} else if(window.location.pathname.indexOf("/noticeBoard") !== -1){
        		$('#menuNotice').css("color","black").css("font-size","23px");
        	} else if(window.location.pathname.indexOf("/marketBoard") !== -1){
        		$('#menuMarket').css("color","black").css("font-size","23px");
-       	}
+       	} else if(window.location.pathname.indexOf("/freeBoard") !== -1){
+       		$('#menuFree').css("color","black").css("font-size","23px");
+       	} 
         $(document).ready(function () { 
         	 
         	

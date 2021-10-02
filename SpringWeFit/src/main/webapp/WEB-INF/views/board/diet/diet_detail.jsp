@@ -81,19 +81,38 @@ table tr td {
 }
 
 .reply {
-	font-size: 20px;
-	font-weight: 600;
-}
+            font-size: 20px;
+            font-weight: 600;
+        }
 
-.reply small {
-	font-size: 15px;
-	font-weight: 400;
-}
+        .reply small {
+            font-size: 15px;
+            font-weight: 400;
+        }
 
-.reply-box {
-	padding-bottom: 20px;
-	border-bottom: 1px solid #ccc;
-}
+        .reply-box {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            overflow:hidden;
+        }
+        
+        .mod-del{
+        	float: right;
+        	margin-right: 10px;
+        }
+        .mod-del > small {
+        	cursor: pointer;
+        	font-size: 13px;
+        }
+        
+        .reply-box small {
+        	font-size:13px;
+        }
+        
+        .reply-content {
+        	font-size: 15px;
+        	font-weight: normal;
+        }
 </style>
 </head>
 
@@ -254,19 +273,18 @@ table tr td {
 						???개</span>
 				</div>
 				<div class="row">
-					<form id="reply-form"> 
-						<div class="input-group input-group-lg">
-
-							<input id="replyInput" type="text" class="form-control"
-								placeholder="댓글을 작성해주세요" aria-describedby="basic-input">
-							<span class="input-group-btn" id="basic-input">
-								<button id="replyBtn" type="button" class="btn btn-default">
-									<span class="glyphicon glyphicon-send"></span>
-								</button>
-							</span>
-						</div>
-					</form>
-				</div>
+                    
+						<div><sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup></div>
+                        <div class="input-group input-group-lg">
+                            <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
+                                aria-describedby="basic-input">
+                            <span class="input-group-btn" id="basic-input">
+                                <button id="replyBtn" type="button" class="btn btn-default"><span
+                                        class="glyphicon glyphicon-send"></span></button>
+                            </span>
+                        </div>
+                   	
+                </div>
 
 				<div id="replyList" class="row container-fluid"></div>
 				<!-- <button class="form-control" id="moreList">더보기</button> -->
@@ -418,7 +436,7 @@ table tr td {
 											+ timeStamp(Data[i].drRegDate)
 											+ '</small>'
 									if (Data[i].memberNick === loginuserName) {
-										strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><button class="replyModBtn'+Data[i].drNum+'">수정</button> <button class="replyDelBtn'+Data[i].drNum+'">삭제</button></span>'
+										strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+Data[i].drNum+'">수정</small> <small class="replyDelBtn'+Data[i].drNum+'">삭제</small></span>'
 
 									}
 									strAdd += '<br><span class="reply-content">'
