@@ -47,5 +47,7 @@ public interface IMarketBoardMapper {
 
 		// 신고 처리
 		void insertReport(MarketBoardVO vo);
+		// 신고초기화
+		   void reportReset(int mbNum);
 
 }

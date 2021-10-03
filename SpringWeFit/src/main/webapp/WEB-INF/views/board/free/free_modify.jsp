@@ -99,6 +99,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
+                            <c:if test="${loginuser.memberManagerYN == 'YES' }">
+                            	<button type="button" class="btn btn-primary" id="reportResetBtn">신고초기화</button>
+                            </c:if>
                             <c:if test="${loginuser.memberNum == content.memberNum}">
 	                            <button id="modifyBtn" class="btn btn-primary" type="button" >수정하기</button>
                             </c:if>
@@ -227,6 +230,12 @@
 	    		$('#freeModify-form').attr("action","<c:url value='/freeBoard/freeDelete'/>")
 	    		$('#freeModify-form').submit();
     		}
+    	});
+    	
+    	$('#reportResetBtn').click(function() {
+        	 $('#freeModify-form').attr("action",'<c:url value="/freeBoard/reportReset" />')
+        	 $('#freeModify-form').submit();
+    		
     	});
     	$('#cancelBtn').click(function(){
     		location.href="<c:url value='/freeBoard/freeDetail?fbNum=${content.fbNum }' />"

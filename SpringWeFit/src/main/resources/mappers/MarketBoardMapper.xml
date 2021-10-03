@@ -38,7 +38,7 @@
 			ORDER BY mbLikeCount DESC
 		</if>
 		<if test="order == 'report'">
-			ORDER BY Report DESC
+			ORDER BY mbReportCount DESC
 		</if>
 		<if test="order == 'price'">
 			ORDER BY mbPrice ASC
@@ -56,7 +56,7 @@
                      (
                         SELECT mb.*,m.memberNick,
                         (SELECT COUNT(*) FROM MarketReply WHERE mbNum=mb.mbNum) as mbReplyCount,
-                        (SELECT COUNT(*) FROM MarketReport WHERE mbNum=mb.mbNum)as Report,
+                        (SELECT COUNT(*) FROM MarketReport WHERE mbNum=mb.mbNum)as mbReportCount,
                         (SELECT COUNT(*) FROM MarketLikely WHERE mbNum=mb.mbNum)as mbLikeCount,
                         DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
                          FROM MarketBoard mb, member m
@@ -242,7 +242,10 @@
       INSERT INTO MarketReport
       VALUES(#{mbNum}, #{memberNum})
    </insert>
-   
+   <delete id="reportReset">
+		DELETE FROM MarketReport
+		WHERE mbNum = #{mbNum}
+	</delete>
 
 
    <!--  <select id="" resultType="com.spring.wefit.command.marketBoardVO">

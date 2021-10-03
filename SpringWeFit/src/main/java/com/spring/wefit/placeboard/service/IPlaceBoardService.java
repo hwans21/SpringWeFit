@@ -51,6 +51,7 @@ public interface IPlaceBoardService {
 	//자유게시판 신고 처리
 	void insertReport(PlaceBoardVO vo);
 	
-	
+	// 신고초기화
+	   void reportReset(int pbNum);
 
 }

@@ -92,6 +92,12 @@ public class CourseBoardService implements ICourseBoardService {
 	   return mapper.checkReport(vo);
    }
 
+@Override
+public void reportReset(int cbNum) {
+	// TODO Auto-generated method stub
+	mapper.reportReset(cbNum);
+}
+
    
    
 }

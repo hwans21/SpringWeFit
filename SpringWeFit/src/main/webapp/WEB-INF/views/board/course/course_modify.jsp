@@ -111,7 +111,12 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button type="button" class="btn btn-primary" id="modifyBtn">수정하기</button>
+                            <c:if test="${loginuser.memberManagerYN == 'YES' }">
+                            	<button type="button" class="btn btn-primary" id="reportResetBtn">신고초기화</button>
+                            </c:if>
+                            <c:if test="${loginuser.memberNum == article2.memberNum}">
+                            	<button type="button" class="btn btn-primary" id="modifyBtn">수정하기</button>
+                            </c:if>
                             <button type="button" class="btn btn-warning" id="deleteBtn">삭제하기</button>
                             <button type="button" class="btn btn-default" id="cancelBtn" onclick='location.href="<c:url value='/courseBoard/detail?cbNum=${article2.cbNum}&pageNum=${param.pageNum}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}' />" '>취소하기</button>
                             <br><br><br>
@@ -214,6 +219,14 @@
                $('#modifyForm').submit();            
             }         
          }); // 글 수정 검증 끝
+         
+         // 신고 초기화
+         $('#reportResetBtn').click(function(){
+        	 $('#modifyForm').attr("action",'<c:url value="/courseBoard/reportReset" />')
+        	 $('#modifyForm').submit();
+        	 
+         });
+         
          
          
          

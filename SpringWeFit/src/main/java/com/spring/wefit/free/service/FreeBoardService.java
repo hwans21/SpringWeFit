@@ -94,6 +94,12 @@ public class FreeBoardService implements IFreeBoardService {
 		return mapper.countLike(fbNum);
 	}
 
+	@Override
+	public void reportReset(int fbNum) {
+		// TODO Auto-generated method stub
+		mapper.reportReset(fbNum);
+	}
+
 
 
 	

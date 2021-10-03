@@ -49,6 +49,8 @@ public interface INoticeBoardMapper {
 	
 	//신고 처리
 	void insertReport(NoticeBoardVO vo);
+	// 신고초기화
+	   void reportReset(int nbNum);
 	
 	
 }

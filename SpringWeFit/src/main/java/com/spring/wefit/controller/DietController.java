@@ -3,6 +3,7 @@ package com.spring.wefit.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.wefit.command.CourseBoardVO;
 import com.spring.wefit.command.DietBoardVO;
+import com.spring.wefit.command.UserVO;
 import com.spring.wefit.commons.CustomFileUpload;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
@@ -269,7 +272,16 @@ public class DietController {
 	
 	
 
-	
+	@PostMapping("/reportReset")
+   public String reportReset(HttpSession session, DietBoardVO vo, RedirectAttributes ra) {
+	   UserVO user = (UserVO) session.getAttribute("loginuser");
+	   if(user.getMemberManagerYN().equals("YES")) {
+		   service.reportReset(vo.getDbNum());
+		   return "redirect:/dietBoard/dietList";
+	   }
+	   ra.addFlashAttribute("msg","관리자 권한이 아닙니다.");
+	   return "redirect:/";
+   }
 	
 	
 	

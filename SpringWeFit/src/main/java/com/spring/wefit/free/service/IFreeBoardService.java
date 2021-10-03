@@ -47,4 +47,6 @@ public interface IFreeBoardService {
 	//자유게시판 신고 처리
 	void insertReport(FreeBoardVO vo);
 	
+	// 신고초기화
+	   void reportReset(int fbNum);
 }

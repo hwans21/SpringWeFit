@@ -100,4 +100,10 @@ public class PlaceBoardService implements IPlaceBoardService{
 		mapper.insertReport(vo);
 	}
 
+	@Override
+	public void reportReset(int pbNum) {
+		// TODO Auto-generated method stub
+		mapper.reportReset(pbNum);
+	}
+
 }

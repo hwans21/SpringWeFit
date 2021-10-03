@@ -189,6 +189,10 @@
 		AND memberNum = #{memberNum}
 	</select>
 	
+	<delete id="reportReset">
+		DELETE FROM PlaceReport
+		WHERE pbNum = #{pbNum}
+	</delete>
 	
 
 </mapper>

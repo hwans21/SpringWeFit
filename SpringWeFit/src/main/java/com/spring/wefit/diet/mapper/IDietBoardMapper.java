@@ -46,4 +46,7 @@ public interface IDietBoardMapper {
 	
 	//좋아요 삭제
 	void deleteLike(DietBoardVO vo);
+	
+	// 신고초기화
+	   void reportReset(int dbNum);
 }

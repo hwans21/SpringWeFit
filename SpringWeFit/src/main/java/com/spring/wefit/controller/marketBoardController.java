@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.wefit.command.FreeBoardVO;
 import com.spring.wefit.command.MarketBoardVO;
+import com.spring.wefit.command.UserVO;
 import com.spring.wefit.commons.CustomFileUpload;
 import com.spring.wefit.commons.PageCreator;
 import com.spring.wefit.commons.PageVO;
@@ -281,4 +284,14 @@ public class MarketBoardController {
 			}
 		}
 
+		@PostMapping("/reportReset")
+	   public String reportReset(HttpSession session, MarketBoardVO vo, RedirectAttributes ra) {
+		   UserVO user = (UserVO) session.getAttribute("loginuser");
+		   if(user.getMemberManagerYN().equals("YES")) {
+			   service.reportReset(vo.getMbNum());
+			   return "redirect:/marketBoard/market_board";
+		   }
+		   ra.addFlashAttribute("msg","관리자 권한이 아닙니다.");
+		   return "redirect:/";
+	   }
 }

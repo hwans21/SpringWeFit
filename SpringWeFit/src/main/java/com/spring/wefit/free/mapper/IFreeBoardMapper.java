@@ -45,4 +45,6 @@ public interface IFreeBoardMapper {
 	//자유게시판 좋아요 개수
 	int countLike(int fbNum);
 	
+	// 신고초기화
+	   void reportReset(int fbNum);
 }

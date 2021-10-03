@@ -151,6 +151,10 @@
 		#{memberNum})
 	</insert>
 
+	<delete id="reportReset">
+		DELETE FROM NoticeReport
+		WHERE nbNum = #{nbNum}
+	</delete>
 
 
 

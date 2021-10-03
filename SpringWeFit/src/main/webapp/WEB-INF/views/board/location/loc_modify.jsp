@@ -118,6 +118,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
+                            <c:if test="${loginuser.memberManagerYN == 'YES' }">
+                            	<button type="button" class="btn btn-primary" id="reportResetBtn">신고초기화</button>
+                            </c:if>
                             <c:if test="${loginuser.memberNum == placeList.memberNum}">
 	                            <button id="modifyBtn" type="button" class="btn btn-primary">수정하기</button> 
                             </c:if>
@@ -275,6 +278,11 @@
 	    		$('#placeModify-form').submit();
     		}
     	});
+    	$('#reportResetBtn').click(function() {
+	       	 $('#placeModify-form').attr("action",'<c:url value="/placeBoard/reportReset" />')
+	       	 $('#placeModify-form').submit();
+	   		
+  	 	});
     	
    	}); // end jQuery
    		$("input[name=fileName]").off().on("change", function(){

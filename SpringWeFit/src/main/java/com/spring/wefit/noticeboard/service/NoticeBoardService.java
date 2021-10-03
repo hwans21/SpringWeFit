@@ -96,5 +96,11 @@ public class NoticeBoardService implements INoticeBoardService {
 		return mapper.countLike(nbNum);
 	}
 
+	@Override
+	public void reportReset(int nbNum) {
+		// TODO Auto-generated method stub
+		mapper.reportReset(nbNum);
+	}
+
 	
 }

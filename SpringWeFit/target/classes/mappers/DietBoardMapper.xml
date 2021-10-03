@@ -173,6 +173,9 @@
       WHERE dbNum = #{dbNum}
    </select>
 
-
+	<delete id="reportReset">
+		DELETE FROM DietReport
+		WHERE dbNum = #{dbNum}
+	</delete>
 
 </mapper>

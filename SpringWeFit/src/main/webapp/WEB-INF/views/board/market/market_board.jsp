@@ -132,7 +132,6 @@
         }
         .vid .video {
             /* border: 1px solid #fff; */
-            background: #fff;
             padding: 10px;
             cursor: pointer;
         }
@@ -262,8 +261,8 @@
 			                          <tr class="course"> 
 			                       </c:if>  
 			                              <td scope="col" class="text-center" style="width: 33%" onclick="location.href='<c:url value='/marketBoard/market_detail?mbNum=${vo.mbNum }&pageNum=${pc.paging.pageNum }&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }' />'">
-			                                  <div class="vid">                               
-			                                      <div class="video" ${(loginuser.memberManagerYN=="YES" && vo.mbReportCount > 0)? 'style="background-color:red"':'' } >
+			                                  <div class="vid" >                               
+			                                      <div class="video" ${(loginuser.memberManagerYN=="YES" && vo.mbReportCount > 0)? 'style="background-color:red"':'' }>
 			                                         <%--  <a href="<c:url value='/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />"> --%> <!-- 여기도 detail요청 링크를 거니까 조회수가 2씩 증가함... -->
 			                                          <c:if test="${vo.mbImageCount == 0 }">
 				                                          <img src="${pageContext.request.contextPath }/resources/img/logo/logo.png" width="280px" height="160px" alt="" /><!-- </a>  -->                            
@@ -367,7 +366,6 @@
 
 <script>
 	$(document).ready(function(){
-		
 		$('#writeBtn').click(function() {
 			if(${loginuser==null}){
 				alert('로그인이 필요합니다.');

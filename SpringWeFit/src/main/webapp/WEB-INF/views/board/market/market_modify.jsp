@@ -101,8 +101,8 @@
                      기본 주소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50" value="${detail.mbAddrBasic }"><br>
                     <input type="hidden" id="sample6_detailAddress" name="mbAddrDetail" placeholder="상세주소" >
                      <input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
-							 <input type="hidden" name="mbLatitude" id="latitude" ><br>
-                           <input type="hidden" name="mbLongitude" id="longitude"><br>
+							 <input type="hidden" name="mbLatitude" id="latitude" value="${detail.mbLatitude }"><br>
+                           <input type="hidden" name="mbLongitude" id="longitude" value="${detail.mbLongitude }"><br>
 							<input type="hidden" name="mbImageCount" value="${detail.mbImageCount }"> <br>
 							<input type="hidden" name="mbLookCount" value="${detail.mbLookCount }"><br>
 						</td>
@@ -120,6 +120,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
+                            <c:if test="${loginuser.memberManagerYN == 'YES' }">
+                            	<button type="button" class="btn btn-primary" id="reportResetBtn">신고초기화</button>
+                            </c:if>
                             <c:if test="${loginuser.memberNum == detail.memberNum}">
 	                            <input type="button" id="modifyBtn" class="btn btn-primary" value="수정하기">
                             </c:if>
@@ -256,7 +259,7 @@ let bool = true;
 			}else{
 				$('#boardModify').submit();
 			}
-	});
+		});
     
    	 
    	 //각 파일당, 전체 용량 확인 함수
@@ -292,7 +295,11 @@ let bool = true;
           bool = true;
        }); //각 파일당, 전체 용량 확인 함수 종료
      	   
-     	 
+       $('#reportResetBtn').click(function() {
+	       	 $('#boardModify').attr("action",'<c:url value="/marketBoard/reportReset" />')
+	       	 $('#boardModify').submit();
+	   		
+	 	}); 
     });
 	  
     

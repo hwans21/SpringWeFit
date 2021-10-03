@@ -55,6 +55,10 @@ public interface ICourseBoardMapper {
    
    //신고했는지 확인
    int checkReport(CourseReportVO vo);
+   
+   // 신고초기화
+   void reportReset(int cbNum);
+	
 	
 
 }

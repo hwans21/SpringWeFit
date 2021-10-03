@@ -89,8 +89,12 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-
-	                       	<button class="btn btn-primary" type="button" id="modifyBtn">수정하기</button>
+							<c:if test="${loginuser.memberManagerYN == 'YES' }">
+                            	<button type="button" class="btn btn-primary" id="reportResetBtn">신고초기화</button>
+                            </c:if>
+                            <c:if test="${loginuser.memberNum == noticeContent.memberNum}">
+	                       		<button class="btn btn-primary" type="button" id="modifyBtn">수정하기</button>
+	                       	</c:if>
                             <button class="btn btn-primary" type="button" id="deleteBtn">삭제하기</button>
                             <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${noticeContent.nbNum}" />'">취소하기</button>
 
@@ -123,6 +127,11 @@
 	    		$('#modifyForm').submit();
     		}
     	});
+    	$('#reportResetBtn').click(function() {
+	       	 $('#modifyForm').attr("action",'<c:url value="/noticeBoard/reportReset" />')
+	       	 $('#modifyForm').submit();
+	   		
+ 	 	});
     	
     	
 		

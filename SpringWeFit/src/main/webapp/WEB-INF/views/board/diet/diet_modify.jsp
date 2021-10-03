@@ -85,6 +85,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
+                            <c:if test="${loginuser.memberManagerYN == 'YES' }">
+                            	<button type="button" class="btn btn-primary" id="reportResetBtn">신고초기화</button>
+                            </c:if>
                             <c:if test="${loginuser.memberNum == dietList.memberNum}">
                             	<button type="button" class="btn btn-primary" id="modifyBtn">수정하기</button>
                             </c:if>
@@ -184,7 +187,12 @@
 	    	       return rbyte;
 	    	  }
 	    	  
-	    	  
+	    	// 신고 초기화
+          $('#reportResetBtn').click(function() {
+        	  
+         	 $('form[name=modifyForm]').attr("action",'<c:url value="/dietBoard/reportReset" />')
+         	 $('form[name=modifyForm]').submit();
+          });
 			
 			
 			$('#delBtn').click(function() {

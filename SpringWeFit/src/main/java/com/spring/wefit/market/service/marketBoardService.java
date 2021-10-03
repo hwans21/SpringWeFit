@@ -86,4 +86,10 @@ public class marketBoardService implements IMarketBoardService {
 		return mapper.countLike(mbNum);
 	}
 
+	@Override
+	public void reportReset(int mbNum) {
+		// TODO Auto-generated method stub
+		mapper.reportReset(mbNum);
+	}
+
 }

@@ -201,6 +201,11 @@
 	WHERE cbNum = #{cbNum}
 	AND memberNum = #{memberNum}
 </select>
+
+<delete id="reportReset">
+	DELETE FROM CourseReport
+	WHERE cbNum = #{cbNum}
+</delete>
 	
 
 </mapper>

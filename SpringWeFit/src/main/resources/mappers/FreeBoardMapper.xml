@@ -157,5 +157,8 @@
 		INSERT INTO FreeReport
 		VALUES(#{fbNum}, #{memberNum})
 	</insert>
-	
+	<delete id="reportReset">
+		DELETE FROM FreeReport
+		WHERE fbNum = #{fbNum}
+	</delete>
   </mapper>

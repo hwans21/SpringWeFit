@@ -86,6 +86,12 @@ public class DietBoardService implements IDietBoardService {
 		mapper.deleteLike(vo);
 		
 	}
+
+	@Override
+	public void reportReset(int dbNum) {
+		// TODO Auto-generated method stub
+		mapper.reportReset(dbNum);
+	}
 	
 
 }
