@@ -73,6 +73,23 @@
 	</if>
 </sql>
 
+	<sql id="orderBy">
+		<if test="order == 'date'">
+			ORDER BY cbRegDate DESC
+		</if>
+		<if test="order == 'view'">
+			ORDER BY cbLookCount DESC
+		</if>
+		<if test="order == 'reply'">
+			ORDER BY crCount DESC
+		</if>
+		<if test="order == 'like'">
+			ORDER BY cbLikeCount DESC
+		</if>
+		<if test="order == 'report'">
+			ORDER BY cbReportCount DESC
+		</if>
+	</sql>
 
 
 <insert id="regist">
@@ -88,14 +105,14 @@
 		SELECT ROWNUM as rn, tbl.*
 		FROM
 		   (																	  <!-- 댓글 개수 카운트 한걸 crCount로 명명하면.. 이 이름 똑같이 vo객체에서 변수선언하면 알아서 거기에 값이 들어감 -->
-		   SELECT cb.*, (SELECT COUNT(*) FROM CourseReply WHERE cbNum = cb.cbNum AND memberNum = m.memberNum) as crCount,
-		   (SELECT COUNT(*) FROM CourseReport WHERE cbNum = cb.cbNum AND memberNum = m.memberNum) as cbReportCount
+		   SELECT cb.*, (SELECT COUNT(*) FROM CourseReply WHERE cbNum = cb.cbNum) as crCount,
+		   (SELECT COUNT(*) FROM CourseReport WHERE cbNum = cb.cbNum) as cbReportCount,
+		   (SELECT COUNT(*) FROM CourseLikely WHERE cbNum = cb.cbNum) as cbLikeCount
 		   FROM CourseBoard cb, Member m
 		   WHERE cb.memberNum = m.memberNum
 		   <include refid = "category" /> 
 		   <include refid = "sqlSearch" /> 
-		   
-		   ORDER BY cbNum DESC
+		   <include refid="orderBy" />
 		   ) tbl
 	)
 	<![CDATA[

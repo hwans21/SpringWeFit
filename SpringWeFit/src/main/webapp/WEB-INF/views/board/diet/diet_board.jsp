@@ -2,8 +2,14 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -140,13 +146,24 @@
             <div class="row">
                 <div class="col-sm-5" align="left">
                     
-                    <span id="title">오늘먹은 식단</span>
+                    <span id="title">오늘의 식단</span>
                     
                 </div>
               	<div class="row"></div>
               	<form action="<c:url value='/dietBoard/dietList' />">
 					<div id="btn-list" class="form-inline" align="right">
-	
+						
+						
+						<select id="order" name="order" class="form-control col-sm-2" align="right">
+                     		<option value="date">최신순</option>
+                     		<option value="view">조회수순</option>
+                     		<option value="reply">댓글수순</option>
+                     		<option value="like">좋아요순</option>
+                     		<c:if test="${loginuser.memberManagerYN=='YES' }">
+                      			<option value="report">신고수순</option>
+                     		</c:if>
+                     		
+                     	</select>
 						<!--검색 조건-->
 						<select class="search-condition form-control" name="condition">
 							<option value="title">제목</option>
@@ -188,7 +205,7 @@
 								</c:if>
 								
 									<p class="subject">
-										${vo.dbTitle}
+										${fn:replace(fn:replace(fn:replace(vo.dbTitle, replaceChar2,"&gt;"),replaceChar1,"&lt;"),replaceChar,"<br/>") }
 									</p>
 									<p class="auth">
 										<span class="writeday"><fmt:formatDate value="${vo.dbRegDate}" pattern="yy.MM.dd HH:mm" /></span> 
@@ -246,6 +263,7 @@
                     <input type="hidden" name="countPerPage" value="${dpc.paging.countPerPage}">
                     <input type="hidden" name="keyword" value="${dpc.paging.keyword}">
                     <input type="hidden" name="condition" value="${dpc.paging.condition}">
+                    <input type="hidden" name="order" value="${dpc.paging.order }">
 			</form>
 
             

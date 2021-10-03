@@ -62,8 +62,8 @@
                         <td>
 
                             <select id="mbType" name="mbType">
-                                <option value="sell">사요</option>
-                                <option value="buy">팔아요</option>
+                                <option value="sell">팔아요</option>
+                                <option value="buy">사요</option>
                                 <option value="share">나눠요</option>
 
                                 

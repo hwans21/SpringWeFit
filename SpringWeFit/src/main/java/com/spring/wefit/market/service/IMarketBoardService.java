@@ -2,6 +2,7 @@ package com.spring.wefit.market.service;
 
 import java.util.List;
 
+import com.spring.wefit.command.CourseBoardVO;
 import com.spring.wefit.command.MarketBoardVO;
 import com.spring.wefit.commons.PageVO;
 
@@ -33,6 +34,13 @@ public interface IMarketBoardService {
 
 	// 좋아요테이블 처리
 	void insertLovely(MarketBoardVO vo);
+	
+	   
+   //좋아요 삭제
+   void deleteLike(MarketBoardVO vo);
+   
+   //해당 글에서 사용자들에게 받은 좋아요 수
+   int countLike(int mbNum);
 
 	// 신고확인
 	int checkReport(MarketBoardVO vo);

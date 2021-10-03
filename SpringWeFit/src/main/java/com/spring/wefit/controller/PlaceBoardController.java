@@ -128,10 +128,10 @@ public class PlaceBoardController {
 	@GetMapping("/placeDetail") 
 	public String placeContent(@RequestParam int pbNum, PageVO page, Model model) {
 		System.out.println("/placeBoard/placeDetail?pbNum="+pbNum+":GET");
+		service.upHit(pbNum);
 		System.out.println("요청된 글 번호: " + pbNum);
 		model.addAttribute("placeList", service.getContent(pbNum));
 		
-		service.upHit(pbNum);
 		
 		System.out.println(service.getContent(pbNum).toString()); // 상세데이터 확인
 		model.addAttribute("pc", page);

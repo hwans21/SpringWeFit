@@ -14,15 +14,37 @@
        <if test="condition == 'type'">
          AND mbType LIKE '%'||#{keyword}||'%'
       </if>
-      <if test="condition == 'writer'">
-         AND memberNum LIKE '%'||#{keyword}||'%'
+      <if test="condition == 'addr'">
+         AND mbAddrBasic LIKE '%'||#{keyword}||'%'
       </if>
       
     
     </sql>
     
-    
-    
+    <sql id="orderBy">
+		<if test="order == 'date'">
+			ORDER BY mbRegDate DESC
+		</if>
+		<if test="order == 'view'">
+			ORDER BY mbLookCount DESC
+		</if>
+		<if test="order == 'reply'">
+			ORDER BY mbReplyCount DESC
+		</if>
+		<if test="order == 'distance'">
+			ORDER BY distance ASC
+		</if>
+		<if test="order == 'like'">
+			ORDER BY mbLikeCount DESC
+		</if>
+		<if test="order == 'report'">
+			ORDER BY Report DESC
+		</if>
+		<if test="order == 'price'">
+			ORDER BY mbPrice ASC
+		</if>
+	</sql>
+	    
     
     
     
@@ -35,11 +57,12 @@
                         SELECT mb.*,m.memberNick,
                         (SELECT COUNT(*) FROM MarketReply WHERE mbNum=mb.mbNum) as mbReplyCount,
                         (SELECT COUNT(*) FROM MarketReport WHERE mbNum=mb.mbNum)as Report,
+                        (SELECT COUNT(*) FROM MarketLikely WHERE mbNum=mb.mbNum)as mbLikeCount,
                         DISTANCE_WGS84(#{latitude}, #{longitude}, mb.mbLatitude, mb.mbLongitude) as distance
                          FROM MarketBoard mb, member m
                          WHERE mb.memberNum = m.memberNum
                         <include refid="search" />
-                        ORDER BY mbNum DESC
+                       	<include refid="orderBy" />
                          
                      ) market
                 <![CDATA[
@@ -198,6 +221,16 @@
        INSERT INTO MarketLikely
        VALUES(#{mbNum}, #{memberNum})
     </insert>
+    
+    <delete id="deleteLike">
+    	DELETE FROM MarketLikely
+    	WHERE mbNum = #{mbNum}
+       	AND memberNum = #{memberNum}
+    </delete>
+    <select id="countLike" resultType="int">
+    	SELECT COUNT(*) FROM MarketLikely
+       	WHERE mbNum = #{mbNum}
+    </select>
     
     <select id="checkReport" resultType="int">
       SELECT COUNT(*) FROM MarketReport

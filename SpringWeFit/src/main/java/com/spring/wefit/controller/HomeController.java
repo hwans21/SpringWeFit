@@ -89,7 +89,7 @@ public class HomeController {
 		vo.setCountPerPage(5);
 		List<FreeBoardVO> freelist = freeservice.getList(vo);
 		
-		vo.setCountPerPage(10);
+		vo.setCountPerPage(9);
 		List<NoticeBoardVO> noticelist = noticeservice.getList(vo);
 		
 		model.addAttribute("dietlist", dietlist);

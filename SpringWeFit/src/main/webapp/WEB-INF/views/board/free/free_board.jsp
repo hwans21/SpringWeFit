@@ -60,8 +60,12 @@
           color:rgb(0, 173, 181);
         }
         #btn-list {
-          margin-top: 15px;
-          margin-bottom: 25px;
+          margin-top: 60px;
+          margin-bottom: 10px;
+        }
+        
+        .search-inline {
+        	margin-bottom:10px;
         }
         
       
@@ -83,10 +87,6 @@
           <div class="col-sm-5" align="left">
             <span id="title">자유게시판</span>
           </div>
-
-              
-        </div>
-        <div class="col-sm-7 pull-right" align="right">
             <div id="btn-list" class="row" align="right">
               <div class="btn-group text-center" role="group" aria-label="Basic outlined example">
                 <button type="button" class="btn btn-info ${param.condition==''? 'active':'' }" id="allBtn">전체</button>
@@ -96,15 +96,30 @@
                 <button type="button" class="btn btn-info ${param.condition=='[꿀팁]'? 'active':'' }" id="tipBtn">꿀팁</button>
                 <button type="button" class="btn btn-info ${param.condition=='[기타]'? 'active':'' }" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
               </div>
-          
-              <input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
-            
-              <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              </button>
-
             </div>
+              
+			<div class="form-inline search-inline pull-right">
+            	<select id="order" class="form-control col-sm-2" >
+              		<option value="date">최신순</option>
+              		<option value="view">조회수순</option>
+              		<option value="reply">댓글수순</option>
+              		<option value="like">좋아요순</option>
+              		<c:if test="${loginuser.memberManagerYN=='YES' }">
+               			<option value="report">신고수순</option>
+              		</c:if>
+              		
+              	</select>
+	             <input id="search-input" type="text" placeholder="Search" class="form-control" value="${pc.paging.keyword }">
+	           
+	             <button type="button" class="btn" aria-label="Left Align" id="searchBtn">
+	               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+	             </button>
+			
+			</div>
         </div>
+          
+
+        
 
             <div class="row margin-top-5">
                 <table class="table table-hover table-responsive">
@@ -124,7 +139,7 @@
                       <tr ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }" />'">
                         
                         <th scope="col" class="text-center">${arr.fbNum }</th>
-                        <th scope="col">${fn:replace(fn:replace(fn:replace(arr.fbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>
+                        <th scope="col">${fn:replace(fn:replace(fn:replace(arr.fbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>
                         <th scope="col" class="text-center">${arr.memberNick }</th>
                         <th scope="col" class="text-center"><fmt:formatDate value="${arr.fbRegDate }" pattern="yyyy-MM-dd"/></th>
                         <th scope="col" class="text-center">${arr.fbLookCount }</th>
@@ -203,7 +218,7 @@
                       </c:if>
                       
                       <c:forEach var="page" begin="${pc.beginPage }" end="${pc.endPage }">
-                      	<li class="page-item ${page == param.pageNum? 'active':''}"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
+                      	<li class="page-item ${page == pc.paging.pageNum? 'active':''}"><a class="page-link" href="<c:url value='/freeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
                       </c:forEach>
                
                       

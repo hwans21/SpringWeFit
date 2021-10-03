@@ -94,41 +94,56 @@ tr{
 					<!-- 종목 -->
 					<div id="btn-list" class="row" align="right">
 						<div id="sportsBtn" class="btn-group text-center " role="group" aria-label="Basic outlined example">
-							<button type="button" class="btn btn-info btn-active" id="allBtn">전체</button>
-							<button type="button" class="btn btn-info" id="swimmingBtn">수영</button>
-							<button type="button" class="btn btn-info" id="badmintonBtn">배드민턴</button>
-							<button type="button" class="btn btn-info" id="squashBtn">스쿼시</button>
-							<button type="button" class="btn btn-info" id="bicycleBtn">자전거</button>
-							<button type="button" class="btn btn-info" id="runningBtn">달리기</button>
-							<button type="button" class="btn btn-info" id="hikingBtn">등산</button>
-							<button type="button" class="btn btn-info" id="trainingBtn">홈트짐트</button>
-							<button type="button" class="btn btn-info" id="pilatesBtn">필라테스</button>
-							<button type="button" class="btn btn-info" id="golfBtn">골프</button>
-							<button type="button" class="btn btn-info" id="skateBtn">스케이트</button>
-							<button type="button" class="btn btn-info" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
+							<button type="button" class="btn btn-info ${(pc.paging.category == '' )|| (pc.paging.category == null)? 'active':'' }" id="allBtn">전체</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '수영'? 'active':'' }" id="swimmingBtn">수영</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '배드민턴'? 'active':'' }" id="badmintonBtn">배드민턴</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '스쿼시'? 'active':'' }" id="squashBtn">스쿼시</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '자전거'? 'active':'' }" id="bicycleBtn">자전거</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '달리기'? 'active':'' }" id="runningBtn">달리기</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '등산'? 'active':'' }" id="hikingBtn">등산</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '홈트짐트'? 'active':'' }" id="trainingBtn">홈트짐트</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '필라테스'? 'active':'' }" id="pilatesBtn">필라테스</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '골프'? 'active':'' }" id="golfBtn">골프</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '스케이트'? 'active':'' }" id="skateBtn">스케이트</button>
+							<button type="button" class="btn btn-info ${pc.paging.category == '기타'? 'active':'' }" id="etcBtn">기타</button>&nbsp;&nbsp;&nbsp;
 						</div>
 					
 
 						<div class="search-area form-inline">
+							<select id="order" class="form-control col-sm-2 pull-right">
+                            		<option value="date">최신순</option>
+                            		<option value="view">조회수순</option>
+                            		<option value="reply">댓글수순</option>
+                            		<c:if test="${loginuser != null && loginuser.memberLatitude != 0.0 }">
+	                            		<option value="distance">거리순</option>
+                            		</c:if>
+                            		<option value="like">좋아요순</option>
+                            		<c:if test="${loginuser.memberManagerYN=='YES' }">
+	                            		<option value="report">신고수순</option>
+                            		</c:if>
+                            		
+                           	</select>
 							<select id="search-condition" class="form-control" >
 								<option value="title"
-									${param.condition == 'title' ? 'selected' : '' }>제목</option>
+									${(pc.paging.condition == 'title')||(pc.paging.condition == null)? 'selected' : '' }>제목</option>
 								<option value="content"
-									${param.condition == 'content' ? 'selected' : '' }>내용</option>
+									${pc.paging.condition == 'content' ? 'selected' : '' }>내용</option>
 								<option value="titleContent"
-									${param.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
+									${pc.paging.condition == 'titleContent' ? 'selected' : '' }>제목+내용</option>
 								<option value="area"
-									${param.condition == 'area' ? 'selected' : '' }>지역명</option>
+									${pc.paging.condition == 'area' ? 'selected' : '' }>지역명</option>
 							</select> 
-						
-							<select id="search-distance" class="form-control" onchange="changeDistance(this)">
-								<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
-								<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
-								<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
-								<option value="10km" ${param.distance==10? 'selected':'' }>10km 이내</option>
-							</select> 
+							<c:if test="${loginuser != null }">
+								<select id="search-distance" class="form-control">
+									<option value="" ${pc.paging.distance==15000? 'selected':'' }>거리선택</option>
+									<option value="2km" ${pc.paging.distance==2? 'selected':'' }>2km 이내</option>
+									<option value="5km" ${pc.paging.distance==5? 'selected':'' }>5km 이내</option>
+									<option value="10km" ${pc.paging.distance==10? 'selected':'' }>10km 이내</option>
+								</select> 
 							
-							<input id="search-input" type="text" placeholder="Search" value="${pc.paging.keyword }">
+							</c:if>
+							
+							<input id="search-input" type="text" placeholder="Search" class="form-control" value="${pc.paging.keyword }">
 		
 							<button type="button" class="btn" aria-label="Left Align" id="searchBtn">
 								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -171,8 +186,8 @@ tr{
 									</td>
 
 									<td>
-										${fn:replace(fn:replace(fn:replace(vo.pbTitle, replaceChar,"<br/>"),
-										replaceChar1,"&lt;"),replaceChar2,"&gt;") }&nbsp;&nbsp;[${vo.pbReplyCount}] &nbsp;&nbsp;&nbsp;</td>
+										${fn:replace(fn:replace(fn:replace(vo.pbTitle, replaceChar2,"&gt;"),
+										replaceChar1,"&lt;"),replaceChar,"<br/>") }&nbsp;&nbsp;[${vo.pbReplyCount}] &nbsp;&nbsp;&nbsp;</td>
 										
 									<td class="text-center">${vo.memberNick}</td>
 									<td class="text-center">${vo.pbLookCount}</td>
@@ -202,7 +217,7 @@ tr{
 							</c:if>
 
 							<c:forEach var="page" begin="${pc.beginPage}" end="${pc.endPage}">
-								<li class="page-item"><a class="page-link"
+								<li class="page-item ${pc.paging.pageNum == page? 'active':'' }"><a class="page-link"
 									href="<c:url value='/placeBoard/placeList?pageNum=${page}&latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&distance=${pc.paging.distance}&category=${pc.paging.category}' />">${page}</a></li>
 							</c:forEach>
 
@@ -229,10 +244,7 @@ tr{
 	  $('#title').click(function() {
     	location.href='<c:url value="/placeBoard/placeList" />';
 	  });
-      const msg = '${msg}';
-      if(msg === 'registSuccess') {
-         alert('정상 등록 처리되었습니다.');
-      }	
+      
    
      // 종목카테고리 클릭 시 
      $('#allBtn').click(function(){
@@ -275,24 +287,29 @@ tr{
       // 검색기능 구현 
       $('#searchBtn').click(function() {
           const condition = $('#search-condition').val();
-    	  const distance = +$('#search-distance').val();
           const keyword = $('#search-input').val();
-                
-          location.href = '/wefit/placeBoard/placeList?condition=' + condition + '&distance=' + distance + '&keyword=' + keyword;
-       });  
+//    	  const distance = +$('#search-distance').val();
+		  let distance = 0;
+		  if($('#search-distance').val() === ''){
+			  distance = 15000;
+		  } else if($('#search-distance').val() === '2km'){
+			  distance = 2;
+		  } else if($('#search-distance').val() === '5km'){
+			  distance = 5;
+		  } else if($('#search-distance').val() === '10km'){
+			  distance = 10;
+		  }
+          
+          location.href = '/wefit/placeBoard/placeList?condition=' + condition + '&distance=' + distance + '&keyword=' + keyword + '&order=' + $('#order').val() + '&latitude=' + ${loginuser != null? loginuser.memberLatitude:0.0} + '&longitude=' + ${loginuser != null? loginuser.memberLongitude:0.0} ;                                                 
+       });
+      $('#search-input').keydown(function(e){
+    	  if(e.keyCode == 13){
+    		  e.preventDefault();
+    		  $('#searchBtn').click();
+    	  }
+      })
       
-	   // search-distance의 onchange에서 호출하는 함수. 
-	   function changeDistance(obj){
-	       if($(obj).val() === ""){ 
-	          location.href=`<c:url value="/placeBoard/placeList?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=15000&keyword=${pc.paging.keyword} " />`
-	       } else if($(obj).val() === "2km"){
-	          location.href=`<c:url value="/placeBoard/placeList?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=2&keyword=${pc.paging.keyword} " />`
-	       } else if($(obj).val() === "5km"){
-	          location.href=`<c:url value="/placeBoard/placeList?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=5&keyword=${pc.paging.keyword} " />`
-	       } else if($(obj).val() === "10km"){
-	          location.href=`<c:url value="/placeBoard/placeList?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=10&keyword=${pc.paging.keyword} " />`
-	       }
-	   }
+	   
      
     	//
 	   function fn_contentView(bid){

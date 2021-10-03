@@ -1,9 +1,14 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<% pageContext.setAttribute("replaceChar", "\n"); %>
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -200,26 +205,42 @@
 	      		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board" />'">전체 보기</button><br/>
 	      		<div class="search-sec row pull-right">
                 	<form class="form-inline" action="<c:url value='/marketBoard/market_board' />">
-
+						<select id="order" name="order" class="form-control col-sm-2" >
+                    		<option value="date">최신순</option>
+                    		<option value="view">조회수순</option>
+                    		<option value="reply">댓글수순</option>
+                    		<c:if test="${loginuser != null && loginuser.memberLatitude != 0.0 }">
+                     			<option value="distance">거리순</option>
+                    		</c:if>
+                    		<option value="like">좋아요순</option>
+                    		<c:if test="${loginuser.memberManagerYN=='YES' }">
+                     			<option value="report">신고수순</option>
+                    		</c:if>
+                    		<option value="price">가격순</option>
+                    	</select>
 		                <!--검색 조건-->
 		                <select class="search-condition form-control" name="condition">
 	                        <option value="title" ${param.condition == 'title' ? 'selected' : '' }>상품이름</option>
 	                        <option value="addr" ${param.condition == 'addr' ? 'selected' : '' }>지역</option>
                        	</select>
-                           
-                        <select class="form-control" id="search-distance" onchange="changeDistance(this)">
-	                      	<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
-	                       	<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
-	                       	<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
-	                       	<option value="10km" ${param.distance==10? 'selected':'' }>10km 이내</option>
-                        </select>
+                         <c:if test="${loginuser != null && loginuser.memberLatitude != 0.0 }">
+	                        <select class="form-control" id="search-distance" onchange="changeDistance(this)">
+		                      	<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
+		                       	<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
+		                       	<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
+		                       	<option value="10km" ${param.distance==10? 'selected':'' }>10km 이내</option>
+	                        </select>
+                        </c:if>
            
                         <!--검색창, 버튼-->
-                        <input id="searchInput" type="text" name="keyword" placeholder="Search" value=${pc.paging.keyword }>
+                        <input id="searchInput" type="text" name="keyword" placeholder="Search" class="form-control" value=${pc.paging.keyword }>
                         <button type="submit" class="btn" aria-label="Left Align">
                         	<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                         </button>
-           
+           				<c:if test="${loginuser!=null }">
+		                	<input type="hidden" name="latitude" value="${loginuser.memberLatitude}">
+		                	<input type="hidden" name="longitude" value="${loginuser.memberLongitude}">	
+		                </c:if>
 					</form>
             	</div>
 			</div>
@@ -260,14 +281,14 @@
 																<c:if test="${vo.mbType == 'buy' }"> 삽니다</c:if> 
 																<c:if test="${vo.mbType == 'share' }"> 나눠요</c:if>
 		                                          			</span>
-			                                          		<a href="#">${fn:replace(fn:replace(fn:replace(vo.mbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }</a><br>
+			                                          		<a href="#">${fn:replace(fn:replace(fn:replace(vo.mbTitle,replaceChar2,"&gt;"),replaceChar1,"&lt;"),replaceChar,"<br/>") }</a><br>
 			                                          		<a href="#">${vo.mbAddrBasic}</a><br>
 															
 															<a href="#">가격: ${vo.mbPrice }원</a>
 	                                          		  </p>
 			                                          <p class="auth">${vo.memberNick } &nbsp;&nbsp;
 			                                          	  <small class="writeday"><fmt:formatDate value="${vo.mbRegDate}" pattern="yy.MM.dd" /></small>  
-			                                              <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>1</b></span>
+			                                              <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>${vo.mbReplyCount }</b></span>
 			                                              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"><b>${vo.mbLookCount}</b></span>
 			                                          	  
 			                                          </p>
@@ -312,7 +333,7 @@
 						</c:if>
 
 						<c:forEach var="i" begin="${pc.beginPage}" end="${pc.endPage}">
-							<li class="page-item">
+							<li class="page-item ${i == pc.paging.pageNum? 'active':''}">
 								<a href="<c:url value='/marketBoard/market_board?pageNum=${i }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />" >${i }</a>
 							</li>
 						</c:forEach>
@@ -325,9 +346,13 @@
 				</nav>
 			</div>
 			    <input type="hidden" name="pageNum" value="${pc.paging.pageNum}">
-                   <input type="hidden" name="countPerPage" value="${pc.paging.countPerPage}">
-                   <input type="hidden" name="keyword" value="${pc.paging.keyword}">
-                   <input type="hidden" name="condition" value="${pc.paging.condition}">
+                <input type="hidden" name="countPerPage" value="${pc.paging.countPerPage}">
+                <input type="hidden" name="keyword" value="${pc.paging.keyword}">
+                <input type="hidden" name="condition" value="${pc.paging.condition}">
+                <c:if test="${loginuser!=null }">
+                	<input type="hidden" name="latitude" value="${loginuser.memberLatitude}">
+                	<input type="hidden" name="longitude" value="${loginuser.memberLongitude}">	
+                </c:if>
 		</form>
         <div class="row">
             <%@ include file="../../include/footer.jsp" %>
@@ -356,19 +381,7 @@
 		
 	})
 	
-	 function changeDistance(obj){
-		 
-        if($(obj).val() === ""){
-        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=15000&keyword=${pc.paging.keyword} " />`
-        } else if($(obj).val() === "2km"){
-        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=2&keyword=${pc.paging.keyword} " />`
-        } else if($(obj).val() === "5km"){
-        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=5&keyword=${pc.paging.keyword} " />`
-        } else if($(obj).val() === "10km"){
-        	location.href=`<c:url value="/marketBoard/market_board?latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&distance=10&keyword=${pc.paging.keyword} " />`
-        }
-        
-    }
+	 
 	
 	
 </script>

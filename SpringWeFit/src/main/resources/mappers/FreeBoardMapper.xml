@@ -5,6 +5,23 @@
   
   <mapper namespace="com.spring.wefit.free.mapper.IFreeBoardMapper">
   
+  	<sql id="orderBy">
+		<if test="order == 'date'">
+			ORDER BY fbRegDate DESC
+		</if>
+		<if test="order == 'view'">
+			ORDER BY fbLookCount DESC
+		</if>
+		<if test="order == 'reply'">
+			ORDER BY fbReplyCount DESC
+		</if>
+		<if test="order == 'like'">
+			ORDER BY fbLikelyCount DESC
+		</if>
+		<if test="order == 'report'">
+			ORDER BY fbReportCount DESC
+		</if>
+	</sql>
   	<!--  //자유게시판  글 등록
 	void regist(FreeBoardVO vo);
 	
@@ -49,7 +66,7 @@
 				WHERE f.memberNum = m.memberNum
 				AND f.fbTitle LIKE '%'||#{condition}||'%'
 				AND f.fbTitle LIKE '%'||#{keyword}||'%'
-				ORDER BY fbRegDate DESC
+				<include refid="orderBy" />
 			) free
 		)
 		<![CDATA[

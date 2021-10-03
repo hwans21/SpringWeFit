@@ -226,7 +226,18 @@
                     
                     </div>
                 	<div class="form-inline search-area pull-right">
-                            
+                            	<select id="order" class="form-control col-sm-2" >
+                            		<option value="date">최신순</option>
+                            		<option value="view">조회수순</option>
+                            		<option value="reply">댓글수순</option>
+                            		<option value="like">좋아요순</option>
+                            		<c:if test="${loginuser.memberManagerYN=='YES' }">
+	                            		<option value="report">신고수순</option>
+                            		</c:if>
+                            		
+                            	</select>
+                            	
+                            	
                                 <select id="search-category" class="form-control col-sm-2" >
                                     <option value="">강의 전체</option>
                                     <option value="swimming" ${param.category == 'swimming' ? 'selected' : '' }>수영</option>
@@ -252,7 +263,7 @@
                            
                             	
                             
-	                            <input type="text" id="search-keyword" placeholder="Search" value="${param.keyword}">
+	                            <input type="text" id="search-keyword" placeholder="Search" class="form-control" value="${param.keyword}">
 	                             
 	                            <button type="button" id="search-btn" class="btn" aria-label="Left Align">
 	                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -289,13 +300,13 @@
 		                       <c:if test="${i.count % 3 == 1}">
 		                          <tr class="course"> 
 		                       </c:if>  
-		                              <td scope="col" class="text-center" style="width: 33%">
+		                              <td scope="col" class="text-center" style="width: 33%;">
 		                                  <div class="vid">                               
 		                                      <div class="video" ${(loginuser.memberManagerYN=="YES" && vo.cbReportCount > 0)? 'style="background-color:red"':'' } onclick="location.href='<c:url value="/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}" />'">
 		                                         <%--  <a href="<c:url value='/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />"> --%> <!-- 여기도 detail요청 링크를 거니까 조회수가 2씩 증가함... -->
 		                                          <img src="https://img.youtube.com/vi/${vo.cbYouCode}/mqdefault.jpg" width="280px" alt="${vo.cbYouCode}" /><!-- </a>  -->                            
 		                                          
-		                                          <p class="subject"><span class="category">${vo.cbCategory}</span><a href="#">${fn:replace(fn:replace(fn:replace(vo.cbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }</a></p>
+		                                          <p class="subject"><span class="category">${vo.cbCategory}</span><a href="#">${fn:replace(fn:replace(fn:replace(vo.cbTitle, replaceChar2,"&gt;"),replaceChar1,"&lt;"),replaceChar,"<br/>") }</a></p>
 		                                          <p class="auth">관리자 &nbsp;&nbsp;
 		                                          	  <small class="writeday"><fmt:formatDate value="${vo.cbRegDate}" pattern="yy.MM.dd" /></small>  
 		                                              <span class="glyphicon glyphicon-comment" aria-hidden="true"><b>${vo.crCount}</b></span>
@@ -413,8 +424,8 @@
 			  const category = $('#search-category').val();
 			  const condition = $('#search-condition').val();
 			  const keyword = $('#search-keyword').val();
-			  	  
-			  location.href = '/wefit/courseBoard/?category=' + category + '&condition=' + condition + '&keyword=' + keyword;
+			  const order = $('#order').val();
+			  location.href = '/wefit/courseBoard/?category=' + category + '&condition=' + condition + '&keyword=' + keyword + '&order=' + order;
 		  });  
       	  
       	  

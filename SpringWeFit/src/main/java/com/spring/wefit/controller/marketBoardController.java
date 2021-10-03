@@ -1,6 +1,8 @@
 package com.spring.wefit.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -243,12 +246,26 @@ public class MarketBoardController {
 			System.out.println("글 번호:"+vo.getMbNum());
 			System.out.println("유저 번호"+vo.getMemberNum());
 			if(service.checkLovely(vo) == 1) {
+				service.deleteLike(vo);
 				return "duplicate";
 			} else {
 				service.insertLovely(vo);
 				return "success";
 			}
 		}
+		
+		// 좋아요 수
+		@GetMapping("/{mbNum}")
+	   @ResponseBody
+	   public Map<String, Object> marketCountLike(@PathVariable int mbNum) {
+		   
+		   int count = service.countLike(mbNum);
+		   
+		   Map<String, Object> map = new HashMap<>();
+		   map.put("count", count);
+		   System.out.println(count);
+		   return map;
+	   }
 		
 		// 글 신고 처리하기
 		@PostMapping("/marketReport")

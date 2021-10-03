@@ -14,6 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 .titlebox h2 {
 	border-bottom: 1px solid rgb(0, 173, 181);
 	margin: 20px 0px;
@@ -66,7 +67,7 @@ table tr td {
 
 #carousel-example-generic {
 	/* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
-	height: 1000px;
+	height: 100%;
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -140,7 +141,7 @@ table tr td {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="titlebox">
-							<h2>${dietList.dbTitle}</h2>
+							<h2>${fn:replace(fn:replace(fn:replace(dietList.dbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }</h2>
 						</div>
 					</div>
 				</div>
@@ -246,7 +247,7 @@ table tr td {
 
 							<tr>
 								<td colspan="3">
-									<p style="line-height: 150%;">${fn:replace(dietList.dbContent, replaceChar,"<br/>") }</p>
+									<p style="line-height: 150%;">${fn:replace(fn:replace(fn:replace(dietList.dbContent,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }</p>
 								</td>
 							</tr>
 							<tr>

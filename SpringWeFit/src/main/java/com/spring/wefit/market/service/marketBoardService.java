@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.wefit.command.CourseBoardVO;
 import com.spring.wefit.command.MarketBoardVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.market.mapper.IMarketBoardMapper;
@@ -71,6 +72,18 @@ public class marketBoardService implements IMarketBoardService {
 	@Override
 	public void insertReport(MarketBoardVO vo) {
 		mapper.insertReport(vo);
+	}
+
+	@Override
+	public void deleteLike(MarketBoardVO vo) {
+		// TODO Auto-generated method stub
+		mapper.deleteLike(vo);
+	}
+
+	@Override
+	public int countLike(int mbNum) {
+		// TODO Auto-generated method stub
+		return mapper.countLike(mbNum);
 	}
 
 }

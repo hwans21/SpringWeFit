@@ -5,6 +5,27 @@
 
 <mapper namespace="com.spring.wefit.placeboard.mapper.IPlaceBoardMapper">
 	
+	<sql id="orderBy">
+		<if test="order == 'date'">
+			ORDER BY pbRegDate DESC
+		</if>
+		<if test="order == 'view'">
+			ORDER BY pbLookCount DESC
+		</if>
+		<if test="order == 'reply'">
+			ORDER BY pbReplyCount DESC
+		</if>
+		<if test="order == 'distance'">
+			ORDER BY distance ASC
+		</if>
+		<if test="order == 'like'">
+			ORDER BY pbLikelyCount DESC
+		</if>
+		<if test="order == 'report'">
+			ORDER BY pbReportCount DESC
+		</if>
+	</sql>
+	
 	<sql id="distance">
 		<choose>	
 			<when test = "distance == ''">	  
@@ -52,7 +73,7 @@
             WHERE p.memberNum = m.memberNum
             AND p.pbCategory LIKE '%'||#{category}||'%'
            	<include refid="search" />
-         	ORDER BY pbRegDate DESC
+         	<include refid="orderBy" />
          ) place
          <![CDATA[
          WHERE place.distance < #{distance}

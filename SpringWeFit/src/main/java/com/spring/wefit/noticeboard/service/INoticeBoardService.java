@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.spring.wefit.command.CourseBoardVO;
 import com.spring.wefit.command.DietBoardVO;
 import com.spring.wefit.command.NoticeBoardVO;
 import com.spring.wefit.commons.PageVO;
@@ -38,6 +39,13 @@ public interface INoticeBoardService {
 		
 		// 좋아요 처리
 		void insertLovely(NoticeBoardVO vo);
+		
+		   
+	   //좋아요 삭제
+	   void deleteLike(NoticeBoardVO vo);
+	   
+	   //해당 글에서 사용자들에게 받은 좋아요 수
+	   int countLike(int nbNum);
 		
 		//신고 여부
 		int checkReport(NoticeBoardVO vo);

@@ -68,7 +68,7 @@
 
         #carousel-example-generic {
             /* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
-            height: 1000px;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
         }
 
@@ -244,7 +244,7 @@
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
                                     	
-                                        ${fn:replace(fn:replace(fn:replace(article.cbContent, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }
+                                        ${fn:replace(fn:replace(fn:replace(article.cbContent,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }
                               <!--
                                                        보이는 눈에 주며, 커다란 속잎나고, 동산에는 그들의 그들은 실로 부패뿐이다. 얼마나 따뜻한 얼음 것은 이것이야말로 것이다. 위하여, 싹이 수
                                                        이성은 어디 길지 보라. 청춘의 모래뿐일 황금시대의 인간은 우리의 말이다. 뜨고, 이상, 끓는 구하기 미묘한 원대하고, 우리는 위하여서. 그것은
@@ -595,7 +595,7 @@
             			
             			let total = data.total;
             			let replyList = data.list;
-            			
+            			let content = '';
             			//console.log(data);
             			
             			if(reset === true) {
@@ -608,7 +608,7 @@
             			
             			//댓글 내용 출력
             			for(let i=0; i<replyList.length; i++) {
-            				
+            				content = replyList[i].crContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
             				strAdd += '<form id="rform">'
             				strAdd += '<div class="reply reply-box">';
             				strAdd += '<span class="reply-writer">' + replyList[i].memberNick + '</span>&nbsp;&nbsp;';
@@ -622,7 +622,7 @@
             				
             				strAdd += '<div class="reply-content-plus-modify"><div class="modify-input"><div><sup> ( <span id="nowByte2" class="nowByte2">최대 </span> / 200bytes )</sup></div><input class="reply-modify-input" value="'+ replyList[i].crContent + '"><div class="lnr"><span class="lnr lnr-cross-circle">취소하기</span><span id="'+ replyList[i].crNum +'" class="lnr lnr-checkmark-circle">수정하기</span></div></div>';
             				
-            				strAdd += '</div><span class="reply-content">'+ replyList[i].crContent +'</span>';
+            				strAdd += '</div><span class="reply-content">'+ content +'</span>';
             				
             				strAdd += '</div>';
             				strAdd += '</form>'

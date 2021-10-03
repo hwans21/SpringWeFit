@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +41,7 @@ public class PlaceReplyController {
 	//장소게시판 댓글 목록
 	@GetMapping("/placeReplyList/{pbNum}/{pageNum}")
 	@ResponseBody
-	public Map<String, Object> placeReplyList(@PathVariable int pbNum, @PathVariable int pageNum){
+	public Map<String, Object> placeReplyList(@PathVariable int pbNum, @PathVariable int pageNum, Model model){
 		PageVO vo = new PageVO();
 		vo.setPageNum(pageNum);
 		vo.setCountPerPage(10);
@@ -50,7 +51,6 @@ public class PlaceReplyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("list",list);
 		map.put("total",total);
-			
 		return map;
 	}
 		

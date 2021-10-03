@@ -16,13 +16,14 @@ public class PageVO {
 		//검색에 필요한 데이터를 변수로 선언.
 		private String keyword;
 		private String condition;
-		
 		private String category;
-		
+
 		private double latitude;
 		private double longitude;
-		
 		private int distance;
+
+		// 정렬에 필요한 데이터를 변수로 선언
+		private String order;
 		
 		public PageVO() {
 			this.pageNum = 1;
@@ -30,5 +31,6 @@ public class PageVO {
 			this.latitude = 0.0;
 			this.longitude = 0.0;
 			this.distance = 15000;
+			this.order = "date";
 		}
 }

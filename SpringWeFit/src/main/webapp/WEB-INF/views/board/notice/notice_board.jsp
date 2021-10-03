@@ -4,7 +4,6 @@
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <% pageContext.setAttribute("replaceChar", "\n"); %>
@@ -111,6 +110,16 @@
 		    </div>
 		    <div class="pull-right col-sm-5" id="search-parts" align="right">
            		<form id='searchForm' class="form-inline" action="<c:url value='/noticeBoard/noticeList' />" method='get'>
+           			<select id="order" name="order" class="form-control col-sm-2" >
+                   		<option value="date">최신순</option>
+                   		<option value="view">조회수순</option>
+                   		<option value="reply">댓글수순</option>
+                   		<option value="like">좋아요순</option>
+                   		<c:if test="${loginuser.memberManagerYN=='YES' }">
+                    		<option value="report">신고수순</option>
+                   		</c:if>
+                   		
+                   	</select>
 	    			<select class="form-control search-select" name="condition" id="condition">
 						<option value="titleContent" ${pc.paging.condition == 'titleContent' ? 'selected' : ''}>전체</option>
 						<option value="title" ${pc.paging.condition == 'title' ? 'selected' : ''}>제목</option>
@@ -142,7 +151,7 @@
                     
                       <tr ${(loginuser.memberManagerYN=="YES" && arr.nbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${arr.nbNum }" />'">
                         <th scope="col" class="text-center">${arr.nbNum }</th>
-                        <th scope="col">${fn:replace(fn:replace(fn:replace(arr.nbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }&nbsp;&nbsp;&nbsp;[${arr.nbReplyCount}]</th>
+                        <th scope="col">${fn:replace(fn:replace(fn:replace(arr.nbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }&nbsp;&nbsp;&nbsp;[${arr.nbReplyCount}]</th>
                         <th scope="col" class="text-center">관리자</th>
                         <th scope="col" class="text-center"><fmt:formatDate value="${arr.nbRegDate }" pattern="yyyy-MM-dd"/></th>
                         <th scope="col" class="text-center">${arr.nbLookCount }</th>
@@ -170,7 +179,7 @@
                       </c:if>
                       
                       <c:forEach var="page" begin="${pc.beginPage }" end="${pc.endPage }">
-                      	<li class="page-item ${page == param.pageNum? 'active':''}"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
+                      	<li class="page-item ${page == pc.paging.pageNum? 'active':''}"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
                       </c:forEach>
                
                       
@@ -195,20 +204,12 @@
 		}
    	$('#searchBtn').click(function(){
    		
-	
-   		if($('#search-input').val()==='') {
-   			alert("검색어를 입력하세요.");
-   		
-   		}
-   		
-   		searchForm.submit();
-   		
    		const condition = $('#condition').val();
 		const keyword = $('#search-input').val();
-		  
+		const order = $('#order').val();
 			
    		
-		  location.href = '/wefit/noticeBoard/?condition=' + condition + '&keyword=' + keyword;
+		  location.href = '/wefit/noticeBoard/?condition=' + condition + '&keyword=' + keyword+ '&order=' + order;
 	});
    	
    	$('#search-input').keydown(function(key){ 

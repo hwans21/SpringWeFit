@@ -21,6 +21,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+#carousel-example-generic {
+            /* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
 .titlebox h2 {
 	border-bottom: 1px solid rgb(0, 173, 181);
 	margin: 20px 0px;
@@ -65,7 +70,7 @@ table tr td {
 
 #carousel-example-generic {
 	/* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
-	height: 800px;
+	height: 100%;
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -126,7 +131,7 @@ table tr td {
 		<div class="container-fluid">
 			<div class="col-md-8 col-sm-12 test">
 				<div class="row">
-					<c:if test="${loginuser.memberNick == placeList.memberNick }">
+					<c:if test="${loginuser.memberNick == placeList.memberNick || loginuser.memberManagerYN == 'YES' }">
 						<button type="button" class="btn btn-primary pull-right"
 							onclick="location.href='<c:url value="/placeBoard/placeModify?pbNum=${placeList.pbNum}" />'">수정하기</button>
 					</c:if>
@@ -139,8 +144,8 @@ table tr td {
 					<div class="col-sm-12">
 						<div class="titlebox">
 							<h2>[${placeList.pbCategory}]
-							${fn:replace(fn:replace(fn:replace(placeList.pbTitle, replaceChar,"<br/>"),
-								replaceChar1,"&lt;"),replaceChar2,"&gt;") }</h2>
+							${fn:replace(fn:replace(fn:replace(placeList.pbTitle,replaceChar2,"&gt;" ),
+								replaceChar1,"&lt;"),replaceChar,"<br/>") }</h2>
 						</div>
 					</div>
 				</div>
@@ -158,7 +163,7 @@ table tr td {
 										end="${placeList.pbImageCount-1}">
 										<li data-target="#carousel-example-generic"
 											data-slide-to="${index}"></li>
-			                        1</c:forEach>
+			                        </c:forEach>
 								</ol>
 
 								<!-- Wrapper for slides -->
@@ -230,7 +235,7 @@ table tr td {
 
 						<table style="width:100%">
 							<tr>
-								<td>작성일  :  ${placeList.pbRegDate}</td>
+								<td>작성일  :  <fmt:formatDate value="${placeList.pbRegDate}" pattern="yyyy-MM-dd HH:mm"/></td>
 								<td><span class="glyphicon glyphicon-eye-open"></span>  ${placeList.pbLookCount}</td>
 								<td>
 									<button id="likeBtn" class="btn btn-info pull-right">
@@ -247,8 +252,8 @@ table tr td {
 
 							<tr>
 								<td colspan="3">
-									<p style="line-height: 150%;">${fn:replace(fn:replace(fn:replace(placeList.pbContent, replaceChar,"<br/>"),
-									replaceChar1,"&lt;"),replaceChar2,"&gt;") }</p></td>
+									<p style="line-height: 150%;">${fn:replace(fn:replace(fn:replace(placeList.pbContent,replaceChar2,"&gt;"),
+									replaceChar1,"&lt;"),replaceChar,"<br/>") }</p></td>
 							</tr>
 							
 							<tr>
@@ -332,14 +337,17 @@ table tr td {
                         strAdd='';
                     }
                     let loginuserName = "${loginuser.memberNick!=null? loginuser.memberNick:''}";
+                    const manager = "${loginuser !=null? loginuser.memberManagerYN:''}";
+                    let content = '';
         			for (let i = 0; i < data.list.length; i++) {
+        				content = data.list[i].prContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
                         strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].prRegDate)+'</small>'
-                        if(data.list[i].memberNick === loginuserName){
+                        if(data.list[i].memberNick === loginuserName || manager === 'YES'){
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].prNum+'">수정</small> <small class="replyDelBtn'+data.list[i].prNum+'">삭제</small></span>'
                         }
-                        strAdd += '<br><span class="reply-content">'+data.list[i].prContent+'</span>'
+                        strAdd += '<br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }
@@ -380,7 +388,7 @@ table tr td {
 	    
 	    //댓글 목록
 	    $(document).ready(function () {
-           
+	    	countLike();
         $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
            replyLoad(1,true);
            pageNum=2;
@@ -439,13 +447,8 @@ table tr td {
 	    });
 	    $('#replyInput').keyup(function(e){
 	    	if(e.keyCode === 13){
-	    		if(boolRegist){
-		        	replyRegist();
-		        	$('#replyInput').focus();
-	        	} else {
-	        		placeReplyModify(prClassName);
-	        		$('#replyInput').focus();
-	        	}
+	    		$('#replyBtn').click();
+	    		
 	    	} else {
 	    		$('#nowByte').html(getTextLength($('#replyInput').val()));
 	    	}
@@ -536,6 +539,7 @@ table tr td {
     		if(e.target.className.indexOf('replyModBtn') != -1){
     			$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
     			$('#nowByte').html(getTextLength($('#replyInput').val()));
+    			$('#replyInput').focus();
     			boolRegist = false;
     			prClassName = $(e.target).attr('class');
     		}
@@ -558,9 +562,12 @@ table tr td {
                     success: function (data) {
                         console.log('통신성공!' + data);
                       	if(data==="success"){
+                      		$('#replyInput').val('');
+                      		$('#nowByte').html('최대');
                       		alert('삭제 완료했습니다.');
 			    			replyLoad(1,true);
 			    			pageNum=2;
+			    			
                       	} 
                     },
                     error: function () {

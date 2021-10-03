@@ -81,12 +81,12 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <!-- Link 메뉴 (class가 active가 포함되어 있기 때문에 선택된 메뉴 뜻) -->
-                    <li><a id="menuPlace" href="<c:url value='/placeBoard/placeList' />">함께 운동해요 </a></li>
+                    <li><a id="menuPlace" href="<c:url value='/placeBoard/placeList' />">장소찾기 </a></li>
                     <li><a id="menuCourse" href='<c:url value='/courseBoard/?category=' />'>운동강의</a></li>
-                    <li><a id="menuDiet" href="<c:url value='/dietBoard/dietList' />">오늘먹은식단</a></li>
+                    <li><a id="menuDiet" href="<c:url value='/dietBoard/dietList' />">오늘의 식단</a></li>
+                    <li><a id="menuMarket" href="<c:url value='/marketBoard/market_board' />">장터</a></li>
                     <li><a id="menuNotice" href="<c:url value='/noticeBoard/' />">공지사항</a></li>
                     <li><a id="menuFree" href="<c:url value='/freeBoard/' />">자유게시판</a></li>
-                    <li><a id="menuMarket" href="<c:url value='/marketBoard/market_board' />">장터</a></li>
                 </ul>
 
                 <!-- 오른쪽 정렬의 메뉴 -->

@@ -6,7 +6,23 @@
 <mapper
 	namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 
-
+	<sql id="orderBy">
+		<if test="order == 'date'">
+			ORDER BY nbRegDate DESC
+		</if>
+		<if test="order == 'view'">
+			ORDER BY nbLookCount DESC
+		</if>
+		<if test="order == 'reply'">
+			ORDER BY nbReplyCount DESC
+		</if>
+		<if test="order == 'like'">
+			ORDER BY nbLikeCount DESC
+		</if>
+		<if test="order == 'report'">
+			ORDER BY nbReportCount DESC
+		</if>
+	</sql>
 	<!-- 게시물 작성 -->
 	<insert id="regist">
 		INSERT INTO NoticeBoard
@@ -44,10 +60,11 @@
 			(
 				SELECT n.*, 
 				(SELECT COUNT(*) FROM NoticeReply WHERE nbNum=n.nbNum) as nbReplyCount,
-				(SELECT COUNT(*) FROM NoticeReport WHERE nbNum=n.nbNum) as nbReportCount
+				(SELECT COUNT(*) FROM NoticeReport WHERE nbNum=n.nbNum) as nbReportCount,
+				(SELECT COUNT(*) FROM NoticeLikely WHERE nbNum=n.nbNum) as nbLikeCount
 				FROM NoticeBoard n
 				<include refid="search" />
-				ORDER BY nbNum DESC
+				<include refid="orderBy" />
 			) notice
 		) 
 				
@@ -108,6 +125,18 @@
 		VALUES(#{nbNum},
 		#{memberNum})
 	</insert>
+	
+	<delete id="deleteLike">
+		DELETE FROM NoticeLikely
+		WHERE nbNum = #{nbNum}
+		AND memberNum = #{memberNum}
+	</delete>
+	
+	<select id="countLike" resultType="int">
+		SELECT COUNT(*) FROM
+		NoticeLikely
+		WHERE nbNum = #{nbNum}
+	</select>
 
 	<select id="checkReport" resultType="int">
 		SELECT COUNT(*) FROM

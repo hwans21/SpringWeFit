@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.wefit.command.CourseBoardVO;
 import com.spring.wefit.command.NoticeBoardVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.noticeboard.mapper.INoticeBoardMapper;
@@ -81,6 +82,18 @@ public class NoticeBoardService implements INoticeBoardService {
 	@Override
 	public int checkLovely(NoticeBoardVO vo) {
 		return mapper.checkLovely(vo);
+	}
+
+	@Override
+	public void deleteLike(NoticeBoardVO vo) {
+		// TODO Auto-generated method stub
+		mapper.deleteLike(vo);
+	}
+
+	@Override
+	public int countLike(int nbNum) {
+		// TODO Auto-generated method stub
+		return mapper.countLike(nbNum);
 	}
 
 	

@@ -99,7 +99,7 @@
                         <td>
                             <input type="hidden" id="sample6_postcode" placeholder="우편번호">
                      		<input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
-                     		기본 주소 * : <input type="text" id="sample6_address" name="pbAddrBasic" placeholder="주소" size="50"><br>
+                     		기본 주소 * : <input type="text" id="sample6_address" name="pbAddrBasic" placeholder="주소" size="50" readonly><br>
                     		상세 주소     : <input type="text" id="sample6_detailAddress" name="pbAddrDetail" placeholder="상세주소" size="50"><br>
                      		<input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
                             <input type="hidden" name="pbLatitude" id="latitude" ><br>
@@ -136,45 +136,6 @@
  
 
 
-	<script>
-		//글 검증
-    	const writeBtn = document.getElementById('writeBtn');
-        let bool = true;
-        writeBtn.onclick = function() {
-        	if(document.writeForm.sports.value === 'category'){
-				alert('종목은 필수 항목 입니다.');
-				document.writeForm.sports.focus();
-				return;
-			} else if(document.writeForm.pbTitle.value === '') {
-				alert('제목은 필수 항목 입니다.');
-  				document.writeForm.pbTitle.focus();
-  				return;
-			} else if($('#pbTitle').val().length > 200) {
-                alert('제목은 최대 200byte를 초과할 수 없습니다.');   
-                $('#pbTitle').focus();
-                return;
-			} else if($('#pbContent').val().length > 2000) {
-                alert('내용은 최대 2000byte를 초과할 수 없습니다.');   
-                $('pbContent').focus();
-                return;
-			} else if(document.writeForm.sample6_address.value === '' ) {
-				alert('주소는 필수 항목 입니다.');
-  				document.writeForm.sample6_address.focus();
-  				return;
-			} else {
-				document.writeForm.submit();
-			}
-        };
-        	
-    	// 취소 버튼 클릭시
-  		$('#listBtn').click(function() {
-			if(confirm('목록으로 돌아가시겠습니까?')) {
-				location.href='<c:url value="/placeBoard/placeList" />';
-			} else {
-				return;
-			}
-		});
-  		</script>
   		
   		<!--카카오 주소 api -->
   		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -235,7 +196,46 @@
   		            console.log(result);
   		        }
   		    };
-  		  
+  			//글 검증
+  	    	const writeBtn = document.getElementById('writeBtn');
+  	        let bool = true;
+  	        writeBtn.onclick = function() {
+  	        	if(document.writeForm.sports.value === 'category'){
+  					alert('종목은 필수 항목 입니다.');
+  					document.writeForm.sports.focus();
+  					return;
+  				} else if(document.writeForm.pbTitle.value === '') {
+  					alert('제목은 필수 항목 입니다.');
+  	  				document.writeForm.pbTitle.focus();
+  	  				return;
+  				} else if(+($('#nowByte').html()) > 200) {
+  	                alert('제목은 최대 200byte를 초과할 수 없습니다.');   
+  	                $('#pbTitle').focus();
+  	                return;
+  				} else if(+($('#nowByte2').html()) > 2000) {
+  	                alert('내용은 최대 2000byte를 초과할 수 없습니다.');   
+  	                $('pbContent').focus();
+  	                return;
+  				} else if(document.writeForm.sample6_address.value === '' ) {
+  					alert('주소는 필수 항목 입니다.');
+  	  				document.writeForm.sample6_address.focus();
+  	  				return;
+  				} else if(!bool) {
+  					alert('사진파일을 확인해주세요.');
+  					return;
+  				} else {
+  					document.writeForm.submit();
+  				}
+  	        };
+  	        	
+  	    	// 취소 버튼 클릭시
+  	  		$('#listBtn').click(function() {
+  				if(confirm('목록으로 돌아가시겠습니까?')) {
+  					location.href='<c:url value="/placeBoard/placeList" />';
+  				} else {
+  					return;
+  				}
+  			});
   		//제목 byte 체크
       	  $('#pbTitle').keyup(function(){
       	       bytesHandler(this);

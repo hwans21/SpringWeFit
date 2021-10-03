@@ -14,11 +14,27 @@
          AND dbcontent LIKE '%'||#{keyword}||'%'
       </if>
       <if test="condition == 'writer'">
-         AND nickname LIKE '%'||#{keyword}||'%'
+         AND m.memberNick LIKE '%'||#{keyword}||'%'
       </if>
    </sql>
 
-
+	<sql id="orderBy">
+		<if test="order == 'date'">
+			ORDER BY dbRegDate DESC
+		</if>
+		<if test="order == 'view'">
+			ORDER BY dbLookCount DESC
+		</if>
+		<if test="order == 'reply'">
+			ORDER BY drCount DESC
+		</if>
+		<if test="order == 'like'">
+			ORDER BY dbLikelyCount DESC
+		</if>
+		<if test="order == 'report'">
+			ORDER BY dbReportCount DESC
+		</if>
+	</sql>
 
    <insert id="regist">
       INSERT INTO DietBoard
@@ -61,7 +77,7 @@
                         WHERE 
                         d.memberNum = m.memberNum
                         <include refid="search" />
-                        ORDER BY dbRegDate DESC
+                        <include refid="orderBy" />
                      ) diet
             )
               <![CDATA[

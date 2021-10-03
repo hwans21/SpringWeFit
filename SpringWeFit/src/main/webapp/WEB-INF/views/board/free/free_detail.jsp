@@ -17,6 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <style>
+    
         .titlebox h2 {
             border-bottom: 1px solid rgb(0, 173, 181);
             margin: 20px 0px;
@@ -68,7 +69,7 @@
 
         #carousel-example-generic {
             /* 케러셀(이미지 슬라이드) 높이 고정 및 배경색 조정*/
-            height: 1000px;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
         }
 
@@ -138,7 +139,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="titlebox">
-                            <h2>${fn:replace(fn:replace(fn:replace(content.fbTitle, replaceChar,"<br/>"),replaceChar1,"&lt;"),replaceChar2,"&gt;") }</h2>
+                            <h2>${fn:replace(fn:replace(fn:replace(content.fbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }</h2>
                         </div>
                     </div>
                 </div>
@@ -229,7 +230,7 @@
 									<c:if test="${loginuser != null }">
 										
 	                                    <button id="lovelyBtn" class="btn btn-info pull-right"><span
-	                                            class="glyphicon glyphicon-heart"></span>&nbsp; ${content.fbLikelyCount } 좋아요</button>
+	                                            class="glyphicon glyphicon-heart"></span>&nbsp; <span id="countLike"></span></button>
 									</c:if>
 
                                 </td>
@@ -330,7 +331,9 @@
                         strAdd='';
                     }
                     let loginuserName = "${loginuser.memberNick!=null? loginuser.memberNick:''}";
+                    let content = '';
         			for (let i = 0; i < data.list.length; i++) {
+        				content = data.list[i].frContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
                         strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small>'
@@ -338,7 +341,7 @@
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].frNum+'">수정</small> <small class="replyDelBtn'+data.list[i].frNum+'">삭제</small></span>'
                         	
                         }
-                        strAdd += '<br><span class="reply-content">'+data.list[i].frContent+'</span>'
+                        strAdd += '<br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }
@@ -407,6 +410,7 @@
             $('.test:last-child .input-group').css("width", $('.test:last-child').width() * 0.9);
             replyLoad(1,true);
             pageNum=2;
+            countLike();
 
         });
         $(window).resize(function () {
@@ -548,11 +552,7 @@
                 data: JSON.stringify(arr),
                 success: function (data) {
                     console.log('통신성공!' + data);
-                  	if(data==="success"){
-                  		alert('좋아요 등록완료');
-                  	} else{
-                  		alert('이미 좋아요를 누르셨습니다.')
-                  	}
+                    countLike();
                 },
                 error: function () {
                     alert('통신에 실패했습니다. 관리자에게 문의하세요');
@@ -561,6 +561,23 @@
             
             
     	});
+		function countLike() {
+          	
+        	$.getJSON(
+       			"<c:url value='/freeBoard/${content.fbNum}' />",
+        			
+        		function(data) {           			
+        			let count = data.count;
+       			
+        			//좋아요 개수 출력
+        			$('#countLike').html(count);
+        		
+        		
+        		} // end function(data)         			
+        	
+        	)//end getJSON
+        
+        } //countLike 함수 끝
     	
     	$('#reportBtn').click(function(){
     		if(${loginuser==null? true:false}){
