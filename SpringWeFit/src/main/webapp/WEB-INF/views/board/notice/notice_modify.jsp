@@ -90,8 +90,7 @@
                         <td colspan="2">
                             <br>
 
-
-                            <button class="btn btn-primary" type="button" id="modifyBtn">수정하기</button>
+	                       	<button class="btn btn-primary" type="button" id="modifyBtn">수정하기</button>
                             <button class="btn btn-primary" type="button" id="deleteBtn">삭제하기</button>
                             <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${noticeContent.nbNum}" />'">취소하기</button>
 

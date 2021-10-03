@@ -152,16 +152,16 @@
                 </div>
               	<div class="row"></div>
               	<form action="<c:url value='/dietBoard/dietList' />">
-					<div id="btn-list" class="form-inline" align="right">
+					<div id="btn-list" class="form-inline pull-right" >
 						
 						
-						<select id="order" name="order" class="form-control col-sm-2" align="right">
-                     		<option value="date">최신순</option>
-                     		<option value="view">조회수순</option>
-                     		<option value="reply">댓글수순</option>
-                     		<option value="like">좋아요순</option>
+						<select id="order" name="order" class="form-control col-sm-2">
+                     		<option value="date" ${dpc.paging.order == 'date'? 'selected':'' }>최신순</option>
+                     		<option value="view" ${dpc.paging.order == 'view'? 'selected':'' }>조회수순</option>
+                     		<option value="reply" ${dpc.paging.order == 'reply'? 'selected':'' }>댓글수순</option>
+                     		<option value="like" ${dpc.paging.order == 'like'? 'selected':'' }>좋아요순</option>
                      		<c:if test="${loginuser.memberManagerYN=='YES' }">
-                      			<option value="report">신고수순</option>
+                      			<option value="report" ${dpc.paging.order == 'report'? 'selected':'' }>신고수순</option>
                      		</c:if>
                      		
                      	</select>
@@ -170,7 +170,7 @@
 							<option value="title">제목</option>
 							<option value="writer">작성자</option>
 							<option value="content">내용</option>
-						</select> <input type="text" placeholder="Search" name="keyword" value="${dpc.paging.keyword}">
+						</select> <input type="text" placeholder="Search" name="keyword" class="form-control" value="${dpc.paging.keyword}">
 						<button type="submit" class="btn" aria-label="Left Align">
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						</button>
@@ -191,9 +191,10 @@
 								<tr class="course">
 							</c:if>
 							
-							<th scope="col" class="text-center" id="dietviewCnt"
+							<th scope="col" class="text-center" style="width: 33%;" id="dietviewCnt"
 								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
-								<div class="vid" ${(loginuser.memberManagerYN=="YES" && vo.dbReportCount > 0)? "style='background-color:red'":"" } >
+								<div class="vid">
+									<div class="video" ${(loginuser.memberManagerYN=="YES" && vo.dbReportCount > 0)? "style='background-color:red'":"" }>
 								<c:if test="${vo.dbRealImage1 != null }">
 									<img
 										src="/upload/board/diet/${vo.memberNick}/${vo.dbRealImage1}"

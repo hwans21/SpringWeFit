@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.wefit.command.FreeReplyVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.free.service.IFreeReplyService;
+import com.spring.wefit.user.service.IUserService;
 
 @RestController
 @RequestMapping("/freeReply")
@@ -22,6 +23,8 @@ public class FreeReplyController {
 
 	@Autowired
 	private IFreeReplyService replyService;
+	@Autowired
+	private IUserService userservice;
 	
 	//자유게시판  댓글 등록
 		@PostMapping("/freeReplyRegist")
@@ -77,7 +80,7 @@ public class FreeReplyController {
 			int memberNum = (int) map.get("memberNum");
 			int frNum = Integer.parseInt(((String) map.get("frNum")).substring(11));
 			
-			if(replyService.getContent(frNum).getMemberNum() == memberNum) {
+			if(replyService.getContent(frNum).getMemberNum() == memberNum || userservice.getContent(memberNum).getMemberManagerYN().equals("YES")) {
 				replyService.delete(frNum);
 				return "success";
 			}

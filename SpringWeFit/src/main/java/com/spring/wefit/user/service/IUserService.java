@@ -10,6 +10,10 @@ import com.spring.wefit.command.UserVO;
 
 public interface IUserService {
 
+	
+	// 회원번호로 회원정보 얻어오기
+		UserVO getContent(int memberNum);
+		
 		// 이메일 중복 확인
 		int emailCheck(String email);
 		

@@ -206,17 +206,17 @@
 	      		<div class="search-sec row pull-right">
                 	<form class="form-inline" action="<c:url value='/marketBoard/market_board' />">
 						<select id="order" name="order" class="form-control col-sm-2" >
-                    		<option value="date">최신순</option>
-                    		<option value="view">조회수순</option>
-                    		<option value="reply">댓글수순</option>
+                    		<option value="date" ${pc.paging.order == 'date'? 'selected':'' }>최신순</option>
+                    		<option value="view" ${pc.paging.order == 'view'? 'selected':'' }>조회수순</option>
+                    		<option value="reply" ${pc.paging.order == 'reply'? 'selected':'' }>댓글수순</option>
                     		<c:if test="${loginuser != null && loginuser.memberLatitude != 0.0 }">
-                     			<option value="distance">거리순</option>
+                     			<option value="distance" ${pc.paging.order == 'distance'? 'selected':'' }>거리순</option>
                     		</c:if>
-                    		<option value="like">좋아요순</option>
+                    		<option value="like" ${pc.paging.order == 'like'? 'selected':'' }>좋아요순</option>
                     		<c:if test="${loginuser.memberManagerYN=='YES' }">
-                     			<option value="report">신고수순</option>
+                     			<option value="report" ${pc.paging.order == 'report'? 'selected':'' }>신고수순</option>
                     		</c:if>
-                    		<option value="price">가격순</option>
+                    		<option value="price" ${pc.paging.order == 'price'? 'selected':'' }>가격순</option>
                     	</select>
 		                <!--검색 조건-->
 		                <select class="search-condition form-control" name="condition">
@@ -328,18 +328,18 @@
 						
 						<c:if test="${pc.prev }">
 							<li class="page-item">
-								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">이전</a>
+								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />">이전</a>
 							</li>
 						</c:if>
 
 						<c:forEach var="i" begin="${pc.beginPage}" end="${pc.endPage}">
 							<li class="page-item ${i == pc.paging.pageNum? 'active':''}">
-								<a href="<c:url value='/marketBoard/market_board?pageNum=${i }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />" >${i }</a>
+								<a href="<c:url value='/marketBoard/market_board?pageNum=${i }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />" >${i }</a>
 							</li>
 						</c:forEach>
 							<c:if test="${pc.next }">
 							<li class="page-item">
-								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />" >다음</a>
+								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />" >다음</a>
 							</li>
 							</c:if>
 					</ul>

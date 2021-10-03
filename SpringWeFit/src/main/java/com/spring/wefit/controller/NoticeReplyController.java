@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.wefit.command.NoticeReplyVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.noticeboard.service.NoticeReplyService;
+import com.spring.wefit.user.service.IUserService;
 
 @RestController
 @RequestMapping("/noticeReply")
@@ -26,6 +27,8 @@ public class NoticeReplyController {
 	
 	@Autowired
 	private NoticeReplyService service;
+	@Autowired
+	private IUserService userservice;
 	
 	//댓글 등록
 	@PostMapping("/noticeReplyRegist")
@@ -83,7 +86,7 @@ public class NoticeReplyController {
 				int memberNum = (int) map.get("memberNum");
 				int nrNum = Integer.parseInt(((String) map.get("nrNum")).substring(11));
 				
-				if(service.getContent(nrNum).getMemberNum() == memberNum) {
+				if(service.getContent(nrNum).getMemberNum() == memberNum || userservice.getContent(memberNum).getMemberManagerYN().equals("YES")) {
 					service.delete(nrNum);
 					return "success";
 				}

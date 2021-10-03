@@ -19,7 +19,8 @@ public interface IUserMapper {
 	//회원가입
 	void join(UserVO vo);
 	
-	
+	// 회원번호로 회원정보 얻어오기
+	UserVO getContent(int memberNum);
 	
 	//회원정보 얻어오기
 	UserVO getInfo(String email);

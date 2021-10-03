@@ -227,12 +227,12 @@
                     </div>
                 	<div class="form-inline search-area pull-right">
                             	<select id="order" class="form-control col-sm-2" >
-                            		<option value="date">최신순</option>
-                            		<option value="view">조회수순</option>
-                            		<option value="reply">댓글수순</option>
-                            		<option value="like">좋아요순</option>
+                            		<option value="date" ${pc.paging.order == 'date'? 'selected':'' }>최신순</option>
+                            		<option value="view" ${pc.paging.order == 'view'? 'selected':'' }>조회수순</option>
+                            		<option value="reply" ${pc.paging.order == 'reply'? 'selected':'' }>댓글수순</option>
+                            		<option value="like" ${pc.paging.order == 'like'? 'selected':'' }>좋아요순</option>
                             		<c:if test="${loginuser.memberManagerYN=='YES' }">
-	                            		<option value="report">신고수순</option>
+	                            		<option value="report" ${pc.paging.order == 'report'? 'selected':'' }>신고수순</option>
                             		</c:if>
                             		
                             	</select>
@@ -349,11 +349,11 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <c:if test="${pc.prev}"> 
-	                    <li class="page-item"><a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pc.beginPage - 1}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}' />">Prev</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pc.beginPage - 1}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}&order=${pc.paging.order }' />">Prev</a></li>
 	                </c:if>  
 	                <c:forEach var="pageNum" begin="${pc.beginPage}" end="${pc.endPage}"> 
 	                    <li class="page-item ${pc.paging.pageNum == pageNum ? 'active' : ''}">
-	                    	<a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pageNum}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}' />">${pageNum}</a>
+	                    	<a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pageNum}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}&order=${pc.paging.order }' />">${pageNum}</a>
 	                    </li>
 					</c:forEach>
 
@@ -363,7 +363,7 @@
 	                    <li class="page-item"><a class="page-link" href="#">4</a></li>
 	                    <li class="page-item"><a class="page-link" href="#">5</a></li> -->
 	                <c:if test="${pc.next}">   
-	                    <li class="page-item"><a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pc.endPage + 1}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}' />">Next</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/courseBoard/?pageNum=${pc.endPage + 1}&category=${param.category}&condition=${param.condition}&keyword=${param.keyword}&order=${pc.paging.order }' />">Next</a></li>
                 	</c:if> 
                 </ul>
                 </nav>

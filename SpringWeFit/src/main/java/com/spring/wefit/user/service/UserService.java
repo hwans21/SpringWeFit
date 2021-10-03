@@ -251,6 +251,12 @@ public class UserService implements IUserService {
 	public void sleepUser(Date date) {
 		mapper.sleepUser(date);
 	}
+
+	@Override
+	public UserVO getContent(int memberNum) {
+		// TODO Auto-generated method stub
+		return mapper.getContent(memberNum);
+	}
 	
 
 }

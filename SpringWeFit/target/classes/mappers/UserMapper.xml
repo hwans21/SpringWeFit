@@ -34,6 +34,10 @@
 		WHERE memberEmail = #{email }
 	</select>
 	
+	<select id="getContent" resultType="com.spring.wefit.command.UserVO">
+		SELECT * FROM member
+		WHERE memberNum = #{memberNum }
+	</select>
 	
 	<select id="getUserWithSessionId" resultType="com.spring.wefit.command.UserVO">
 		SELECT * FROM member

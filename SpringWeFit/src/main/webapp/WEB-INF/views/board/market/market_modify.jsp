@@ -120,7 +120,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <input type="button" id="modifyBtn" class="btn btn-primary" value="수정하기">
+                            <c:if test="${loginuser.memberNum == detail.memberNum}">
+	                            <input type="button" id="modifyBtn" class="btn btn-primary" value="수정하기">
+                            </c:if>
                             <button type="button" class="btn btn-primary" onclick="location.href='<c:url value="/marketBoard/delete?mbNum=${detail.mbNum }" />'">삭제하기</button>
                             <button type="button" class="btn btn-default" onclick="history.back()">취소하기</button>
                             <br><br><br>

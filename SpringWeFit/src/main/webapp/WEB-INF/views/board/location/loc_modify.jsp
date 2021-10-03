@@ -118,7 +118,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button id="modifyBtn" type="button" class="btn btn-primary">수정하기</button> 
+                            <c:if test="${loginuser.memberNum == placeList.memberNum}">
+	                            <button id="modifyBtn" type="button" class="btn btn-primary">수정하기</button> 
+                            </c:if>
                             <button id="deleteBtn" type="button" class="btn btn-primary">삭제하기</button>
                             <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/placeBoard/placeList" />'">취소하기</button>
                             <br><br><br>

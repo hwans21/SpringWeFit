@@ -5,7 +5,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <% pageContext.setAttribute("replaceChar", "\n"); %>
-
+<% pageContext.setAttribute("replaceChar1", "<"); %>
+<% pageContext.setAttribute("replaceChar2", ">"); %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -440,7 +441,9 @@ table tr td {
 								
 
 								let loginuserName = '${loginuser.memberNick!=null? loginuser.memberNick:''}';
+								let content = '';
 								for (let i = 0; i < Data.length; i++) {
+									content = Data[i].drContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
 									strAdd += '<div class="row reply-item" style="display:none;">';
 									strAdd += '<div class="reply reply-box">';
 									strAdd += '<span class="reply-writer">'
@@ -450,10 +453,10 @@ table tr td {
 											+ '</small>'
 											if (Data[i].memberNick == "${loginuser.memberNick}" || ${loginuser.memberManagerYN == "YES"}) {
 										strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+Data[i].drNum+'">수정</small> <small class="replyDelBtn'+Data[i].drNum+'">삭제</small></span>'
-
+										
 									}
 									strAdd += '<br><span class="reply-content">'
-											+ Data[i].drContent + '</span>'
+											+ content + '</span>'
 									strAdd += '</div>';
 									strAdd += '</div>';
 								}

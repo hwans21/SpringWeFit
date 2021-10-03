@@ -99,7 +99,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button id="modifyBtn" class="btn btn-primary" type="button" >수정하기</button>
+                            <c:if test="${loginuser.memberNum == content.memberNum}">
+	                            <button id="modifyBtn" class="btn btn-primary" type="button" >수정하기</button>
+                            </c:if>
                             <button id="deleteBtn" class="btn btn-primary" type="button" >삭제하기</button>
                             <button id="cancelBtn" class="btn btn-default" type="button">취소하기</button>
                             <br><br><br>

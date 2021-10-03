@@ -17,6 +17,7 @@ import com.spring.wefit.command.UserVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.course.service.ICourseBoardService;
 import com.spring.wefit.course.service.ICourseReplyService;
+import com.spring.wefit.user.service.IUserService;
 
 @RestController
 @RequestMapping("/courseReply")
@@ -26,7 +27,8 @@ public class CourseReplyController {
 	private ICourseReplyService service;
 	@Autowired
 	private ICourseBoardService service2;
-	
+	@Autowired
+	private IUserService userservice;
 	
 	@PostMapping("/regist")
 	public String replyRegist(@RequestBody CourseReplyVO vo) {
@@ -75,13 +77,14 @@ public class CourseReplyController {
 
 	@PostMapping("/delete")
 	public String replyDelete(@RequestBody CourseReplyVO vo) {
-		
-		//if(service.memberCheck(vo) == 1) {
+		System.out.println(vo.toString());
+		System.out.println(userservice.getContent(vo.getMemberNum()).toString());
+		if(service.memberCheck(vo) == 1 || userservice.getContent(vo.getMemberNum()).getMemberManagerYN().equals("YES")) {
 			service.delete(vo.getCrNum());
 			return "deleteSuccess";
-		//} else {
-		//	return "noAuth";
-		//}
+		} else {
+			return "noAuth";
+		}
 		
 	}
 	

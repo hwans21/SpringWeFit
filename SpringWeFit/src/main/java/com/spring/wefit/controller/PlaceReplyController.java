@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.wefit.command.PlaceReplyVO;
 import com.spring.wefit.placeboard.service.IPlaceReplyService;
+import com.spring.wefit.user.service.IUserService;
 import com.spring.wefit.commons.PageVO;
 
 
@@ -28,6 +29,8 @@ public class PlaceReplyController {
 	
 	@Autowired
 	private IPlaceReplyService replyService;
+	@Autowired
+	private IUserService userservice;
 	
 	//장소게시판 댓글 등록
 	@PostMapping("/replyRegist")
@@ -84,7 +87,7 @@ public class PlaceReplyController {
 		int memberNum = (int) map.get("memberNum");
 		int prNum = Integer.parseInt(((String) map.get("prNum")).substring(11));
 			
-		if(replyService.replyGetContent(prNum).getMemberNum() == memberNum) {
+		if(replyService.replyGetContent(prNum).getMemberNum() == memberNum || userservice.getContent(memberNum).getMemberManagerYN().equals("YES")) {
 			replyService.replyDelete(prNum);
 			return "success";
 		}

@@ -111,12 +111,12 @@
 		    <div class="pull-right col-sm-5" id="search-parts" align="right">
            		<form id='searchForm' class="form-inline" action="<c:url value='/noticeBoard/noticeList' />" method='get'>
            			<select id="order" name="order" class="form-control col-sm-2" >
-                   		<option value="date">최신순</option>
-                   		<option value="view">조회수순</option>
-                   		<option value="reply">댓글수순</option>
-                   		<option value="like">좋아요순</option>
+                   		<option value="date" ${pc.paging.order == 'date'? 'selected':'' }>최신순</option>
+                   		<option value="view" ${pc.paging.order == 'view'? 'selected':'' }>조회수순</option>
+                   		<option value="reply" ${pc.paging.order == 'reply'? 'selected':'' }>댓글수순</option>
+                   		<option value="like" ${pc.paging.order == 'like'? 'selected':'' }>좋아요순</option>
                    		<c:if test="${loginuser.memberManagerYN=='YES' }">
-                    		<option value="report">신고수순</option>
+                    		<option value="report" ${pc.paging.order == 'report'? 'selected':'' }>신고수순</option>
                    		</c:if>
                    		
                    	</select>
@@ -175,16 +175,16 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <c:if test="${pc.prev }">
-	                    <li class="page-item"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">Prev</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />">Prev</a></li>
                       </c:if>
                       
                       <c:forEach var="page" begin="${pc.beginPage }" end="${pc.endPage }">
-                      	<li class="page-item ${page == pc.paging.pageNum? 'active':''}"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">${page }</a></li>
+                      	<li class="page-item ${page == pc.paging.pageNum? 'active':''}"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${page }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />">${page }</a></li>
                       </c:forEach>
                
                       
                       <c:if test="${pc.next }">
-	                    <li class="page-item"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }' />">Next</a></li>
+	                    <li class="page-item"><a class="page-link" href="<c:url value='/noticeBoard/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />">Next</a></li>
                       </c:if>
                     </ul>
                   </nav>

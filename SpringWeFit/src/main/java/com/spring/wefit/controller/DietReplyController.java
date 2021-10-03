@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.wefit.command.DietBoardReplyVO;
 import com.spring.wefit.commons.PageVO;
 import com.spring.wefit.diet.service.IDietReplyService;
+import com.spring.wefit.user.service.IUserService;
 
 @RestController
 @RequestMapping("/dietReply")
@@ -22,7 +23,8 @@ public class DietReplyController {
 	
 	@Autowired
 	private IDietReplyService service;
-	
+	@Autowired
+	private IUserService userservice;
 	
 	//댓글 쓰기
 	@PostMapping("/replyRegist")
@@ -93,11 +95,12 @@ public class DietReplyController {
 		System.out.println(map.get("memberNum"));
 		int memberNum = Integer.parseInt((String) map.get("memberNum"));
 		int drNum = Integer.parseInt(((String) (map.get("drNum"))).substring(11));
+		
 		System.out.println("memberNum: " + memberNum);
 		System.out.println("drNum: " + drNum);
 		System.out.println(service.getContent(drNum).getMemberNum());
 		
-		if(service.getContent(drNum).getMemberNum() == memberNum) {
+		if(service.getContent(drNum).getMemberNum() == memberNum || userservice.getContent(memberNum).getMemberManagerYN().equals("YES")) {
 			service.replyDelete(drNum);
 			return "success";
 		}

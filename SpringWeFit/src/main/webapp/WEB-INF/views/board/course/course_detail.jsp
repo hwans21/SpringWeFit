@@ -689,8 +689,8 @@
             		type : "post",
             		url : "<c:url value='/courseReply/delete' />",
             		data: JSON.stringify({
-	            		"crNum" : crNum
-	            		//"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum}
+	            		"crNum" : crNum,
+	            		"memberNum": ${loginuser.memberNum==null? -1:loginuser.memberNum}
 	            	}),
             		headers : {
             			"Content-Type" : "application/json"	
