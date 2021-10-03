@@ -114,6 +114,16 @@ table tr td {
         	font-size: 15px;
         	font-weight: normal;
         }
+
+		/* 글 수정, 삭제 버튼*/
+        .m {
+           margin-left: -15px;
+           margin-right: 20px;
+        }
+        
+       .l {
+           margin-right: 20px;
+        } 
 </style>
 </head>
 
@@ -129,13 +139,13 @@ table tr td {
 			<div class="col-md-8 col-sm-12 test">
 				<div class="row">
 				
-				<c:if test="${loginuser.memberNick == dietList.memberNick}">
-					<button type="button" class="btn btn-primary pull-right" id="modifyBtn"
+					<c:if test="${loginuser.memberNum == dietList.memberNum || loginuser.memberManagerYN == 'YES'}">
+						<button type="button" class="btn btn-primary pull-right m" id="modifyBtn"
 						onclick="location.href='<c:url value="/dietBoard/dietModify?dbNum=${dietList.dbNum}" />'">수정하기
 					</button>
 				</c:if>
 				
-					<button type="button" class="btn btn-primary pull-right"
+				<button type="button" class="btn btn-primary pull-right l"
 						onclick="location.href='<c:url value="/dietBoard/dietList" />'">목록으로</button>
 				</div>
 				<div class="row">
@@ -317,7 +327,8 @@ table tr td {
 		function replyRegist() {
 			if (${loginuser == null ? true : false}) {
 				alert('댓글 등록 - 로그인을 하세요!'); 
-				 
+				$('#replyInput').val('');
+				$('#nowByte').text('최대');
 				return;
 			}
 
@@ -336,6 +347,7 @@ table tr td {
 					console.log('데이터 통신 성공' + data);
 					//댓글 목록 불러오기
 					replyLoad(1, true);
+					$('#nowByte').text('최대');
 					alert('댓글등록완료!');
 				},
 				error : function(request, status, error) {
@@ -436,7 +448,7 @@ table tr td {
 											+ '</span> <small>'
 											+ timeStamp(Data[i].drRegDate)
 											+ '</small>'
-									if (Data[i].memberNick === loginuserName) {
+											if (Data[i].memberNick == "${loginuser.memberNick}" || ${loginuser.memberManagerYN == "YES"}) {
 										strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+Data[i].drNum+'">수정</small> <small class="replyDelBtn'+Data[i].drNum+'">삭제</small></span>'
 
 									}
@@ -485,6 +497,7 @@ table tr td {
 		$('#replyList').click(function(e) {
 			if(e.target.className.indexOf('replyModBtn') != -1) {
 				$('#replyInput').val($(e.target).parent('.mod-del').nextAll('.reply-content').html());
+				$('#nowByte').html(getTextLength($('#replyInput').val()));
 				boolRegist = false;
 				frClassName = $(e.target).attr('class');
 			}
@@ -510,6 +523,7 @@ table tr td {
 							alert('삭제 완료');
 							replyLoad(1, true);
 							pageNum = 2;
+							$('#replyInput').val('');
 						}
 					},
 					error : function() {
@@ -676,6 +690,27 @@ table tr td {
 			}
 			return time;
 		}
+		//댓글 내용 byte 체크
+		$('#replyInput').keyup(function(){
+    	       bytesHandler(this);
+    	  });
+    	   function getTextLength(str) {
+    	       var rbyte = 0;
+    	       for (var i = 0; i < str.length; i++) {
+    	    	   if(str.charCodeAt(i) > 127) { // 한글 3Byte
+    	  	        	rbyte += 3;
+    	  	        } else if(str.charCodeAt(i) < 12) { // 엔터 2Byte //이부분이 의문이다. 왜 sqlDeveloper에서 엔터를 2바이트로 인식할까... (엔터가 \r\n으로 저장되어서 4바이트일줄알았는데.. + 그리고 str.charCodeAt(i) == 13으로 작성했는데 왜 안먹힐까..13이 엔터아닌가?)
+    	  	        	rbyte += 2;
+    	  	        } else { //영문 등 나머지 1Byte
+    	  	        	rbyte++;
+    	  	        }
+    	      }
+    	       return rbyte;
+    	  }
+    	   function bytesHandler(obj){
+    	       var text = $(obj).val();
+    	       $('#nowByte').text(getTextLength(text)); 	   
+    	   }
 	</script>
 
 </body>

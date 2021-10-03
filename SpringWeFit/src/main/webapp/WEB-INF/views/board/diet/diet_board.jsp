@@ -74,14 +74,15 @@
 
 
         .vid {
-            margin: 15px 5px;
-            padding: 10px;
+            margin: 25px 5px;
+            padding: 5px;
             border: 1px solid #ccc;
         }
 
-        .vid:hover {
-            border: 1px solid rgb(0, 173, 181);
-            box-sizing: border-box;
+        .vid .video {
+            /* border: 1px solid #fff; */
+            background: #fff;
+            padding: 10px;
             cursor: pointer;
         }
 
@@ -190,9 +191,9 @@
 								<tr class="course">
 							</c:if>
 							
-							<th ${(loginuser.memberManagerYN=="YES" && vo.dbReportCount > 0)? "style='background-color:red'":"" } scope="col" class="text-center" id="dietviewCnt"
+							<th scope="col" class="text-center" id="dietviewCnt"
 								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
-								<div class="vid">
+								<div class="vid" ${(loginuser.memberManagerYN=="YES" && vo.dbReportCount > 0)? "style='background-color:red'":"" } >
 								<c:if test="${vo.dbRealImage1 != null }">
 									<img
 										src="/upload/board/diet/${vo.memberNick}/${vo.dbRealImage1}"
@@ -216,6 +217,15 @@
 
 								</div>
 							</th>
+
+                            <c:if test="${i.count % 9 == 1 && i.count == fn:length(dietList)}">
+		                         <td></td>
+		                         <td></td>
+		                      </c:if>
+		                       
+		                      <c:if test="${i.count % 9 == 2 && i.count == fn:length(dietList)}">
+		                         <td></td>
+		                      </c:if> 
 							<c:if test="${i.count % 3 == 0}">
 								</tr>
 							</c:if>
@@ -289,7 +299,21 @@
 	document.pageForm.submit();
 }
 
-
+    $(document).ready(function(){
+        
+        
+        $('.vid').hover(function() {   
+            $(this).css('background-color', 'rgb(0, 173, 181)');
+            
+        });
+  
+        $('.vid').mouseleave(function() {   
+            $(this).css('background-color', '#fff');
+            
+        });
+  
+  
+    });
 
 
 	

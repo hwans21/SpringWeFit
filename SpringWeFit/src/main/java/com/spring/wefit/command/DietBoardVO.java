@@ -54,6 +54,8 @@ public class DietBoardVO {
 	private int drCount;
 	private int dbReportCount;
 	
+    private int dbTitleByte;
+	private int dbContentByte;
 	
 /*
 CREATE TABLE DietBoard

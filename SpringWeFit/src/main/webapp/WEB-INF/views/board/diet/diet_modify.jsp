@@ -1,7 +1,7 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,16 +59,16 @@
                 <table>
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text id="memberNick" name=memberNick size=20 value="${dietList.memberNick}"> </td>
+                        <td><input type=text id="memberNick" name=memberNick size=20 value="${dietList.memberNick}" readonly> </td>
                     </tr>
 
                     <tr>
-                        <td>제목</td>
+                        <td>제목<sup> ( <span id="nowByte">${dietList.dbTitleByte} </span> / 200bytes )</sup></td>
                         <td><input type=text id="dbTitle" name=dbTitle size="60" value="${dietList.dbTitle}"></td>
                     </tr>
 
                     <tr>
-                        <td>내용</td>
+                        <td>내용<sup> ( <span id="nowByte2">${dietList.dbContentByte} </span> / 2000bytes )</sup></td>
                         <td><textarea name="dbContent" id="dbContent" cols="75" rows="15">${dietList.dbContent}</textarea></td>
                     </tr>
 
@@ -85,7 +85,9 @@
                     <tr class="text-right">
                         <td colspan="2">
                             <br>
-                            <button type="button" class="btn btn-primary" id="modifyBtn">수정하기</button>
+                            <c:if test="${loginuser.memberNum == dietList.memberNum}">
+                            	<button type="button" class="btn btn-primary" id="modifyBtn">수정하기</button>
+                            </c:if>
                             <button type="button" class="btn btn-primary" id="delBtn">삭제하기</button>
                             <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/dietBoard/dietList" />'">취소하기</button>
                             <br><br><br>

@@ -91,6 +91,7 @@
    <select id="getContent"
       resultType="com.spring.wefit.command.DietBoardVO">
       SELECT d.*, m.memberNick,
+      LENGTHB(dbTitle) as dbTitleByte, LENGTHB(dbContent) as dbContentByte,
       (SELECT COUNT(*) FROM DietLikely WHERE dbNum=#{dbNum }) as dbLikelyCount,
       (SELECT COUNT(*) FROM DietReport WHERE dbNum=#{dbNum }) as dbReportCount
       FROM DietBoard d, Member m
