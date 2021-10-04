@@ -1,16 +1,17 @@
 package com.spring.wefit.noticeboard.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.spring.wefit.command.NoticeReplyVO;
 
 public interface INoticeReplyMapper {
 	
 		//댓글 등록
-		void replyRegist(NoticeReplyVO vo); 
+		void regist(NoticeReplyVO vo); 
 		
 		//댓글 목록
-//		List<NoticeReplyVO> getList(Map<String, Object> datas);
+		List<NoticeReplyVO> getList(Map<String, Object> datas);
 		
 		//댓글 개수
 		int getTotal(int nbNum); 

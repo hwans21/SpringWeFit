@@ -24,14 +24,14 @@ namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 <insert id="regist">
 		INSERT INTO NoticeBoard
 		(
-			nbNum, memberNum, nbTitle, nbContent,
-			nbImage1, nbRealImage1
+		nbNum, memberNum, nbTitle, nbContent,
+		nbImage1, nbRealImage1,nbImageCount
 		)
 		VALUES
 		(
-			noticeBoard_seq.NEXTVAL,
-			#{memberNum}, #{nbTitle}, #{nbContent},
-			#{nbImage1}, #{nbRealImage1}
+		noticeBoard_seq.NEXTVAL,
+		#{memberNum}, #{nbTitle}, #{nbContent},
+		#{nbImage1}, #{nbRealImage1},#{nbImageCount}
 		)
 	</insert>
 	
@@ -76,7 +76,7 @@ namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 		nbContent = #{nbContent},
 		nbImage1 = #{nbImage1},
 		nbRealImage1 = #{nbRealImage1},
-
+		nbImageCount=#{nbImageCount}
 		WHERE nbNum = #{nbNum}
 	</update>
 
@@ -94,8 +94,8 @@ namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 	
 	<select id="checkLovely" resultType="int">
 		SELECT COUNT(*) FROM NoticeLikely
-		WHERE nbNum = #{nbNum }
-		AND memberNum = #{memberNum }
+		WHERE nbNum = #{nbNum}
+		AND memberNum = #{memberNum}
 	</select>
 	
 	<insert id="insertLovely">
@@ -105,8 +105,8 @@ namespace="com.spring.wefit.noticeboard.mapper.INoticeBoardMapper">
 	
 	<select id="checkReport" resultType="int">
 		SELECT COUNT(*) FROM NoticeReport
-		WHERE nbNum = #{nbNum }
-		AND memberNum = #{memberNum }
+		WHERE nbNum = #{nbNum}
+		AND memberNum = #{memberNum}
 	</select>
 	
 	<insert id="insertReport">

@@ -54,8 +54,8 @@
             </div>
 
             <!--main left-->
-            <form action="<c:url value='/dietBoard/dietModify' />" id="modifyForm" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="nbNum" value="${content.nbNum }">
+            <form action="<c:url value='/noticeBoard/noticeModify' />" id="modifyForm" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="nbNum" value="${noticeContent.nbNum }">
                 <table>
                     
 
@@ -67,14 +67,14 @@
                     <tr>
                         <td>제목</td>
 
-                        <td><input id="input-title" type=text name=title size="60" value="${content.nbTitle}"></td>
+                        <td><input id="input-title" type=text name="nbTitle" size="60" value="${noticeContent.nbTitle}"></td>
 
                     </tr>
 
                     <tr>
                         <td>내용</td>
 
-                        <td><textarea name="nbContent" cols="75" rows="15">${content.nbContent}</textarea></td>
+                        <td><textarea name="nbContent" cols="75" rows="15">${noticeContent.nbContent}</textarea></td>
 
                     </tr>
 
@@ -82,7 +82,7 @@
                     <tr>
                         <td>사진올리기 </td>
 
-                        <td><input type="file" name="fileName" size="10" maxlength="10"></td>
+                        <td><input multiple type="file" name="fileName" size="1" maxlength="1"></td>
                     </tr>
                     
                     <tr class="text-right">
@@ -92,7 +92,7 @@
 
                             <button class="btn btn-primary" id="modifyBtn">수정하기</button>
                             <button class="btn btn-primary" id="deleteBtn">삭제하기</button>
-                            <button class="btn btn-default" onclick="location.href='/FRONT/views/board/notice/notice_detail.jsp'">취소하기</button>
+                            <button class="btn btn-default" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">취소하기</button>
 
                             <br><br><br>
                         </td>

@@ -17,20 +17,20 @@ public class NoticeReplyService implements INoticeReplyService {
 	@Autowired
 	private INoticeReplyMapper mapper;
 
-//	@Override
-//	public void regist(NoticeReplyVO vo) {
-//	
-//		mapper.regist(vo);
-//	}
+	@Override
+	public void regist(NoticeReplyVO vo) {
+	
+		mapper.regist(vo);
+	}
 
-//	@Override
-//	public List<NoticeReplyVO> getList(PageVO vo, int nbNum) {
-//		
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("paging", vo);
-//		map.put("nbNum",nbNum);
-//		return mapper.getList(map);
-//	}
+	@Override
+	public List<NoticeReplyVO> getList(PageVO vo, int nbNum) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("paging", vo);
+		map.put("nbNum",nbNum);
+		return mapper.getList(map);
+	}
 
 	@Override
 	public void update(NoticeReplyVO vo) {
@@ -55,17 +55,6 @@ public class NoticeReplyService implements INoticeReplyService {
 		return mapper.getContent(nrNum);
 	}
 	
-
-	@Override
-	public int pwCheck(NoticeReplyVO vo) {
-		return 0;
-	}
-
-	@Override
-	public void replyRegist(NoticeReplyVO vo) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }

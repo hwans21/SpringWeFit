@@ -1,12 +1,9 @@
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-
+    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -96,9 +93,12 @@
             padding-bottom: 20px;
             border-bottom: 1px solid #ccc;
         }
+        
+        span.mod-del{
+        	text-align: right
+        }
     </style>
 </head>
-
 
 <body>
 
@@ -107,26 +107,38 @@
         <div class="row">
             <%@ include file="../../include/header.jsp" %>
         </div>
-
         <div class="container-fluid">
             <div class="col-md-8 col-sm-12 test">
                 <div class="row">
-
-
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${content.nbNum}" />'">수정하기</button>
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeDelete?nbNum=${content.nbNum}" />'">삭제하기</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeContent.nbNum }" />'">수정하기</button>
                     <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
-
-
                 </div>
-            
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="titlebox">
+                            <h2>${noticeContent.nbTitle }</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <c:if test="${noticeContent.nbImageCount > 0 }">
+	                <div class="row">
+	                    <div class="container-fluid">
+	                        <img src="/upload/board/notice/관리자/${noticeContent.nbRealImage1}" width="100%" alt="...">
+	
+	
+	                    </div>
+	                </div>
+                </c:if>
+                <br>
+
                 <div class="row">
                     <div class="container-fluid">
                         <table>
 
                             <tr>
-                                <td>작성일: <fmt:formatDate value="${content.nbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
-                                <td><span class="glyphicon glyphicon-eye-open"></span>${content.nbLookCount }</td>
+                                <td>작성일: <fmt:formatDate value="${noticeContent.nbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
+                                <td><span class="glyphicon glyphicon-eye-open"></span>${noticeContent.nbLookCount }</td>
                                 <td>
 									<c:if test="${loginuser != null }">
 										
@@ -140,7 +152,7 @@
                             <tr>
                                 <td colspan="3">
                                     <p style="line-height: 150%;">
-										${content.nbContent }
+										${noticeContent.nbContent }
                                     </p>
                                 </td>
                             </tr>
@@ -197,7 +209,7 @@
 
     </div>
 
-    <script defer>
+     <script defer>
         let strAdd = '';
     	let pageNum = 2;
     	let boolRegist = true;
@@ -210,7 +222,7 @@
         
         function replyLoad(pageNum, reset){
         	$.getJSON(
-        		"<c:url value='/noticeBoard/noticeReplyList/${content.nbNum }/' />" + pageNum,
+        		"<c:url value='/noticeReply/noticeReplyList/${noticeContent.nbNum }/' />" + pageNum,
         		function(data){
         			console.log(data);
         			$('#replyCountSpan').html('댓글 :'+data.total+'개');
@@ -221,7 +233,7 @@
         			for (let i = 0; i < data.list.length; i++) {
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
-                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].noticeRegDate)+'</small>'
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].nrRegDate)+'</small>'
                         if(data.list[i].memberNick === loginuserName){
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].nrNum+'">수정</small> <small class="replyDelBtn'+data.list[i].nrNum+'">삭제</small></span>'
                         	
@@ -240,6 +252,7 @@
         
         // 날짜 처리 함수
         function timeStamp(millis) {
+        	console.log(millis);
             const date = new Date(); //현재 날짜
             // 현재 날짜를 밀리초로 변환 - 등록일 밀리초 -> 시간차
             const gap = date.getTime() - millis;
@@ -345,14 +358,14 @@
 			
         	$.ajax({
                 type: "POST",
-                url: "<c:url value='/noticeBoard/noticeReplyRegist' />",
+                url: "<c:url value='/noticeReply/noticeReplyRegist' />",
                 headers:{
                     "Content-Type":"application/json"
                 },
                 data: JSON.stringify({
                     "memberNum":${loginuser.memberNum==null? -1:loginuser.memberNum },
                     "nrContent":$('#replyInput').val(),
-                    "nbNum":${content.nbNum}
+                    "nbNum":${noticeContent.nbNum}
                 }),
                 dataType: "text",
                 success: function (data) {
@@ -376,7 +389,7 @@
 			
         	$.ajax({
                 type: "POST",
-                url: "<c:url value='/noticeBoard/noticeReplyModify' />",
+                url: "<c:url value='/noticeReply/noticeReplyModify' />",
                 headers:{
                     "Content-Type":"application/json"
                 },
@@ -405,17 +418,18 @@
 		}
 		
 		$('#lovelyBtn').click(function(){
+			
 			if(${loginuser==null? true:false}){
 				alert('로그인이 필요합니다.');
 				return;
 			}
     		const arr = {
-    			"nbNum" : ${content.nbNum },
-    			"memberNum" : ${loginuser.memberNum==null? 0900:loginuser.memberNum }
+    			"nbNum" : ${noticeContent.nbNum },
+    			"memberNum" : ${loginuser.memberNum==null? -1:loginuser.memberNum }
     		};
     		$.ajax({
                 type: "POST",
-                url: "<c:url value='/noticeBoard/noticeLikely' />",
+                url: "<c:url value='/noticeReply/noticeLikely' />",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -443,7 +457,7 @@
 				return;
 			}
     		const arr = {
-    			"nbNum" : ${content.nbNum },
+    			"nbNum" : ${noticeContent.nbNum },
     			"memberNum" : ${loginuser.memberNum==null? -1:loginuser.memberNum }
     		};
     		$.ajax({
@@ -486,7 +500,7 @@
     			}
     			$.ajax({
                     type: "POST",
-                    url: "<c:url value='/noticeBoard/noticeReplyDelete' />",
+                    url: "<c:url value='/noticeReply/noticeReplyDelete' />",
                     headers: {
                         "Content-Type": "application/json"
                     },

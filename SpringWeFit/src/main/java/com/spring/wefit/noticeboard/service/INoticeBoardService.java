@@ -25,7 +25,7 @@ public interface INoticeBoardService {
 		void update(NoticeBoardVO vo);
 
 		//글 삭제
-		void delete(NoticeBoardVO vo);
+		void delete(int nbNum);
 		
 		//글 목록
 		List<NoticeBoardVO> getList(PageVO vo);

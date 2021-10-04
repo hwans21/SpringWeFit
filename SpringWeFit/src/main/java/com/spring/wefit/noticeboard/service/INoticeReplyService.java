@@ -11,10 +11,10 @@ import com.spring.wefit.commons.PageVO;
 public interface INoticeReplyService {
 
 	//공지 댓 등록
-	void replyRegist(NoticeReplyVO vo);
+	void regist(NoticeReplyVO vo);
 	
 	//공지 댓 리스트
-//	List<NoticeReplyVO> getList(PageVO vo, int nbNum);
+	List<NoticeReplyVO> getList(PageVO vo, int nbNum);
 	
 	//공지 댓 수정
 	void update(NoticeReplyVO vo);
@@ -28,7 +28,7 @@ public interface INoticeReplyService {
 	//공지 댓 상세
 	NoticeReplyVO getContent(int nrNum);
 		
-	int pwCheck(NoticeReplyVO vo);
+	
 	
 	
 }

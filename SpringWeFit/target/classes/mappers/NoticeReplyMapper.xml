@@ -12,7 +12,7 @@
 	  )
 	  VALUES
 	  (
-	  	noticeReply_seq,NEXTVAL, #{nrNum}, #{nbNum}, 
+	  	noticeReply_seq.NEXTVAL, #{nbNum}, 
 	  	#{nrContent}, #{memberNum}
 	  )
 	  </insert>
@@ -28,7 +28,7 @@
 				WHERE nr.nbNum = #{nbNum }
 				AND nr.memberNum = m.memberNum
 				ORDER BY nr.nrRegDate DESC
-			) noticereply
+			) noticeReply
 		)
 		<![CDATA[
 		WHERE rn > (#{paging.pageNum}-1)*#{paging.countPerPage}

@@ -35,7 +35,7 @@ public interface INoticeBoardMapper {
 	//좋아요테이블 처리
 	void insertLovely(NoticeBoardVO vo);
 		
-	//신고 했는지 확인
+	//신고 여부 확인
 	int checkReport(NoticeBoardVO vo);
 		
 	//신고 처리
