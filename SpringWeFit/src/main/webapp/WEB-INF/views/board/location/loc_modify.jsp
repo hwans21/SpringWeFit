@@ -125,7 +125,7 @@
 	                            <button id="modifyBtn" type="button" class="btn btn-primary">수정하기</button> 
                             </c:if>
                             <button id="deleteBtn" type="button" class="btn btn-primary">삭제하기</button>
-                            <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/placeBoard/placeList" />'">취소하기</button>
+                            <button type="button" class="btn btn-default" onclick="location.href='<c:url value="/placeBoard/placeDetail?pbNum=" />'+${placeList.pbNum}">취소하기</button>
                             <br><br><br>
                         </td>
                         

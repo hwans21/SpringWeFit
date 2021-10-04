@@ -630,7 +630,13 @@
 			e.preventDefault();
 			getLocation();
 		});
-		
+		$('#input-email-search').keydown(function(e){
+			if(e.keyCode===13){
+				e.preventDefault();
+				$('#mailSendBtn').click();
+				
+			}
+		});
 		$('#mailSendBtn').click(function(){
 			$.ajax({
                 type: "POST",
@@ -713,6 +719,7 @@
 
                         if(data==="success"){
                             alert("회원정보변경을 성공적으로 마쳤습니다.");
+                            location.reload();
                         } else if(data==="duplicate"){
                             alert('이미 다른 닉네임이 존재합니다.');
                         } 
@@ -743,8 +750,9 @@
     		console.log("status:"+status);
     		
     		var location = result[1].address_name;
-    		console.log(location);
-	    	$('#centerAddr').html(location);
+    		const locarr = location.split(" ");
+    		console.log(locarr[0],locarr[1]);
+	    	$('#centerAddr').html(locarr[0]+" "+locarr[1]);
     		
     	}
     	geocoder.coord2RegionCode(${loginuser.memberLongitude}, ${loginuser.memberLatitude}, callback);

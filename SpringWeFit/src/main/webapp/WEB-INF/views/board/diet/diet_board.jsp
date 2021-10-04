@@ -70,8 +70,7 @@
 
 
 
-
-
+	
 
         .vid {
             margin: 25px 5px;
@@ -128,6 +127,8 @@
             color: #000;
             padding-left: 8px;
         }
+        
+      
     </style>
 </head>
 
@@ -192,7 +193,7 @@
 							</c:if>
 							
 							<th scope="col" class="text-center" style="width: 33%;" id="dietviewCnt"
-								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
+								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}&pageNum=${dpc.paging.pageNum}&keyword=${dpc.paging.keyword }&condition=${dpc.paging.condition }&category=${dpc.paging.category }&order=${dpc.paging.order }' />'">
 								<div class="vid">
 									<div class="video" ${(loginuser.memberManagerYN=="YES" && vo.dbReportCount > 0)? "style='background-color:red'":"" }>
 								<c:if test="${vo.dbRealImage1 != null }">

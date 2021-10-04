@@ -70,9 +70,9 @@
 			padding:20px 20px;
 		}
 		#searchInput{
-			padding: 5px;
+		  padding: 5px;
           border: 1px solid lightgray;
-          border-radius: 10px;
+          
           width: 200px;
 		}
 
@@ -195,7 +195,7 @@
         </div>
         <div class="container text-center"> 
         	<div class="row">
-	            <h2 align="left">중고장터 게시판</h2>
+	            <h2 align="left">중고장터</h2>
 			</div>
 			<div class="row gray-row">
 				<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=buy" />'">삽니다</button>
@@ -223,11 +223,11 @@
 	                        <option value="addr" ${param.condition == 'addr' ? 'selected' : '' }>지역</option>
                        	</select>
                          <c:if test="${loginuser != null && loginuser.memberLatitude != 0.0 }">
-	                        <select class="form-control" id="search-distance" onchange="changeDistance(this)">
-		                      	<option value="" ${param.distance==15000? 'selected':'' }>거리선택</option>
-		                       	<option value="2km" ${param.distance==2? 'selected':'' }>2km 이내</option>
-		                       	<option value="5km" ${param.distance==5? 'selected':'' }>5km 이내</option>
-		                       	<option value="10km" ${param.distance==10? 'selected':'' }>10km 이내</option>
+	                        <select class="form-control" id="search-distance" name="distance" >
+		                      	<option value="15000" ${param.distance==15000? 'selected':'' }>거리선택</option>
+		                       	<option value="2" ${param.distance==2? 'selected':'' }>2km 이내</option>
+		                       	<option value="5" ${param.distance==5? 'selected':'' }>5km 이내</option>
+		                       	<option value="10" ${param.distance==10? 'selected':'' }>10km 이내</option>
 	                        </select>
                         </c:if>
            
@@ -375,6 +375,15 @@
 				location.href="<c:url value='/marketBoard/market_write' />"
 			}
 		});
+		$('.vid').hover(function() {   
+            $(this).css('background-color', 'rgb(0, 173, 181)');
+            
+        });
+  
+        $('.vid').mouseleave(function() {   
+            $(this).css('background-color', '#fff');
+            
+        });
 		
 		
 	})

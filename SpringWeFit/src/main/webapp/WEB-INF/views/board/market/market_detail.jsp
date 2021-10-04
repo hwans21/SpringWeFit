@@ -313,7 +313,7 @@
                                 <td>
 
                                     <button id="lovelyBtn" class="btn btn-info pull-right">
-                                    <span class="glyphicon glyphicon-heart"></span>&nbsp; <span id="countLike"></span></button>
+                                    <span class="glyphicon glyphicon-heart"></span>&nbsp;<span id="countLike"></span></button>
 
                                 </td>
                             </tr>

@@ -122,11 +122,15 @@ public class MarketBoardController {
 	}
 
 	@GetMapping("/market_detail")
-	public String detail(@RequestParam int mbNum,@ModelAttribute("p") PageVO page, Model model) {
+	public String detail(@RequestParam int mbNum, PageVO page, Model model) {
 		
 		service.updateViewCount(service.getContent(mbNum).getMbNum());
+		
+		PageCreator pc = new PageCreator();
+		pc.setPaging(page);
+		
 		model.addAttribute("detail", service.getContent(mbNum));
-		model.addAttribute("pc", page);
+		model.addAttribute("pc", pc);
 
 		return "/board/market/market_detail";
 	}

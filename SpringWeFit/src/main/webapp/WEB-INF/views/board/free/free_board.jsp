@@ -67,6 +67,17 @@
         .search-inline {
         	margin-bottom:10px;
         }
+        thead > tr > th:nth-child(2){
+        	
+		  	width: 600px;
+        }
+        #title{
+        	overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			width: 600px;
+			height: 20px;
+        }
         
       
 
@@ -139,7 +150,7 @@
                       <tr ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }" />'">
                         
                         <th scope="col" class="text-center">${arr.fbNum }</th>
-                        <th scope="col">${fn:replace(fn:replace(fn:replace(arr.fbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>
+                        <th scope="col" class="title">${fn:replace(fn:replace(fn:replace(arr.fbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>
                         <th scope="col" class="text-center">${arr.memberNick }</th>
                         <th scope="col" class="text-center"><fmt:formatDate value="${arr.fbRegDate }" pattern="yyyy-MM-dd"/></th>
                         <th scope="col" class="text-center">${arr.fbLookCount }</th>

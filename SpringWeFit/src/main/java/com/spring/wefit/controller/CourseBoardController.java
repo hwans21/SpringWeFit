@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.javassist.bytecode.LineNumberAttribute.Pc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -93,14 +94,16 @@ public class CourseBoardController {
    
    
    @GetMapping("/detail")
-   public String courseDetail(@RequestParam int cbNum, Model model) {
+   public String courseDetail(@RequestParam int cbNum, Model model, PageVO pvo) {
       
 	  System.out.println("디테일요청~~"); 
 	   
 	  //조회수 올려줌
 	  service.upHit(cbNum);
 	  
-	  
+	  PageCreator pc = new PageCreator();
+	  pc.setPaging(pvo);
+	  System.out.println(pc.toString());
 	  CourseBoardVO vo = service.getContent(cbNum);
 	  System.out.println("조회수: " + vo.getCbLookCount());
 	  
@@ -110,7 +113,7 @@ public class CourseBoardController {
 	  
   
       model.addAttribute("article", vo);
-      
+      model.addAttribute("pc",pc);
       //System.out.println(vo);
       
       

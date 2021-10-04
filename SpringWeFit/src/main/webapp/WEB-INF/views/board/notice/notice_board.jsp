@@ -56,7 +56,7 @@
         }
         
         #search-parts {
-        	margin-left:25px;
+        	margin-left:10px;
         	margin-bottom: 25px;
         }
 

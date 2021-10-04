@@ -124,13 +124,19 @@ public class FreeBoardController {
 	
 	// 상세 페이지 이동
 	@GetMapping("/freeDetail") 
-	public String freeBoardDetailPage(@RequestParam int fbNum,PageVO page, Model model) {
+	public String freeBoardDetailPage(@RequestParam int fbNum, PageVO pvo, Model model) {
 		System.out.println("/freeBoard/freeDetail?fbNum="+fbNum+":GET");
 		System.out.println(fbNum);
 		service.updateViewCount(service.getContent(fbNum).getFbNum());
 		System.out.println(service.getContent(fbNum).toString()); // 상세데이터 확인
+		
+		PageCreator pc = new PageCreator();
+		pc.setPaging(pvo);
+		System.out.println(pc.toString());
+
+		
 		model.addAttribute("content",service.getContent(fbNum));
-		model.addAttribute("pc", page);
+		model.addAttribute("pc", pc);
 		return "board/free/free_detail";
 	}
 	

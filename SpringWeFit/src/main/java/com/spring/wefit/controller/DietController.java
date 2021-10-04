@@ -117,13 +117,16 @@ public class DietController {
 	
 	//글 상세보기
 	@GetMapping("/dietDetail")
-	public String dietContent(@RequestParam int dbNum, Model model, DietBoardVO vo) {
+	public String dietContent(@RequestParam int dbNum, Model model, DietBoardVO vo, PageVO pvo) {
 		System.out.println("/board/dietDatail: GET 상세보기!!");
 		System.out.println("요청된 상세보기 글 번호: " + dbNum);
 		System.out.println("service.getContent(dbNum).toString(): " + service.getContent(dbNum).toString());
 		
 		//System.out.println("글 작성자의 닉네임: " + service.getContent(dbNum).getMemberNick());
 		
+		PageCreator pc = new PageCreator();
+		pc.setPaging(pvo);
+		System.out.println(pc.toString());
 		service.updateViewCount(service.getContent(dbNum).getDbNum());
 		model.addAttribute("dietList", service.getContent(dbNum));
 		

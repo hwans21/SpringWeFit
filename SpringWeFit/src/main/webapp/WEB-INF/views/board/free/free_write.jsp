@@ -201,7 +201,7 @@
 				alert('내용을 입력해주세요.');
 				return;
 			} else if(+($('#contentByte').text()) > 2000){
-				alert('제목은 최대 2000byte를 초과할 수 없습니다.');   
+				alert('내용은 최대 2000byte를 초과할 수 없습니다.');   
 	            return;
 			} else if(!bool){
 				alert('사진파일을 확인해주세요');

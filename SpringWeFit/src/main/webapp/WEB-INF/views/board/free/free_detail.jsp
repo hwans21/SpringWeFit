@@ -341,7 +341,7 @@
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].frNum+'">수정</small> <small class="replyDelBtn'+data.list[i].frNum+'">삭제</small></span>'
                         	
                         }
-                        strAdd += '<br><span class="reply-content">'+content+'</span>'
+                        strAdd += '<br><br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }

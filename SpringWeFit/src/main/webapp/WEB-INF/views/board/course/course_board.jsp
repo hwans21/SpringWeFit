@@ -302,7 +302,7 @@
 		                       </c:if>  
 		                              <td scope="col" class="text-center" style="width: 33%;">
 		                                  <div class="vid">                               
-		                                      <div class="video" ${(loginuser.memberManagerYN=="YES" && vo.cbReportCount > 0)? 'style="background-color:red"':'' } onclick="location.href='<c:url value="/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}" />'">
+		                                      <div class="video" ${(loginuser.memberManagerYN=="YES" && vo.cbReportCount > 0)? 'style="background-color:red"':'' } onclick="location.href='<c:url value="/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&order=${pc.paging.order}" />'">
 		                                         <%--  <a href="<c:url value='/courseBoard/detail?cbNum=${vo.cbNum}&pageNum=${pc.paging.pageNum}&category=${pc.paging.category}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}' />"> --%> <!-- 여기도 detail요청 링크를 거니까 조회수가 2씩 증가함... -->
 		                                          <img src="https://img.youtube.com/vi/${vo.cbYouCode}/mqdefault.jpg" width="280px" alt="${vo.cbYouCode}" /><!-- </a>  -->                            
 		                                          

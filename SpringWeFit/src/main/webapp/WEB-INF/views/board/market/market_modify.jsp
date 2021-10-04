@@ -98,7 +98,7 @@
 						<td>
 							      <input type="hidden" id="sample6_postcode" placeholder="우편번호">
                      <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
-                     기본 주소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50" value="${detail.mbAddrBasic }"><br>
+                     기본 주소:<input type="text" id="sample6_address" name="mbAddrBasic" placeholder="주소" size="50" value="${detail.mbAddrBasic }" readonly><br>
                     <input type="hidden" id="sample6_detailAddress" name="mbAddrDetail" placeholder="상세주소" >
                      <input type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
 							 <input type="hidden" name="mbLatitude" id="latitude" value="${detail.mbLatitude }"><br>
@@ -115,7 +115,7 @@
                     </tr>
                     <tr>
                         <td>가격 </td>
-                        <td><input type=text name="mbPrice" size="60" value="${detail.mbPrice }"></td>
+                        <td><input type=text name="mbPrice" id="priceInput" size="60" value="${detail.mbPrice }"></td>
                     </tr>
                     <tr class="text-right">
                         <td colspan="2">
@@ -209,7 +209,7 @@
     
 </script>
 <script>
-   
+var regex= /^[0-9]/g
     
 let bool = true;
     $(function() {
@@ -236,8 +236,8 @@ let bool = true;
   	       $('#nowByte').text(getTextLength(text)); 	   
   	   }
   	   
-  	   
-     	//내용 byte 체크
+  	  
+	  //내용 byte 체크
    	  $('#mbContent').keyup(function(){
    	       bytesHandler2(this);
    	  });
@@ -247,16 +247,32 @@ let bool = true;
    	   }
    	   
    	   $('#modifyBtn').click(function() {
+   			
+   			
+   			const regexp = /^[0-9]*$/
 			if($('#mbTitle').val().trim() === ''){
 				alert('제목을 입력하세요')
-			return;
+				return;
 			}else if(+($('#nowByte').text()) > 200)	{
 				alert('제목은 200byte를 초과할 수 없습니다')
 				return;
-			}else if(+($('#nowByte2').text()) > 2000){
+			} else if($('#mbContent').val().trim() === ''){ 
+				alert('내용을 입력하세요.')
+				return;
+	  	   	}else if(+($('#nowByte2').text()) > 2000){
 				alert('내용은 2000byte를 초과할 수 없습니다.')
 				return;
-			}else{
+	  	   	} else if($('#priceInput').val().trim() === ''){
+	   	   		alert('가격을 입력해주세요')
+				return;
+	   	   			
+			} else if(!regexp.test($('#priceInput').val())){
+				alert('가격은 숫자만 입력가능합니다.');
+				return;
+	  	   	} else if($('#sample6_address').val().trim() === ''){
+				alert('주소를 입력해주세요.');
+				return;
+	  	   	} else {
 				$('#boardModify').submit();
 			}
 		});

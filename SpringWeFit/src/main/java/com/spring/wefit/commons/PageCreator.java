@@ -2,10 +2,12 @@ package com.spring.wefit.commons;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
 @Setter
+@ToString
 public class PageCreator {
 	
 	private PageVO paging;

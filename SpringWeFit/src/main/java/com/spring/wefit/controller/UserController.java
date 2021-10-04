@@ -93,6 +93,7 @@ public class UserController {
 	public ModelAndView login(UserVO vo,
 			HttpSession session, 
 			HttpServletResponse response,
+			HttpServletRequest request,
 			RedirectAttributes ra) {
 		
 		System.out.println("/user/login:POST");
@@ -125,12 +126,16 @@ public class UserController {
 					service.keepLogin(session.getId(), limitDate, login.getMemberEmail());
 				}
 				ra.addFlashAttribute("msg","로그인 성공!");
-				return new ModelAndView("redirect:/");
+				
+				String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
+				return new ModelAndView("redirect:"+ referer);
 			}
 			
 		}
 		ra.addFlashAttribute("msg", "이메일 또는 비밀번호가 맞지 않습니다.");
-		return new ModelAndView("redirect:/");
+		
+		String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
+		return new ModelAndView("redirect:"+ referer);
 		
 	}
 	
@@ -156,7 +161,8 @@ public class UserController {
 			}
 			ra.addFlashAttribute("msg","로그아웃 완료 되었습니다.");
 		}
-		return new ModelAndView("redirect:/");
+		String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
+		return new ModelAndView("redirect:"+ referer);
 	}
 	
 	// 위치정보 등록 이벤트

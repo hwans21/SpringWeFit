@@ -331,6 +331,12 @@ table tr td {
 				$('#replyInput').val('');
 				$('#nowByte').text('최대');
 				return;
+			} else if(+($('#nowByte').html())>200){
+				alert('댓글은 200바이트 초과해서 입력할 수 없습니다.');
+				$('#replyInput').val('');
+				$('#nowByte').text('최대');
+				$('#replyInput').focus();
+				return;
 			}
 
 			$.ajax({
@@ -455,7 +461,7 @@ table tr td {
 										strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+Data[i].drNum+'">수정</small> <small class="replyDelBtn'+Data[i].drNum+'">삭제</small></span>'
 										
 									}
-									strAdd += '<br><span class="reply-content">'
+									strAdd += '<br><br><span class="reply-content">'
 											+ content + '</span>'
 									strAdd += '</div>';
 									strAdd += '</div>';

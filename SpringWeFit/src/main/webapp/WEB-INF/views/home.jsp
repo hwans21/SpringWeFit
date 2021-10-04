@@ -160,6 +160,9 @@
         margin: 0 3px 15px 3px;
         height: 60px;
       }
+      .title-hover:hover{
+      	cursor: pointer;
+      }
       
       .category {
          overflow: hidden;
@@ -172,6 +175,8 @@
       
       .notice > .well {
          padding-bottom: 10px;
+         height:600px;
+         overflow: auto;
       }
       
       .sentence {
@@ -200,7 +205,7 @@
                     
                     <div class="row secondary">
                        <div id="diet" class="col-md-6">
-                         <h2>오늘의 식단<button type="button" id="dietBtn" class="btn btn-light">></button></h2>
+                         <h2><span id="dietTitle" class="title-hover">오늘의 식단</span><button type="button" id="dietBtn" class="btn btn-light">></button></h2>
                          
                          <table class="table">
                           <tbody>
@@ -248,7 +253,7 @@
                       
                        
                        <div id="market" class="col-md-6">
-                         <h2>장터<button type="button" id="marketBtn" class="btn btn-light">></button></h2>
+                         <h2><span id="marketTitle" class="title-hover">장터</span><button type="button" id="marketBtn" class="btn btn-light">></button></h2>
                          
                          <table class="table">
                           <tbody>
@@ -297,7 +302,7 @@
                 
                 <div class="col-md-9">
                    <div class="col-md-12">
-                         <h2>운동강의</h2>
+                         <h2><span id="courseTitle" class="title-hover">운동강의</span></h2>
                          
                          <table class="table">
                           <tbody>
@@ -333,7 +338,7 @@
                    <div class="row">    
                        <div class="col-md-6">                        
                         <div class="col-md-12">
-                               <h2>자유게시판</h2>
+                               <h2><span id="freeTitle" class="title-hover">자유게시판</span></h2>
                                
                                <table class="table">
                                 <tbody>
@@ -363,7 +368,7 @@
                     
                 <div class="col-md-3 notice">
                     <div class="well">
-                       <h4>공지사항</h4>
+                       <h4><span id="noticeTitle" class="title-hover">공지사항</span></h4>
                        
                        <br />
                        <c:forEach var="arr" items="${noticelist }">
@@ -407,6 +412,23 @@
          $(".market").toggleClass("hidden inactive");         
       }); //marketBtn 클릭 이벤트 끝
       
+      $('#dietTitle').click(function(){
+    	 location.href="<c:url value="/dietBoard/dietList"/>"; 
+      });
+      $('#marketTitle').click(function(){
+    	  location.href="<c:url value="/marketBoard/market_board"/>"; 
+      });
+      $('#courseTitle').click(function(){
+    	  location.href="<c:url value="/courseBoard/"/>"+"?category="; 
+      })
+      $('#freeTitle').click(function(){
+    	  location.href="<c:url value="/freeBoard/"/>";
+      })
+      $('#noticeTitle').click(function(){
+    	  location.href="<c:url value="/noticeBoard/"/>";
+      })
    }); //end jQuery
+   
+   
 </script>
 </html>

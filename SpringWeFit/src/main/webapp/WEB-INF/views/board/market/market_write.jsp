@@ -122,7 +122,7 @@
                     </tr>
                     <tr>
                         <td>가격 </td>
-                        <td><input type=text name=mbPrice size="60"></td>
+                        <td><input id="priceInput" type=text name=mbPrice size="60"></td>
 
                     </tr>
                     <tr class="text-right">
@@ -246,16 +246,31 @@ let bool = true;
    	   }
    	   
    	   $('#registBtn').click(function() {
+						
+			const regexp = /^[0-9]*$/
 			if($('#mbTitle').val().trim() === ''){
 				alert('제목을 입력하세요')
-			return;
+				return;
 			}else if(+($('#nowByte').text()) > 200)	{
 				alert('제목은 200byte를 초과할 수 없습니다')
 				return;
-			}else if(+($('#nowByte2').text()) > 2000){
+			} else if($('#mbContent').val().trim() === ''){ 
+				alert('내용을 입력하세요.')
+				return;
+   	   		}else if(+($('#nowByte2').text()) > 2000){
 				alert('내용은 2000byte를 초과할 수 없습니다.')
 				return;
-			}else{
+   	   		} else if($('#priceInput').val().trim() === ''){
+	   	   		alert('가격을 입력해주세요')
+				return;
+	   	   			
+			} else if(!regexp.test($('#priceInput').val())){
+				alert('가격은 숫자만 입력가능합니다.');
+				return;
+   	   		} else if($('#sample6_address').val().trim() === ''){
+				alert('주소를 입력해주세요.');
+				return;
+   	   		} else {
 				$('#boardWrite').submit();
 			}
 	});

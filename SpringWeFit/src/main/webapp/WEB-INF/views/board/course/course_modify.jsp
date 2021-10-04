@@ -114,7 +114,7 @@
                             <c:if test="${loginuser.memberManagerYN == 'YES' }">
                             	<button type="button" class="btn btn-primary" id="reportResetBtn">신고초기화</button>
                             </c:if>
-                            <c:if test="${loginuser.memberNum == article2.memberNum}">
+                            <c:if test="${loginuser.memberManagerYN == 'YES'}">
                             	<button type="button" class="btn btn-primary" id="modifyBtn">수정하기</button>
                             </c:if>
                             <button type="button" class="btn btn-warning" id="deleteBtn">삭제하기</button>

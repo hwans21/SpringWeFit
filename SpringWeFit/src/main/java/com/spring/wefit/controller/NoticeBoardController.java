@@ -110,8 +110,10 @@ public class NoticeBoardController {
 		System.out.println(service.getContent(nbNum).toString());
 		service.updateViewCount(nbNum);
 		model.addAttribute("noticeContent", service.getContent(nbNum));
-		
-		model.addAttribute("pc", page);
+		PageCreator pc = new PageCreator();
+		pc.setPaging(page);
+		System.out.println(pc.toString());
+		model.addAttribute("pc", pc);
 		return "/board/notice/notice_detail";
 	}
 	////////////////////////////////////////

@@ -21,6 +21,7 @@
     <footer>
         <div class="footer">
             <div style="text-align: center;">
+	        	
                 <img src="${pageContext.request.contextPath }/resources/img/logo/logo.png" width="150px">
               </div>
         </div>

@@ -134,10 +134,12 @@ public class PlaceBoardController {
 		service.upHit(pbNum);
 		System.out.println("요청된 글 번호: " + pbNum);
 		model.addAttribute("placeList", service.getContent(pbNum));
-		
+		PageCreator pc = new PageCreator();
+		pc.setPaging(page);
+		System.out.println(pc.toString());
 		
 		System.out.println(service.getContent(pbNum).toString()); // 상세데이터 확인
-		model.addAttribute("pc", page);
+		model.addAttribute("pc", pc);
 		return "board/location/loc_detail";
 	}
 			

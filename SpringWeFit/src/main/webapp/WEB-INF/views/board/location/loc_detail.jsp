@@ -239,7 +239,7 @@ table tr td {
 								<td><span class="glyphicon glyphicon-eye-open"></span>  ${placeList.pbLookCount}</td>
 								<td>
 									<button id="likeBtn" class="btn btn-info pull-right">
-										<span class="glyphicon glyphicon-heart"></span><span id="countLike">좋아요</span>
+										<span class="glyphicon glyphicon-heart"></span>&nbsp;<span id="countLike">좋아요</span>
 									</button>
 								</td>
 							</tr>
@@ -347,7 +347,7 @@ table tr td {
                         if(data.list[i].memberNick === loginuserName || manager === 'YES'){
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].prNum+'">수정</small> <small class="replyDelBtn'+data.list[i].prNum+'">삭제</small></span>'
                         }
-                        strAdd += '<br><span class="reply-content">'+content+'</span>'
+                        strAdd += '<br><br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }
