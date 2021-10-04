@@ -11,14 +11,24 @@
        <if test="condition == 'title'">
           AND mbTitle LIKE '%'||#{keyword}||'%'
        </if>
-       <if test="condition == 'type'">
-         AND mbType LIKE '%'||#{keyword}||'%'
-      </if>
       <if test="condition == 'addr'">
          AND mbAddrBasic LIKE '%'||#{keyword}||'%'
       </if>
-      
+    </sql>
     
+    <sql id="categorySearch">
+    	<if test="category == ''">
+    	</if>
+    	<if test="category == 'sell'">
+    		AND mbType = 'sell'
+    	</if>
+    	<if test="category == 'share'">
+    		AND mbType = 'share'
+    	</if>
+    	<if test="category == 'buy'">
+    		AND mbType = 'buy'
+    	</if>
+    	
     </sql>
     
     <sql id="orderBy">
@@ -62,8 +72,8 @@
                          FROM MarketBoard mb, member m
                          WHERE mb.memberNum = m.memberNum
                         <include refid="search" />
+                         <include refid="categorySearch" />
                        	<include refid="orderBy" />
-                         
                      ) market
                 <![CDATA[
             	WHERE market.distance < #{distance}

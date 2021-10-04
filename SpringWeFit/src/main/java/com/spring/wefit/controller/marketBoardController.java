@@ -43,6 +43,7 @@ public class MarketBoardController {
 		PageCreator pc = new PageCreator();
 		vo.setCountPerPage(9);
 		pc.setPaging(vo);
+		System.out.println(pc.toString());
 		pc.setArticleTotalCount(service.getTotal(vo));
 		
 		List<MarketBoardVO> list = service.getList(vo);

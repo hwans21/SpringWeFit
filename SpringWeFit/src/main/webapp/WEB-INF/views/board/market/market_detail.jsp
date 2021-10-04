@@ -160,7 +160,7 @@
                 	<c:if test="${loginuser.memberNum == detail.memberNum || loginuser.memberManagerYN == 'YES' }">
                     <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_modify?mbNum=${detail.mbNum }" />'">수정하기</button>
                     </c:if>
-                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_board?pageNum=${p.pageNum }&keyword=${p.keyword }&condition=${p.condition }" />'">목록으로</button>
+                    <button type="button" class="btn btn-primary pull-right" onclick="location.href='<c:url value="/marketBoard/market_board?pageNum=${pc.paging.pageNum }&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&latitude=${(loginuser!=null && loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0 }&longitude=${(loginuser!=null && loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0 }&distance=${pc.paging.distance }&order=${pc.paging.order }" />'">목록으로</button>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">

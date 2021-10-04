@@ -168,9 +168,9 @@
                      	</select>
 						<!--검색 조건-->
 						<select class="search-condition form-control" name="condition">
-							<option value="title">제목</option>
-							<option value="writer">작성자</option>
-							<option value="content">내용</option>
+							<option value="title" ${dpc.paging.condition=='title'? 'selected':'' }>제목</option>
+							<option value="writer" ${dpc.paging.condition=='writer'? 'selected':'' }>작성자</option>
+							<option value="content" ${dpc.paging.condition=='content'? 'selected':'' }>내용</option>
 						</select> <input type="text" placeholder="Search" name="keyword" class="form-control" value="${dpc.paging.keyword}">
 						<button type="submit" class="btn" aria-label="Left Align">
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -186,7 +186,9 @@
                 <table class="table">
                  
                    <tbody>
-
+						<c:if test="${fn:length(dietList) == 0 }">
+								 <p class="search-none">검색 결과가 없습니다.</p>
+							</c:if>
 						<c:forEach var="vo" varStatus="i" items="${dietList}">
 							<c:if test="${i.count % 3 == 1}">
 								<tr class="course">

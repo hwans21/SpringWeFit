@@ -134,7 +134,7 @@
                 	<c:if test="${content.memberNum == loginuser.memberNum || loginuser.memberManagerYN == 'YES' }">
 	                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/freeModify?fbNum=${content.fbNum }" />'">수정하기</button>
                 	</c:if>
-                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
+                    <button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/freeBoard/?pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&order=${pc.paging.order }" />'">목록으로</button>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">

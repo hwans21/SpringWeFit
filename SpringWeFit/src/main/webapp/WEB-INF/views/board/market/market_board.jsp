@@ -198,9 +198,9 @@
 	            <h2 align="left">중고장터</h2>
 			</div>
 			<div class="row gray-row">
-				<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=buy" />'">삽니다</button>
-	      		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=sell" />'">팝니다</button>
-	      		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?condition=type&keyword=share" />'">나눠요</button>
+				<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?category=buy" />'">삽니다</button>
+	      		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?category=sell" />'">팝니다</button>
+	      		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board?category=share" />'">나눠요</button>
 	      		<button class="btn btn-default" onclick="location.href='<c:url value="/marketBoard/market_board" />'">전체 보기</button><br/>
 	      		<div class="search-sec row pull-right">
                 	<form class="form-inline" action="<c:url value='/marketBoard/market_board' />">
@@ -230,7 +230,7 @@
 		                       	<option value="10" ${param.distance==10? 'selected':'' }>10km 이내</option>
 	                        </select>
                         </c:if>
-           
+           				<input type="hidden" name="category" value="${pc.paging.category }"/>
                         <!--검색창, 버튼-->
                         <input id="searchInput" type="text" name="keyword" placeholder="Search" class="form-control" value=${pc.paging.keyword }>
                         <button type="submit" class="btn" aria-label="Left Align">

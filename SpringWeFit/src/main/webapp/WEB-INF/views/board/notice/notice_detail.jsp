@@ -147,14 +147,14 @@
                 	<div class="col-sm-10"></div>
                 	
                 	<div class="col-sm-1">
+                    	<button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.paging.pageNum }&countPerPage=${pc.paging.countPerPage }&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&order=${pc.paging.order }" />'">목록으로</button>
+               		</div>
+                	<div class="col-sm-1">
                 		<c:if test="${loginuser.memberManagerYN == 'YES'}">
-                    	<button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeContent.nbNum }" />'">수정하기</button>
+                    		<button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/noticeModify?nbNum=${noticeContent.nbNum }" />'">수정하기</button>
                 		</c:if> &nbsp; &nbsp;
                 	</div>
                 	
-                	<div class="col-sm-1">
-                    	<button class="btn btn-primary pull-right" type="button" onclick="location.href='<c:url value="/noticeBoard/?pageNum=${pc.pageNum }&countPerPage=${pc.countPerPage }" />'">목록으로</button>
-               		</div>
                 </div>
                 
                 

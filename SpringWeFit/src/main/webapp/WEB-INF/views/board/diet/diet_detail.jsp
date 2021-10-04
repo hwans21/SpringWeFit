@@ -147,7 +147,7 @@ table tr td {
 				</c:if>
 				
 				<button type="button" class="btn btn-primary pull-right l"
-						onclick="location.href='<c:url value="/dietBoard/dietList" />'">목록으로</button>
+						onclick="location.href='<c:url value="/dietBoard/dietList?pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&order=${pc.paging.order }" />'">목록으로</button>
 				</div>
 				<div class="row">
 					<div class="col-sm-12">

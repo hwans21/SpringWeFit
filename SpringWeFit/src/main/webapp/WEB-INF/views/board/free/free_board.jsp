@@ -144,10 +144,14 @@
                       </tr>
                     </thead>	
                     <tbody>
-                    
+                    <c:if test="${fn:length(freeList) == 0 }">
+						 <tr>
+						 	<td colspan=5><p class="search-none">검색 결과가 없습니다.</p></td>
+					 	<tr>
+					</c:if>
                     <c:forEach var="arr" items="${freeList }">
                     
-                      <tr ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }" />'">
+                      <tr ${(loginuser.memberManagerYN=="YES" && arr.fbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/freeBoard/freeDetail?fbNum=${arr.fbNum }&pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&order=${pc.paging.order }" />'">
                         
                         <th scope="col" class="text-center">${arr.fbNum }</th>
                         <th scope="col" class="title">${fn:replace(fn:replace(fn:replace(arr.fbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }&nbsp;&nbsp;&nbsp;[${arr.fbReplyCount}]</th>

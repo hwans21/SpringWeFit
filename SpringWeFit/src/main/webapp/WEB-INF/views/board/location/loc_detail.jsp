@@ -136,7 +136,7 @@ table tr td {
 							onclick="location.href='<c:url value="/placeBoard/placeModify?pbNum=${placeList.pbNum}" />'">수정하기</button>
 					</c:if>
 					<button type="button" class="btn btn-primary pull-right"
-						onclick="location.href='<c:url value="/placeBoard/placeList" />'">목록으로</button>
+						onclick="location.href='<c:url value="/placeBoard/placeList?pageNum=${pc.paging.pageNum }&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&latitude=${(loginuser!=null && loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0 }&longitude=${(loginuser!=null && loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0 }&distance=${pc.paging.distance }&order=${pc.paging.order }" />'">목록으로</button>
 				</div>
 
 

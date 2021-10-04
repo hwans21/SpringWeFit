@@ -146,10 +146,14 @@
                         </tr>
                     </thead>
                     <tbody>
-
+					<c:if test="${fn:length(noticeList) == 0 }">
+						 <tr>
+						 	<td colspan=5><p class="search-none">검색 결과가 없습니다.</p></td>
+					 	<tr>
+					</c:if>
 					<c:forEach var="arr" items="${noticeList }">
                     
-                      <tr ${(loginuser.memberManagerYN=="YES" && arr.nbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${arr.nbNum }" />'">
+                      <tr ${(loginuser.memberManagerYN=="YES" && arr.nbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/noticeBoard/noticeDetail?nbNum=${arr.nbNum }&pageNum=${pc.paging.pageNum}&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&order=${pc.paging.order }" />'">
                         <th scope="col" class="text-center">${arr.nbNum }</th>
                         <th scope="col">${fn:replace(fn:replace(fn:replace(arr.nbTitle,replaceChar2,"&gt;" ),replaceChar1,"&lt;"),replaceChar,"<br/>") }&nbsp;&nbsp;&nbsp;[${arr.nbReplyCount}]</th>
                         <th scope="col" class="text-center">관리자</th>

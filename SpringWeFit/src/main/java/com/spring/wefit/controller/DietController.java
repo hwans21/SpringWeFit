@@ -129,7 +129,7 @@ public class DietController {
 		System.out.println(pc.toString());
 		service.updateViewCount(service.getContent(dbNum).getDbNum());
 		model.addAttribute("dietList", service.getContent(dbNum));
-		
+		model.addAttribute("pc",pc);
 		return "/board/diet/diet_detail";
 	}
 	

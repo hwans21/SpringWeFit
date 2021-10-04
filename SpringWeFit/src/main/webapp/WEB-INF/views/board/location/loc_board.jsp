@@ -169,8 +169,13 @@ tr{
 						</thead>
 
 						<tbody>
+							<c:if test="${fn:length(placeList) == 0 }">
+								 <tr>
+								 	<td colspan=7><p class="search-none">검색 결과가 없습니다.</p></td>
+							 	<tr>
+							</c:if>
 							<c:forEach var="vo" items="${placeList}">
-								<tr ${(loginuser.memberManagerYN=="YES" && vo.pbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/placeBoard/placeDetail?pbNum=${vo.pbNum}" />'">	
+								<tr ${(loginuser.memberManagerYN=="YES" && vo.pbReportCount > 0)? "style='background-color:red'":"" } onclick="location.href='<c:url value="/placeBoard/placeDetail?pbNum=${vo.pbNum}&pageNum=${pc.paging.pageNum }&keyword=${pc.paging.keyword }&condition=${pc.paging.condition }&category=${pc.paging.category }&latitude=${(loginuser!=null && loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0 }&longitude=${(loginuser!=null && loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0 }&distance=${pc.paging.distance }&order=${pc.paging.order } " />'">	
 									<td class="text-center">${vo.pbNum}</td>
 									<td class="text-center">[${vo.pbCategory}]</td>
 									<td class="text-center">
