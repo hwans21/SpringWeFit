@@ -76,19 +76,59 @@ public class UserService implements IUserService {
 	@Override
 	public void modify(UserVO vo) {
 		// TODO Auto-generated method stub
-		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		System.out.println("암호화 하기 전: "+vo.getMemberPasswd());
+		//비밀번호를 암호화해서 user객체에 다시 저장하기
+		String securePw = encoder.encode(vo.getMemberPasswd());
+		System.out.println("암호화 한 후: "+securePw);
+		vo.setMemberPasswd(securePw);
+		mapper.modify(vo);
 	}
 
 	@Override
 	public void withdrawal(String email) {
 		// TODO Auto-generated method stub
-
+		mapper.withdrawal(email);
 	}
 
 	@Override
-	public void delete(Timestamp date) {
+	public void delete(Date date) {
 		// TODO Auto-generated method stub
-
+		// 댓글 삭제
+		mapper.deletecoursereply(date);
+		mapper.deletedietreply(date);
+		mapper.deletefreereply(date);
+		mapper.deletemarketreply(date);
+		mapper.deletenoticereply(date);
+		mapper.deleteplacereply(date);
+		
+		// 좋아요 삭제
+		mapper.deletecourselikely(date);
+		mapper.deletedietlikely(date);
+		mapper.deletefreelikely(date);
+		mapper.deletemarketlikely(date);
+		mapper.deletenoticelikely(date);
+		mapper.deleteplacelikely(date);
+		
+		
+		// 신고 삭제
+		mapper.deletecoursereport(date);
+		mapper.deletedietreport(date);
+		mapper.deletefreereport(date);
+		mapper.deletemarketreport(date);
+		mapper.deletenoticereport(date);
+		mapper.deleteplacereport(date);
+		
+		// 게시글 삭제
+		mapper.deletecourseboard(date);
+		mapper.deletedietboard(date);
+		mapper.deletefreeboard(date);
+		mapper.deletemarketboard(date);
+		mapper.deletenoticeboard(date);
+		mapper.deleteplaceboard(date);
+		
+		//유저삭제 맨 마지막
+		mapper.deleteuser(date);
 	}
 
 	@Override
@@ -189,6 +229,27 @@ public class UserService implements IUserService {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void passwdChange(UserVO vo) {
+		// TODO Auto-generated method stub
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		System.out.println("암호화 하기 전: "+vo.getMemberPasswd());
+		//비밀번호를 암호화해서 user객체에 다시 저장하기
+		String securePw = encoder.encode(vo.getMemberPasswd());
+		System.out.println("암호화 한 후: "+securePw);
+		vo.setMemberPasswd(securePw);
+		mapper.passwdChange(vo);
+		// 랜덤코드값
+		UUID uuid = UUID.randomUUID();
+		String[] uuids = uuid.toString().split("-");
+		
+		mapper.codeChange(vo.getMemberNick(), uuids[0]);
+	}
+	
+	public void sleepUser(Date date) {
+		mapper.sleepUser(date);
 	}
 	
 

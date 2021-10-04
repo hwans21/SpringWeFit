@@ -74,4 +74,191 @@
 		AND memberCode = #{memberCode } 
 	</select>
 	
+	
+	<update id="passwdChange">
+		UPDATE member
+		SET memberPasswd = #{memberPasswd}
+		WHERE memberNick = #{memberNick}
+	</update>
+	
+	<update id="withdrawal">
+		UPDATE member
+		SET memberDelDate = TRUNC(SYSDATE+7)
+		WHERE memberEmail = #{memberEmail}
+	</update>
+	
+	
+	<!-- 계정 삭제처리 -->
+	<delete id="deleteuser">		
+		DELETE FROM member
+		<![CDATA[
+		WHERE memberDelDate < #{date}
+		]]>
+	</delete>
+	<!-- 삭제될 계정의 게시글 좋아요 신고 댓글 삭제처리 -->
+	<delete id="deletecourseboard">		
+		DELETE FROM courseboard
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>	
+	<delete id="deletedietboard">		
+		DELETE FROM dietboard
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletefreeboard">		
+		DELETE FROM freeboard
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletemarketboard">		
+		DELETE FROM marketboard
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletenoticeboard">		
+		DELETE FROM noticeboard
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deleteplaceboard">		
+		DELETE FROM placeboard
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletecourselikely">		
+		DELETE FROM courselikely
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletedietlikely">		
+		DELETE FROM dietlikely
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletefreelikely">		
+		DELETE FROM freelikely
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletemarketlikely">		
+		DELETE FROM marketlikely
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletenoticelikely">		
+		DELETE FROM noticelikely
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deleteplacelikely">		
+		DELETE FROM placelikely
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletecoursereply">		
+		DELETE FROM coursereply
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletedietreply">		
+		DELETE FROM dietreply
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletefreereply">		
+		DELETE FROM freereply
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletemarketreply">		
+		DELETE FROM marketreply
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletenoticereply">		
+		DELETE FROM noticereply
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deleteplacereply">		
+		DELETE FROM placereply
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletecoursereport">		
+		DELETE FROM coursereport
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletedietreport">		
+		DELETE FROM dietreport
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletefreereport">		
+		DELETE FROM freereport
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletemarketreport">		
+		DELETE FROM marketreport
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deletenoticereport">		
+		DELETE FROM noticereport
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	<delete id="deleteplacereport">		
+		DELETE FROM placereport
+		<![CDATA[
+		WHERE membernum = (select m.membernum from member m where memberDelDate < #{date})
+		]]>
+	</delete>
+	
+
+	<!-- 게시글 좋아요 신고 댓글 삭제처리 -->
+	
+	<update id="sleepUser">
+		UPDATE member
+		SET MEMBERHUMANYN = 'Y'
+		<![CDATA[
+		WHERE memberConnDate < #{date} - 7
+		]]>
+	</update>
+	
+	<update id="modify">
+		UPDATE member
+		SET memberNick = #{memberNick},
+		memberPasswd = #{memberPasswd},
+		memberPhone = #{memberPhone}
+		WHERE memberEmail = #{memberEmail}
+	</update>
+	
+	
 </mapper>

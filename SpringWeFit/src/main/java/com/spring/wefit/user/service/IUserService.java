@@ -29,7 +29,7 @@ public interface IUserService {
 		void withdrawal(String email);
 		
 		//회원삭제처리
-		void delete(Timestamp date);
+		void delete(Date date);
 		
 		//회원복구처리
 		void recovery(String email);
@@ -57,4 +57,10 @@ public interface IUserService {
 		
 		//관리자 여부 체크
 		int isManager(String email);
+		
+		//비밀번호 변경
+		void passwdChange(UserVO vo);
+		
+		//휴면계정 처리
+		void sleepUser(Date date);
 }

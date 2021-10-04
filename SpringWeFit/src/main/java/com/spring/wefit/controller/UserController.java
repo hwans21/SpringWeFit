@@ -2,6 +2,7 @@ package com.spring.wefit.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -197,8 +198,71 @@ public class UserController {
 			ra.addFlashAttribute("msg", "코드가 맞지 않습니다.");
 			return "redirect:/";
 		}
-		model.addAttribute("loginNick", vo);
+		model.addAttribute("nick", vo.getMemberNick());
 		return "user/pwchange";
+	}
+	
+	@PostMapping("/passwdChange")
+	public String passwdChange(UserVO vo, RedirectAttributes ra) {
+		service.passwdChange(vo);
+		ra.addFlashAttribute("msg","패스워드가 정상적으로 변경되었습니다.");
+		return "redirect:/";
+	}
+	@GetMapping("/mypage")
+	public String myPageView() {
+		return "user/mypage";
+	}
+	
+	//탈퇴처리
+	@PostMapping("/delUser")
+	public String delUser(HttpSession session, RedirectAttributes ra,
+			HttpServletRequest request, HttpServletResponse response)throws IOException {
+		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		UserVO vo = (UserVO) session.getAttribute("loginuser");
+		System.out.println("/user/logout: GET");
+		
+		if(session.getAttribute("loginuser") != null) {
+			//session.invalidate();
+			
+			session.removeAttribute("loginuser");
+			if(loginCookie != null) {
+				loginCookie.setValue(null);
+				loginCookie.setPath("/"); //쿠키 생성시 유효 url을 지정한 경우, 삭제할 때도 명시해 줍니다.
+				loginCookie.setMaxAge(0);
+				response.addCookie(loginCookie);
+				System.out.println(vo.getMemberEmail());
+				service.keepLogin("none",new Date(), vo.getMemberEmail());
+			}
+			service.withdrawal(vo.getMemberEmail());
+		}
+		ra.addFlashAttribute("msg", "탈퇴가 완료되었습니다.");
+		return "redirect:/";
+	}
+	
+	@PostMapping("/modifyUser")
+	@ResponseBody
+	public String modifyUser(@RequestBody Map<String, Object> map) {
+		
+		String memberEmail = (String) map.get("memberEmail");
+		String memberNick = (String) map.get("memberNick");
+		String memberPasswd = (String) map.get("memberPasswd");
+		String memberPhone = (String) map.get("memberPhone");
+		boolean nickChk = (boolean) map.get("nickChk");
+		
+		if(!nickChk) {
+			if(service.nickCheck(memberNick) == 1) {
+				return "duplicate";
+			}
+		}
+		UserVO vo = new UserVO();
+		vo = service.getInfo(memberEmail);
+		vo.setMemberNick(memberNick);
+		vo.setMemberPasswd(memberPasswd);
+		vo.setMemberPhone(memberPhone);
+		
+		service.modify(vo);
+		
+		return "success";
 	}
 		
 }
