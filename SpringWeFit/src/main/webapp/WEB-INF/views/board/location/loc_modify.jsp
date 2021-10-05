@@ -62,7 +62,7 @@
                     <tr>
                         <td>종목 *</td>
                         <td>
-                            <select id="sports" name="pbCatecory">
+                            <select id="sports" name="pbCategory">
                                 <option value="category">종목선택</option>
                                 <option ${placeList.pbCategory == '수영' ? 'selected' : ''}>수영</option>
                                 <option ${placeList.pbCategory == '배드민턴' ? 'selected' : ''}>배드민턴</option>
@@ -246,7 +246,7 @@
     	$('#modifyBtn').click(function(){
     		if($('#sports').val() === 'category') {
     			alert('종목은 필수 항목 입니다.');
-    			document.placeModify-form.sports.focus();
+    			$('#sports').focus();
                 return;
     		} else if($('#pbTitle').val().trim() === '') {
     			alert('제목은 필수 항목 입니다.');

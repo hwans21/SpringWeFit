@@ -156,9 +156,67 @@ public class PlaceBoardController {
 	
 	//장소 글 수정 처리 
 	@PostMapping("/placeModify")
-	public String placeUpdate(MultipartHttpServletRequest request, PlaceBoardVO vo, RedirectAttributes ra) {
+	public String placeUpdate(MultipartFile[] fileName, HttpServletRequest request, 
+			PlaceBoardVO vo, RedirectAttributes ra) {
 		System.out.println("/placeBoard/placeUpdate: POST");
+		
+		CustomFileUpload fileUp = new CustomFileUpload();
+		String rootPath = request.getServletContext().getRealPath(""); 
+		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\place\\"+vo.getMemberNick()+"\\"; 
+		
+		PlaceBoardVO origin = service.getContent(vo.getPbNum());
+		
+		if(origin.getPbRealImage1() != null) {
+			fileUp.delete(origin.getPbRealImage1(), rootPath);
+			System.out.println(origin.getPbRealImage1() + "삭제완료");
+		}
+		
+		if(origin.getPbRealImage2() != null) {
+			fileUp.delete(origin.getPbRealImage2(), rootPath);
+			System.out.println(origin.getPbRealImage2()+"삭제 완료");
+		}
+		if(origin.getPbRealImage3()!=null) {
+			fileUp.delete(origin.getPbRealImage3(), rootPath);
+			System.out.println(origin.getPbRealImage3()+"삭제 완료");
+		}
+		if(origin.getPbRealImage4()!=null) {
+			fileUp.delete(origin.getPbRealImage4(), rootPath);
+			System.out.println(origin.getPbRealImage4()+"삭제 완료");
+		}
+		if(origin.getPbRealImage5()!=null) {
+			fileUp.delete(origin.getPbRealImage5(), rootPath);
+			System.out.println(origin.getPbRealImage5()+"삭제 완료");
+		}
+		
+		List<String> fileNameList = fileUp.fileUpload(fileName, 5, rootPath);
 			
+		// 파일이름 받기
+		vo.setPbImage1(fileNameList.get(0));
+		vo.setPbRealImage1(fileNameList.get(1));
+			
+		vo.setPbImage2(fileNameList.get(2));
+		vo.setPbRealImage2(fileNameList.get(3));
+			
+		vo.setPbImage3(fileNameList.get(4));
+		vo.setPbRealImage3(fileNameList.get(5));
+			
+		vo.setPbImage4(fileNameList.get(6));
+		vo.setPbRealImage4(fileNameList.get(7));
+			
+		vo.setPbImage5(fileNameList.get(8));
+		vo.setPbRealImage5(fileNameList.get(9));
+			
+		int imgCount = 0;
+		for(int i=0;i<10;i=i+2) {
+			if(fileNameList.get(i)!=null) imgCount++;
+		}
+		for(String str : fileNameList) {
+			System.out.println(str);
+		}
+		vo.setPbImageCount(imgCount);
+			
+			
+		System.out.println(vo.toString());
 		service.update(vo);
 		ra.addFlashAttribute("msg", "정상 수정 처리되었습니다.");
 				

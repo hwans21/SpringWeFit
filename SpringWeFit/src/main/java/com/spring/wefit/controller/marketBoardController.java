@@ -242,7 +242,54 @@ public class MarketBoardController {
 	}
 
 	@GetMapping("/delete")
-	public String delete(@RequestParam int mbNum) {
+	public String delete(HttpServletRequest request, RedirectAttributes ra,@RequestParam int mbNum) {
+		MarketBoardVO vo = service.getContent(mbNum);
+		CustomFileUpload fileUp = new CustomFileUpload();
+		String rootPath = request.getServletContext().getRealPath(""); // C:\Users\hwans\apache-tomcat-9.0.52\wtpwebapps\SpringWeFit\
+		rootPath = rootPath + "resources\\..\\..\\..\\upload\\board\\market\\"+vo.getMemberNum()+"\\"; 
+		
+		MarketBoardVO origin = service.getContent(vo.getMbNum());
+		
+		if(origin.getMbRealImage1() != null) {
+			fileUp.delete(origin.getMbRealImage1(), rootPath);
+		}
+		
+		if(origin.getMbRealImage2() != null) {
+			fileUp.delete(origin.getMbRealImage2(), rootPath);
+		}
+		
+		if(origin.getMbRealImage3() != null) {
+			fileUp.delete(origin.getMbRealImage3(), rootPath);
+		}
+		
+		if(origin.getMbRealImage4() != null) {
+			fileUp.delete(origin.getMbRealImage4(), rootPath);
+		}
+		
+		if(origin.getMbRealImage5() != null) {
+			fileUp.delete(origin.getMbRealImage5(), rootPath);
+		}
+		
+		if(origin.getMbRealImage6() != null) {
+			fileUp.delete(origin.getMbRealImage6(), rootPath);
+		}
+		
+		if(origin.getMbRealImage7() != null) {
+			fileUp.delete(origin.getMbRealImage7(), rootPath);
+		}
+		
+		if(origin.getMbRealImage8() != null) {
+			fileUp.delete(origin.getMbRealImage8(), rootPath);
+		}
+		
+		if(origin.getMbRealImage9() != null) {
+			fileUp.delete(origin.getMbRealImage9(), rootPath);
+		}
+		
+		if(origin.getMbRealImage10() != null) {
+			fileUp.delete(origin.getMbRealImage10(), rootPath);
+		}
+		ra.addFlashAttribute("msg", "게시글이 정상 삭제되었습니다.");
 		service.delete(mbNum);
 		return "redirect:/marketBoard/market_board";
 	}

@@ -78,7 +78,7 @@
 
 	<select id="getContent"
 		resultType="com.spring.wefit.command.NoticeBoardVO">
-		SELECT n.*,(SELECT COUNT(*) FROM NoticeReport WHERE nbNum=n.nbNum) as nbReportCount
+		SELECT n.*,m.memberNick,(SELECT COUNT(*) FROM NoticeReport WHERE nbNum=n.nbNum) as nbReportCount
 		FROM NoticeBoard n, Member m
 		WHERE n.nbNum= #{nbNum}
 		AND m.memberNum = n.memberNum

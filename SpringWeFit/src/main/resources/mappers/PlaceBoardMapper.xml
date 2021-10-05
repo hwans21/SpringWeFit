@@ -132,6 +132,12 @@
 		SET 
 		pbTitle = #{pbTitle},
 		pbContent = #{pbContent},
+		pbCategory = #{pbCategory},
+		pbAddrBasic = #{pbAddrBasic},
+		pbAddrDetail = #{pbAddrDetail},
+		pbLatitude = #{pbLatitude},
+		pbLongitude = #{pbLongitude},
+		pbImageCount = #{pbImageCount},
 		pbImage1 = #{pbImage1}, pbImage2 = #{pbImage2}, 
 		pbImage3 = #{pbImage3}, pbImage4= #{pbImage4}, 
 		pbImage5 = #{pbImage5},
