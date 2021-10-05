@@ -176,9 +176,9 @@
 							<c:if test="${i.count % 3 == 1}">
 								<tr class="course">
 							</c:if>
-							<th scope="col" class="text-center"
+							<th scope="col" class="text-center" id="dietviewCnt"
 								onclick="location.href='<c:url value='/dietBoard/dietDetail?dbNum=${vo.dbNum}' />'">
-								<div class=vid>
+								<div class="vid">
 									<a href="#"><img
 										src="${pageContext.request.contextPath}/resources/img/food/계란 치즈 오픈샌드위치.jpg"
 										width="280px" height="160px" alt="vid01"></a>
@@ -263,6 +263,10 @@
 	document.pageForm.pageNum.value = value;
 	document.pageForm.submit();
 }
+
+	
+	
+		
 
 	
     

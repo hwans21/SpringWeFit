@@ -189,12 +189,18 @@ table tr td {
 								<td>작성일:<fmt:formatDate value="${dietList.dbRegDate}"
 										pattern="yyyy-MM-dd HH:mm" />
 								</td>
-								<td><span class="glyphicon glyphicon-eye-open"></span>${dietList.dbLookCount}</td>
-								<td><c:if test="${loginuser != null }">
+								<td>
+									<span class="glyphicon glyphicon-eye-open">
+									</span>
+									${dietList.dbLookCount}
+								</td>
+								<td>
+									<c:if test="${loginuser != null }">
 										<button id="lovelyBtn" class="btn btn-info pull-right">
 											<span class="glyphicon glyphicon-heart"></span> 좋아요
 										</button>
-									</c:if></td>
+									</c:if>
+								</td>
 							</tr>
 
 							<tr>
@@ -205,12 +211,14 @@ table tr td {
 							<tr>
 								<td></td>
 								<td></td>
-								<td><c:if test="${loginuser != null }">
+								<td>
+									<c:if test="${loginuser != null }">
 										<button id="reportBtn" class="btn btn-info pull-right">
 											<span class="glyphicon glyphicon-thumbs-down"></span> 신고하기
 										</button>
 
-									</c:if></td>
+									</c:if>
+								</td>
 							</tr>
 
 						</table>
@@ -265,7 +273,7 @@ table tr td {
 		function replyRegist() {
 			if (${loginuser == null ? true : false}) {
 				alert('댓글 등록 - 로그인을 하세요!'); 
-				
+				 
 				return;
 			}
 

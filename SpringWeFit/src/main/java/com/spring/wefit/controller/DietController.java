@@ -32,7 +32,7 @@ public class DietController {
 	
 	//글 목록전체보기
 	@GetMapping("/dietList") 
-	public String dietList(Model model, PageVO vo) {
+	public String dietList(Model model, PageVO vo, DietBoardVO VO) {
 		System.out.println("/board/dietList: GET 글 목록 전체보기!!");
 		
 		PageCreator dpc = new PageCreator();
@@ -52,6 +52,8 @@ public class DietController {
 		model.addAttribute("dietList", list);
 		model.addAttribute("paging", dpc.getPaging());
 		model.addAttribute("dpc" , dpc);
+		model.addAttribute("LIKELY", VO);
+		System.out.println(VO);
 		
 		return "/board/diet/diet_board";
 	}
@@ -83,6 +85,7 @@ public class DietController {
 	public String dietContent(@RequestParam int dbNum, Model model) {
 		System.out.println("/board/dietDatail: GET 상세보기!!");
 		System.out.println("요청된 글 번호: " + dbNum);
+		service.updateViewCount(dbNum);
 		model.addAttribute("dietList", service.getContent(dbNum));
 		return "/board/diet/diet_detail";
 	}
