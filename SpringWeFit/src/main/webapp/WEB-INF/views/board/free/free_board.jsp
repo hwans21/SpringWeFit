@@ -79,7 +79,9 @@
 			height: 20px;
         }
         
-      
+      tbody th:hover{
+			cursor:pointer;
+		}
 
     </style>
 </head>

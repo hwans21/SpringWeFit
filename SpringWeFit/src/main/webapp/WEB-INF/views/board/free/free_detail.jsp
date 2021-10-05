@@ -225,6 +225,10 @@
 
                             <tr>
                                 <td>작성일: <fmt:formatDate value="${content.fbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
+                                <td><p>${content.memberNick }</p></td>
+                                <c:if test="${loginuser.memberManagerYN=='YES' }">
+                                	<td><p>신고수 : ${content.fbReportCount }</p></td>
+                                </c:if>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>${content.fbLookCount }</td>
                                 <td>
 									<c:if test="${loginuser != null }">

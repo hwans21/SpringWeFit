@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
 import com.spring.wefit.command.UserVO;
+import com.spring.wefit.commons.CustomFileUpload;
 import com.spring.wefit.user.service.IUserService;
 
 @Controller
@@ -168,7 +169,7 @@ public class UserController {
 	// 위치정보 등록 이벤트
 	@PostMapping("/geoRegist")
 	@ResponseBody
-	public String geoRegist(@RequestBody UserVO vo) {
+	public String geoRegist(HttpSession session, @RequestBody UserVO vo) {
 		System.out.println(vo.toString());
 		double latitude = Math.round(vo.getMemberLatitude()*1000000)/1000000.0;
 		double longitude = Math.round(vo.getMemberLongitude()*1000000)/1000000.0;
@@ -177,6 +178,9 @@ public class UserController {
 		System.out.println("위치값 조정 후 ");
 		System.out.println(vo.toString());
 		service.geoRegist(vo);
+		
+		UserVO login = service.getInfo(vo.getMemberEmail());
+		session.setAttribute("loginuser", login);
 		return "success";
 	}
 	
@@ -247,7 +251,7 @@ public class UserController {
 	
 	@PostMapping("/modifyUser")
 	@ResponseBody
-	public String modifyUser(@RequestBody Map<String, Object> map) {
+	public String modifyUser(HttpSession session,HttpServletRequest request,@RequestBody Map<String, Object> map) {
 		
 		String memberEmail = (String) map.get("memberEmail");
 		String memberNick = (String) map.get("memberNick");
@@ -255,19 +259,31 @@ public class UserController {
 		String memberPhone = (String) map.get("memberPhone");
 		boolean nickChk = (boolean) map.get("nickChk");
 		
+		
 		if(!nickChk) {
 			if(service.nickCheck(memberNick) == 1) {
 				return "duplicate";
 			}
 		}
+		
 		UserVO vo = new UserVO();
 		vo = service.getInfo(memberEmail);
+		String originNick = vo.getMemberNick();
+		
 		vo.setMemberNick(memberNick);
+		String changeNick = vo.getMemberNick();
 		vo.setMemberPasswd(memberPasswd);
 		vo.setMemberPhone(memberPhone);
 		
-		service.modify(vo);
+		CustomFileUpload cfu = new CustomFileUpload();
+		String rootPath = request.getServletContext().getRealPath(""); // C:\Users\hwans\apache-tomcat-9.0.52\wtpwebapps\SpringWeFit\
+		cfu.modify(rootPath + "resources\\..\\..\\..\\upload\\board\\diet\\"+originNick+"\\", rootPath + "resources\\..\\..\\..\\upload\\board\\diet\\"+changeNick+"\\");
+		cfu.modify(rootPath + "resources\\..\\..\\..\\upload\\board\\free\\"+originNick+"\\", rootPath + "resources\\..\\..\\..\\upload\\board\\free\\"+changeNick+"\\");
+		cfu.modify(rootPath + "resources\\..\\..\\..\\upload\\board\\place\\"+originNick+"\\", rootPath + "resources\\..\\..\\..\\upload\\board\\place\\"+changeNick+"\\");
 		
+		service.modify(vo);
+		UserVO login = service.getInfo(vo.getMemberEmail());
+		session.setAttribute("loginuser", login);
 		return "success";
 	}
 		

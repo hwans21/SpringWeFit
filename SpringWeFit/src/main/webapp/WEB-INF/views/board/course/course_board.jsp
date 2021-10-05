@@ -339,9 +339,8 @@
         </div>
 
             <div class="row" align="right">
-                <c:if test="${loginuser.memberManagerYN == 'YES'}">
+                
                 	<button type="button" class="btn btn-outline-primary" onclick="location.href='<c:url value="/courseBoard/write?category=${param.category}" />' "><b>글쓰기</b></button>
-            	</c:if>
             </div>
 
 

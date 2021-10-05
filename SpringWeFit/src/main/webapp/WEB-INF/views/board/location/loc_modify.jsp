@@ -81,7 +81,7 @@
 
                     <tr>
                         <td>작성자 * </td>
-                        <td><input type=text id="memberNick" name="memberNick" size=20 value="${loginuser.memberNick}" readonly> </td>
+                        <td><input type=text id="memberNick" name="memberNick" size=20 value="${placeList.memberNick}" readonly> </td>
                     </tr>
 
                     <tr>

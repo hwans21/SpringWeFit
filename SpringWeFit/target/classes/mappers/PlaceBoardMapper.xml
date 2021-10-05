@@ -52,8 +52,8 @@
 			AND p.pbContent LIKE '%'||#{keyword}||'%'
 		</if>
 		<if test="condition == 'titleContent'">
-			AND p.pbTitle LIKE '%'||#{keyword}||'%'
-			OR p.pbContent LIKE '%'||#{keyword}||'%'
+			AND (p.pbTitle LIKE '%'||#{keyword}||'%'
+			OR p.pbContent LIKE '%'||#{keyword}||'%')
 		</if>
 		<if test="condition == 'area'">
 			AND p.pbAddrBasic LIKE '%'||#{keyword}||'%'

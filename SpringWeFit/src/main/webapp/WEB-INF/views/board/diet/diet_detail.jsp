@@ -242,6 +242,9 @@ table tr td {
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${dietList.memberNick}
 										
 								</td>
+								<c:if test="${loginuser.memberManagerYN=='YES' }">
+                                	<td><p>신고수 : ${dietList.dbReportCount }</p></td>
+                                </c:if>
 								<td>
 									<span class="glyphicon glyphicon-eye-open">
 									</span>

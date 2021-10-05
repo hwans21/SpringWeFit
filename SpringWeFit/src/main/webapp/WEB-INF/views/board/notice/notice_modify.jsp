@@ -61,7 +61,7 @@
 
                     <tr>
                         <td>작성자</td>
-                        <td><input type=text name=name size=20 readonly value="관리자"></td>
+                        <td><input type=text name=name size=20 readonly value="${noticeContent.memberNick }"></td>
                     </tr>
 
                     <tr>

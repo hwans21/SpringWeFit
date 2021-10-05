@@ -327,18 +327,18 @@
 						
 						<c:if test="${pc.prev }">
 							<li class="page-item">
-								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />">이전</a>
+								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.beginPage-1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }&distance=${pc.paging.distance }&category=${pc.paging.category }&latitude=${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0}&longitude=${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0}' />">이전</a>
 							</li>
 						</c:if>
 
 						<c:forEach var="i" begin="${pc.beginPage}" end="${pc.endPage}">
 							<li class="page-item ${i == pc.paging.pageNum? 'active':''}">
-								<a href="<c:url value='/marketBoard/market_board?pageNum=${i }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />" >${i }</a>
+								<a href="<c:url value='/marketBoard/market_board?pageNum=${i }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }&distance=${pc.paging.distance }&category=${pc.paging.category }&latitude=${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0}&longitude=${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0}' />" >${i }</a>
 							</li>
 						</c:forEach>
 							<c:if test="${pc.next }">
 							<li class="page-item">
-								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }' />" >다음</a>
+								<a class="page-link" href="<c:url value='/marketBoard/market_board/?pageNum=${pc.endPage+1 }&condition=${pc.paging.condition }&keyword=${pc.paging.keyword }&order=${pc.paging.order }&distance=${pc.paging.distance }&category=${pc.paging.category }&latitude=${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0}&longitude=${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0}' />" >다음</a>
 							</li>
 							</c:if>
 					</ul>
@@ -349,8 +349,8 @@
                 <input type="hidden" name="keyword" value="${pc.paging.keyword}">
                 <input type="hidden" name="condition" value="${pc.paging.condition}">
                 <c:if test="${loginuser!=null }">
-                	<input type="hidden" name="latitude" value="${loginuser.memberLatitude}">
-                	<input type="hidden" name="longitude" value="${loginuser.memberLongitude}">	
+                	<input type="hidden" name="latitude" value="${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0}">
+                	<input type="hidden" name="longitude" value="${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0}">	
                 </c:if>
 		</form>
         <div class="row">

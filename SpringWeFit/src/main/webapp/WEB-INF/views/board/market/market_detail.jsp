@@ -309,6 +309,9 @@
                             <tr>
                                 <td>작성일: ${detail.mbRegDate }</td>
                                 <td>작성자: ${detail.memberNick }</td>
+                                <c:if test="${loginuser.memberManagerYN=='YES' }">
+                                	<td><p>신고수 : ${detail.mbReportCount }</p></td>
+                                </c:if>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>${detail.mbLookCount }</td>
                                 <td>
 
@@ -410,7 +413,7 @@
 	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].mrNum+'">수정</small> <small class="replyDelBtn'+data.list[i].mrNum+'">삭제</small></span>'
                         	
                         }
-                        strAdd += '<br><span class="reply-content">'+content+'</span>'
+                        strAdd += '<br><br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }

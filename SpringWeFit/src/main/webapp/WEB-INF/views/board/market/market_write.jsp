@@ -74,7 +74,7 @@
                     <tr>
                         <td>작성자</td>
                         <td>
-                           <input type="text" name="memberNick" size=20 value="${loginuser.memberNick }">
+                           <input type="text" name="memberNick" size=20 value="${loginuser.memberNick }" readonly>
                            <input type="hidden" name="memberNum" value="${loginuser.memberNum }">
                          </td>
 

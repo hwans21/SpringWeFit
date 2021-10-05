@@ -50,5 +50,6 @@ public class CourseBoardVO {
 	private int cbContentByte;
 	private int cbYouCodeByte;
 	private int cbReportCount;
+	private String memberNick;
 
 }

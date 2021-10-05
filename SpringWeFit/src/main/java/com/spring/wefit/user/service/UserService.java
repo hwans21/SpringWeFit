@@ -167,7 +167,7 @@ public class UserService implements IUserService {
 		MimeMessage mail = mailSender.createMimeMessage();
 		String htmlStr = "<h2>안녕하세요 WeFit입니다!</h2><br><br>" 
 				+ "<h3>" + vo.getMemberNick() + "님</h3>" + "<p>인증하기 버튼을 누르시면 로그인을 하실 수 있습니다 : " 
-				+ "<a href='https://182.219.225.8:19342/wefit"
+				+ "<a href='https://172.30.1.17:8443/wefit"
 				+ "/user/auth/"+vo.getMemberNick() +"/"+vo.getMemberCode()+"'>인증하기</a></p>"
 				+ "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
 		try {
@@ -218,7 +218,7 @@ public class UserService implements IUserService {
 		MimeMessage mail = mailSender.createMimeMessage();
 		String htmlStr = "<h2>안녕하세요 WeFit입니다!</h2><br><br>" 
 				+ "<h3>" + vo.getMemberNick() + "님</h3>" + "<p>비밀번호변경 버튼을 누르시면 비밀번호 변경페이지로 안내합니다.: " 
-				+ "<a href='https://182.219.225.8:19342/wefit"
+				+ "<a href='https://172.30.1.17:8443/wefit"
 				+ "/user/passwdChange/"+vo.getMemberNick() +"/"+vo.getMemberCode()+"'>비밀번호 변경하기</a></p>"
 				+ "(혹시 잘못 전달된 메일이라면 이 이메일을 무시하셔도 됩니다)";
 		try {

@@ -192,6 +192,9 @@
                             <tr>
                                 <td>작성일: <fmt:formatDate value="${noticeContent.nbRegDate }" pattern="yyyy-MM-dd HH:mm"/> </td>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>${noticeContent.nbLookCount }</td>
+                                <c:if test="${loginuser.memberManagerYN=='YES' }">
+                                	<td><p>신고수 : ${noticeContent.nbReportCount }</p></td>
+                                </c:if>
                                 <td>
 									<c:if test="${loginuser != null }">
 										

@@ -41,15 +41,15 @@
 
 	<sql id="search">
 		<if test="condition == 'title'">
-			where nbTitle LIKE '%'||#{keyword}||'%'
+			AND nbTitle LIKE '%'||#{keyword}||'%'
 		</if>
 		<if test="condition == 'content'">
-			where nbContent LIKE '%'||#{keyword}||'%'
+			AND nbContent LIKE '%'||#{keyword}||'%'
 		</if>
 
 		<if test="condition == 'titleContent'">
-			where nbTitle LIKE '%'||#{keyword}||'%'
-			OR nbContent LIKE '%'||#{keyword}||'%'
+			AND (nbTitle LIKE '%'||#{keyword}||'%'
+			OR nbContent LIKE '%'||#{keyword}||'%')
 		</if>
 	</sql>
 
@@ -58,11 +58,12 @@
 		(
 			SELECT ROWNUM as rn, notice.* FROM
 			(
-				SELECT n.*, 
+				SELECT n.*, m.memberNick,
 				(SELECT COUNT(*) FROM NoticeReply WHERE nbNum=n.nbNum) as nbReplyCount,
 				(SELECT COUNT(*) FROM NoticeReport WHERE nbNum=n.nbNum) as nbReportCount,
 				(SELECT COUNT(*) FROM NoticeLikely WHERE nbNum=n.nbNum) as nbLikeCount
-				FROM NoticeBoard n
+				FROM NoticeBoard n, Member m
+				WHERE n.memberNum = m.memberNum
 				<include refid="search" />
 				<include refid="orderBy" />
 			) notice
@@ -77,14 +78,17 @@
 
 	<select id="getContent"
 		resultType="com.spring.wefit.command.NoticeBoardVO">
-		SELECT * FROM NoticeBoard
-		WHERE nbNum= #{nbNum}
+		SELECT n.*,(SELECT COUNT(*) FROM NoticeReport WHERE nbNum=n.nbNum) as nbReportCount
+		FROM NoticeBoard n, Member m
+		WHERE n.nbNum= #{nbNum}
+		AND m.memberNum = n.memberNum
 	</select>
 
 
 	<select id="getTotal" resultType="int">
 		SELECT COUNT(*)
-		FROM NoticeBoard
+		FROM NoticeBoard n, Member m
+		WHERE m.memberNum = n.memberNum
 		<include refid="search" />
 	</select>
 

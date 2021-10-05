@@ -479,6 +479,9 @@
             		alert('닉네임을 입력해주세요');
             		return;
             		
+            	} else if($('#join-nick').val().length > 8){
+            		alert('닉네임은 최대 8자 입니다.');
+            		return;
             	}
 				
             	$.ajax({
@@ -568,7 +571,16 @@
             		$('#form-login').submit();
             	}
             }); // 로그인 클릭 이벤트
-            
+            $('#login-email').keydown(function(e){
+            	if(e.keyCode==13){
+            		$('#loginBtn').click();
+            	}
+            });
+            $('#login-password').keydown(function(e){
+            	if(e.keyCode==13){
+            		$('#loginBtn').click();
+            	}
+            });
 
         });
         function menuBarLocation(){
@@ -692,7 +704,10 @@
             if(passwdChk === false){
                 alert('비밀번호는 숫자 영문 특수 포함 8자 이상으로 작성하셔야 합니다.');
                 return;
-            }
+            } else if($('#info-nick').val().length > 8){
+        		alert('닉네임은 최대 8자 입니다.');
+        		return;
+        	}
 
             if(confirm('회원정보를 수정하시겠습니까?') === true){
                 if($('#info-nick').val() !== '${loginuser.memberNick}'){

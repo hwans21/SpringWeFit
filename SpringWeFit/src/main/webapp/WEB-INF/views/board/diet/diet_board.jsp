@@ -239,12 +239,10 @@
 
                 </table>
             </div>
-			<c:if test="${loginuser != null}">
 	            <div class="row" align="right">
 	                <button type="button" id="write" class="btn btn-outline-primary float-right"  onclick="location.href='<c:url value='/dietBoard/dietWrite' />'"><b>글쓰기</b></button>
 	
 	            </div> <!-- 관리자만 보이게 하기 -->
-	        </c:if>
 
 			<form action="<c:url value='/dietBoard/dietList' />" name="pageForm">
 				<div class="row text-center">

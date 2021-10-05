@@ -62,6 +62,7 @@ input {
 
 .page-link {
 	color: rgb(0, 173, 181);
+	cursor: pointer;
 }
 
 #btn-list {
@@ -71,6 +72,7 @@ input {
 tr{
 	cursor: pointer;
 }
+
 
 
 </style>
@@ -218,17 +220,17 @@ tr{
 						<ul class="pagination">
 							<c:if test="${pc.prev}">
 								<li class="page-item"><a class="page-link"
-									href="<c:url value='/placeBoard/placeList?pageNum=${pc.beginPage-1}&latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&distance=${pc.paging.distance}&category=${pc.paging.category}&order=${pc.paging.order }' />">Prev</a></li>
+									href="<c:url value='/placeBoard/placeList?pageNum=${pc.beginPage-1}&latitude=${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0}&longitude=${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&distance=${pc.paging.distance}&category=${pc.paging.category}&order=${pc.paging.order }' />">Prev</a></li>
 							</c:if>
 
 							<c:forEach var="page" begin="${pc.beginPage}" end="${pc.endPage}">
 								<li class="page-item ${pc.paging.pageNum == page? 'active':'' }"><a class="page-link"
-									href="<c:url value='/placeBoard/placeList?pageNum=${page}&latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&distance=${pc.paging.distance}&category=${pc.paging.category}&order=${pc.paging.order }' />">${page}</a></li>
+									href="<c:url value='/placeBoard/placeList?pageNum=${page}&latitude=${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0}&longitude=${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&distance=${pc.paging.distance}&category=${pc.paging.category}&order=${pc.paging.order }' />">${page}</a></li>
 							</c:forEach>
 
 							<c:if test="${pc.next}">
 								<li class="page-item"><a class="page-link"
-									href="<c:url value='/placeBoard/placeList?pageNum=${pc.endPage+1}&latitude=${loginuser.memberLatitude}&longitude=${loginuser.memberLongitude}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&distance=${pc.paging.distance}&category=${pc.paging.category}&order=${pc.paging.order }' />">Next</a></li>
+									href="<c:url value='/placeBoard/placeList?pageNum=${pc.endPage+1}&latitude=${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0}&longitude=${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0}&condition=${pc.paging.condition}&keyword=${pc.paging.keyword}&distance=${pc.paging.distance}&category=${pc.paging.category}&order=${pc.paging.order }' />">Next</a></li>
 							</c:if>
 						</ul>
 					</nav>
@@ -305,7 +307,7 @@ tr{
 			  distance = 10;
 		  }
           
-          location.href = '/wefit/placeBoard/placeList?condition=' + condition + '&distance=' + distance + '&keyword=' + keyword + '&order=' + $('#order').val() + '&latitude=' + ${loginuser != null? loginuser.memberLatitude:0.0} + '&longitude=' + ${loginuser != null? loginuser.memberLongitude:0.0} ;                                                 
+          location.href = '/wefit/placeBoard/placeList?condition=' + condition + '&distance=' + distance + '&keyword=' + keyword + '&order=' + $('#order').val() + '&latitude=' + ${(loginuser != null) && (loginuser.memberLatitude!=null)? loginuser.memberLatitude:0.0} + '&longitude=' + ${(loginuser != null) && (loginuser.memberLongitude!=null)? loginuser.memberLongitude:0.0} + '&category=${pc.paging.category}' ;                                                 
        });
       $('#search-input').keydown(function(e){
     	  if(e.keyCode == 13){

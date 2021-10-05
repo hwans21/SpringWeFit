@@ -234,6 +234,9 @@
                             <tr>
                                 <td><p>작성일: <fmt:formatDate value="${article.cbRegDate}" pattern="yy.MM.dd" /></p></td>
                                 <td><span class="glyphicon glyphicon-eye-open"></span>&nbsp;${article.cbLookCount}</td>
+                                <c:if test="${loginuser.memberManagerYN=='YES' }">
+                                	<td><p>신고수 : ${article.cbReportCount }</p></td>
+                                </c:if>
                                 <td>						
                                     <button id="likeBtn" class="btn btn-info pull-right">
                                     	<span class="glyphicon glyphicon-heart"></span> <span id="countLike">좋아요</span></button>

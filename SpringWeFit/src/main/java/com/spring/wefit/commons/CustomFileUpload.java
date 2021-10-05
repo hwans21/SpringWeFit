@@ -71,4 +71,16 @@ public class CustomFileUpload {
 		File file = new File(filePath+fileName);
 		file.delete();
 	}
+	
+	public void modify(String originName, String changeName) {
+		
+		File file1 = new File(originName);
+	    File file2 = new File(changeName);
+	    if(file1.exists()) {
+	    	if (!file1.renameTo(file2)) {
+		      System.err.println("이름 변경 에러 : " + file1);
+		    }
+	    }
+	    
+	}
 }

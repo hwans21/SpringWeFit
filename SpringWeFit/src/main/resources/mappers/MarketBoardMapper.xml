@@ -158,7 +158,8 @@
     </insert>
     
     <select id="getContent" resultType="com.spring.wefit.command.MarketBoardVO">
-       SELECT mb.*, m.memberNick 
+       SELECT mb.*, m.memberNick,
+       (SELECT COUNT(*) FROM MarketReport WHERE mbNum=mb.mbNum)as mbReportCount
        FROM MarketBoard mb, member m
        WHERE mb.mbNum = #{mbNum}
        AND mb.memberNum = m.memberNum

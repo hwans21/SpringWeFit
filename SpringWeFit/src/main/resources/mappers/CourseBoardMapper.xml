@@ -105,7 +105,7 @@
 		SELECT ROWNUM as rn, tbl.*
 		FROM
 		   (																	  <!-- 댓글 개수 카운트 한걸 crCount로 명명하면.. 이 이름 똑같이 vo객체에서 변수선언하면 알아서 거기에 값이 들어감 -->
-		   SELECT cb.*, (SELECT COUNT(*) FROM CourseReply WHERE cbNum = cb.cbNum) as crCount,
+		   SELECT cb.*, m.memberNick, (SELECT COUNT(*) FROM CourseReply WHERE cbNum = cb.cbNum) as crCount,
 		   (SELECT COUNT(*) FROM CourseReport WHERE cbNum = cb.cbNum) as cbReportCount,
 		   (SELECT COUNT(*) FROM CourseLikely WHERE cbNum = cb.cbNum) as cbLikeCount
 		   FROM CourseBoard cb, Member m
@@ -130,9 +130,11 @@
 
 
 <select id="getContent" resultType="com.spring.wefit.command.CourseBoardVO">
-   SELECT cb.*, LENGTHB(cbTitle) cbTitleByte, LENGTHB(cbContent) cbContentByte, LENGTHB(cbYouCode) cbYouCodeByte 
-   FROM CourseBoard cb
+   SELECT cb.*,m.memberNick, LENGTHB(cbTitle) cbTitleByte, LENGTHB(cbContent) cbContentByte, LENGTHB(cbYouCode) cbYouCodeByte,
+   (SELECT COUNT(*) FROM CourseReport WHERE cbNum = cb.cbNum) as cbReportCount
+   FROM CourseBoard cb, Member m
    WHERE cbNum=#{cbNum}
+   AND cb.memberNum = m.memberNum
 </select>
 
 

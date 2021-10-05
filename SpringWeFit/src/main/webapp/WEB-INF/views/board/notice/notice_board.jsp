@@ -71,7 +71,9 @@
             color: rgb(0, 173, 181);
         }
 
-
+		tbody tr:hover{
+			cursor:pointer;
+		}
         
 
 

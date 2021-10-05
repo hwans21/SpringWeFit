@@ -236,6 +236,10 @@ table tr td {
 						<table style="width:100%">
 							<tr>
 								<td>작성일  :  <fmt:formatDate value="${placeList.pbRegDate}" pattern="yyyy-MM-dd HH:mm"/></td>
+								<td><p>${placeList.memberNick }</p></td>
+								<c:if test="${loginuser.memberManagerYN=='YES' }">
+                                	<td><p>신고수 : ${placeList.pbReportCount }</p></td>
+                                </c:if>
 								<td><span class="glyphicon glyphicon-eye-open"></span>  ${placeList.pbLookCount}</td>
 								<td>
 									<button id="likeBtn" class="btn btn-info pull-right">
