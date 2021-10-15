@@ -102,7 +102,7 @@
           </div>
             <div id="btn-list" class="row" align="right">
               <div class="btn-group text-center" role="group" aria-label="Basic outlined example">
-                <button type="button" class="btn btn-info ${param.condition==''? 'active':'' }" id="allBtn">전체</button>
+                <button type="button" class="btn btn-info ${(param.condition=='') || (param.condition==null)? 'active':'' }" id="allBtn">전체</button>
                 <button type="button" class="btn btn-info ${param.condition=='[자유글]'? 'active':'' }" id="freeBtn">자유글</button>
                 <button type="button" class="btn btn-info ${param.condition=='[소식/정보]'? 'active':'' }" id="infoBtn">소식/정보</button>
                 <button type="button" class="btn btn-info ${param.condition=='[홍보]'? 'active':'' }" id="advertBtn">홍보</button>

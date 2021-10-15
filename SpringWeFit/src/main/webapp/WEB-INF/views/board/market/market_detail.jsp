@@ -179,7 +179,7 @@
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
                                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    				<c:forEach var="index" begin="1" end="${detail.mbImageCount }">
+                    				<c:forEach var="index" begin="1" end="${detail.mbImageCount-1 }">
                     					<li data-target="#carousel-example-generic" data-slide-to="${index }"></li>
                     				</c:forEach>
                             </ol>
@@ -408,12 +408,16 @@
         				content = data.list[i].mrContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
-                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].mrRegDate)+'</small>'
-                        if(data.list[i].memberNick === loginuserName || manager === 'YES'){
-	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].mrNum+'">수정</small> <small class="replyDelBtn'+data.list[i].mrNum+'">삭제</small></span>'
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].mrRegDate)+'</small>&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del">'
+                        if(data.list[i].memberNick === loginuserName){
+	                        strAdd += '<small class="replyModBtn'+data.list[i].mrNum+'">수정</small> '
                         	
                         }
-                        strAdd += '<br><br><span class="reply-content">'+content+'</span>'
+                        if(data.list[i].memberNick === loginuserName || manager === 'YES'){
+	                        strAdd += '<small class="replyDelBtn'+data.list[i].mrNum+'">삭제</small>'
+                        	
+                        }
+                        strAdd += '</span><br><br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }

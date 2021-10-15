@@ -329,10 +329,11 @@ table tr td {
 		
 		// 댓글입력
 		function replyRegist() {
-			if (${loginuser == null ? true : false}) {
-				alert('댓글 등록 - 로그인을 하세요!'); 
+			if(${loginuser == null ? true : false}){
+				alert('로그인이 필요합니다.');
 				$('#replyInput').val('');
 				$('#nowByte').text('최대');
+				$('#replyInput').focus();
 				return;
 			} else if(+($('#nowByte').html())>200){
 				alert('댓글은 200바이트 초과해서 입력할 수 없습니다.');
@@ -459,12 +460,14 @@ table tr td {
 											+ Data[i].memberNick
 											+ '</span> <small>'
 											+ timeStamp(Data[i].drRegDate)
-											+ '</small>'
+											+ '</small>&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del">'
+											if (Data[i].memberNick == "${loginuser.memberNick}") {
+												strAdd += '<small class="replyModBtn'+Data[i].drNum+'">수정</small> '
+											}
 											if (Data[i].memberNick == "${loginuser.memberNick}" || ${loginuser.memberManagerYN == "YES"}) {
-										strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+Data[i].drNum+'">수정</small> <small class="replyDelBtn'+Data[i].drNum+'">삭제</small></span>'
-										
-									}
-									strAdd += '<br><br><span class="reply-content">'
+												strAdd += '<small class="replyDelBtn'+Data[i].drNum+'">삭제</small>'
+											}
+									strAdd += '</span><br><br><span class="reply-content">'
 											+ content + '</span>'
 									strAdd += '</div>';
 									strAdd += '</div>';

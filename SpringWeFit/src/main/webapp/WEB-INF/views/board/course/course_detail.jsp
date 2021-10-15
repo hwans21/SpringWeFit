@@ -616,12 +616,14 @@
             				strAdd += '<div class="reply reply-box">';
             				strAdd += '<span class="reply-writer">' + replyList[i].memberNick + '</span>&nbsp;&nbsp;';
             				strAdd += '<span class="reply-memberNum">' + replyList[i].memberNum + '</span>'; // memberNum 을 display:none으로 받음
-            				strAdd += '<small>'+ timeStamp(replyList[i].crRegDate) +'</small>';
-            				if(replyList[i].memberNum == "${loginuser.memberNum}" || ${loginuser.memberManagerYN == "YES"}){
-            					strAdd += '<span class="mod-del">';
-            					strAdd += '<small class="mod"><span id="update" class=' + replyList[i].crNum + '>수정</span></small>&nbsp;&nbsp;<small class="delete-btn"><a class="del" href="'+ replyList[i].crNum + '">삭제</a></small> </span>';
+            				strAdd += '<small>'+ timeStamp(replyList[i].crRegDate) +'</small><span class="mod-del">';
+            				if(replyList[i].memberNum == "${loginuser.memberNum}"){
+            					strAdd += '<small class="mod"><span id="update" class=' + replyList[i].crNum + '>수정</span></small> ';
             				}
-            				strAdd += '<br><br>';
+            				if(replyList[i].memberNum == "${loginuser.memberNum}" || ${loginuser.memberManagerYN == "YES"}){
+            					strAdd += '&nbsp;&nbsp;<small class="delete-btn"><a class="del" href="'+ replyList[i].crNum + '">삭제</a></small> ';
+            				}
+            				strAdd += '</span><br><br>';
             				
             				strAdd += '<div class="reply-content-plus-modify"><div class="modify-input"><div><sup> ( <span id="nowByte2" class="nowByte2">최대 </span> / 200bytes )</sup></div><input class="reply-modify-input" value="'+ replyList[i].crContent + '"><div class="lnr"><span class="lnr lnr-cross-circle">취소하기</span><span id="'+ replyList[i].crNum +'" class="lnr lnr-checkmark-circle">수정하기</span></div></div>';
             				

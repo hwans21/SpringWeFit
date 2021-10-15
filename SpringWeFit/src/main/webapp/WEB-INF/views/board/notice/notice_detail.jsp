@@ -237,11 +237,11 @@
                 </div>
                 <div class="row">
                     
-                        <div class="input-group input-group-lg">
 
+                                <sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup>
+                        <div class="input-group input-group-lg">
                             <input id="replyInput" type="text" class="form-control" placeholder="댓글을 작성해주세요"
                                 aria-describedby="basic-input">
-                                <sup> ( <span id="nowByte">최대 </span> / 200bytes )</sup>
                             <span class="input-group-btn" id="basic-input">
                                 <button id="replyBtn" type="button" class="btn btn-default"><span
                                         class="glyphicon glyphicon-send"></span></button>
@@ -298,12 +298,16 @@
         				content = data.list[i].nrContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
-                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].nrRegDate)+'</small>'
-                        if(data.list[i].memberNick === loginuserName || manager === 'YES'){
-	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].nrNum+'">수정</small> <small class="replyDelBtn'+data.list[i].nrNum+'">삭제</small></span>'
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].nrRegDate)+'</small>&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del">'
+                        if(data.list[i].memberNick === loginuserName){
+	                        strAdd += '<small class="replyModBtn'+data.list[i].nrNum+'">수정</small> '
                         	
                         }
-                        strAdd += '<br><span class="reply-content">'+content+'</span>'
+                        if(data.list[i].memberNick === loginuserName || manager === 'YES'){
+	                        strAdd += '<small class="replyDelBtn'+data.list[i].nrNum+'">삭제</small>'
+                        	
+                        }
+                        strAdd += '</span><br><br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }
@@ -387,25 +391,16 @@
            }
         });
         $('#replyInput').keydown(function(e){
-        	if(e.keyCode === 13){
-        		e.preventDefault();
-        		if($('#replyInput').val()==='') {
-          			alert("댓글을 입력하세요.");
-          			return;
-          		}
-            	if(+($('#nowByte').text()) > 200)   {
-                   alert('댓글은 200byte를 초과할 수 없습니다')
-             		return;
-               
-               } else if(boolRegist){
-                  replyRegist();
-                  
-               } else {
-                  replyModify(nrClassName);
-                  
-               }
-        	}
-        })
+            if(e.keyCode === 13){
+               if(boolRegist){
+                   replyRegist();
+                   $('#replyInput').val('');
+                } else {
+                   replyModify(nrClassName);
+                   $('#replyInput').val('');
+                }
+            }
+         })
         
       
         /////////////////////////////////////////////////////

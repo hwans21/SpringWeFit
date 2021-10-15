@@ -54,6 +54,9 @@
         .navbar>.container-fluid>.navbar-header>button>span:last-child {
             margin-bottom: 0px;
         }
+        #geoLink{
+        	cursor: pointer;
+        }
     </style>
 
 </head>

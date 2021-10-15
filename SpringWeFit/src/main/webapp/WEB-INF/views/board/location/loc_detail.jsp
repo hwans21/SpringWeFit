@@ -347,11 +347,15 @@ table tr td {
         				content = data.list[i].prContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
-                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].prRegDate)+'</small>'
-                        if(data.list[i].memberNick === loginuserName || manager === 'YES'){
-	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].prNum+'">수정</small> <small class="replyDelBtn'+data.list[i].prNum+'">삭제</small></span>'
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].prRegDate)+'</small>&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del">'
+                        if(data.list[i].memberNick === loginuserName){
+                        	
+	                        strAdd += '<small class="replyModBtn'+data.list[i].prNum+'">수정</small> '
                         }
-                        strAdd += '<br><br><span class="reply-content">'+content+'</span>'
+                        if(data.list[i].memberNick === loginuserName || manager === 'YES'){
+	                        strAdd += '<small class="replyDelBtn'+data.list[i].prNum+'">삭제</small>'
+                        }
+                        strAdd += '</span><br><br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }

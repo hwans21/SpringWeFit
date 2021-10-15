@@ -340,12 +340,15 @@
         				content = data.list[i].frContent.replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/\n/g,"<br/>");
                         strAdd += '<div class="row reply-item" style="display:none;">';
                         strAdd += '<div class="reply reply-box">';
-                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small>'
+                        strAdd += '<span class="reply-writer">'+data.list[i].memberNick+'</span> <small>'+timeStamp(data.list[i].frRegDate)+'</small>&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del">'
+                        if(data.list[i].memberNick === loginuserName){
+	                        strAdd += '<small class="replyModBtn'+data.list[i].frNum+'">수정</small> '
+                        }
                         if(data.list[i].memberNick === loginuserName || ${loginuser.memberManagerYN == "YES"}){
-	                        strAdd += '&nbsp;&nbsp;&nbsp;&nbsp;<span class="mod-del"><small class="replyModBtn'+data.list[i].frNum+'">수정</small> <small class="replyDelBtn'+data.list[i].frNum+'">삭제</small></span>'
+	                        strAdd += '<small class="replyDelBtn'+data.list[i].frNum+'">삭제</small>'
                         	
                         }
-                        strAdd += '<br><br><span class="reply-content">'+content+'</span>'
+                        strAdd += '</span><br><br><span class="reply-content">'+content+'</span>'
                         strAdd += '</div>';
                         strAdd += '</div>';
                     }

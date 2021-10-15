@@ -52,13 +52,13 @@ public class MarketBoardController {
 		model.addAttribute("pc", pc);
 		System.out.println(vo.toString());
 
-		return "/board/market/market_board";
+		return "board/market/market_board";
 	}
 
 	// 글 등록페이지로
 	@GetMapping("/market_write")
 	public String market_write() {
-		return "/board/market/market_write";
+		return "board/market/market_write";
 	}
 
 	@PostMapping("/regist")
